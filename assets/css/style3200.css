@@ -133,6 +133,11 @@ header .view a img{
   vertical-align:middle
 }
 
+header .view a{
+  display:inline-block;
+  margin:0 2px
+}
+
 /* Inline GitHub Icons in Content */
 section a img{
   border-radius:0;
