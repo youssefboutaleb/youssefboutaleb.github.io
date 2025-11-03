@@ -403,6 +403,38 @@ footer{
     border-right:none
   }
   
+  /* Navigation Menu - Make it scrollable */
+  section > table:first-of-type{
+    display:block;
+    overflow-x:auto;
+    white-space:nowrap;
+    -webkit-overflow-scrolling:touch;
+    margin-bottom:20px
+  }
+  
+  section > table:first-of-type tbody,
+  section > table:first-of-type tr{
+    display:block
+  }
+  
+  section > table:first-of-type td{
+    display:inline-block;
+    padding:10px 8px;
+    border-bottom:none;
+    border-right:1px solid #e5e5e5;
+    white-space:nowrap
+  }
+  
+  section > table:first-of-type td:last-child{
+    border-right:none
+  }
+  
+  section > table:first-of-type td a{
+    font-size:13px;
+    white-space:nowrap
+  }
+}
+  
   table{
     font-size:12px
   }
