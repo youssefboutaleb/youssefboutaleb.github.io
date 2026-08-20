@@ -102,6 +102,9 @@ def css_selectors() -> set[str]:
     """Every class name the stylesheet defines a rule for."""
     css = CSS.read_text(encoding="utf-8")
     css = re.sub(r"/\*.*?\*/", "", css, flags=re.DOTALL)
+    # Quoted strings hold font paths like "…/Noto-Sans.woff2", whose extensions
+    # would otherwise be read as class selectors.
+    css = re.sub(r"'[^']*'|\"[^\"]*\"", "''", css)
     return set(re.findall(r"\.(-?[_a-zA-Z][\w-]*)", css))
 
 
@@ -124,6 +127,7 @@ def main() -> int:
 
     known_classes = css_selectors()
     css_variable_audit()
+    used_classes: set[str] = set()
 
     for page in pages:
         audit = PageAudit(page.name)
@@ -139,6 +143,7 @@ def main() -> int:
         if duplicates:
             fail(page.name, f"duplicate id attributes: {', '.join(sorted(duplicates))}")
 
+        used_classes |= audit.classes
         for name in sorted(audit.classes - known_classes):
             fail(page.name, f"class '{name}' is used in markup but has no rule in main.css")
 
@@ -153,6 +158,12 @@ def main() -> int:
             if parsed.fragment and target.suffix == ".html" and target.exists():
                 if f'id="{parsed.fragment}"' not in target.read_text(encoding="utf-8"):
                     fail(page.name, f"line {line}: '{ref}' points at a missing anchor")
+
+    # Dead CSS is a maintenance tax: the next person cannot tell which rules
+    # still matter. Reported, not fatal — a rule may be staged for a new page.
+    unused = sorted(known_classes - used_classes)
+    if unused:
+        notes.append(f"css classes with no markup using them: {', '.join(unused)}")
 
     build_check = subprocess.run(
         [sys.executable, str(ROOT / "tools" / "build.py"), "--check"],

@@ -6,232 +6,287 @@ document explains the reasoning so the system can be extended without drifting.
 
 ---
 
+## The brief
+
+Classic, restrained, academic. This site descends from the orderedlist
+**Minimal** theme by way of [elyesmanai.github.io](https://elyesmanai.github.io/),
+and that lineage is the design — a sticky identity rail on the left, a plain
+document on the right, one typeface, one blue for links, hairlines for
+structure.
+
+**What this system changes is discipline, not style.** The original look was
+hand-tuned page by page, which is why it had drifted: three different contact
+blocks, one section rule that existed only on the Projects page, icons squashed
+by percentage widths. Everything below reproduces that look from tokens and
+named components, so it stays consistent as the site grows.
+
+### Explicitly out of scope
+
+These were considered and rejected as wrong for the register:
+
+- Uppercase letterspaced eyebrow labels
+- Large display numerals for metrics
+- A second (serif or display) typeface
+- Filled or outlined buttons in the content flow
+- Cards, tinted panels, drop shadows on content
+- Hover animations, scroll effects, entrance transitions
+
+If a future addition needs one of these, the addition is probably wrong.
+
+---
+
 ## Principles
 
-1. **Coherence over novelty.** One typographic scale, one spacing scale, one
-   accent colour, one content component. A new page should be assemblable from
-   parts that already exist.
-2. **A document, not an interface.** Structure comes from hairlines, whitespace
-   and typographic hierarchy — never from boxes, tinted panels or shadows. The
-   page should read like a well-set academic document.
+1. **A document, not an interface.** Structure comes from headings, bullets,
+   hairlines and whitespace. A reader should be able to print the page and lose
+   nothing.
+2. **Coherence over novelty.** One type scale, one spacing scale, one accent,
+   one content component. A new page is assembled from parts that already exist.
 3. **Credibility before persuasion.** Claims carry a number and a link to where
-   the number can be checked. No superlatives that a reader cannot verify.
-4. **Timeless over current.** Nothing on this site should look dated in five
-   years, which rules out large radii, gradients, glassmorphism, hero
-   animations and full-bleed marketing sections.
-5. **Restraint in motion.** Interaction is acknowledged (colour, underline,
-   border), never performed. No entrance animations, no scroll effects, no
-   scale-on-hover.
+   the number can be checked.
+4. **Timeless over current.** Nothing here should look dated in five years,
+   because none of it looks current now.
+5. **Restraint in motion.** Interaction is acknowledged with colour and an
+   underline, never performed.
 6. **Single source of truth.** Every literal is a token; every shared region of
-   markup is generated from one template. Duplication is treated as a defect.
+   markup is generated from one template. Duplication is a defect.
 
 ---
 
 ## 1. Typography
 
-Two families, deliberately contrasted:
+**One family: Noto Sans**, self-hosted (woff2 / woff / ttf), in **two weights
+only — 400 and 700**. The family ships no others, so any 500 or 600 would be a
+synthesised fake. Emphasis comes from weight, colour and size.
 
-| Role | Family | Where |
-|---|---|---|
-| Titles | System serif stack (Charter → Sitka → Cambria → Iowan → Palatino → Georgia) | Page titles, block titles, the name, stat figures |
-| Everything else | Noto Sans (self-hosted, woff2/woff/ttf) | Body, meta, navigation, tags, buttons |
-| Code | System monospace stack | `code`, `pre` |
-
-The serif is a *system* stack, so it costs zero network requests and cannot fail
-to load. It carries the academic register; the sans carries the engineering one.
-
-**Only two weights exist — 400 and 700.** The self-hosted family ships no others,
-so any use of 500/600 would be a synthesised fake. Emphasis is achieved with
-weight, colour and size — never with a third weight.
-
-### Scale
+A second typeface was the single biggest thing that tipped an earlier draft out
+of register: a serif for titles reads as *magazine*, not as *academic page*.
 
 | Token | Size | Use |
 |---|---|---|
-| `--text-2xs` | 11px | Eyebrows, contact labels |
-| `--text-xs` | 12px | Tags, dates |
-| `--text-sm` | 13px | Meta lines, navigation, footer |
-| `--text-md` | 15px | Sidebar body |
-| `--text-base` | 16px | Body copy |
-| `--text-lg` | 18px | Entry titles, page lede |
-| `--text-xl` | 22px | Block titles |
-| `--text-2xl` | 28px | Stat figures |
-| `--text-3xl` | 34px | Page titles |
+| `--text-xs` | 11px | Tags |
+| `--text-sm` | 12px | Dates, "last update", footer |
+| `--text-md` | 13px | Navigation, sidebar, contact |
+| `--text-base` | 15px | Body copy |
+| `--text-lg` | 16px | Page lede, entry titles, sidebar headings |
+| `--text-xl` | 18px | Section headings (`h3`) |
+| `--text-2xl` | 24px | Page title (`h1`) |
+| `--text-3xl` | 28px | The name in the sidebar |
 
-Line height: `--leading-tight` (1.2) for titles, `--leading-snug` (1.4) for
-short-measure text, `--leading-normal` (1.65) for prose.
-Prose is capped at `--measure` (72ch) regardless of viewport.
+These are the original theme's proportions with **one change: body copy moved
+from 14px to 15px.** That step is the whole accessibility argument and costs
+nothing visually.
 
-At ≤720px the three largest steps shrink; nothing else changes, so the hierarchy
-survives the breakpoint intact.
+Line height: 1.2 for headings, 1.45 for short-measure text, 1.6 for prose.
+Prose is capped at `--measure` (74ch).
+
+### Heading ramp
+
+The theme's signature is a *stepped* grey ramp — each heading level one notch
+lighter than the one above:
+
+| Level | Colour | Role |
+|---|---|---|
+| `h1` / the name / `strong` | `#222222` | Strongest |
+| `h2` / page title | `#393939` | Page-level |
+| `h3` / section headings | `#494949` | Section-level |
+| Body | `#373737` | — |
+
+Note that body text is *darker* than `h3`. That is not a mistake; it is the
+original ramp and it is why the page reads calm rather than shouty.
 
 ## 2. Colour
 
-One neutral ramp and one accent. Nothing else may be introduced.
+One grey ramp and one blue. Nothing else may be introduced.
 
-**Neutrals** — `--ink-900` (headings) through `--ink-400` (muted meta), on
-`--paper`, separated by `--rule` hairlines.
+- **Links** — `--blue-600` `#267cb9`, the theme's blue (4.6:1 on white, AA).
+  Hover is `--blue-800` `#006699`.
+- **Rules** — `--rule` `#e5e5e5` for structural hairlines, `--rule-soft`
+  `#eaeaea` for the lighter underline beneath section headings.
+- **Muted text** — the theme's `#777` was darkened to `#6b6b6b`, the smallest
+  change that clears AA at 12px.
 
-**Accent** — a deep navy (`--accent-600` `#17466f`, 9.9:1 on white). Restrained
-enough to read as institutional rather than promotional, dark enough to pass
-AA at every size it is used.
+**Semantic layer.** Components address `--color-text`, `--color-heading`,
+`--color-link`, `--color-border` and so on — never a primitive. Re-theming
+means editing one block. `tools/check.py` fails on an undefined token and
+reports any token nothing consumes.
 
-**Semantic layer.** Components never reference a primitive directly. They use
-`--color-text`, `--color-heading`, `--color-link`, `--color-border`,
-`--color-surface`, `--color-action` and so on. Re-theming means editing the
-semantic block only. `tools/check.py` fails the build on an undefined token.
+**Status colours** exist for tags alone — see §7.
 
-**Status colours** exist for tags alone, in five meanings — see §7.
-
-The site is light-only and prints cleanly. Dark mode is deliberately deferred:
-the brand logos in `images/icons/` are fixed-colour SVGs that would need
-per-mark treatment, and half-solving it would be worse than not solving it.
+Light-only, and it prints cleanly. Dark mode is deliberately deferred: the
+brand logos in `images/icons/` are fixed-colour SVGs that would each need a
+treatment, and half-solving it is worse than not solving it.
 
 ## 3. Spacing
 
-A 4px base scale: `--space-1` (4px) through `--space-8` (64px).
-No layout value is written as a literal.
+Built around the theme's **20px block rhythm** rather than a generic 8pt grid,
+so the vertical texture of the original page survives:
 
-Rhythm in practice: `--space-2` inside a component, `--space-3`–`--space-4`
-between elements of a component, `--space-5` between components,
-`--space-7` between blocks, `--space-8` between page regions.
+`--space-1` 4 · `--space-2` 8 · `--space-3` 12 · `--space-4` 16 ·
+**`--space-5` 20** · `--space-6` 32 · `--space-7` 40 · `--space-8` 60
+
+`--space-5` is the default bottom margin on every block-level element.
+`--space-7` is the column gap and the separation between sections.
 
 ## 4. Layout & containers
 
-Two columns: a sticky `--sidebar-width` (288px) identity rail and a fluid
-content column, inside `--container-max` (1180px), separated by `--column-gap`.
+`--container-max` 1120px at `--container-fluid` 95%, holding a fixed
+`--sidebar-width` 280px rail and a fluid content column, `--column-gap` apart.
 
-The sidebar is sticky and scrolls independently, so identity, credentials,
-contact details and the CV link stay reachable from anywhere on a long page —
-the single most useful thing a portfolio can do for a recruiter.
-
-Content is capped at `--measure` for readability even when the column is wider.
+The rail is sticky and scrolls independently, so identity, credentials, the CV
+link and contact details stay reachable from anywhere in a long document —
+the most useful thing a portfolio can do for someone reading it in order to
+get in touch.
 
 ## 5. Borders, radius & elevation
 
-Radii are small on purpose: `--radius-sm` 2px (tags), `--radius-md` 4px
-(buttons), `--radius-lg` 6px (code blocks), `--radius-full` (portrait only).
-Large radii read as consumer software.
+`--radius-sm` 3px (tags), `--radius-md` 5px (code blocks), `--radius-full`
+(portrait only).
 
-**The system is flat.** `--shadow-sm` exists and is applied to exactly one
-element — the portrait. Content is never elevated. Separation is a 1px
-`--rule`, and emphasis is a 2px `--rule-strong`.
+**The system is flat.** There is exactly one shadow token,
+`--shadow-portrait`, applied to exactly one element. Content is never lifted.
+Separation is a 1px hairline.
 
 ## 6. Iconography
 
-All marks are SVG in `images/icons/`. Brand logos arrive in wildly different
-aspect ratios (square, 2500×1184 wordmarks, 412×800 portraits), so **every icon
-renders inside a fixed square box with `object-fit: contain`** via `.icon` plus
-a size modifier (`--xs` 14, `--sm` 16, `--md` 20, `--lg` 24). This is the rule
-that keeps logos undistorted and optically aligned; icons are never sized inline.
+Brand logos arrive in wildly different aspect ratios — square, 2500×1184
+wordmarks, 412×800 portraits. **Every icon renders inside a fixed square box
+with `object-fit: contain`** via `.icon` plus a size modifier (`--xs` 12,
+`--sm` 15, `--md` 18, `--lg` 32). This is the rule that keeps logos
+undistorted and optically aligned. Icons are never sized inline; the original
+sized social marks with `width="15%"`, which is why they never lined up.
 
-Decorative icons take `alt=""`; icons that are the only content of a link carry
-the link's accessible name in `alt`.
+Decorative icons take `alt=""`; an icon that is the only content of a link
+carries that link's accessible name in its `alt`.
 
 ## 7. Tags
 
-Tags classify, they never decorate. Five semantic variants, and no sixth:
+The one addition to the classic vocabulary, and the one piece of colour on the
+page. Tags **classify**; they never decorate. Five semantic variants, no sixth:
 
 | Variant | Meaning | Example |
 |---|---|---|
-| `.tag--neutral` | Factual context | `Azure`, `86 teams` |
-| `.tag--accent` | Role or category | `Instructor`, `Computer vision` |
-| `.tag--success` | Verified, published, shipped | `Accepted upstream — PR #585` |
-| `.tag--honor` | Distinction or pending status | `1st place`, `Under preparation` |
+| `.tag--neutral` | Factual context | `Azure`, `86 Teams` |
+| `.tag--accent` | Role or category | `Instructor`, `Graduate Level` |
+| `.tag--success` | Verified, published, shipped | `Official Plugin PR #585` |
+| `.tag--honor` | Distinction or pending status | `1st Place`, `In Progress` |
 | `.tag--critical` | Downloadable artefact | `Slides (.pptx)` |
 
-## 8. Buttons & interactive states
+## 8. Interactive states
 
-`.btn` is outline-by-default, filling on hover; `.btn--primary` is filled;
-`.btn--block` spans its container. Every interactive element defines four
-states: rest, hover, `:focus-visible` (2px accent outline, 2px offset) and
-active.
+Every interactive element defines rest, hover and `:focus-visible` (2px blue
+outline, 2px offset).
 
-Links get colour plus an underline on hover — **never a weight change**, which
-was the old stylesheet's `a:hover { font-weight: bold }` and reflowed text under
-the cursor.
+Links get colour plus an underline on hover — **never a weight change**. The
+original's `a:hover { font-weight: bold }` reflowed the sentence under the
+cursor.
+
+There are no buttons in the content flow. The CV is a plain link under a
+"Downloadables" heading, as it was.
 
 ## 9. Content records
 
-There is one content component, `.entry`, used for every record on the site: a
-job, a project, a paper, a course, a workshop, an award. It has a title, an
-optional right-aligned period, a meta line, tags, and a body of prose or points.
+One component, `.entry`, is used for every record on the site: a job, a
+project, a paper, a course, a workshop, an award. It is a **bulleted list
+item**, exactly as the original CV pages were written by hand:
 
-Entries are separated by hairlines and are **never boxed**. A CV is a document,
-not a feed of cards.
+```
+• Title — Role                    .entry__title / .entry__role
+  Aug 2024 – Present              .entry__period   (italic, muted)
+  [tags]                          .tag-list
+  – point                         .points
+  – point
+```
 
-## 10. Page structure
+Optional `.entry__group` subdivides a long record (Data Integration / Cloud &
+Security / Observability), and `.issuer` heads a certification group with its
+brand mark.
+
+Entries are **never boxed**. A CV is a document, not a feed of cards.
+
+## 10. Definition lists
+
+`.deflist` handles all "category: values" content — skills, languages, impact.
+The original wrote these as `<li><b>Label:</b> values</li>`: correct on screen,
+but the pairing lived only in the punctuation.
+
+`.deflist` renders **identically** — bullet, bold label, colon, values, all on
+one line — while being a real `<dl>`. The `.deflist__item` wrapper `<div>` is
+valid inside a `<dl>` and is what lets a `dt`/`dd` pair share one list marker.
+
+## 11. Page structure
 
 Every page is the same stack:
 
 ```
-page-header   eyebrow → h1 → lede
-block         h2 + optional intro + body     ← repeated
-block
-site-footer
+page-header   h1 + optional lede
+block         h3 (underlined) + optional intro + entries or deflist   ← repeated
 ```
 
-Each page has exactly one `<h1>` (its own title), and the site name in the
-sidebar is a link, not a heading — enforced by `tools/check.py`.
+Each page has exactly one `<h1>` — its own title. The site name in the rail is
+a link styled to the old `h1`'s size, not a heading, so every page gets a
+unique document outline. Enforced by `tools/check.py`.
 
-## 11. Navigation
+## 12. Navigation
 
-One horizontal bar under a hairline, with `aria-current="page"` on the active
-item rendered as an accent underline. The previous build had no active state at
-all: every page's navigation looked identical, so the reader never knew where
-they were.
+The original rendered this as a `<table>` row, which meant the site's real
+tables inherited its styling and **no page could show which one you were on**.
+`.nav` keeps the look — evenly distributed links over a hairline — as a list,
+with `aria-current="page"` rendered as bold ink.
 
-## 12. Responsive behaviour
+## 13. Responsive behaviour
 
 | Breakpoint | Change |
 |---|---|
-| >1000px | Two columns, sticky sidebar |
-| ≤1000px | One column; sidebar becomes a horizontal band of auto-fitting sections |
-| ≤720px | Type steps down; dates move above titles; the spec list collapses to one column |
-| ≤480px | Navigation scrolls horizontally, bleeding to the viewport edge so the affordance is visible; stats stack |
+| >960px | Two columns, sticky rail |
+| ≤960px | One column; the rail becomes a centred band above the document (the theme's own breakpoint) |
+| ≤720px | Padding tightens; nav items shrink-wrap |
+| ≤480px | Navigation scrolls horizontally, bleeding to the viewport edges so the affordance is visible; type steps down |
 
-## 13. Motion
+## 14. Motion
 
-`--duration-fast` 120ms / `--duration` 180ms on `--ease`. Only colour, opacity,
-border and the skip-link transform animate. Everything is disabled under
-`prefers-reduced-motion: reduce`.
+A single `--duration` of 150ms, on colour and opacity only. Fully disabled
+under `prefers-reduced-motion: reduce`.
 
-## 14. Accessibility
+## 15. Accessibility
 
 - Skip link to `<main>`.
-- Landmarks: sidebar `<header>`, `<nav aria-label="Primary">`, `<main>`, `<footer>`.
-- One `<h1>` per page; blocks labelled with `aria-labelledby`.
+- Landmarks: rail `<header>`, `<nav aria-label="Primary">`, `<main>`.
+- One `<h1>` per page; every block labelled with `aria-labelledby`.
 - `:focus-visible` outline on every interactive element.
 - Every `<img>` has an `alt` (empty when decorative).
 - Every `target="_blank"` carries `rel="noopener"`.
-- Body text ≥16px; the smallest text (11px) is reserved for labels that repeat
-  information available elsewhere.
-- Pinch-zoom is not disabled. (The removed `scale.fix.js` set
-  `user-scalable=no` on iOS, violating WCAG 1.4.4.)
+- Body text 15px; 11px is used only for tags, which always repeat information
+  present in the surrounding prose.
+- Pinch-zoom is not disabled. The removed `scale.fix.js` set
+  `user-scalable=no` on iOS, violating WCAG 1.4.4.
 - `prefers-contrast: more` darkens the secondary and muted ramps.
 
-## 15. Content hierarchy
+## 16. Content hierarchy
 
 The site answers hiring questions in order:
 
 | Question | Where |
 |---|---|
-| Who is this engineer? | Sidebar identity + Home page header |
-| How do they work? | Home → Engineering profile |
-| What technologies do they actually use? | Home → Technical expertise |
-| What impact did they create? | Home → Selected impact |
+| Who is this engineer? | Rail identity + Home page title |
+| How do they work? | Home → Profile |
+| What technologies do they actually use? | Home → Skills |
+| What impact did they create? | Home → Selected Impact |
 | What problems have they solved? | Career → Experience |
 | What can they build? | Projects |
 | How technically deep are they? | Research, Workshops, Teaching |
 | Can I trust their engineering practices? | Career → Certifications (all verifiable) |
 | Where can I verify their work? | Every entry links to source, badge or DOI |
-| How do I reach them? | Sidebar, on every page |
+| How do I reach them? | The rail, on every page |
 
-## 16. Extending the system
+## 17. Extending the system
 
-1. Reach for an existing component first. `.entry` covers almost everything.
+1. Reach for an existing component first. `.entry` and `.deflist` cover almost
+   everything on the site.
 2. If a new component is genuinely needed, build it from tokens only. A literal
    in a component rule is a bug.
-3. Add it to §1–14 above and to `assets/css/main.css` under a numbered section.
-4. Run `python3 tools/check.py` — it fails on classes used in markup but absent
-   from the stylesheet, undefined tokens, inline styles and broken links.
+3. Check it against **Explicitly out of scope** at the top of this document.
+4. Add it here and to `assets/css/main.css` under a numbered section.
+5. Run `python3 tools/check.py` — it fails on classes used in markup but absent
+   from the stylesheet, undefined tokens, inline styles and broken links, and
+   reports any CSS rule or token nothing uses.

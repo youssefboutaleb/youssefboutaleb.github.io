@@ -54,7 +54,8 @@ makes it usable as a pre-commit or CI gate.
 - No inline `style=` attributes and no inline event handlers
 - Every `<img>` has an `alt`; every `target="_blank"` has `rel="noopener"`
 - Exactly one `<h1>` per page, and no duplicate `id`s
-- Every class used in the markup has a rule in `main.css`
+- Every class used in the markup has a rule in `main.css`, and every rule and
+  token is used by something (dead CSS is reported, not fatal)
 - Every `var(--token)` is defined
 - Tags are balanced and correctly nested
 - The committed pages match their sources
@@ -64,10 +65,15 @@ package manager.
 
 ## Design system
 
+A classic academic stylesheet in the lineage of the orderedlist **Minimal**
+theme this site was forked from: a sticky identity rail, a plain document, one
+typeface, one blue for links, hairlines for structure.
+
 Typography, colour, spacing, components, responsive behaviour and accessibility
-rules are documented in **[DESIGN.md](DESIGN.md)**. Read it before adding a
-component; almost everything is already expressible with `.entry`, `.block`,
-`.spec`, `.tag` and `.stat`.
+rules — plus an explicit list of what is *out of scope* — are documented in
+**[DESIGN.md](DESIGN.md)**. Read it before adding a component; almost
+everything on the site is already expressible with `.block`, `.entry`,
+`.deflist` and `.tag`.
 
 ## Credits
 

@@ -33,34 +33,39 @@
 
   <div class="layout">
 
-    <!-- Identity: who this engineer is, on every page. -->
+    <!-- Identity, credentials and contact — present on every page. -->
     <header class="sidebar">
-      <div class="sidebar__identity">
-        <img class="sidebar__portrait" src="{{ site.portrait }}" alt="{{ site.portrait_alt }}" width="132" height="132">
-        <a class="sidebar__name" href="index.html">{{ site.name }}</a>
-        <p class="sidebar__role">{{ site.role }}</p>
-        <ul class="credentials">
+      <p class="sidebar__updated"><small>Last update: {{ site.last_updated }}</small></p>
+      <a class="sidebar__name" href="index.html">{{ site.name }}</a>
+
+      <img class="sidebar__portrait" src="{{ site.portrait }}" alt="{{ site.portrait_alt }}" width="150" height="150">
+
+      <p class="sidebar__role">{{ site.role }}</p>
+      <ul class="credentials">
 {{ build.credentials }}
-        </ul>
+      </ul>
+
+      <div class="sidebar__section">
+        <h2 class="sidebar__heading">Downloadables</h2>
+        <p><a href="{{ site.resume }}" target="_blank" rel="noopener">Resume / CV</a></p>
       </div>
 
       <div class="sidebar__section">
-        <p class="eyebrow">Resume</p>
-        <a class="btn btn--block" href="{{ site.resume }}" target="_blank" rel="noopener">Download CV (PDF)</a>
-      </div>
-
-      <div class="sidebar__section">
-        <p class="eyebrow">Contact</p>
+        <h2 class="sidebar__heading">Contact</h2>
         <ul class="contact">
 {{ build.contact }}
         </ul>
       </div>
 
       <div class="sidebar__section">
-        <p class="eyebrow">Profiles</p>
         <ul class="social">
 {{ build.socials }}
         </ul>
+      </div>
+
+      <div class="site-footer">
+        <p>Hosted on GitHub Pages &mdash; theme lineage <a href="https://github.com/orderedlist" target="_blank" rel="noopener">orderedlist</a>.</p>
+        <p>Forked from <a href="https://github.com/elyesmanai/elyesmanai.github.io" target="_blank" rel="noopener">elyesmanai/elyesmanai.github.io</a>.</p>
       </div>
     </header>
 
@@ -74,11 +79,6 @@
       <main id="main">
 {{ page.content }}
       </main>
-
-      <footer class="site-footer">
-        <p>Last updated {{ site.last_updated }}. Built as a static site and hosted on GitHub&nbsp;Pages.</p>
-        <p>Design system and markup by {{ site.name }}; originally forked from <a href="https://github.com/elyesmanai/elyesmanai.github.io" target="_blank" rel="noopener">elyesmanai.github.io</a>, theme lineage <a href="https://github.com/orderedlist" target="_blank" rel="noopener">orderedlist</a>.</p>
-      </footer>
     </div>
 
   </div>
