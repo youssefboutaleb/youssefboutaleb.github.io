@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang }}">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+
+  <title>{{ page.title_tag }}</title>
+  <meta name="description" content="{{ page.description }}">
+  <meta name="author" content="{{ site.name }}">
+  <meta name="google-site-verification" content="{{ site.google_site_verification }}">
+
+  <link rel="canonical" href="{{ page.canonical }}">
+  <link rel="icon" type="image/svg+xml" href="{{ site.favicon }}">
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Noto-Sans-regular/Noto-Sans-regular.woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/main.css?v={{ build.asset_version }}">
+
+  <meta property="og:type" content="{{ page.og_type }}">
+  <meta property="og:title" content="{{ page.title_tag }}">
+  <meta property="og:description" content="{{ page.description }}">
+  <meta property="og:url" content="{{ page.canonical }}">
+  <meta property="og:locale" content="{{ site.locale }}">
+  <meta property="og:site_name" content="{{ site.name }}">
+  <meta property="og:image" content="{{ site.base_url }}/{{ site.portrait }}">
+  <meta name="twitter:card" content="summary">
+
+  <script type="application/ld+json">{{ build.json_ld }}</script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="layout">
+
+    <!-- Identity: who this engineer is, on every page. -->
+    <header class="sidebar">
+      <div class="sidebar__identity">
+        <img class="sidebar__portrait" src="{{ site.portrait }}" alt="{{ site.portrait_alt }}" width="132" height="132">
+        <a class="sidebar__name" href="index.html">{{ site.name }}</a>
+        <p class="sidebar__role">{{ site.role }}</p>
+        <ul class="credentials">
+{{ build.credentials }}
+        </ul>
+      </div>
+
+      <div class="sidebar__section">
+        <p class="eyebrow">Resume</p>
+        <a class="btn btn--block" href="{{ site.resume }}" target="_blank" rel="noopener">Download CV (PDF)</a>
+      </div>
+
+      <div class="sidebar__section">
+        <p class="eyebrow">Contact</p>
+        <ul class="contact">
+{{ build.contact }}
+        </ul>
+      </div>
+
+      <div class="sidebar__section">
+        <p class="eyebrow">Profiles</p>
+        <ul class="social">
+{{ build.socials }}
+        </ul>
+      </div>
+    </header>
+
+    <div class="content">
+      <nav class="nav" aria-label="Primary">
+        <ul class="nav__list">
+{{ build.nav }}
+        </ul>
+      </nav>
+
+      <main id="main">
+{{ page.content }}
+      </main>
+
+      <footer class="site-footer">
+        <p>Last updated {{ site.last_updated }}. Built as a static site and hosted on GitHub&nbsp;Pages.</p>
+        <p>Design system and markup by {{ site.name }}; originally forked from <a href="https://github.com/elyesmanai/elyesmanai.github.io" target="_blank" rel="noopener">elyesmanai.github.io</a>, theme lineage <a href="https://github.com/orderedlist" target="_blank" rel="noopener">orderedlist</a>.</p>
+      </footer>
+    </div>
+
+  </div>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.analytics_id }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', '{{ site.analytics_id }}');
+  </script>
+</body>
+
+</html>

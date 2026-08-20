@@ -1,0 +1,43 @@
+{
+  "name": "Youssef Boutaleb",
+  "role": "Data Engineer",
+  "base_url": "https://youssefboutaleb.github.io",
+  "locale": "en_US",
+  "lang": "en",
+  "description": "Data Engineer building enterprise-scale ETL/ELT pipelines, API-led integrations and observability on Microsoft Azure. MuleSoft, Talend and Datadog certified.",
+  "portrait": "images/me.jpg",
+  "portrait_alt": "Portrait of Youssef Boutaleb",
+  "favicon": "images/icons/icon.svg",
+  "resume": "data/Youssef_BOUTALEB_cv_en.pdf",
+  "last_updated": "August 2026",
+  "analytics_id": "G-71KWCMXZ0P",
+  "google_site_verification": "_EoRy_lTXm3RCqZdWpUgQ9bWDF7KCrEdSZBocueWMUk",
+
+  "credentials": [
+    "MuleSoft &amp; Talend Certified Developer",
+    "Datadog Certified — APM, Logs &amp; Distributed Tracing",
+    "Astronomer Certified — Apache Airflow 3"
+  ],
+
+  "contact": [
+    { "label": "Email",      "text": "youssefboutaleb.info@gmail.com", "href": "mailto:youssefboutaleb.info@gmail.com" },
+    { "label": "University", "text": "youssef.boutaleb@enis.tn",       "href": "mailto:youssef.boutaleb@enis.tn" },
+    { "label": "Phone",      "text": "+216 53 035 448",                "href": "tel:+21653035448" }
+  ],
+
+  "socials": [
+    { "name": "LinkedIn", "href": "https://www.linkedin.com/in/youssef-boutaleb/", "icon": "images/icons/linkedin.svg" },
+    { "name": "GitHub",   "href": "https://github.com/youssefboutaleb",            "icon": "images/icons/github.svg" },
+    { "name": "Medium",   "href": "https://medium.com/@youssefboutaleb.info",      "icon": "images/icons/medium.svg" }
+  ],
+
+  "nav": [
+    { "id": "home",      "label": "Home",      "href": "index.html" },
+    { "id": "career",    "label": "Career",    "href": "career.html" },
+    { "id": "projects",  "label": "Projects",  "href": "projects.html" },
+    { "id": "research",  "label": "Research",  "href": "research.html" },
+    { "id": "teaching",  "label": "Teaching",  "href": "teaching.html" },
+    { "id": "workshops", "label": "Workshops", "href": "workshops.html" },
+    { "id": "awards",    "label": "Awards",    "href": "awards.html" }
+  ]
+}
