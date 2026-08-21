@@ -1,6 +1,6 @@
 <!--
 title: Projects
-description: Open-source Kanboard plugins accepted upstream, plus applied machine learning projects in computer vision — YOLOv8 meter detection and deep-learning image colorisation.
+description: Open-source Kanboard plugins submitted to the official plugin directory, plus applied machine learning projects in computer vision — YOLOv8 meter detection and deep-learning image colorisation.
 nav: projects
 -->
 <header class="page-header">
@@ -9,90 +9,27 @@ nav: projects
 
 <section class="block" aria-labelledby="open-source">
   <h3 class="block__title" id="open-source">Open Source &amp; Plugins</h3>
+  <p class="block__intro">
+    Plugins written against another project&rsquo;s extension API and submitted back to it.
+    A pull request tag links to the submission itself, and says whether it has been
+    merged yet rather than leaving that to be inferred.
+  </p>
   <ul class="entries">
-
-    <li class="entry">
-      <p class="entry__title">
-        Kanboard Plugin: Draw.io Integration
-        <a class="icon-link" href="https://github.com/youssefboutaleb/kanboard-plugin-drawio" target="_blank" rel="noopener" title="GitHub repository">
-          <img class="icon icon--sm" src="images/icons/github.svg" alt="GitHub repository" width="15" height="15">
-        </a>
-      </p>
-      <p class="entry__period">2026</p>
-      <ul class="tag-list">
-        <li class="tag tag--accent">Kanboard Plugin</li>
-        <li><a class="tag tag--success link-external" href="https://github.com/kanboard/website/pull/585" target="_blank" rel="noopener">Official Plugin PR #585</a></li>
-      </ul>
-      <p class="entry__summary">
-        Integrated <b>diagrams.net (Draw.io)</b> directly into Kanboard tasks and projects,
-        allowing users to create, edit, and embed architectural diagrams and flowcharts
-        seamlessly within task boards.
-      </p>
-    </li>
-
-    <li class="entry">
-      <p class="entry__title">
-        Kanboard Plugin: File Attachment Interaction
-        <a class="icon-link" href="https://github.com/youssefboutaleb/kanboard-file-attachment-interaction" target="_blank" rel="noopener" title="GitHub repository">
-          <img class="icon icon--sm" src="images/icons/github.svg" alt="GitHub repository" width="15" height="15">
-        </a>
-      </p>
-      <p class="entry__period">2026</p>
-      <ul class="tag-list">
-        <li class="tag tag--accent">Kanboard Plugin</li>
-        <li><a class="tag tag--success link-external" href="https://github.com/kanboard/website/pull/586" target="_blank" rel="noopener">Official Plugin PR #586</a></li>
-      </ul>
-      <p class="entry__summary">
-        Enhanced Kanboard&rsquo;s file management capabilities with interactive attachment
-        handling, direct previewing, and streamlined file operations across task workflows.
-      </p>
-    </li>
-
+    <!-- Records live in src/data/projects.json, selected by their `block`
+         field; tag order and colour come from MODELS in tools/build.py.
+         Never hand-write entries here. -->
+{{ build.open_source }}
   </ul>
 </section>
 
 <section class="block" aria-labelledby="applied-ml">
   <h3 class="block__title" id="applied-ml">Machine Learning &amp; Applied AI</h3>
+  <p class="block__intro">
+    Computer vision work taken past the notebook where it was worth taking there.
+    Where a project has a write-up, the entry links to it; the article itself is
+    listed on <a href="research.html">Research &amp; Writing</a>.
+  </p>
   <ul class="entries">
-
-    <li class="entry">
-      <p class="entry__title">
-        Custom YOLOv8 Model for Number Detection on Meters
-        <a class="icon-link" href="https://github.com/youssefboutaleb/yolov8_fastapi_gradio" target="_blank" rel="noopener" title="GitHub repository">
-          <img class="icon icon--sm" src="images/icons/github.svg" alt="GitHub repository" width="15" height="15">
-        </a>
-      </p>
-      <p class="entry__period">2023</p>
-      <ul class="tag-list">
-        <li class="tag tag--neutral">Computer Vision</li>
-        <li class="tag tag--neutral">YOLOv8</li>
-        <li class="tag tag--neutral">FastAPI</li>
-        <li class="tag tag--neutral">Gradio</li>
-      </ul>
-      <p class="entry__summary">
-        Designed and implemented a deep learning model for automatic meter number detection
-        using <b>YOLOv8</b>, served through <b>FastAPI</b> and an interactive <b>Gradio</b>
-        interface.
-      </p>
-    </li>
-
-    <li class="entry">
-      <p class="entry__title">
-        Image Colorization with Deep Learning
-        <a class="icon-link" href="https://github.com/youssefboutaleb/colorizeblack-whitephotos" target="_blank" rel="noopener" title="GitHub repository">
-          <img class="icon icon--sm" src="images/icons/github.svg" alt="GitHub repository" width="15" height="15">
-        </a>
-      </p>
-      <p class="entry__period">2023</p>
-      <ul class="tag-list">
-        <li class="tag tag--neutral">Deep Learning</li>
-        <li class="tag tag--neutral">Neural Networks</li>
-      </ul>
-      <p class="entry__summary">
-        Designed and implemented a neural network to automatically colorize grayscale images,
-        focusing on feature extraction and realistic color mapping.
-      </p>
-    </li>
-
+{{ build.ml_projects }}
   </ul>
 </section>

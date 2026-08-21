@@ -12,25 +12,25 @@
   <meta name="color-scheme" content="light">
 
   <title>Research — Youssef Boutaleb</title>
-  <meta name="description" content="Peer-reviewed research on blockchain-based energy management with machine-learning anomaly detection, published in Computers & Industrial Engineering.">
+  <meta name="description" content="Peer-reviewed research on blockchain-based energy management with machine-learning anomaly detection, published in Computers & Industrial Engineering, plus self-published engineering write-ups on YOLOv8 deployment and Datadog log integration.">
   <meta name="author" content="Youssef Boutaleb">
   <meta name="google-site-verification" content="_EoRy_lTXm3RCqZdWpUgQ9bWDF7KCrEdSZBocueWMUk">
 
   <link rel="canonical" href="https://youssefboutaleb.github.io/research.html">
   <link rel="icon" type="image/svg+xml" href="images/icons/icon.svg">
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Noto-Sans-regular/Noto-Sans-regular.woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=7adcc6319a0e">
+  <link rel="stylesheet" href="assets/css/main.css?v=ee5dfd21a952">
 
   <meta property="og:type" content="article">
   <meta property="og:title" content="Research — Youssef Boutaleb">
-  <meta property="og:description" content="Peer-reviewed research on blockchain-based energy management with machine-learning anomaly detection, published in Computers & Industrial Engineering.">
+  <meta property="og:description" content="Peer-reviewed research on blockchain-based energy management with machine-learning anomaly detection, published in Computers & Industrial Engineering, plus self-published engineering write-ups on YOLOv8 deployment and Datadog log integration.">
   <meta property="og:url" content="https://youssefboutaleb.github.io/research.html">
   <meta property="og:locale" content="en_US">
   <meta property="og:site_name" content="Youssef Boutaleb">
   <meta property="og:image" content="https://youssefboutaleb.github.io/images/me.jpg">
   <meta name="twitter:card" content="summary">
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Research","url":"https://youssefboutaleb.github.io/research.html","description":"Peer-reviewed research on blockchain-based energy management with machine-learning anomaly detection, published in Computers & Industrial Engineering.","isPartOf":{"@type":"WebSite","name":"Youssef Boutaleb","url":"https://youssefboutaleb.github.io/"},"author":{"@type":"Person","name":"Youssef Boutaleb","url":"https://youssefboutaleb.github.io/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Research","url":"https://youssefboutaleb.github.io/research.html","description":"Peer-reviewed research on blockchain-based energy management with machine-learning anomaly detection, published in Computers & Industrial Engineering, plus self-published engineering write-ups on YOLOv8 deployment and Datadog log integration.","isPartOf":{"@type":"WebSite","name":"Youssef Boutaleb","url":"https://youssefboutaleb.github.io/"},"author":{"@type":"Person","name":"Youssef Boutaleb","url":"https://youssefboutaleb.github.io/"}}</script>
 </head>
 
 <body>
@@ -107,13 +107,13 @@
 
       <main id="main">
         <header class="page-header">
-          <h1 class="page-title">Publications</h1>
+          <h1 class="page-title">Research &amp; Writing</h1>
         </header>
 
         <section class="block" aria-labelledby="journal-articles">
           <h3 class="block__title" id="journal-articles">Journal Articles</h3>
           <p class="block__intro">
-            Applied machine learning research, co-authored and submitted to
+            Peer-reviewed applied machine learning research, co-authored and submitted to
             <i>Computers &amp; Industrial Engineering</i> (Elsevier). Author names link to Google Scholar;
             a title links to the published article where one exists.
           </p>
@@ -141,6 +141,40 @@
                 <li class="tag tag--publisher">Elsevier</li>
               </ul>
               <p class="entry__summary">Road-surface hazard detection running on an embedded target, where two sensing modalities have to agree before a detection is reported &mdash; the check that keeps a single noisy channel from raising it alone.</p>
+            </li>
+          </ul>
+        </section>
+
+        <section class="block" aria-labelledby="technical-articles">
+          <h3 class="block__title" id="technical-articles">Technical Articles</h3>
+          <p class="block__intro">
+            Hands-on engineering write-ups, self-published on <a class="link-external" href="https://medium.com/@youssefboutaleb.info" target="_blank" rel="noopener">Medium</a>.
+            These are not peer reviewed and make no claim to be; they are working notes on
+            problems solved in full, published so the next person does not have to solve them twice.
+            View and read counts are Medium&rsquo;s own, as of August 2026.
+          </p>
+          <ul class="entries">
+            <!-- Records live in src/data/writing.json, on their own model — see
+                 writing.md for why these do not share the paper model above. -->
+            <li class="entry">
+              <p class="entry__title"><a class="link-external" href="https://medium.com/@youssefboutaleb.info/simplify-your-log-management-configuring-datadog-integration-with-log4j2-in-mulesoft-44e83b56e0c4" target="_blank" rel="noopener">Simplify Your Log Management: Configuring DataDog Integration with Log4j2 In Mulesoft</a></p>
+              <p class="entry__period"><time datetime="2024">2024</time></p>
+              <ul class="tag-list" aria-label="Article details">
+                <li class="tag tag--format">Configuration Guide</li>
+                <li class="tag tag--reach">723 views &middot; 424 reads</li>
+                <li class="tag tag--platform">Medium</li>
+              </ul>
+              <p class="entry__summary">Ships logs without installing the DataDog agent: a Log4j2 HTTP appender POSTs JSONLayout-formatted events straight to the Send Logs API, behind an async root logger rather than a blocking one.</p>
+            </li>
+            <li class="entry">
+              <p class="entry__title"><a class="link-external" href="https://medium.com/@youssefboutaleb.info/developingyolov8-custom-object-detection-with-fastapi-and-gradio-e9314fad0782" target="_blank" rel="noopener">Developing a Custom YOLOv8 Model for Number Detection on Meters Using FastAPI and Gradio</a></p>
+              <p class="entry__period"><time datetime="2023">2023</time></p>
+              <ul class="tag-list" aria-label="Article details">
+                <li class="tag tag--format">Walkthrough</li>
+                <li class="tag tag--reach">3K views &middot; 1.5K reads</li>
+                <li class="tag tag--platform">Medium</li>
+              </ul>
+              <p class="entry__summary">Carries one annotated dataset the whole way through &mdash; Roboflow labelling, 100 epochs of distributed training on Kaggle, then the same weights behind two surfaces: a containerised FastAPI service and a Gradio space on Hugging Face.</p>
             </li>
           </ul>
         </section>

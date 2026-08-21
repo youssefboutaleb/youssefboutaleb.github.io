@@ -117,6 +117,8 @@ MODELS = {
     "workshops": ("format", "mode", "audience", "host"),
     "teaching": ("level", "workload", "scale"),
     "research": ("status", "authorship", "publisher"),
+    "writing": ("format", "reach", "platform"),
+    "projects": ("upstream", "kind", "stack"),
 }
 
 # Courses run on a two-semester year. Fall precedes Spring inside one academic
@@ -132,6 +134,8 @@ MODEL_LABELS = {
     "workshops": "Workshop details",
     "teaching": "Course details",
     "research": "Publication details",
+    "writing": "Article details",
+    "projects": "Project details",
 }
 
 # The top three placements carry a medal disc. It replaces wording like
@@ -146,6 +150,13 @@ MEDALS = {1: "gold", 2: "silver", 3: "bronze"}
 AUTHOR_POSITIONS = {1: "First", 2: "Second", 3: "Third", 4: "Fourth", 5: "Fifth"}
 
 
+# What a pull request against an upstream project actually means, stated rather
+# than implied. An open PR is a submission and a merged one is an acceptance;
+# the wording lives here so a record cannot quietly upgrade itself by being
+# styled green. Per awards.md rule 6, prefer the plain fact over the claim.
+UPSTREAM_STATES = {"open": "Submitted upstream", "merged": "Accepted upstream"}
+
+
 def ordinal(number: int) -> str:
     """1 -> 1st, 2 -> 2nd, 21 -> 21st, 13 -> 13th, 1432 -> 1,432nd."""
     if 10 <= number % 100 <= 20:
@@ -153,6 +164,24 @@ def ordinal(number: int) -> str:
     else:
         suffix = {1: "st", 2: "nd", 3: "rd"}.get(number % 10, "th")
     return f"{number:,}{suffix}"
+
+
+def abbreviate(count: int) -> str:
+    """Medium's own display convention: exact below 1,000, then K to one
+    decimal with a trailing .0 dropped — 723 stays 723, 1,500 becomes 1.5K,
+    3,000 becomes 3K.
+
+    The site never prints more precision than its source gave it. Medium
+    reports a large figure already rounded, so rendering "3,000 views" would
+    invent three digits of accuracy nobody measured; the raw integer is stored
+    so the value can be compared and summed, and this prints it back in the
+    form it actually arrived in.
+    """
+    for limit, suffix in ((1_000_000, "M"), (1_000, "K")):
+        if count >= limit:
+            scaled = f"{count / limit:.1f}".rstrip("0").rstrip(".")
+            return f"{scaled}{suffix}"
+    return f"{count:,}"
 
 
 def meta_label(field: str, value) -> tuple[str, str]:
@@ -176,7 +205,41 @@ def meta_label(field: str, value) -> tuple[str, str]:
         return "", f"{total} h &middot; {split}"
     if field == "scale":
         return "", f"{value['count']:,} {value['unit']}"
+    if field == "stack":
+        # One category, one value: the stack renders as a single tag rather
+        # than one chip per tool. teaching.md removed a `stack` category that
+        # rendered a tag each, because a run whose length changes per record
+        # destroys the positional reading the fixed order exists to give.
+        return "", " &middot; ".join(value)
+    if field == "upstream":
+        return "", f"{UPSTREAM_STATES[value['state']]} &middot; PR #{value['pr']}"
+    if field == "reach":
+        # The pair is the unit, not two facts that happen to sit together.
+        # Views alone counts everyone who opened the tab and reads alone hides
+        # the ratio; it is the gap between them that says whether the piece
+        # held up. A record carries both figures or neither — writing.md.
+        return "", (f"{abbreviate(value['views'])} views"
+                    f" &middot; {abbreviate(value['reads'])} reads")
     return "", str(value)
+
+
+def meta_url(field: str, value) -> str | None:
+    """The canonical source for a metadata value, where one exists.
+
+    Most categories are plain facts with nowhere to point. An upstream
+    submission is not: the pull request *is* the evidence for the claim the tag
+    makes, and a reader who wants to check it should not have to go looking.
+    The address is built from the stored repo and number rather than typed, for
+    the reason research.md builds a DOI link — the identifier is the durable
+    fact and the URL is derived from it.
+
+    A linked tag keeps its category's colour. The link is a route to the
+    evidence, not a different kind of tag, and awards.md rule 4 is that the
+    treatment belongs to the category and never to the individual value.
+    """
+    if field == "upstream":
+        return f"https://github.com/{value['repo']}/pull/{value['pr']}"
+    return None
 
 
 def render_meta(record: dict, model: str, extra: tuple[str, ...] = ()) -> str:
@@ -195,7 +258,14 @@ def render_meta(record: dict, model: str, extra: tuple[str, ...] = ()) -> str:
         if field not in record:
             continue
         badge, label = meta_label(field, record[field])
-        tags.append(f'<li class="tag tag--{field}">{badge}{label}</li>')
+        url = meta_url(field, record[field])
+        if url:
+            tags.append(
+                f'<li><a class="tag tag--{field} link-external" href="{url}"'
+                f' target="_blank" rel="noopener">{badge}{label}</a></li>'
+            )
+        else:
+            tags.append(f'<li class="tag tag--{field}">{badge}{label}</li>')
     tags.extend(extra)
     if not tags:
         return ""
@@ -272,6 +342,10 @@ def publication_sort_key(record: dict) -> int:
     An unpublished record has no publication year to sort on, and guessing one
     from the year the work started would put it above papers that are actually
     out. Nothing is invented — it simply sorts behind everything with a date.
+
+    Shared with the Technical Articles block, which orders on the same rule.
+    The two blocks are sorted separately and never merged: what they order is
+    identical, what they claim is not.
     """
     return record.get("year", 0)
 
@@ -355,6 +429,106 @@ def render_publication(record: dict) -> str:
     parts.append(render_meta({**record, "authorship": position} if position else record,
                              "research"))
 
+    if record.get("summary"):
+        parts.append(f'<p class="entry__summary">{record["summary"]}</p>')
+    if record.get("points"):
+        points = "\n".join(f"  <li>{point}</li>" for point in record["points"])
+        parts.append(f'<ul class="points">\n{points}\n</ul>')
+
+    body = "\n".join(indent(part, 2) for part in parts if part)
+    return f'<li class="entry">\n{body}\n</li>'
+
+
+def render_article(record: dict) -> str:
+    """One self-published technical article as the site-wide .entry record.
+
+    It shares the .entry component with a paper but deliberately not the paper
+    model. `status` and `publisher` would be the same two words making a
+    materially different claim, and `authorship` says nothing on a piece with
+    one author — so writing gets its own model rather than borrowing one that
+    degrades, exactly as the comment on MODELS requires.
+
+    What survives is the parallel that matters: `platform` takes the quiet grey
+    terminal position that `publisher` takes one block above it, so the reader
+    who has learned that the last tag says who stands behind the work reads
+    *Medium* there against *Elsevier* — the distinction the page exists to make
+    honestly, stated by the layout rather than argued in prose.
+
+    The title carries the link for the same reason it does on a publication:
+    the two blocks are read one after the other, and a trailing icon on one of
+    them would break the column the eye is already following.
+    """
+    title = record["title"]
+    if record.get("url"):
+        title = (
+            f'<a class="link-external" href="{record["url"]}" target="_blank"'
+            f' rel="noopener">{title}</a>'
+        )
+
+    year = record["year"]
+    parts = [
+        f'<p class="entry__title">{title}</p>',
+        f'<p class="entry__period"><time datetime="{year}">{year}</time></p>',
+        render_meta(record, "writing"),
+    ]
+    if record.get("summary"):
+        parts.append(f'<p class="entry__summary">{record["summary"]}</p>')
+    if record.get("points"):
+        points = "\n".join(f"  <li>{point}</li>" for point in record["points"])
+        parts.append(f'<ul class="points">\n{points}\n</ul>')
+
+    body = "\n".join(indent(part, 2) for part in parts if part)
+    return f'<li class="entry">\n{body}\n</li>'
+
+
+def project_sort_key(record: dict) -> int:
+    """Newest first. Ties keep their order in the file.
+
+    `sorted` is stable, so two projects from the same year stay in the order
+    they were written down rather than being reshuffled on every build. The
+    file is the tie-breaker precisely because nothing else is: a month would
+    have to be invented for records that only ever carried a year.
+    """
+    return record["year"]
+
+
+def render_project(record: dict, articles: dict) -> str:
+    """One project as the site-wide .entry record.
+
+    Two things sit outside the metadata model, on the same reasoning that
+    governs a workshop. The repository link belongs to the title, because it
+    points at the thing the title names. The write-up is an artefact of the
+    work rather than a dimension of it, so it renders as a utility tag after
+    the model's three.
+
+    That article is looked up by id in `writing.json` rather than repeated
+    here: it is one URL, so it is declared in one file, and a project can no
+    longer end up pointing at an address the Research page has since changed.
+    """
+    title = record["title"]
+    if record.get("repo"):
+        name = "GitHub repository"
+        title += (
+            f'\n  <a class="icon-link" href="{record["repo"]}" target="_blank"'
+            f' rel="noopener" title="{name}">'
+            f'<img class="icon icon--sm" src="images/icons/github.svg" alt="{name}"'
+            f' width="15" height="15"></a>\n'
+        )
+
+    extra = ()
+    if record.get("article"):
+        article = articles[record["article"]]
+        extra = (
+            f'<li><a class="tag tag--success link-external" href="{article["url"]}"'
+            f' target="_blank" rel="noopener">Article on {article["platform"]}</a></li>',
+        )
+
+    year = record["year"]
+    parts = [
+        f'<p class="entry__title">{title}</p>',
+        f'<p class="entry__period"><time datetime="{year}">{year}</time></p>',
+        render_meta(record, "projects", extra),
+    ]
     if record.get("summary"):
         parts.append(f'<p class="entry__summary">{record["summary"]}</p>')
     if record.get("points"):
@@ -483,6 +657,24 @@ def build(check_only: bool = False) -> int:
         key=publication_sort_key,
         reverse=True,
     )
+    articles = sorted(
+        json.loads((DATA / "writing.json").read_text(encoding="utf-8")),
+        key=publication_sort_key,
+        reverse=True,
+    )
+    # The Projects split is a filter on `block`, exactly as Awards filters on
+    # `type`. It differs in one respect, deliberately: `block` is not a
+    # metadata category and never renders, so no record carries a tag
+    # restating the heading it already sits under — the tension awards.md
+    # records, resolved research.md's way.
+    projects = sorted(
+        json.loads((DATA / "projects.json").read_text(encoding="utf-8")),
+        key=project_sort_key,
+        reverse=True,
+    )
+    articles_by_id = {a["id"]: a for a in articles}
+    open_source = [p for p in projects if p.get("block") == "open-source"]
+    ml_projects = [p for p in projects if p.get("block") == "machine-learning"]
     blocks = {
         "build.awards": indent("\n".join(render_award(a) for a in awards), 4),
         "build.competitions": indent("\n".join(render_award(a) for a in competitions), 4),
@@ -490,6 +682,11 @@ def build(check_only: bool = False) -> int:
         "build.workshops": indent("\n".join(render_workshop(w) for w in workshops), 4),
         "build.courses": indent("\n".join(render_course(c) for c in courses), 4),
         "build.publications": indent("\n".join(render_publication(p) for p in publications), 4),
+        "build.articles": indent("\n".join(render_article(a) for a in articles), 4),
+        "build.open_source": indent(
+            "\n".join(render_project(p, articles_by_id) for p in open_source), 4),
+        "build.ml_projects": indent(
+            "\n".join(render_project(p, articles_by_id) for p in ml_projects), 4),
     }
 
     stale: list[str] = []

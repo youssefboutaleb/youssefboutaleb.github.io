@@ -133,6 +133,37 @@ that teaches them. The capstone is a sibling of `syllabus` rather than a sixth
 module, so the five modules keep matching the twenty lecture hours the workload
 claims. Full rationale in [teaching.md](teaching.md).
 
+### Adding a project
+
+`src/data/projects.json`, rendering `upstream → kind → stack`:
+
+```json
+{
+  "title": "Kanboard Plugin: Draw.io Integration",
+  "block": "open-source",
+  "year": 2026,
+  "repo": "https://github.com/youssefboutaleb/kanboard-plugin-drawio",
+  "upstream": { "repo": "kanboard/website", "pr": 586, "state": "open" },
+  "kind": "Kanboard Plugin",
+  "stack": ["PHP", "JavaScript"],
+  "summary": "Embeds diagrams.net into Kanboard tasks and projects …"
+}
+```
+
+`block` selects which of the page's two sections the record lands in and is
+never rendered — unlike Awards, which filters on `type` and then tags it, no
+record here repeats the heading it sits under. `upstream` is the only category
+on the site whose value carries a link: `meta_url` builds the pull request
+address from the stored repo and number, and the tag *is* the link, keeping its
+category's amber. That amber is deliberate — `state` is stored raw and
+`UPSTREAM_STATES` turns `open` into `Submitted upstream` and `merged` into
+`Accepted upstream`, both in the same colour, because the treatment says *this
+is an upstream status* and never *this one is the good one*. `stack` is a list
+rendered as a **single** tag, capped at four names: `teaching.md` deleted an
+earlier `stack` category that rendered a chip per tool, because a run whose
+length varies per record destroys positional reading. Full rationale in
+[projects.md](projects.md).
+
 ### Adding a publication
 
 `src/data/research.json`, rendering `status → authorship → publisher`:
@@ -161,6 +192,48 @@ because it is already in the citation line; the model asks `publisher`
 `url` when it exists, and a record with no `year` is not yet out, so it renders
 no period line and `publication_sort_key` sorts it last. Full rationale in
 [research.md](research.md).
+
+### Adding a technical article
+
+Self-published writing is a *second block* on the same page, on its own model.
+`src/data/writing.json`, rendering `format → reach → platform`:
+
+```json
+{
+  "title": "Simplify Your Log Management: Configuring DataDog Integration with Log4j2 In Mulesoft",
+  "year": 2024,
+  "format": "Configuration Guide",
+  "reach": { "views": 723, "reads": 424 },
+  "platform": "Medium",
+  "url": "https://medium.com/@youssefboutaleb.info/simplify-your-log-management-…",
+  "summary": "Ships logs without installing the DataDog agent: a Log4j2 HTTP appender …"
+}
+```
+
+It does not borrow the paper model, because all three of that model's
+categories degrade on a Medium post: `status` would put the same word
+*Published* on peer-reviewed and self-published work while meaning two
+different things, `authorship` says nothing about a sole author, and
+`publisher` is defined as the house rather than the platform. What the two
+blocks *do* share is position — `platform` takes the quiet grey terminal slot
+that `publisher` takes above it, so the reader scanning the page finds
+**Elsevier** and **Medium** in the same place, in the same colour, and the
+distinction is made by the layout instead of by a disclaimer. `format` is the
+same category Workshops declares, reused rather than renamed.
+
+`reach` is stored as two raw integers and rendered as one violet tag —
+`723 views · 424 reads` — because the pair is the unit: views alone inflates,
+reads alone hides the ratio it should be judged against. `abbreviate` prints
+large figures the way Medium reports them (`3000` → `3K`), so the page never
+claims more precision than its source gave it. The counts are hand-copied and
+nothing refreshes them, so the block intro carries an explicit *as of* date;
+the figures and that date must move in the same change or neither. A record
+carries both numbers or omits `reach` entirely. Full rationale in
+[writing.md](writing.md).
+
+Where an article documents a project that has its own Projects entry, the link
+goes on the *project* record as a utility tag — the article stays declared once
+here and rendered once on Research.
 
 ### What `check.py` verifies
 
@@ -196,8 +269,10 @@ categories, fixes their order in one place, and keeps its terminology factual.
 Read it before adding a page of records. DESIGN.md defines how a tag looks;
 awards.md defines what it says.
 
-**[workshops.md](workshops.md)**, **[teaching.md](teaching.md)** and
-**[research.md](research.md)** are that convention applied to a page each: the declared categories for the record, why
+**[workshops.md](workshops.md)**, **[teaching.md](teaching.md)**,
+**[research.md](research.md)**, **[writing.md](writing.md)** and
+**[projects.md](projects.md)** are that
+convention applied to a block each: the declared categories for the record, why
 they are in that order, the permitted value for each, and what deliberately
 stays out of the model. `teaching.md` also covers the three rules the third
 model forced into the open — when to reuse another model's category instead of
@@ -205,7 +280,15 @@ inventing one, why a category holds exactly one value, and why a fact that is
 true of every record on a page belongs to the page rather than to the records.
 `research.md` adds the fourth: a category whose values are a progression —
 *In Progress*, then *Published* — still takes one treatment, because the colour
-names the category and never grades the value.
+names the category and never grades the value. `writing.md` adds the fifth, the
+converse of the reuse rule: two categories that occupy the same position and
+share a treatment still need separate names when they make different claims,
+which is why *Elsevier* and *Medium* are `publisher` and `platform` rather than
+one category with two values. `projects.md` adds the sixth, which is rule 4
+tested against a live temptation: a pull request that has not been merged takes
+the same amber as one that has, states which it is in words, and links to
+itself so the claim can be checked — the earlier hand-written page had styled
+it success-green instead, asserting in colour what the work had not yet earned.
 
 `awards.md` doubles as the model document for its own page, since the
 convention was generalised from it: the Awards declaration, the

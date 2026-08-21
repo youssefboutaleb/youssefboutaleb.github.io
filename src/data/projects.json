@@ -1,0 +1,41 @@
+[
+  {
+    "title": "Kanboard Plugin: Draw.io Integration",
+    "block": "open-source",
+    "year": 2026,
+    "repo": "https://github.com/youssefboutaleb/kanboard-plugin-drawio",
+    "upstream": { "repo": "kanboard/website", "pr": 586, "state": "open" },
+    "kind": "Kanboard Plugin",
+    "stack": ["PHP", "JavaScript"],
+    "summary": "Embeds <b>diagrams.net</b> into Kanboard tasks and projects, so an architecture diagram is created, edited and stored beside the task it documents rather than in a separate tool."
+  },
+  {
+    "title": "Kanboard Plugin: File Attachment Interaction",
+    "block": "open-source",
+    "year": 2026,
+    "repo": "https://github.com/youssefboutaleb/kanboard-file-attachment-interaction",
+    "upstream": { "repo": "kanboard/website", "pr": 585, "state": "open" },
+    "kind": "Kanboard Plugin",
+    "stack": ["PHP", "JavaScript"],
+    "summary": "Reworks how task attachments are handled: previewing a file in place, and shortening the path between a board and the document a task depends on."
+  },
+  {
+    "title": "Custom YOLOv8 Model for Number Detection on Meters",
+    "block": "machine-learning",
+    "year": 2023,
+    "repo": "https://github.com/youssefboutaleb/yolov8_fastapi_gradio",
+    "article": "yolov8-fastapi-gradio",
+    "kind": "Model &amp; Service",
+    "stack": ["Python", "YOLOv8", "FastAPI", "Gradio"],
+    "summary": "Reads the digits off a utility meter photograph. The trained weights are served two ways from one repository &mdash; a containerised API deployed to Vercel, and a Gradio interface running as a Hugging Face Space."
+  },
+  {
+    "title": "Image Colorization with Deep Learning",
+    "block": "machine-learning",
+    "year": 2023,
+    "repo": "https://github.com/youssefboutaleb/colorizeblack-whitephotos",
+    "kind": "Notebook",
+    "stack": ["Python", "TensorFlow", "Keras"],
+    "summary": "Recovers plausible colour for a grayscale photograph, built up across four successive versions in one notebook &mdash; from a baseline convolutional model to an adversarial one &mdash; so the effect of each change on the output is visible side by side."
+  }
+]

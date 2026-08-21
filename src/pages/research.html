@@ -1,16 +1,16 @@
 <!--
 title: Research
-description: Peer-reviewed research on blockchain-based energy management with machine-learning anomaly detection, published in Computers & Industrial Engineering.
+description: Peer-reviewed research on blockchain-based energy management with machine-learning anomaly detection, published in Computers & Industrial Engineering, plus self-published engineering write-ups on YOLOv8 deployment and Datadog log integration.
 nav: research
 -->
 <header class="page-header">
-  <h1 class="page-title">Publications</h1>
+  <h1 class="page-title">Research &amp; Writing</h1>
 </header>
 
 <section class="block" aria-labelledby="journal-articles">
   <h3 class="block__title" id="journal-articles">Journal Articles</h3>
   <p class="block__intro">
-    Applied machine learning research, co-authored and submitted to
+    Peer-reviewed applied machine learning research, co-authored and submitted to
     <i>Computers &amp; Industrial Engineering</i> (Elsevier). Author names link to Google Scholar;
     a title links to the published article where one exists.
   </p>
@@ -19,5 +19,20 @@ nav: research
          from MODELS in tools/build.py, and the newest-first ordering from
          publication_sort_key. Never hand-write entries here. -->
 {{ build.publications }}
+  </ul>
+</section>
+
+<section class="block" aria-labelledby="technical-articles">
+  <h3 class="block__title" id="technical-articles">Technical Articles</h3>
+  <p class="block__intro">
+    Hands-on engineering write-ups, self-published on <a class="link-external" href="https://medium.com/@youssefboutaleb.info" target="_blank" rel="noopener">Medium</a>.
+    These are not peer reviewed and make no claim to be; they are working notes on
+    problems solved in full, published so the next person does not have to solve them twice.
+    View and read counts are Medium&rsquo;s own, as of August 2026.
+  </p>
+  <ul class="entries">
+    <!-- Records live in src/data/writing.json, on their own model — see
+         writing.md for why these do not share the paper model above. -->
+{{ build.articles }}
   </ul>
 </section>

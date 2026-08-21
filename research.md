@@ -1,12 +1,17 @@
 # Research — metadata model
 
-The declaration for the Publications page: which categories a paper states
-about itself, in what order, and what a value in each looks like.
+The declaration for the Journal Articles block on the Research & Writing page:
+which categories a paper states about itself, in what order, and what a value
+in each looks like.
 
 It applies the general rules in [`awards.md`](awards.md) and binds to the
 treatments in [`DESIGN.md`](DESIGN.md) §7.1. Neither of those is restated here.
 [`workshops.md`](workshops.md) and [`teaching.md`](teaching.md) are the sibling
 models.
+
+This model governs the **Journal Articles** block only. The page carries a
+second block, *Technical Articles*, on its own model — declared in
+[`writing.md`](writing.md), which also gives the reason the two are not merged.
 
 ---
 
@@ -131,7 +136,9 @@ the title clickable.
 - **The type.** *Journal Article* is what the block heading says. When a
   conference paper is added it takes a second `.block` titled *Conference
   Papers*, exactly as Awards splits into *Competitions* and *Hackathons* — a
-  fact true of every record in a block belongs to the block.
+  fact true of every record in a block belongs to the block. *Technical
+  Articles* is that rule already exercised: self-published writing sits in its
+  own block rather than carrying a per-record tag saying so.
 - **The subject.** *Embedded Systems*, *Blockchain* are already in the titles
   and the summaries. An earlier hand-written version of this page carried
   `Embedded Systems` as a `.tag--neutral` on one entry of two; a tag repeating

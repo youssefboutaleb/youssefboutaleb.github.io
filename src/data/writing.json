@@ -1,0 +1,28 @@
+[
+  {
+    "id": "yolov8-fastapi-gradio",
+    "title": "Developing a Custom YOLOv8 Model for Number Detection on Meters Using FastAPI and Gradio",
+    "year": 2023,
+    "format": "Walkthrough",
+    "reach": {
+      "views": 3000,
+      "reads": 1500
+    },
+    "platform": "Medium",
+    "url": "https://medium.com/@youssefboutaleb.info/developingyolov8-custom-object-detection-with-fastapi-and-gradio-e9314fad0782",
+    "summary": "Carries one annotated dataset the whole way through &mdash; Roboflow labelling, 100 epochs of distributed training on Kaggle, then the same weights behind two surfaces: a containerised FastAPI service and a Gradio space on Hugging Face."
+  },
+  {
+    "id": "datadog-log4j2-mulesoft",
+    "title": "Simplify Your Log Management: Configuring DataDog Integration with Log4j2 In Mulesoft",
+    "year": 2024,
+    "format": "Configuration Guide",
+    "reach": {
+      "views": 723,
+      "reads": 424
+    },
+    "platform": "Medium",
+    "url": "https://medium.com/@youssefboutaleb.info/simplify-your-log-management-configuring-datadog-integration-with-log4j2-in-mulesoft-44e83b56e0c4",
+    "summary": "Ships logs without installing the DataDog agent: a Log4j2 HTTP appender POSTs JSONLayout-formatted events straight to the Send Logs API, behind an async root logger rather than a blocking one."
+  }
+]

@@ -176,7 +176,8 @@ A record describes itself through a fixed, declared set of metadata categories
 rendered in a fixed order. **That model — which categories exist, what they
 mean, what order they take — is defined in the model documents
 ([`awards.md`](awards.md), [`workshops.md`](workshops.md),
-[`teaching.md`](teaching.md), [`research.md`](research.md)), not here.** What belongs here is the single
+[`teaching.md`](teaching.md), [`research.md`](research.md),
+[`writing.md`](writing.md), [`projects.md`](projects.md)), not here.** What belongs here is the single
 visual rule that makes it work:
 
 > **The treatment belongs to the category, never to the value.** Amber does not
@@ -185,7 +186,7 @@ visual rule that makes it work:
 > is why a value may never be given styling of its own.
 
 Every declared category therefore binds to exactly one `.tag--<category>` rule.
-There is one model per record type. The four in use today:
+There is one model per record type. The six in use today:
 
 **Awards** — declared in [`awards.md`](awards.md)
 
@@ -221,6 +222,22 @@ There is one model per record type. The four in use today:
 | `.tag--authorship` | Blue |
 | `.tag--publisher` | Grey, regular weight |
 
+**Writing** — declared in [`writing.md`](writing.md)
+
+| Variant | Colour |
+|---|---|
+| `.tag--format` | Blue — *the same rule as Workshops* |
+| `.tag--reach` | Violet — *the same hue as Awards' `scope`* |
+| `.tag--platform` | Grey, regular weight |
+
+**Projects** — declared in [`projects.md`](projects.md)
+
+| Variant | Colour |
+|---|---|
+| `.tag--upstream` | Amber, and carries a link to the pull request |
+| `.tag--kind` | Blue |
+| `.tag--stack` | Grey, regular weight |
+
 `status` is the sharpest illustration of the rule above. *Published* and *In
 Progress* take the **same** amber, because the treatment says *this tag is a
 status* and never *this status is the good one*. The hand-written version of
@@ -232,7 +249,26 @@ the tag unreadable positionally the moment a third status appeared.
 involved wherever it appears — `86 teams`, `12 students` — so it keeps one
 name, one meaning and one rule across the models that use it. A shared name
 that meant two different things would be the defect; a shared name that means
-one thing is the system working.
+one thing is the system working. `format` is borrowed on the same terms: on
+Workshops and on Writing alike it names the shape the deliverable takes — a
+`Hands-on Lab`, a `Configuration Guide` — so it too keeps one rule.
+
+`reach` is the reverse case done right: a **new name** on a **reused hue**.
+Violet is what this system already spends on how far something travelled —
+`scope` for an award, `mode` for a room, `reach` for an article — so a reader
+who has learned the mapping anywhere reads it here without being taught again.
+The hue was not picked for the category; it was already the answer to the
+question the category asks. Reuse the *treatment* whenever the question is the
+same; reuse the *name* only when the answer means the same thing.
+
+`publisher` and `platform` are the reverse test, and the reason the Research
+page's two blocks do not share a model. Both sit last, both are grey, and both
+answer *who stands behind this* — but *Elsevier* peer-reviewed the work and
+*Medium* hosted it, which are not the same claim, so they take separate names.
+The shared treatment is what lets a reader scan the page and find the answer in
+the same position both times; the separate names are what stops the second
+block borrowing the first block's authority. Reuse a category when the meaning
+is identical, never when only the position is.
 
 **No two categories in one model may share a treatment.** Two *different*
 models may reuse a hue, because they are never read side by side — a reader
@@ -241,10 +277,19 @@ ambiguity within a single tag list, not across the site. Adding a category
 means adding one row here and one rule in `main.css` — never a colour decision
 inside a page.
 
-`.tag--scale` and `.tag--host` are the metadata tags at regular weight: a field
-size, a cohort size, the organisation that ran the room. All are context for
-the record rather than claims of their own, so the eye lands on the categories
-before them first.
+`.tag--scale`, `.tag--host`, `.tag--publisher`, `.tag--platform` and
+`.tag--stack` are the metadata tags at regular weight: a field size, a cohort
+size, the organisation that ran the room, the house that published the paper,
+the site that hosts the article, the tools a project is built from. All are
+context for the record rather than claims of their own, so the eye lands on the
+categories before them first.
+
+**A metadata tag may carry a link without changing colour.** `upstream` is the
+only category that does today: the pull request is the evidence for the claim
+the tag makes, so the tag is the route to it. The link is a destination, not a
+kind — rule 4 still holds, and the treatment still belongs to the category.
+Utility tags such as `.tag--critical` on a slide deck link for the different
+reason that the artefact *is* the tag.
 
 **A category holds one value.** An earlier draft of the Teaching model gave
 `stack` a list of tool names, rendering one tag per tool. It was removed: a run

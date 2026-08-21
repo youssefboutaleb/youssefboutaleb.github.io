@@ -717,9 +717,29 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
      .tag--authorship — Second Author                          (blue)
      .tag--publisher  — Elsevier                               (grey)
 
+     writing
+     .tag--format    — Walkthrough, Configuration Guide         (blue, reused)
+     .tag--reach     — 3K views · 1.5K reads                    (violet)
+     .tag--platform  — Medium                                   (grey)
+
+     projects
+     .tag--upstream  — Submitted upstream · PR #586             (amber, linked)
+     .tag--kind      — Kanboard Plugin, Notebook                (blue)
+     .tag--stack     — Python · YOLOv8 · FastAPI · Gradio       (grey)
+
    `scale` is shared rather than duplicated: it means the size of the group a
    record involved on both pages that use it — 86 teams, 12 students — so it
-   keeps one name, one meaning and one rule.
+   keeps one name, one meaning and one rule. `format` is shared on the same
+   terms: on Workshops and on Writing alike it names the shape the deliverable
+   takes — a Hands-on Lab, a Configuration Guide — and so keeps one rule too.
+
+   `publisher` and `platform` are the case that proves the opposite half of
+   that test. Both sit last, both are grey, and both answer *who stands behind
+   this* — but Elsevier peer-reviewed the work and Medium hosted it, which are
+   not the same claim, so they keep separate names and separate models. The
+   shared grey is what makes the pair legible down the Research page; the
+   separate names are what stops the second block borrowing the first block's
+   authority.
 
    `status` is the case that proves the family rule. Published and In Progress
    are the same amber, because the colour says *this tag is a status* and never
@@ -777,13 +797,30 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 .tag--status     { background: var(--status-honor-bg);  color: var(--status-honor-fg);   border-color: var(--status-honor-br); }
 .tag--authorship { background: var(--status-accent-bg); color: var(--status-accent-fg);  border-color: var(--status-accent-br); }
 
+/* `reach` takes the violet the family already spends on reach: scope says how
+   far an award travelled, mode says how far a room did, and this says how far
+   an article did. The hue was not chosen for this category — it was already
+   the answer to the question this category asks. */
+.tag--reach      { background: var(--status-scope-bg);  color: var(--status-scope-fg);   border-color: var(--status-scope-br); }
+
+/* `upstream` is amber because it is a status, and amber is what a status looks
+   like here — the same rule that puts Published and In Progress in one colour
+   on Research. It is emphatically NOT green: an open pull request is a
+   submission, and the earlier hand-written version of this page styled it with
+   the success green, which said "accepted" about work that had not been. The
+   tag now states its own state in words and the colour grades nothing. */
+.tag--upstream   { background: var(--status-honor-bg);  color: var(--status-honor-fg);   border-color: var(--status-honor-br); }
+.tag--kind       { background: var(--status-accent-bg); color: var(--status-accent-fg);  border-color: var(--status-accent-br); }
+
 /* The last category of each model is context rather than a claim — how large
    the field was, who hosted the room, who published it — so it is the one
    metadata tag that reads at regular weight, and the eye lands on the ones
    before it first. */
 .tag--scale,
 .tag--host,
-.tag--publisher {
+.tag--publisher,
+.tag--platform,
+.tag--stack {
   background: var(--status-neutral-bg);
   color: var(--status-neutral-fg);
   border-color: var(--status-neutral-br);

@@ -12,25 +12,25 @@
   <meta name="color-scheme" content="light">
 
   <title>Projects — Youssef Boutaleb</title>
-  <meta name="description" content="Open-source Kanboard plugins accepted upstream, plus applied machine learning projects in computer vision — YOLOv8 meter detection and deep-learning image colorisation.">
+  <meta name="description" content="Open-source Kanboard plugins submitted to the official plugin directory, plus applied machine learning projects in computer vision — YOLOv8 meter detection and deep-learning image colorisation.">
   <meta name="author" content="Youssef Boutaleb">
   <meta name="google-site-verification" content="_EoRy_lTXm3RCqZdWpUgQ9bWDF7KCrEdSZBocueWMUk">
 
   <link rel="canonical" href="https://youssefboutaleb.github.io/projects.html">
   <link rel="icon" type="image/svg+xml" href="images/icons/icon.svg">
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Noto-Sans-regular/Noto-Sans-regular.woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=7adcc6319a0e">
+  <link rel="stylesheet" href="assets/css/main.css?v=ee5dfd21a952">
 
   <meta property="og:type" content="article">
   <meta property="og:title" content="Projects — Youssef Boutaleb">
-  <meta property="og:description" content="Open-source Kanboard plugins accepted upstream, plus applied machine learning projects in computer vision — YOLOv8 meter detection and deep-learning image colorisation.">
+  <meta property="og:description" content="Open-source Kanboard plugins submitted to the official plugin directory, plus applied machine learning projects in computer vision — YOLOv8 meter detection and deep-learning image colorisation.">
   <meta property="og:url" content="https://youssefboutaleb.github.io/projects.html">
   <meta property="og:locale" content="en_US">
   <meta property="og:site_name" content="Youssef Boutaleb">
   <meta property="og:image" content="https://youssefboutaleb.github.io/images/me.jpg">
   <meta name="twitter:card" content="summary">
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Projects","url":"https://youssefboutaleb.github.io/projects.html","description":"Open-source Kanboard plugins accepted upstream, plus applied machine learning projects in computer vision — YOLOv8 meter detection and deep-learning image colorisation.","isPartOf":{"@type":"WebSite","name":"Youssef Boutaleb","url":"https://youssefboutaleb.github.io/"},"author":{"@type":"Person","name":"Youssef Boutaleb","url":"https://youssefboutaleb.github.io/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Projects","url":"https://youssefboutaleb.github.io/projects.html","description":"Open-source Kanboard plugins submitted to the official plugin directory, plus applied machine learning projects in computer vision — YOLOv8 meter detection and deep-learning image colorisation.","isPartOf":{"@type":"WebSite","name":"Youssef Boutaleb","url":"https://youssefboutaleb.github.io/"},"author":{"@type":"Person","name":"Youssef Boutaleb","url":"https://youssefboutaleb.github.io/"}}</script>
 </head>
 
 <body>
@@ -112,91 +112,73 @@
 
         <section class="block" aria-labelledby="open-source">
           <h3 class="block__title" id="open-source">Open Source &amp; Plugins</h3>
+          <p class="block__intro">
+            Plugins written against another project&rsquo;s extension API and submitted back to it.
+            A pull request tag links to the submission itself, and says whether it has been
+            merged yet rather than leaving that to be inferred.
+          </p>
           <ul class="entries">
-
+            <!-- Records live in src/data/projects.json, selected by their `block`
+                 field; tag order and colour come from MODELS in tools/build.py.
+                 Never hand-write entries here. -->
             <li class="entry">
-              <p class="entry__title">
-                Kanboard Plugin: Draw.io Integration
-                <a class="icon-link" href="https://github.com/youssefboutaleb/kanboard-plugin-drawio" target="_blank" rel="noopener" title="GitHub repository">
-                  <img class="icon icon--sm" src="images/icons/github.svg" alt="GitHub repository" width="15" height="15">
-                </a>
+              <p class="entry__title">Kanboard Plugin: Draw.io Integration
+                <a class="icon-link" href="https://github.com/youssefboutaleb/kanboard-plugin-drawio" target="_blank" rel="noopener" title="GitHub repository"><img class="icon icon--sm" src="images/icons/github.svg" alt="GitHub repository" width="15" height="15"></a>
               </p>
-              <p class="entry__period">2026</p>
-              <ul class="tag-list">
-                <li class="tag tag--accent">Kanboard Plugin</li>
-                <li><a class="tag tag--success link-external" href="https://github.com/kanboard/website/pull/585" target="_blank" rel="noopener">Official Plugin PR #585</a></li>
+              <p class="entry__period"><time datetime="2026">2026</time></p>
+              <ul class="tag-list" aria-label="Project details">
+                <li><a class="tag tag--upstream link-external" href="https://github.com/kanboard/website/pull/586" target="_blank" rel="noopener">Submitted upstream &middot; PR #586</a></li>
+                <li class="tag tag--kind">Kanboard Plugin</li>
+                <li class="tag tag--stack">PHP &middot; JavaScript</li>
               </ul>
-              <p class="entry__summary">
-                Integrated <b>diagrams.net (Draw.io)</b> directly into Kanboard tasks and projects,
-                allowing users to create, edit, and embed architectural diagrams and flowcharts
-                seamlessly within task boards.
-              </p>
+              <p class="entry__summary">Embeds <b>diagrams.net</b> into Kanboard tasks and projects, so an architecture diagram is created, edited and stored beside the task it documents rather than in a separate tool.</p>
             </li>
-
             <li class="entry">
-              <p class="entry__title">
-                Kanboard Plugin: File Attachment Interaction
-                <a class="icon-link" href="https://github.com/youssefboutaleb/kanboard-file-attachment-interaction" target="_blank" rel="noopener" title="GitHub repository">
-                  <img class="icon icon--sm" src="images/icons/github.svg" alt="GitHub repository" width="15" height="15">
-                </a>
+              <p class="entry__title">Kanboard Plugin: File Attachment Interaction
+                <a class="icon-link" href="https://github.com/youssefboutaleb/kanboard-file-attachment-interaction" target="_blank" rel="noopener" title="GitHub repository"><img class="icon icon--sm" src="images/icons/github.svg" alt="GitHub repository" width="15" height="15"></a>
               </p>
-              <p class="entry__period">2026</p>
-              <ul class="tag-list">
-                <li class="tag tag--accent">Kanboard Plugin</li>
-                <li><a class="tag tag--success link-external" href="https://github.com/kanboard/website/pull/586" target="_blank" rel="noopener">Official Plugin PR #586</a></li>
+              <p class="entry__period"><time datetime="2026">2026</time></p>
+              <ul class="tag-list" aria-label="Project details">
+                <li><a class="tag tag--upstream link-external" href="https://github.com/kanboard/website/pull/585" target="_blank" rel="noopener">Submitted upstream &middot; PR #585</a></li>
+                <li class="tag tag--kind">Kanboard Plugin</li>
+                <li class="tag tag--stack">PHP &middot; JavaScript</li>
               </ul>
-              <p class="entry__summary">
-                Enhanced Kanboard&rsquo;s file management capabilities with interactive attachment
-                handling, direct previewing, and streamlined file operations across task workflows.
-              </p>
+              <p class="entry__summary">Reworks how task attachments are handled: previewing a file in place, and shortening the path between a board and the document a task depends on.</p>
             </li>
-
           </ul>
         </section>
 
         <section class="block" aria-labelledby="applied-ml">
           <h3 class="block__title" id="applied-ml">Machine Learning &amp; Applied AI</h3>
+          <p class="block__intro">
+            Computer vision work taken past the notebook where it was worth taking there.
+            Where a project has a write-up, the entry links to it; the article itself is
+            listed on <a href="research.html">Research &amp; Writing</a>.
+          </p>
           <ul class="entries">
-
             <li class="entry">
-              <p class="entry__title">
-                Custom YOLOv8 Model for Number Detection on Meters
-                <a class="icon-link" href="https://github.com/youssefboutaleb/yolov8_fastapi_gradio" target="_blank" rel="noopener" title="GitHub repository">
-                  <img class="icon icon--sm" src="images/icons/github.svg" alt="GitHub repository" width="15" height="15">
-                </a>
+              <p class="entry__title">Custom YOLOv8 Model for Number Detection on Meters
+                <a class="icon-link" href="https://github.com/youssefboutaleb/yolov8_fastapi_gradio" target="_blank" rel="noopener" title="GitHub repository"><img class="icon icon--sm" src="images/icons/github.svg" alt="GitHub repository" width="15" height="15"></a>
               </p>
-              <p class="entry__period">2023</p>
-              <ul class="tag-list">
-                <li class="tag tag--neutral">Computer Vision</li>
-                <li class="tag tag--neutral">YOLOv8</li>
-                <li class="tag tag--neutral">FastAPI</li>
-                <li class="tag tag--neutral">Gradio</li>
+              <p class="entry__period"><time datetime="2023">2023</time></p>
+              <ul class="tag-list" aria-label="Project details">
+                <li class="tag tag--kind">Model &amp; Service</li>
+                <li class="tag tag--stack">Python &middot; YOLOv8 &middot; FastAPI &middot; Gradio</li>
+                <li><a class="tag tag--success link-external" href="https://medium.com/@youssefboutaleb.info/developingyolov8-custom-object-detection-with-fastapi-and-gradio-e9314fad0782" target="_blank" rel="noopener">Article on Medium</a></li>
               </ul>
-              <p class="entry__summary">
-                Designed and implemented a deep learning model for automatic meter number detection
-                using <b>YOLOv8</b>, served through <b>FastAPI</b> and an interactive <b>Gradio</b>
-                interface.
-              </p>
+              <p class="entry__summary">Reads the digits off a utility meter photograph. The trained weights are served two ways from one repository &mdash; a containerised API deployed to Vercel, and a Gradio interface running as a Hugging Face Space.</p>
             </li>
-
             <li class="entry">
-              <p class="entry__title">
-                Image Colorization with Deep Learning
-                <a class="icon-link" href="https://github.com/youssefboutaleb/colorizeblack-whitephotos" target="_blank" rel="noopener" title="GitHub repository">
-                  <img class="icon icon--sm" src="images/icons/github.svg" alt="GitHub repository" width="15" height="15">
-                </a>
+              <p class="entry__title">Image Colorization with Deep Learning
+                <a class="icon-link" href="https://github.com/youssefboutaleb/colorizeblack-whitephotos" target="_blank" rel="noopener" title="GitHub repository"><img class="icon icon--sm" src="images/icons/github.svg" alt="GitHub repository" width="15" height="15"></a>
               </p>
-              <p class="entry__period">2023</p>
-              <ul class="tag-list">
-                <li class="tag tag--neutral">Deep Learning</li>
-                <li class="tag tag--neutral">Neural Networks</li>
+              <p class="entry__period"><time datetime="2023">2023</time></p>
+              <ul class="tag-list" aria-label="Project details">
+                <li class="tag tag--kind">Notebook</li>
+                <li class="tag tag--stack">Python &middot; TensorFlow &middot; Keras</li>
               </ul>
-              <p class="entry__summary">
-                Designed and implemented a neural network to automatically colorize grayscale images,
-                focusing on feature extraction and realistic color mapping.
-              </p>
+              <p class="entry__summary">Recovers plausible colour for a grayscale photograph, built up across four successive versions in one notebook &mdash; from a baseline convolutional model to an adversarial one &mdash; so the effect of each change on the output is visible side by side.</p>
             </li>
-
           </ul>
         </section>
       </main>
