@@ -1,6 +1,6 @@
 <!--
 title: Youssef Boutaleb — Data Engineer
-description: Data Engineer with 2 years building enterprise-scale ETL/ELT pipelines, API-led integrations and observability on Microsoft Azure. MuleSoft, Talend, Datadog and Astronomer certified.
+description: Data Engineer building enterprise-scale ETL/ELT pipelines, API-led integrations and observability on Microsoft Azure. Microsoft, MuleSoft, Talend, Datadog and Astronomer certified.
 nav: home
 schema_type: ProfilePage
 -->
@@ -17,10 +17,10 @@ schema_type: ProfilePage
   <h3 class="block__title" id="profile">Profile</h3>
   <div class="prose">
     <p>
-      I am a <b>Data Engineer</b> with <b>2 years of experience</b> designing, deploying and
-      optimising enterprise data ecosystems on <b>Microsoft Azure</b>. Proven expertise in
-      building end-to-end <b>ETL/ELT</b> pipelines with <b>Talend</b> and <b>MuleSoft</b>,
-      coupled with advanced infrastructure monitoring using <b>Datadog</b>.
+      I am a <b>Data Engineer</b>. I have been designing, deploying and optimising enterprise
+      data ecosystems on <b>Microsoft Azure</b> since <b>2024</b>, and working in engineering
+      roles since <b>2022</b> &mdash; building end-to-end <b>ETL/ELT</b> pipelines with
+      <b>Talend</b> and <b>MuleSoft</b>, and instrumenting them with <b>Datadog</b>.
     </p>
     <p>
       My work sits where integration meets operations: the pipelines I ship, I also run. That
@@ -40,12 +40,12 @@ schema_type: ProfilePage
   <dl class="deflist">
     <div class="deflist__item">
       <dt>Data Integration &amp; APIs</dt>
-      <dd>Talend, MuleSoft (API-led), Apache Airflow, Apache Karaf, REST APIs</dd>
+      <dd>Talend, MuleSoft (API-led), Apache Airflow 3, Apache Karaf, REST APIs</dd>
     </div>
 
     <div class="deflist__item">
       <dt>Cloud &amp; Infrastructure</dt>
-      <dd>Azure (VMs, Application Gateway, Automation Accounts, Blob Storage, Azure SQL), IAM, SSL/TLS, IP restrictions</dd>
+      <dd>Azure (VMs, Application Gateway, Automation Accounts, Blob Storage, Azure SQL), Microsoft Fabric, IAM, SSL/TLS, IP restrictions</dd>
     </div>
 
     <div class="deflist__item">
@@ -80,29 +80,14 @@ schema_type: ProfilePage
   </dl>
 </section>
 
-<!-- Every figure here is evidenced on the page it links to. -->
+<!-- The one block on the site that restates facts held on other pages, so the
+     one block where a claim can drift away from its record. Every figure here
+     is evidenced on the page it links to; the figure and that record move in
+     the same change, or neither does. Records: src/data/impact.json. -->
 <section class="block" aria-labelledby="impact">
   <h3 class="block__title" id="impact">Selected Impact</h3>
   <dl class="deflist">
-    <div class="deflist__item">
-      <dt>&euro;1,400 per month saved</dt>
-      <dd>Azure spend removed through automated resource-scheduling scripts, with no loss of availability. <span class="impact__source">(<a href="career.html">Career</a>)</span></dd>
-    </div>
-
-    <div class="deflist__item">
-      <dt>100&times; faster preprocessing</dt>
-      <dd>A real-time C++ Savitzky&ndash;Golay filter replaced the existing infrared signal pipeline. <span class="impact__source">(<a href="career.html">Career</a>)</span></dd>
-    </div>
-
-    <div class="deflist__item">
-      <dt>2 plugins accepted upstream</dt>
-      <dd>Both listed in the official Kanboard plugin directory. <span class="impact__source">(<a href="projects.html">Projects</a>)</span></dd>
-    </div>
-
-    <div class="deflist__item">
-      <dt>1st of 86 teams</dt>
-      <dd>Hello World v4.0, Sfax &mdash; national programming contest. <span class="impact__source">(<a href="awards.html">Awards</a>)</span></dd>
-    </div>
+{{ build.impact }}
   </dl>
 </section>
 
@@ -129,14 +114,6 @@ schema_type: ProfilePage
 <section class="block" aria-labelledby="volunteering">
   <h3 class="block__title" id="volunteering">Volunteering</h3>
   <ul class="entries">
-    <li class="entry">
-      <p class="entry__title">Tunisian Red Crescent <span class="entry__role">&mdash; Houmt Souk branch, Djerba</span></p>
-      <p class="entry__period">COVID-19 response</p>
-      <p class="entry__summary">
-        Volunteered during the COVID-19 crisis, helping organise aid distribution, assisting
-        with crowd coordination, supporting elderly individuals, and participating in
-        collecting and distributing essential supplies.
-      </p>
-    </li>
+{{ build.volunteering }}
   </ul>
 </section>

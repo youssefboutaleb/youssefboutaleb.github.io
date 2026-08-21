@@ -1,0 +1,22 @@
+[
+  {
+    "figure": "&euro;1,400 per month saved",
+    "evidence": "Azure spend removed through automated resource-scheduling scripts, with no loss of availability.",
+    "source": "career.html"
+  },
+  {
+    "figure": "100&times; faster preprocessing",
+    "evidence": "A real-time C++ Savitzky&ndash;Golay filter replaced the existing infrared signal pipeline.",
+    "source": "career.html"
+  },
+  {
+    "figure": "2 plugins authored and submitted upstream",
+    "evidence": "Draw.io embedding and a file-attachment rework, both open against the official Kanboard plugin directory &mdash; PR #586 and PR #585.",
+    "source": "projects.html"
+  },
+  {
+    "figure": "1st of 86 teams",
+    "evidence": "Hello World v4.0, Sfax &mdash; regional competitive programming contest.",
+    "source": "awards.html"
+  }
+]

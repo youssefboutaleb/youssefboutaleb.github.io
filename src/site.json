@@ -4,7 +4,7 @@
   "base_url": "https://youssefboutaleb.github.io",
   "locale": "en_US",
   "lang": "en",
-  "description": "Data Engineer building enterprise-scale ETL/ELT pipelines, API-led integrations and observability on Microsoft Azure. MuleSoft, Talend and Datadog certified.",
+  "description": "Data Engineer building enterprise-scale ETL/ELT pipelines, API-led integrations and observability on Microsoft Azure. Microsoft, MuleSoft, Talend, Datadog and Astronomer certified.",
   "portrait": "images/me.jpg",
   "portrait_alt": "Portrait of Youssef Boutaleb",
   "favicon": "images/icons/icon.svg",
@@ -14,8 +14,9 @@
   "google_site_verification": "_EoRy_lTXm3RCqZdWpUgQ9bWDF7KCrEdSZBocueWMUk",
   "credentials": [
     "MuleSoft &amp; Talend Certified",
-    "Datadog Expert in APM, Logging &amp; Distributed Tracing",
-    "Astronomer Certified in Apache Airflow 3"
+    "Datadog Certified in Fundamentals, APM &amp; Log Management",
+    "Astronomer Certified in Apache Airflow 3",
+    "Microsoft Certified in Azure Databases &amp; Fabric"
   ],
   "contact": [
     {

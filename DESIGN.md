@@ -406,12 +406,16 @@ rules structurally true rather than a convention someone has to remember.
 [`projects.md`](projects.md) and [`career.md`](career.md) are the worked
 models.
 
-Certifications and Online Courses are the case that shows the two halves are
-separable: they are data (`src/data/certifications.json`,
-`src/data/courses.json`) and they carry **no** metadata model. Who issued a
+Certifications, Online Courses and Volunteering are the case that shows the two
+halves are separable: they are data (`src/data/certifications.json`,
+`src/data/courses.json`, `src/data/volunteering.json`) and they carry **no**
+metadata model. Who issued a
 credential is its only dimension a reader needs, and that is already the
 `.issuer` heading the group sits under — so a tag would restate the heading on
-every row. [`career.md`](career.md) §3 has the reasoning.
+every row. [`career.md`](career.md) §3 has the reasoning. Volunteering is a
+single record and still comes from data, because one hand-written `.entry` is
+how the second one gets hand-written too. §10 draws the matching line for
+`.deflist` content, which does *not* all become data.
 
 Optional `.entry__group` subdivides a long record (Data Integration / Cloud &
 Security / Observability) and is emitted by one helper, `render_group`, shared
@@ -429,6 +433,36 @@ but the pairing lived only in the punctuation.
 `.deflist` renders **identically** — bullet, bold label, colon, values, all on
 one line — while being a real `<dl>`. The `.deflist__item` wrapper `<div>` is
 valid inside a `<dl>` and is what lets a `dt`/`dd` pair share one list marker.
+
+### When a list is data and when it is markup
+
+§9 settles it for `.entry`: those are records and always come from `src/data/`.
+A `.deflist` is the case that needed a rule of its own, because Skills,
+Languages and Selected Impact are the same component doing two different jobs.
+
+> **A list stays in its page fragment when that page is the only place its
+> facts live. It becomes data when it restates facts held elsewhere on the
+> site.**
+
+Skills and Languages are the sole source of truth for what they say. Nothing
+else on the site claims a proficiency level, and moving eight `dt`/`dd` pairs
+into JSON would buy a build step and no guarantee.
+
+Selected Impact is the opposite and the reason the rule exists. Every line in
+it is a second telling of a record on another page — a saving from a job, a
+placement from a contest, a pull request from a project — so it is the one
+block that can quietly contradict the site it sits on. It did: the front page
+read *2 plugins accepted upstream, both listed in the official directory* while
+`projects.json` had both pull requests still `open`, and the promotional
+version was the one a visitor read first. The records now live in
+`src/data/impact.json` beside what they summarise, each with a mandatory
+`source` page whose link text is read from the navigation in `site.json`, so a
+citation cannot name one page and point at another.
+
+The figure itself is still written by hand, and deliberately: deriving
+"€1,400 per month" would mean parsing a prose bullet, and a parser that guesses
+is a worse liar than a person who checks. That half is an editorial rule, and
+it is stated in the fragment directly above the block.
 
 ## 11. Page structure
 

@@ -760,6 +760,67 @@ def render_credentials(record: dict, field: str) -> str:
     return '<li class="entry">\n' + "\n".join(indent(p, 2) for p in parts) + "\n</li>"
 
 
+# --- home -------------------------------------------------------------------
+
+def render_impact(record: dict, page_labels: dict) -> str:
+    """One Selected Impact line: a figure, its evidence, and where to check it.
+
+    This block is the one place on the site that deliberately *restates* facts
+    held elsewhere — a saving from a job record, a placement from a contest —
+    so it is the one place where a claim can drift away from the record it
+    summarises without anything noticing. It did: the Kanboard line read
+    "2 plugins accepted upstream / both listed in the official directory" while
+    `projects.json` had both pull requests still `open`. Two pages of the same
+    site disagreed about the same fact, and the honest one was not the front
+    page.
+
+    Two things make that harder now. The record is data, beside the records it
+    summarises rather than three hundred lines away in a page fragment. And
+    `source` is mandatory and is a real page: the link text is looked up from
+    `site.json`'s navigation rather than typed, so it cannot say *Projects* and
+    point at Awards, and `check.py` already fails the build if the page it names
+    does not exist.
+
+    What is *not* automated is the figure itself. Deriving "€1,400 per month"
+    from a job bullet would mean parsing prose, and a parser that guesses is a
+    worse liar than a person who checks. The rule is editorial and stated in
+    the fragment above the block: every figure here is evidenced on the page it
+    links to, and the two move in the same change or neither does.
+    """
+    source = record["source"]
+    citation = (
+        f'<span class="impact__source">'
+        f'(<a href="{source}">{page_labels[source]}</a>)</span>'
+    )
+    return (
+        '<div class="deflist__item">\n'
+        f'  <dt>{record["figure"]}</dt>\n'
+        f'  <dd>{record["evidence"]} {citation}</dd>\n'
+        "</div>"
+    )
+
+
+def render_volunteering(record: dict) -> str:
+    """One volunteering record as the site-wide .entry component.
+
+    It carries no metadata model — there is nothing a reader needs about it
+    that the four lines do not already say — but it is an `.entry`, and every
+    other `.entry` on the site is rendered from data. A single hand-written one
+    is how the next one gets hand-written too.
+    """
+    title = record["organisation"]
+    if record.get("branch"):
+        title += f' <span class="entry__role">&mdash; {record["branch"]}</span>'
+
+    parts = [
+        f'<p class="entry__title">{title}</p>',
+        f'<p class="entry__period">{record["period"]}</p>',
+        f'<p class="entry__summary">{record["summary"]}</p>',
+    ]
+    body = "\n".join(indent(part, 2) for part in parts)
+    return f'<li class="entry">\n{body}\n</li>'
+
+
 # --- page assembly ----------------------------------------------------------
 
 def indent(text: str, spaces: int) -> str:
@@ -855,6 +916,12 @@ def build(check_only: bool = False) -> int:
     )
     certifications = json.loads((DATA / "certifications.json").read_text(encoding="utf-8"))
     online_courses = json.loads((DATA / "courses.json").read_text(encoding="utf-8"))
+    # Home. An impact line cites the page that evidences it, and the link text
+    # comes from the navigation rather than from the record, so a citation
+    # cannot name one page and point at another.
+    page_labels = {entry["href"]: entry["label"] for entry in site["nav"]}
+    impact = json.loads((DATA / "impact.json").read_text(encoding="utf-8"))
+    volunteering = json.loads((DATA / "volunteering.json").read_text(encoding="utf-8"))
     open_source = [p for p in projects if p.get("block") == "open-source"]
     ml_projects = [p for p in projects if p.get("block") == "machine-learning"]
     blocks = {
@@ -877,6 +944,10 @@ def build(check_only: bool = False) -> int:
             "\n".join(render_credentials(c, "issuer") for c in certifications), 4),
         "build.online_courses": indent(
             "\n".join(render_credentials(c, "platform") for c in online_courses), 4),
+        "build.impact": indent(
+            "\n\n".join(render_impact(i, page_labels) for i in impact), 4),
+        "build.volunteering": indent(
+            "\n".join(render_volunteering(v) for v in volunteering), 4),
     }
 
     stale: list[str] = []

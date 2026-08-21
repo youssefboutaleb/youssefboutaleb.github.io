@@ -345,6 +345,50 @@ row is that the link must be the issuer's record of the credential — a
 course's catalogue page is not evidence anyone completed it. Full rationale in
 [career.md](career.md).
 
+### Adding a Selected Impact line
+
+`src/data/impact.json`. This is the only block on the site that restates facts
+held on other pages, so it is the only one that can contradict them:
+
+```json
+{
+  "figure": "&euro;1,400 per month saved",
+  "evidence": "Azure spend removed through automated resource-scheduling scripts, with no loss of availability.",
+  "source": "career.html"
+}
+```
+
+`source` is required and names a real page; the link text (*Career*) is read
+from `site.json`'s navigation rather than typed, so a citation cannot say
+*Projects* and point at Awards, and `check.py` fails the build if the page does
+not exist. The figure itself stays hand-written — deriving it would mean parsing
+a prose bullet — which makes it an **editorial** rule: every figure here is
+evidenced on the page it links to, and the figure and that record move in the
+same change or neither does.
+
+This block is why the rule exists. The front page read *2 plugins accepted
+upstream / both listed in the official Kanboard plugin directory* while
+`projects.json` had both pull requests still `open` — two pages of one site
+disagreeing, with the overstated version on the page a visitor reads first. It
+now reads *2 plugins authored and submitted upstream*, in the same vocabulary
+`UPSTREAM_STATES` uses on Projects. A second line had drifted the same way: a
+regional contest was described as *national*, where `awards.json` says
+`"scope": "Regional"`.
+
+### Adding a volunteering record
+
+`src/data/volunteering.json`, with `organisation`, `branch`, `period` and
+`summary`. No metadata model — there is nothing a reader needs that the four
+lines do not say — but it is an `.entry`, and every `.entry` on the site comes
+from data. One hand-written record is how the second one gets hand-written too.
+
+**Skills and Languages stay as markup in `src/pages/index.html`**, and that is
+the rule rather than an omission: a list stays in its page fragment when that
+page is the only place its facts live, and becomes data when it restates facts
+held elsewhere. Nothing else on the site states a proficiency level, so moving
+those `dt`/`dd` pairs into JSON would buy a build step and no guarantee.
+[DESIGN.md §10](DESIGN.md) has the full boundary.
+
 ### What `check.py` verifies
 
 - Every local `href`/`src` resolves to a file that exists, and every in-page
