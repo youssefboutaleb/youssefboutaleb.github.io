@@ -213,6 +213,16 @@ MuleSoft certification. The two blocks are also separated by heading, so a
 reader who reads no further than *Certifications* and *Online Courses* has
 already been told the difference.
 
+That is also why neither block intro spells the distinction out any more. An
+earlier pair of intros explained the link policy and defined *course work
+rather than examined credentials* in the first line of each block — mechanics
+this document already owns (see below), stated where the reader had not yet
+been given a reason to care. Both are now one line and both are a pitch, per
+[`DESIGN.md`](DESIGN.md) §11.1: *Vendor-certified across every layer of the
+stack I ship on*, and *The habit behind the certifications: continuous,
+self-directed learning*. The second is deliberately written so the block reads
+as the engine behind the one above it rather than as a lesser version of it.
+
 ### The external marker is derived, not declared
 
 Whether a credential link leaves the site is computed from the URL, in

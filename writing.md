@@ -122,9 +122,10 @@ the record, leave `reach` off it and let the writing stand on its own.
 
 - **The type.** *Technical Article* is what the block heading says.
 - **Peer-review status.** *Not peer reviewed* is true of every record in this
-  block, so it is stated once in the `block__intro` and never as a tag. A
-  per-record disclaimer would be both repetition and a strange kind of
-  apology; the block says it plainly once and then lets the work stand.
+  block, so it is stated once in the `block__note` beneath the records and
+  never as a tag. A per-record disclaimer would be both repetition and a
+  strange kind of apology; the block says it plainly once, below the work
+  rather than in front of it, and then lets the work stand.
 - **The stack.** *YOLOv8*, *FastAPI*, *Log4j2* are already in the titles. A tag
   repeating the title is noise — [`awards.md`](awards.md) rule 1.
 - **Claps.** Not tracked. They measure approval rather than reading, and
@@ -159,9 +160,13 @@ The counts are read by hand from Medium's stats page, and nothing keeps them
 current. Two rules make that safe:
 
 1. **The figures and the date move together.** Update `reach` on every record
-   and the *as of* date in the block's `block__intro` in one change, or update
+   and the *as of* date in the block's `block__note` in one change, or update
    neither. A fresh date over stale numbers is worse than the stale numbers
-   alone, because it converts an ageing fact into a false claim.
+   alone, because it converts an ageing fact into a false claim. The date sits
+   in the note and not in the intro because provenance is a footnote: the intro
+   is one line and it is a pitch ([`DESIGN.md`](DESIGN.md) §11.1), while a
+   hand-copied figure has to say when it was copied, and the two jobs do not
+   fit in one sentence.
 2. **Precision follows the source.** Medium reports large figures already
    rounded — *3K*, *1.5K* — so store the rounded expansion (`3000`) rather than
    an exact count nobody measured, and let `abbreviate` in `tools/build.py`
@@ -171,7 +176,7 @@ current. Two rules make that safe:
 
 The date lives in the block intro rather than on each record because it is
 true of every record in the block — [`awards.md`](awards.md) rule 1, the same
-reason *not peer reviewed* is stated once up there instead of tagged four
+reason *not peer reviewed* is stated once in the block note instead of tagged four
 times down here.
 
 ---

@@ -227,8 +227,9 @@ same category Workshops declares, reused rather than renamed.
 reads alone hides the ratio it should be judged against. `abbreviate` prints
 large figures the way Medium reports them (`3000` → `3K`), so the page never
 claims more precision than its source gave it. The counts are hand-copied and
-nothing refreshes them, so the block intro carries an explicit *as of* date;
-the figures and that date must move in the same change or neither. A record
+nothing refreshes them, so a `block__note` beneath the records carries an
+explicit *as of* date; the figures and that date must move in the same change
+or neither. A record
 carries both numbers or omits `reach` entirely. Full rationale in
 [writing.md](writing.md).
 
@@ -416,6 +417,14 @@ rules — plus an explicit list of what is *out of scope* — are documented in
 **[DESIGN.md](DESIGN.md)**. Read it before adding a component; almost
 everything on the site is already expressible with `.block`, `.entry`,
 `.deflist` and `.tag`.
+
+It also owns the site's one editorial rule about prose: **a `block__intro` is a
+single punchy line, and it is a pitch** ([DESIGN.md](DESIGN.md) §11.1). How a
+block works — where its links point, what its tags mean, which records it
+filters in — belongs in the model document for that page, not in the first line
+a reader sees. Figures that need an *as of* date go in a `block__note` beneath
+the records instead (§11.2). Teaching's labelled four-item list is the single
+declared exception.
 
 **[awards.md](awards.md)** is its companion, covering the other half: the
 information model behind an entry — how a page declares its metadata

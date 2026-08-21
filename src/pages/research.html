@@ -10,9 +10,7 @@ nav: research
 <section class="block" aria-labelledby="journal-articles">
   <h3 class="block__title" id="journal-articles">Journal Articles</h3>
   <p class="block__intro">
-    Peer-reviewed applied machine learning research, co-authored and submitted to
-    <i>Computers &amp; Industrial Engineering</i> (Elsevier). Author names link to Google Scholar;
-    a title links to the published article where one exists.
+    Applied machine learning taken all the way to peer-reviewed publication.
   </p>
   <ul class="entries">
     <!-- Records live in src/data/research.json; tag order and colour come
@@ -25,14 +23,15 @@ nav: research
 <section class="block" aria-labelledby="technical-articles">
   <h3 class="block__title" id="technical-articles">Technical Articles</h3>
   <p class="block__intro">
-    Hands-on engineering write-ups, self-published on <a class="link-external" href="https://medium.com/@youssefboutaleb.info" target="_blank" rel="noopener">Medium</a>.
-    These are not peer reviewed and make no claim to be; they are working notes on
-    problems solved in full, published so the next person does not have to solve them twice.
-    View and read counts are Medium&rsquo;s own, as of August 2026.
+    Not everything needs formal diagrams &mdash; sometimes a sketch and a plain note explain it best.
   </p>
   <ul class="entries">
     <!-- Records live in src/data/writing.json, on their own model — see
          writing.md for why these do not share the paper model above. -->
 {{ build.articles }}
   </ul>
+  <p class="block__note">
+    Self-published on <a class="link-external" href="https://medium.com/@youssefboutaleb.info" target="_blank" rel="noopener">Medium</a>
+    and not peer reviewed; view and read counts are Medium&rsquo;s own, as of August 2026.
+  </p>
 </section>

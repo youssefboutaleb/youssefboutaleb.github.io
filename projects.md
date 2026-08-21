@@ -81,6 +81,10 @@ turns `1` into `1st Place`:
 | `open` | `Submitted upstream · PR #586` |
 | `merged` | `Accepted upstream · PR #586` |
 
+The tag says this on sight, which is why the block intro no longer explains it.
+Mechanics live in this document; the intro is one line and it is a pitch
+([`DESIGN.md`](DESIGN.md) §11.1).
+
 Both take the **same amber**, because the treatment says *this tag is an
 upstream status* and never *this status is the good one*. This is the rule
 `status` proves on Research, applied to the page where it is easiest to break.

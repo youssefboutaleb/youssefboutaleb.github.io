@@ -160,10 +160,12 @@ hackathons   = [a for a in awards if a.get("type") == "Hackathon"]
 
 Both blocks render through `render_award` and the one `MODELS["awards"]` order,
 so a reader who has learned the tag positions in the first block reads the
-second without relearning them. Each block carries a `block__intro` naming what
-that kind of result actually demonstrates — algorithmic problem solving under
-time constraints, versus rapid prototyping and end-to-end delivery — which is
-the fact the two blocks exist to separate.
+second without relearning them. Each block carries a one-line `block__intro`
+naming what that kind of result actually shows about the person who earned it —
+*Engineering background plus competitive programming edge* versus *Rapid
+prototyping, product design, and fast technical delivery* — which is the fact
+the two blocks exist to separate. These two lines are the reference examples
+for the site-wide intro rule; see below and [`DESIGN.md`](DESIGN.md) §11.1.
 
 > **Known tension.** Because the split is on `type`, every record inside a
 > block now carries a `type` tag that repeats its heading. By the test in
@@ -243,6 +245,22 @@ convention.
 **3. Bind each category to a treatment.** Add one `.tag--<category>` rule in
 `main.css` and record it in `DESIGN.md` §7. Nothing else in the markup or the
 data refers to colour.
+
+### And write the block intro as one line
+
+The prose the fragment holds is **one sentence per block**, and it is a pitch,
+not a manual. The reader is a hiring manager, a recruiter or an engineer
+deciding in about a second whether to read the records below; an intro that
+opens on mechanics — where a link points, what a tag means, which records were
+filtered in — spends that second on plumbing. Say why the work exists and what
+it shows about the person who did it, and let the records carry the evidence.
+
+Mechanics still get written down; they get written down **here**, in the model
+document, which is where someone adding a record goes looking for them. That
+split is why this file can be long and every intro on the site is short.
+
+[`DESIGN.md`](DESIGN.md) §11.1 states the full rule, the exception Teaching
+earns, and what belongs in a `block__note` instead.
 
 ### Worked example
 

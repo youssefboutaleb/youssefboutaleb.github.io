@@ -69,11 +69,14 @@ next record does not invent a synonym under time pressure.
 ### What is *not* in the model
 
 - **Role.** Every record on this page was designed and delivered by the site's
-  author, so an `Instructor` tag on all four discriminates nothing. The page
-  intro states it once, in prose, instead. (The previous version of this page
-  carried it as a `.tag--accent` on three of four entries — a fact repeated
-  three times and, by its absence on the fourth, quietly implying something
-  untrue.)
+  author, so an `Instructor` tag on all four discriminates nothing. The block
+  intro carries it in the first person — *Happy to share what I know* — which
+  is as much as a fact true of every record on a personal portfolio needs.
+  (The previous version of this page carried it as a `.tag--accent` on three of
+  four entries — a fact repeated three times and, by its absence on the fourth,
+  quietly implying something untrue. A later version spelled it out across
+  three lines of intro prose, which is the case [`DESIGN.md`](DESIGN.md) §11.1
+  now rules out.)
 - **Subject.** *Assembly*, *Python*, *Competitive Programming* are already in
   the entry titles. A tag repeating the title is noise; per
   [`awards.md`](awards.md) rule 1, technical depth is substance and belongs in

@@ -114,6 +114,11 @@ work; the authors are the line beneath it.
    `.entry__meta` with the authors because it is part of the citation, not a
    dimension of the record.
 
+These are also the two mechanics the block intro used to describe. It no longer
+does: an author link and a title link announce themselves, and the intro is one
+line — *Applied machine learning taken all the way to peer-reviewed
+publication* — per [`DESIGN.md`](DESIGN.md) §11.1.
+
 ### The link on the title
 
 `doi` is preferred and `url` is the fallback; the renderer builds

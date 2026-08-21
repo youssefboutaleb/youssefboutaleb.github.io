@@ -219,6 +219,11 @@ belongs to the page, not to the records.
 
 ### What the block intro therefore carries
 
+**This is the site's one exception to the single-line intro rule**
+([`DESIGN.md`](DESIGN.md) §11.1), and it is an exception on the same argument
+§9 of that document makes for tags: these are constants true of every course on
+the page, and a reader scans them positionally rather than reading them.
+
 Those constants are not prose scattered through a paragraph. The intro is a
 `ul.points.block__intro` of four labelled items, so that a reader looking for
 one of them finds it positionally, exactly as they read the tags on the records

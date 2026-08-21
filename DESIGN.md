@@ -470,12 +470,75 @@ Every page is the same stack:
 
 ```
 page-header   h1 + optional lede
-block         h3 (underlined) + optional intro + entries or deflist   ← repeated
+block         h3 (underlined) + optional intro + entries or deflist
+              + optional note                                        ← repeated
 ```
 
 Each page has exactly one `<h1>` — its own title. The site name in the rail is
 a link styled to the old `h1`'s size, not a heading, so every page gets a
 unique document outline. Enforced by `tools/check.py`.
+
+### 11.1 Section intros — one line, and it is the pitch
+
+**A `block__intro` is a single punchy line.** One sentence, no second sentence,
+no conversational run-up, no explanation of how the block works.
+
+The intro is the one place on the site that is allowed to *sell*. The people
+who read this page are a hiring manager, a recruiter and an engineer, in that
+order, and each of them decides in a second whether the block below is worth
+their attention. An intro that opens with mechanics — where a link points, what
+a tag means, which records were filtered in — spends that second on plumbing
+nobody asked about, and the block loses the reader before its first record.
+
+So the intro says **why this work exists and what it shows about the person who
+did it**; the records below it carry the evidence. The reference pair is
+Awards:
+
+> Competitions — *Engineering background plus competitive programming edge.*
+>
+> Hackathons — *Rapid prototyping, product design, and fast technical delivery.*
+
+This does not soften Principle 3, *credibility before persuasion*. The intro
+persuades **once**, in one line, and every claim underneath it still carries a
+number and a link to where the number can be checked. A pitch that the records
+cannot back is a defect, not a stronger pitch.
+
+Rules:
+
+1. **One sentence.** If it needs a semicolon it is probably still one line; if
+   it needs a full stop and a second clause, cut the second clause.
+2. **No mechanics.** *"Each entry links to the issuer's own record"*, *"a pull
+   request tag says whether it was merged"*, *"author names link to Scholar"* —
+   all true, all obvious on sight, none of it earns the first line of a block.
+   Mechanics that genuinely need stating go in the model document for the page.
+3. **No per-record facts.** A fact true of one record is a tag or a bullet on
+   that record (§7, §9). The intro speaks for the whole block or it does not
+   belong there.
+4. **Dated or hedged facts go in a `block__note`**, below the records — see
+   §11.2. They are provenance, and provenance is a footnote.
+5. **Write it as a person, not as a résumé.** Curiosity, effort and intent are
+   the point; "leveraged", "demonstrated" and "consistent track record of" are
+   the register this whole site exists to avoid.
+
+**The one exception** is Teaching, whose intro is a `ul.points.block__intro` of
+four labelled facts (appointment, workload, language, assessment) rather than
+prose. Those are constants true of every course on the page, and a reader
+scans them positionally exactly as they scan the tags on the records below —
+the same argument §9 makes for tags. [`teaching.md`](teaching.md) owns the
+reasoning. A second such exception needs the same argument made in writing
+first; prose intros get no exceptions at all.
+
+### 11.2 `block__note` — the dated footnote
+
+Some figures come from a source that does not refresh them. A note in
+`--text-sm` muted ink, placed **after** the records, carries their provenance
+and an explicit *as of* date, so the intro is not forced to hold a disclaimer.
+Research → Technical Articles is the only user today: Medium's view and read
+counts are hand-copied, and the counts and that date move in one change or
+neither does ([`writing.md`](writing.md)).
+
+A note is for provenance and dating. It is not an overflow bin for the
+sentences the intro rule removed.
 
 ## 12. Navigation
 
