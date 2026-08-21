@@ -23,7 +23,7 @@
      09. Component: block (section)
      10. Component: entry (the universal content record)
      11. Component: definition list
-     12. Component: tag
+     12. Component: tag & medal
      13. Component: icon
      14. Component: site footer
      15. Responsive
@@ -174,6 +174,25 @@
   --status-critical-bg: #fcf0f2;
   --status-critical-fg: #86182a;
   --status-critical-br: #f5d0d6;
+
+  /* Geographic scope. The one hue added for the metadata system: it has to be
+     unmistakable next to the accent blue a record's type carries, and it must
+     not borrow the green that means "verified" or the red that means
+     "download" elsewhere on the site. 6.9:1 on its own tint. */
+  --status-scope-bg:    #f5f2fb;
+  --status-scope-fg:    #5b3fa8;
+  --status-scope-br:    #e5dcf5;
+
+  /* --- Medals ------------------------------------------------------------ */
+  /* Struck-metal tones, not the saturated yellow/grey of a game badge. The
+     ring is a darker shade of the same metal, which is what keeps a 7px disc
+     legible on a pale tag and in print. */
+  --medal-gold:        #c8971c;
+  --medal-gold-ring:   #97700d;
+  --medal-silver:      #b4b8be;
+  --medal-silver-ring: #868b91;
+  --medal-bronze:      #ab7444;
+  --medal-bronze-ring: #7f5326;
 
   /* --- Spacing scale ----------------------------------------------------- */
   /* Built around the theme's 20px block rhythm rather than a generic 8pt grid,
@@ -559,6 +578,7 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 }
 
 .block__intro {
+  margin-bottom: var(--space-5);
   max-width: var(--measure);
   color: var(--color-heading-3);
 }
@@ -664,12 +684,57 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 
 /* 12. COMPONENT: TAG ======================================================= */
 
-/* Tags classify; they never decorate. Five semantic variants, no more:
-     neutral  — factual context (technology, cohort, institution)
-     accent   — role or category
-     success  — verified / published / shipped
-     honor    — award or distinction
-     critical — downloadable artefact */
+/* Tags classify; they never decorate. There are two families and no third.
+
+   METADATA tags describe a record along a fixed set of dimensions. The colour
+   belongs to the *dimension*, not to the value, which is the whole point: a
+   reader learns once that amber is placement and violet is reach, and from
+   then on reads a tag list positionally instead of word by word. Order is not
+   set here or in the markup — it comes from META_ORDER in tools/build.py, so
+   no page can put scope before type.
+
+   There is one model per page, each with its own categories:
+
+     awards
+     .tag--placement — 1st Place, Finalist, 21st Place        (amber + medal)
+     .tag--type      — Competitive Programming, Hackathon     (blue)
+     .tag--scope     — Regional, National, African            (violet)
+     .tag--scale     — 86 teams, 300 participants             (grey)
+
+     workshops
+     .tag--format    — Workshop, Workshop Series, Hands-on Lab (blue)
+     .tag--mode      — On-site, Online                         (violet)
+     .tag--audience  — Engineering Students, Professionals     (amber)
+     .tag--host      — OLIVESOFT, Securinets ENIS              (grey)
+
+     teaching
+     .tag--level     — Master's Year 1, Master's Year 2        (amber)
+     .tag--workload  — 32 h · 20 lecture + 8 lab + 4 project   (blue)
+     .tag--scale     — 12 students                             (grey, reused)
+
+     research
+     .tag--status     — Published, In Progress                 (amber)
+     .tag--authorship — Second Author                          (blue)
+     .tag--publisher  — Elsevier                               (grey)
+
+   `scale` is shared rather than duplicated: it means the size of the group a
+   record involved on both pages that use it — 86 teams, 12 students — so it
+   keeps one name, one meaning and one rule.
+
+   `status` is the case that proves the family rule. Published and In Progress
+   are the same amber, because the colour says *this tag is a status* and never
+   *this status is the good one*. The earlier hand-written version of the
+   Research page gave Published a green and In Progress an amber, which read as
+   a verdict on the record rather than as a category.
+
+   UTILITY tags mark a single fact about a record that is not one of those
+   dimensions, and are written by hand where they apply:
+
+     .tag--neutral  — factual context (technology, cohort, institution)
+     .tag--accent   — role or category
+     .tag--success  — verified / published / shipped
+     .tag--honor    — distinction or pending status
+     .tag--critical — downloadable artefact */
 .tag-list {
   display: flex;
   flex-wrap: wrap;
@@ -694,6 +759,38 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
   white-space: nowrap;
 }
 
+/* Metadata family — one dimension, one colour, for the whole of its model.
+   The two models are read on separate pages and so may reuse a hue; what may
+   never happen is two categories of the *same* model sharing one, because
+   that is what lets a tag list be read positionally. */
+.tag--placement { background: var(--status-honor-bg);   color: var(--status-honor-fg);   border-color: var(--status-honor-br); }
+.tag--type      { background: var(--status-accent-bg);  color: var(--status-accent-fg);  border-color: var(--status-accent-br); }
+.tag--scope     { background: var(--status-scope-bg);   color: var(--status-scope-fg);   border-color: var(--status-scope-br); }
+
+.tag--format    { background: var(--status-accent-bg);  color: var(--status-accent-fg);  border-color: var(--status-accent-br); }
+.tag--mode      { background: var(--status-scope-bg);   color: var(--status-scope-fg);   border-color: var(--status-scope-br); }
+.tag--audience  { background: var(--status-honor-bg);   color: var(--status-honor-fg);   border-color: var(--status-honor-br); }
+
+.tag--level     { background: var(--status-honor-bg);   color: var(--status-honor-fg);   border-color: var(--status-honor-br); }
+.tag--workload  { background: var(--status-accent-bg);  color: var(--status-accent-fg);  border-color: var(--status-accent-br); }
+
+.tag--status     { background: var(--status-honor-bg);  color: var(--status-honor-fg);   border-color: var(--status-honor-br); }
+.tag--authorship { background: var(--status-accent-bg); color: var(--status-accent-fg);  border-color: var(--status-accent-br); }
+
+/* The last category of each model is context rather than a claim — how large
+   the field was, who hosted the room, who published it — so it is the one
+   metadata tag that reads at regular weight, and the eye lands on the ones
+   before it first. */
+.tag--scale,
+.tag--host,
+.tag--publisher {
+  background: var(--status-neutral-bg);
+  color: var(--status-neutral-fg);
+  border-color: var(--status-neutral-br);
+  font-weight: var(--weight-regular);
+}
+
+/* Utility family. */
 .tag--neutral  { background: var(--status-neutral-bg);  color: var(--status-neutral-fg);  border-color: var(--status-neutral-br); }
 .tag--accent   { background: var(--status-accent-bg);   color: var(--status-accent-fg);   border-color: var(--status-accent-br); }
 .tag--success  { background: var(--status-success-bg);  color: var(--status-success-fg);  border-color: var(--status-success-br); }
@@ -702,6 +799,24 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 
 a.tag:hover { text-decoration: underline; opacity: 0.85; }
 a.tag.link-external::after { margin-left: 0; }
+
+/* The medal disc on a top-three placement. It carries no information the tag's
+   own text does not already give — "1st Place" is right beside it — so it is
+   aria-hidden and exists only to be recognised before the text is read. This
+   is why the placement tag never says "Winner": the medal is the signal and
+   the wording stays factual. Drawn in CSS rather than shipped as an image so
+   it scales with the type and costs nothing to load. */
+.medal {
+  flex: none;
+  width: 0.7em;
+  height: 0.7em;
+  border: 1px solid;
+  border-radius: var(--radius-full);
+}
+
+.medal--gold   { background: var(--medal-gold);   border-color: var(--medal-gold-ring); }
+.medal--silver { background: var(--medal-silver); border-color: var(--medal-silver-ring); }
+.medal--bronze { background: var(--medal-bronze); border-color: var(--medal-bronze-ring); }
 
 
 /* 13. COMPONENT: ICON ====================================================== */
@@ -871,4 +986,8 @@ a.tag.link-external::after { margin-left: 0; }
   .entry, .block { page-break-inside: avoid; }
   .block__title, .page-title { page-break-after: avoid; }
   .tag { border-color: #999; }
+
+  /* The metals are the one place on the site where colour carries meaning that
+     greyscale would lose, so they are forced through to the printer. */
+  .medal { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }

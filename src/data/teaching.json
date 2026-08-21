@@ -1,0 +1,174 @@
+[
+  {
+    "title": "Data Engineering 2",
+    "term": "Fall",
+    "year": 2025,
+    "level": 2,
+    "workload": { "lecture": 20, "lab": 8, "project": 4 },
+    "scale": { "count": 12, "unit": "students" },
+    "summary": "The second-year sequel, moving from building a pipeline to running one that survives contact with production.",
+    "syllabus": [
+      {
+        "title": "Synchronous &amp; Asynchronous Data Flows",
+        "points": [
+          "The two flow models set side by side, and the different failure modes each one hands the engineer downstream.",
+          "Choosing between them from the coupling and latency a system can actually tolerate.",
+          "<b>Lab:</b> the same ingestion written twice, once as a blocking request-response call and once decoupled behind a queue, then stalled on purpose to see which one loses records and which one only loses time."
+        ]
+      },
+      {
+        "title": "Resilient Pipeline Design",
+        "points": [
+          "Retry management and recovery paths, designed on the assumption that failure is the normal case rather than the exception.",
+          "Orchestration, scheduling and backfills with <b>Apache Airflow</b>.",
+          "<b>Lab:</b> a multi-task <b>Airflow</b> DAG authored with task-level retries, exponential backoff and idempotent writes, then made to fail mid-run and repaired with a dated backfill over the missing window."
+        ]
+      },
+      {
+        "title": "Processing at Volume",
+        "points": [
+          "Distributed processing with <b>Apache Spark</b> over <b>PostgreSQL</b> sources.",
+          "<b>Lab:</b> a join-and-aggregate transformation written in <b>Spark</b> against tables read from <b>PostgreSQL</b>, then reworked once the query plan showed where the shuffle was, and the two runs compared."
+        ]
+      },
+      {
+        "title": "Logging &amp; Monitoring",
+        "points": [
+          "Structured logging and error tracking with <b>Loguru</b>.",
+          "Monitoring, dashboards and alerting in <b>Datadog</b>.",
+          "<b>Lab:</b> the pipeline instrumented with structured <b>Loguru</b> records carrying run and task identifiers, shipped into a <b>Datadog</b> dashboard, with an alert wired to the failure rate and proved by triggering it."
+        ]
+      },
+      {
+        "title": "Packaging &amp; Delivery",
+        "points": [
+          "Pipelines containerised with <b>Docker</b>; datasets and models versioned with <b>DVC</b>.",
+          "Automated build and publish through <b>GitHub Actions</b> into the <b>GitHub Container Registry</b>.",
+          "<b>Lab:</b> a pipeline packaged into a <b>Docker</b> image with its dataset placed under <b>DVC</b>, and a <b>GitHub Actions</b> workflow that builds, tags and pushes to the <b>GitHub Container Registry</b> on every commit to the main branch."
+        ]
+      }
+    ],
+    "capstone": {
+      "title": "Fault-Tolerant Ingestion Pipeline",
+      "points": [
+        "The four-hour project session: one pipeline carrying data from a <b>PostgreSQL</b> source through a <b>Spark</b> transformation into an analytical target, scheduled as an <b>Airflow</b> DAG with retries and a working backfill path.",
+        "Operability was graded alongside the data flow: structured <b>Loguru</b> logging surfaced on a <b>Datadog</b> dashboard, the whole pipeline containerised with <b>Docker</b>, and the input dataset reproducible from <b>DVC</b>.",
+        "Delivered as a repository that runs from a single command, with an architecture diagram and a short written defence of where each retry, timeout and alert threshold was set, and why."
+      ]
+    }
+  },
+  {
+    "title": "Data Engineering 1",
+    "term": "Spring",
+    "year": 2024,
+    "level": 1,
+    "workload": { "lecture": 20, "lab": 8, "project": 4 },
+    "scale": { "count": 16, "unit": "students" },
+    "summary": "The first-year data engineering course: how analytical data is stored, moved, and processed at a volume that no longer fits one machine.",
+    "syllabus": [
+      {
+        "title": "Big Data Fundamentals",
+        "points": [
+          "What changes once data outgrows a single machine, and why that reshapes the tooling around it.",
+          "<b>Lab:</b> the same aggregation run over a dataset held whole in memory and then over one read and partitioned in chunks, timed on both, to find the point where the single-machine habit stops working."
+        ]
+      },
+      {
+        "title": "Data Warehousing",
+        "points": [
+          "Why analytical storage is shaped differently from the transactional systems it draws from.",
+          "Warehouse modelling worked against <b>PostgreSQL</b>.",
+          "<b>Lab:</b> a star schema designed from a normalised operational source &mdash; one fact table, conformed dimensions, explicit grain &mdash; and created in <b>PostgreSQL</b>, then queried to show what the denormalisation bought."
+        ]
+      },
+      {
+        "title": "ETL Architectures",
+        "points": [
+          "Extract, transform and load followed from source system through to warehouse.",
+          "Transformations written in <b>Python</b>.",
+          "<b>Lab:</b> a <b>Python</b> ETL job extracting from the operational database, cleaning and conforming the records, and loading them into the star schema from the previous lab so the job can be re-run without duplicating rows."
+        ]
+      },
+      {
+        "title": "Processing at Volume",
+        "points": [
+          "Distributed data processing with <b>Apache Spark</b>.",
+          "<b>Lab:</b> the same transformation rewritten as <b>Spark</b> DataFrame operations and run against a larger extract, set beside the single-machine <b>Python</b> version to see where the distributed one starts paying for itself."
+        ]
+      },
+      {
+        "title": "Analytics &amp; Reporting",
+        "points": [
+          "Closing the loop: warehouse data out into a <b>Power BI</b> report.",
+          "<b>Lab:</b> <b>Power BI</b> connected to the warehouse and a report built over the star schema, with the measures defined in the model rather than hard-coded into each visual."
+        ]
+      }
+    ],
+    "capstone": {
+      "title": "Source-to-Dashboard Warehouse",
+      "points": [
+        "The four-hour project session: the whole path in one piece, from a raw operational source to a published <b>Power BI</b> dashboard, built on the schema each team had modelled themselves.",
+        "Extraction and loading in <b>Python</b>, the heavier transformation step in <b>Apache Spark</b>, and the modelled tables served from <b>PostgreSQL</b>.",
+        "Delivered as the schema definition, the ETL code and the report, and defended on the modelling decisions &mdash; grain, keys, what was left out &mdash; rather than on the appearance of the dashboard."
+      ]
+    }
+  },
+  {
+    "title": "Machine Learning",
+    "term": "Fall",
+    "year": 2024,
+    "level": 2,
+    "workload": { "lecture": 20, "lab": 8, "project": 4 },
+    "scale": { "count": 12, "unit": "students" },
+    "summary": "The programme&rsquo;s applied machine learning course, taken from fitting a model to deciding whether the fit means anything.",
+    "syllabus": [
+      {
+        "title": "Supervised Learning",
+        "points": [
+          "Learning from labelled data, and what fitting a model to it actually optimises.",
+          "Models built with <b>Scikit-learn</b> over data prepared in <b>Pandas</b>.",
+          "<b>Lab:</b> a <b>Scikit-learn</b> pipeline assembled over a <b>Pandas</b> frame &mdash; imputation, encoding, scaling, estimator &mdash; so that every preprocessing step is fitted on the training split alone and no leakage can survive the refactor."
+        ]
+      },
+      {
+        "title": "Gradient Descent &amp; Optimisation",
+        "points": [
+          "Gradient descent taught as the mechanism underneath model fitting rather than as a library call.",
+          "The parameters that decide whether it converges at all.",
+          "<b>Lab:</b> gradient descent implemented from the derivative upward in <b>NumPy</b>, with the loss traced across learning rates until it stalled at one end and diverged at the other."
+        ]
+      },
+      {
+        "title": "Unsupervised Learning &amp; Clustering",
+        "points": [
+          "Finding structure without labels, and where that is the honest framing of a problem.",
+          "K-Means end to end: assignment, centroid update, and the choice of k.",
+          "<b>Lab:</b> K-Means written by hand &mdash; assignment step, centroid update, convergence test &mdash; checked against the <b>Scikit-learn</b> implementation, with k argued from inertia and silhouette rather than picked."
+        ]
+      },
+      {
+        "title": "Model Evaluation",
+        "points": [
+          "The techniques that separate a model fitting its training data from one that generalises.",
+          "Results inspected as <b>Matplotlib</b> plots, not only as a single score.",
+          "<b>Lab:</b> a classifier cross-validated and then read properly: confusion matrix, precision and recall against a deliberately imbalanced target, and a <b>Matplotlib</b> learning curve used to tell underfitting from overfitting."
+        ]
+      },
+      {
+        "title": "The Practical Workflow",
+        "points": [
+          "The whole path in one piece: data pulled from <b>PostgreSQL</b>, prepared in Pandas, fitted in Scikit-learn, evaluated and plotted.",
+          "<b>Lab:</b> that path written as one reproducible script &mdash; query, preparation, fitted pipeline, evaluation &mdash; with the model and its metrics persisted together so a result can be traced back to the run that produced it."
+        ]
+      }
+    ],
+    "capstone": {
+      "title": "Applied Prediction Study",
+      "points": [
+        "The four-hour project session: a supervised problem carried from a <b>PostgreSQL</b> extract to a defended conclusion, with the model choice argued from the evaluation rather than asserted.",
+        "A <b>Scikit-learn</b> pipeline over <b>Pandas</b> preparation, tuned by cross-validated search and measured against a trivial baseline that had to be beaten for the result to count.",
+        "Delivered as a notebook with the <b>Matplotlib</b> figures the claims rest on, and graded on whether the evaluation actually supports what the report concludes."
+      ]
+    }
+  }
+]

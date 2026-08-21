@@ -7,39 +7,17 @@ nav: research
   <h1 class="page-title">Publications</h1>
 </header>
 
-<section class="block" aria-labelledby="publications">
-  <h3 class="block__title" id="publications">Journal Articles</h3>
+<section class="block" aria-labelledby="journal-articles">
+  <h3 class="block__title" id="journal-articles">Journal Articles</h3>
+  <p class="block__intro">
+    Applied machine learning research, co-authored and submitted to
+    <i>Computers &amp; Industrial Engineering</i> (Elsevier). Author names link to Google Scholar;
+    a title links to the published article where one exists.
+  </p>
   <ul class="entries">
-
-    <li class="entry">
-      <p class="entry__meta">
-        <a href="https://scholar.google.com/citations?user=XTaxAz8AAAAJ&amp;hl=en" target="_blank" rel="noopener">N. Moumni</a>,
-        <a href="https://scholar.google.com/citations?user=mAUhy6QAAAAJ" target="_blank" rel="noopener">Y. Boutaleb</a>,
-        <a href="https://scholar.google.com/citations?user=cDtJ8FcAAAAJ&amp;hl=fr" target="_blank" rel="noopener">F. Chaabane</a>,
-        and
-        <a href="https://scholar.google.com/citations?user=gAUXwRwAAAAJ&amp;hl=en" target="_blank" rel="noopener">F. Drira</a>,
-        &ldquo;<a class="link-external" href="https://www.sciencedirect.com/science/article/abs/pii/S036083522500186X" target="_blank" rel="noopener">Secure and transparent energy management using blockchain and machine learning anomaly detection: A case study of the Ausgrid dataset</a>&rdquo;,
-        in <i>Computers &amp; Industrial Engineering</i>, <b>2025</b>
-      </p>
-      <ul class="tag-list">
-        <li class="tag tag--success">Published (2025)</li>
-        <li class="tag tag--accent">Elsevier / ScienceDirect</li>
-      </ul>
-    </li>
-
-    <li class="entry">
-      <p class="entry__meta">
-        <a href="https://scholar.google.com/citations?user=jDoLSoMAAAAJ&amp;hl=fr" target="_blank" rel="noopener">S. Khemakhem</a>,
-        <a href="https://scholar.google.com/citations?user=mAUhy6QAAAAJ" target="_blank" rel="noopener">Y. Boutaleb</a>,
-        <a href="https://scholar.google.com/citations?hl=fr&amp;user=60EYHCsAAAAJ" target="_blank" rel="noopener">W. Ouarda</a>,
-        &ldquo;Dual verification-based multimodal approach for reliable pothole and speed bump detection on embedded system&rdquo;,
-        in <i>Computers &amp; Industrial Engineering</i>, <b>In Progress</b>
-      </p>
-      <ul class="tag-list">
-        <li class="tag tag--honor">In Progress</li>
-        <li class="tag tag--neutral">Embedded Systems</li>
-      </ul>
-    </li>
-
+    <!-- Records live in src/data/research.json; tag order and colour come
+         from MODELS in tools/build.py, and the newest-first ordering from
+         publication_sort_key. Never hand-write entries here. -->
+{{ build.publications }}
   </ul>
 </section>

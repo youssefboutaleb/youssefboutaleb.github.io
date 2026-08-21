@@ -1,5 +1,6 @@
 <!-- GENERATED FILE — do not edit.
-     Source: src/layout.html + src/pages/teaching.html (content), src/site.json (data).
+     Source: src/layout.html + src/pages/teaching.html (content),
+             src/site.json + src/data/*.json (data).
      Rebuild: python3 tools/build.py
 -->
 <!DOCTYPE html>
@@ -11,25 +12,25 @@
   <meta name="color-scheme" content="light">
 
   <title>Teaching — Youssef Boutaleb</title>
-  <meta name="description" content="Graduate teaching in Machine Learning and Data Engineering for the M.Sc. Data Science programme at IHEC Sfax.">
+  <meta name="description" content="Graduate lecturer at IHEC Sfax, teaching Machine Learning and two Data Engineering courses on the M.Sc. Data Science programme, covering Spark, Airflow, Docker and Loguru.">
   <meta name="author" content="Youssef Boutaleb">
   <meta name="google-site-verification" content="_EoRy_lTXm3RCqZdWpUgQ9bWDF7KCrEdSZBocueWMUk">
 
   <link rel="canonical" href="https://youssefboutaleb.github.io/teaching.html">
   <link rel="icon" type="image/svg+xml" href="images/icons/icon.svg">
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Noto-Sans-regular/Noto-Sans-regular.woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=c76030a85d31">
+  <link rel="stylesheet" href="assets/css/main.css?v=7adcc6319a0e">
 
   <meta property="og:type" content="article">
   <meta property="og:title" content="Teaching — Youssef Boutaleb">
-  <meta property="og:description" content="Graduate teaching in Machine Learning and Data Engineering for the M.Sc. Data Science programme at IHEC Sfax.">
+  <meta property="og:description" content="Graduate lecturer at IHEC Sfax, teaching Machine Learning and two Data Engineering courses on the M.Sc. Data Science programme, covering Spark, Airflow, Docker and Loguru.">
   <meta property="og:url" content="https://youssefboutaleb.github.io/teaching.html">
   <meta property="og:locale" content="en_US">
   <meta property="og:site_name" content="Youssef Boutaleb">
   <meta property="og:image" content="https://youssefboutaleb.github.io/images/me.jpg">
   <meta name="twitter:card" content="summary">
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Teaching","url":"https://youssefboutaleb.github.io/teaching.html","description":"Graduate teaching in Machine Learning and Data Engineering for the M.Sc. Data Science programme at IHEC Sfax.","isPartOf":{"@type":"WebSite","name":"Youssef Boutaleb","url":"https://youssefboutaleb.github.io/"},"author":{"@type":"Person","name":"Youssef Boutaleb","url":"https://youssefboutaleb.github.io/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Teaching","url":"https://youssefboutaleb.github.io/teaching.html","description":"Graduate lecturer at IHEC Sfax, teaching Machine Learning and two Data Engineering courses on the M.Sc. Data Science programme, covering Spark, Airflow, Docker and Loguru.","isPartOf":{"@type":"WebSite","name":"Youssef Boutaleb","url":"https://youssefboutaleb.github.io/"},"author":{"@type":"Person","name":"Youssef Boutaleb","url":"https://youssefboutaleb.github.io/"}}</script>
 </head>
 
 <body>
@@ -111,44 +112,207 @@
 
         <section class="block" aria-labelledby="courses-taught">
           <h3 class="block__title" id="courses-taught">Graduate Courses</h3>
+          <ul class="points block__intro">
+            <li>
+              <b>Appointment:</b> University Lecturer (part-time) at
+              <a href="https://ihecsf.rnu.tn/" target="_blank" rel="noopener">IHEC Sfax</a>
+              (September 2024 &ndash; May 2026), teaching on-site on the
+              <a href="https://ihecsf.rnu.tn/fr/article/765/master-professionnel-en-data-science-for-business-amp-economics"
+                target="_blank" rel="noopener">M.Sc. Data Science</a> programme.
+            </li>
+            <li>
+              <b>Course Structure &amp; Workload (32 h per course):</b>
+              <ul class="points">
+                <li><b>Lectures (20 h):</b> 5 modules (4 hours each) covering theoretical foundations, architecture principles,
+                  and guided exercises.</li>
+                <li><b>Labs (8 h):</b> 1 hands-on lab per module (1.5&ndash;2 hours) covering practical assignments and
+                  collaborative solution reviews.</li>
+                <li><b>Final Project (4 h):</b> Dedicated workshop session for end-to-end pipeline implementation and project
+                  guidance.</li>
+              </ul>
+            </li>
+            <li>
+              <b>Language &amp; Tooling:</b> Instruction delivered in French and English; all slides, code repositories,
+              assignments, and exams in English.
+            </li>
+            <li>
+              <b>Assessment Scheme:</b> Final Exam (<b>50%</b>), Module Homework Assignments (<b>20%</b>), Final Project
+              (<b>15%</b>), Attendance &amp; Active Participation (<b>15%</b>).
+            </li>
+          </ul>
           <ul class="entries">
-
-            <li class="entry">
-              <p class="entry__title">
-                Machine Learning
-                <span class="entry__role">&mdash; <a href="https://ihecsf.rnu.tn/" target="_blank" rel="noopener">IHEC Sfax</a></span>
-              </p>
-              <p class="entry__period">2024 &ndash; 2025</p>
-              <ul class="tag-list">
-                <li class="tag tag--accent">Graduate Level</li>
-                <li class="tag tag--neutral">M.Sc. Data Science</li>
+            <!-- Records live in src/data/teaching.json; tag order and colour come
+                 from MODELS in tools/build.py, and the newest-first ordering from
+                 course_sort_key. Never hand-write entries here. -->
+                <li class="entry">
+              <p class="entry__title">Data Engineering 2</p>
+              <p class="entry__period">Fall 2025 &ndash; 2026</p>
+              <ul class="tag-list" aria-label="Course details">
+                <li class="tag tag--level">Master&rsquo;s Year 2</li>
+                <li class="tag tag--workload">32 h &middot; 20 lecture + 8 lab + 4 project</li>
+                <li class="tag tag--scale">12 students</li>
               </ul>
-              <p class="entry__summary">
-                Master&rsquo;s in Data Science (Year 2).
-                <br>
-                Topics: Supervised &amp; Unsupervised Learning, Gradient Descent, Clustering (K-Means),
-                Model Evaluation.
-              </p>
+              <p class="entry__summary">The second-year sequel, moving from building a pipeline to running one that survives contact with production.</p>
+              <div class="entry__group">
+                <p class="entry__group-title">Module 1 &mdash; Synchronous &amp; Asynchronous Data Flows</p>
+                <ul class="points">
+                  <li>The two flow models set side by side, and the different failure modes each one hands the engineer downstream.</li>
+                  <li>Choosing between them from the coupling and latency a system can actually tolerate.</li>
+                  <li><b>Lab:</b> the same ingestion written twice, once as a blocking request-response call and once decoupled behind a queue, then stalled on purpose to see which one loses records and which one only loses time.</li>
+                </ul>
+              </div>
+              <div class="entry__group">
+                <p class="entry__group-title">Module 2 &mdash; Resilient Pipeline Design</p>
+                <ul class="points">
+                  <li>Retry management and recovery paths, designed on the assumption that failure is the normal case rather than the exception.</li>
+                  <li>Orchestration, scheduling and backfills with <b>Apache Airflow</b>.</li>
+                  <li><b>Lab:</b> a multi-task <b>Airflow</b> DAG authored with task-level retries, exponential backoff and idempotent writes, then made to fail mid-run and repaired with a dated backfill over the missing window.</li>
+                </ul>
+              </div>
+              <div class="entry__group">
+                <p class="entry__group-title">Module 3 &mdash; Processing at Volume</p>
+                <ul class="points">
+                  <li>Distributed processing with <b>Apache Spark</b> over <b>PostgreSQL</b> sources.</li>
+                  <li><b>Lab:</b> a join-and-aggregate transformation written in <b>Spark</b> against tables read from <b>PostgreSQL</b>, then reworked once the query plan showed where the shuffle was, and the two runs compared.</li>
+                </ul>
+              </div>
+              <div class="entry__group">
+                <p class="entry__group-title">Module 4 &mdash; Logging &amp; Monitoring</p>
+                <ul class="points">
+                  <li>Structured logging and error tracking with <b>Loguru</b>.</li>
+                  <li>Monitoring, dashboards and alerting in <b>Datadog</b>.</li>
+                  <li><b>Lab:</b> the pipeline instrumented with structured <b>Loguru</b> records carrying run and task identifiers, shipped into a <b>Datadog</b> dashboard, with an alert wired to the failure rate and proved by triggering it.</li>
+                </ul>
+              </div>
+              <div class="entry__group">
+                <p class="entry__group-title">Module 5 &mdash; Packaging &amp; Delivery</p>
+                <ul class="points">
+                  <li>Pipelines containerised with <b>Docker</b>; datasets and models versioned with <b>DVC</b>.</li>
+                  <li>Automated build and publish through <b>GitHub Actions</b> into the <b>GitHub Container Registry</b>.</li>
+                  <li><b>Lab:</b> a pipeline packaged into a <b>Docker</b> image with its dataset placed under <b>DVC</b>, and a <b>GitHub Actions</b> workflow that builds, tags and pushes to the <b>GitHub Container Registry</b> on every commit to the main branch.</li>
+                </ul>
+              </div>
+              <div class="entry__group">
+                <p class="entry__group-title">Final Project &mdash; Fault-Tolerant Ingestion Pipeline</p>
+                <ul class="points">
+                  <li>The four-hour project session: one pipeline carrying data from a <b>PostgreSQL</b> source through a <b>Spark</b> transformation into an analytical target, scheduled as an <b>Airflow</b> DAG with retries and a working backfill path.</li>
+                  <li>Operability was graded alongside the data flow: structured <b>Loguru</b> logging surfaced on a <b>Datadog</b> dashboard, the whole pipeline containerised with <b>Docker</b>, and the input dataset reproducible from <b>DVC</b>.</li>
+                  <li>Delivered as a repository that runs from a single command, with an architecture diagram and a short written defence of where each retry, timeout and alert threshold was set, and why.</li>
+                </ul>
+              </div>
             </li>
-
             <li class="entry">
-              <p class="entry__title">
-                Data Engineering
-                <span class="entry__role">&mdash; <a href="https://ihecsf.rnu.tn/" target="_blank" rel="noopener">IHEC Sfax</a></span>
-              </p>
-              <p class="entry__period">2024 &ndash; 2025</p>
-              <ul class="tag-list">
-                <li class="tag tag--accent">Graduate Level</li>
-                <li class="tag tag--neutral">M.Sc. Data Science</li>
+              <p class="entry__title">Data Engineering 1</p>
+              <p class="entry__period">Spring 2024 &ndash; 2025</p>
+              <ul class="tag-list" aria-label="Course details">
+                <li class="tag tag--level">Master&rsquo;s Year 1</li>
+                <li class="tag tag--workload">32 h &middot; 20 lecture + 8 lab + 4 project</li>
+                <li class="tag tag--scale">16 students</li>
               </ul>
-              <p class="entry__summary">
-                Master&rsquo;s in Data Science (Year 2).
-                <br>
-                Topics: Big Data Ecosystem, Data Warehousing, ETL Processes, Synchronous &amp;
-                Asynchronous Data Flows.
-              </p>
+              <p class="entry__summary">The first-year data engineering course: how analytical data is stored, moved, and processed at a volume that no longer fits one machine.</p>
+              <div class="entry__group">
+                <p class="entry__group-title">Module 1 &mdash; Big Data Fundamentals</p>
+                <ul class="points">
+                  <li>What changes once data outgrows a single machine, and why that reshapes the tooling around it.</li>
+                  <li><b>Lab:</b> the same aggregation run over a dataset held whole in memory and then over one read and partitioned in chunks, timed on both, to find the point where the single-machine habit stops working.</li>
+                </ul>
+              </div>
+              <div class="entry__group">
+                <p class="entry__group-title">Module 2 &mdash; Data Warehousing</p>
+                <ul class="points">
+                  <li>Why analytical storage is shaped differently from the transactional systems it draws from.</li>
+                  <li>Warehouse modelling worked against <b>PostgreSQL</b>.</li>
+                  <li><b>Lab:</b> a star schema designed from a normalised operational source &mdash; one fact table, conformed dimensions, explicit grain &mdash; and created in <b>PostgreSQL</b>, then queried to show what the denormalisation bought.</li>
+                </ul>
+              </div>
+              <div class="entry__group">
+                <p class="entry__group-title">Module 3 &mdash; ETL Architectures</p>
+                <ul class="points">
+                  <li>Extract, transform and load followed from source system through to warehouse.</li>
+                  <li>Transformations written in <b>Python</b>.</li>
+                  <li><b>Lab:</b> a <b>Python</b> ETL job extracting from the operational database, cleaning and conforming the records, and loading them into the star schema from the previous lab so the job can be re-run without duplicating rows.</li>
+                </ul>
+              </div>
+              <div class="entry__group">
+                <p class="entry__group-title">Module 4 &mdash; Processing at Volume</p>
+                <ul class="points">
+                  <li>Distributed data processing with <b>Apache Spark</b>.</li>
+                  <li><b>Lab:</b> the same transformation rewritten as <b>Spark</b> DataFrame operations and run against a larger extract, set beside the single-machine <b>Python</b> version to see where the distributed one starts paying for itself.</li>
+                </ul>
+              </div>
+              <div class="entry__group">
+                <p class="entry__group-title">Module 5 &mdash; Analytics &amp; Reporting</p>
+                <ul class="points">
+                  <li>Closing the loop: warehouse data out into a <b>Power BI</b> report.</li>
+                  <li><b>Lab:</b> <b>Power BI</b> connected to the warehouse and a report built over the star schema, with the measures defined in the model rather than hard-coded into each visual.</li>
+                </ul>
+              </div>
+              <div class="entry__group">
+                <p class="entry__group-title">Final Project &mdash; Source-to-Dashboard Warehouse</p>
+                <ul class="points">
+                  <li>The four-hour project session: the whole path in one piece, from a raw operational source to a published <b>Power BI</b> dashboard, built on the schema each team had modelled themselves.</li>
+                  <li>Extraction and loading in <b>Python</b>, the heavier transformation step in <b>Apache Spark</b>, and the modelled tables served from <b>PostgreSQL</b>.</li>
+                  <li>Delivered as the schema definition, the ETL code and the report, and defended on the modelling decisions &mdash; grain, keys, what was left out &mdash; rather than on the appearance of the dashboard.</li>
+                </ul>
+              </div>
             </li>
-
+            <li class="entry">
+              <p class="entry__title">Machine Learning</p>
+              <p class="entry__period">Fall 2024 &ndash; 2025</p>
+              <ul class="tag-list" aria-label="Course details">
+                <li class="tag tag--level">Master&rsquo;s Year 2</li>
+                <li class="tag tag--workload">32 h &middot; 20 lecture + 8 lab + 4 project</li>
+                <li class="tag tag--scale">12 students</li>
+              </ul>
+              <p class="entry__summary">The programme&rsquo;s applied machine learning course, taken from fitting a model to deciding whether the fit means anything.</p>
+              <div class="entry__group">
+                <p class="entry__group-title">Module 1 &mdash; Supervised Learning</p>
+                <ul class="points">
+                  <li>Learning from labelled data, and what fitting a model to it actually optimises.</li>
+                  <li>Models built with <b>Scikit-learn</b> over data prepared in <b>Pandas</b>.</li>
+                  <li><b>Lab:</b> a <b>Scikit-learn</b> pipeline assembled over a <b>Pandas</b> frame &mdash; imputation, encoding, scaling, estimator &mdash; so that every preprocessing step is fitted on the training split alone and no leakage can survive the refactor.</li>
+                </ul>
+              </div>
+              <div class="entry__group">
+                <p class="entry__group-title">Module 2 &mdash; Gradient Descent &amp; Optimisation</p>
+                <ul class="points">
+                  <li>Gradient descent taught as the mechanism underneath model fitting rather than as a library call.</li>
+                  <li>The parameters that decide whether it converges at all.</li>
+                  <li><b>Lab:</b> gradient descent implemented from the derivative upward in <b>NumPy</b>, with the loss traced across learning rates until it stalled at one end and diverged at the other.</li>
+                </ul>
+              </div>
+              <div class="entry__group">
+                <p class="entry__group-title">Module 3 &mdash; Unsupervised Learning &amp; Clustering</p>
+                <ul class="points">
+                  <li>Finding structure without labels, and where that is the honest framing of a problem.</li>
+                  <li>K-Means end to end: assignment, centroid update, and the choice of k.</li>
+                  <li><b>Lab:</b> K-Means written by hand &mdash; assignment step, centroid update, convergence test &mdash; checked against the <b>Scikit-learn</b> implementation, with k argued from inertia and silhouette rather than picked.</li>
+                </ul>
+              </div>
+              <div class="entry__group">
+                <p class="entry__group-title">Module 4 &mdash; Model Evaluation</p>
+                <ul class="points">
+                  <li>The techniques that separate a model fitting its training data from one that generalises.</li>
+                  <li>Results inspected as <b>Matplotlib</b> plots, not only as a single score.</li>
+                  <li><b>Lab:</b> a classifier cross-validated and then read properly: confusion matrix, precision and recall against a deliberately imbalanced target, and a <b>Matplotlib</b> learning curve used to tell underfitting from overfitting.</li>
+                </ul>
+              </div>
+              <div class="entry__group">
+                <p class="entry__group-title">Module 5 &mdash; The Practical Workflow</p>
+                <ul class="points">
+                  <li>The whole path in one piece: data pulled from <b>PostgreSQL</b>, prepared in Pandas, fitted in Scikit-learn, evaluated and plotted.</li>
+                  <li><b>Lab:</b> that path written as one reproducible script &mdash; query, preparation, fitted pipeline, evaluation &mdash; with the model and its metrics persisted together so a result can be traced back to the run that produced it.</li>
+                </ul>
+              </div>
+              <div class="entry__group">
+                <p class="entry__group-title">Final Project &mdash; Applied Prediction Study</p>
+                <ul class="points">
+                  <li>The four-hour project session: a supervised problem carried from a <b>PostgreSQL</b> extract to a defended conclusion, with the model choice argued from the evaluation rather than asserted.</li>
+                  <li>A <b>Scikit-learn</b> pipeline over <b>Pandas</b> preparation, tuned by cross-validated search and measured against a trivial baseline that had to be beaten for the result to count.</li>
+                  <li>Delivered as a notebook with the <b>Matplotlib</b> figures the claims rest on, and graded on whether the evaluation actually supports what the report concludes.</li>
+                </ul>
+              </div>
+            </li>
           </ul>
         </section>
       </main>

@@ -1,5 +1,6 @@
 <!-- GENERATED FILE — do not edit.
-     Source: src/layout.html + src/pages/workshops.html (content), src/site.json (data).
+     Source: src/layout.html + src/pages/workshops.html (content),
+             src/site.json + src/data/*.json (data).
      Rebuild: python3 tools/build.py
 -->
 <!DOCTYPE html>
@@ -11,25 +12,25 @@
   <meta name="color-scheme" content="light">
 
   <title>Workshops — Youssef Boutaleb</title>
-  <meta name="description" content="Technical workshops on computer architecture, assembly, competitive programming and Python, delivered for OLIVESOFT, the IEEE Student Branch and Securinets at ENIS.">
+  <meta name="description" content="Technical workshops on computer architecture, ARM assembly, competitive programming and Python, delivered for OLIVESOFT, Securinets ENIS and the IEEE Student Branch at ENIS.">
   <meta name="author" content="Youssef Boutaleb">
   <meta name="google-site-verification" content="_EoRy_lTXm3RCqZdWpUgQ9bWDF7KCrEdSZBocueWMUk">
 
   <link rel="canonical" href="https://youssefboutaleb.github.io/workshops.html">
   <link rel="icon" type="image/svg+xml" href="images/icons/icon.svg">
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Noto-Sans-regular/Noto-Sans-regular.woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=c76030a85d31">
+  <link rel="stylesheet" href="assets/css/main.css?v=7adcc6319a0e">
 
   <meta property="og:type" content="article">
   <meta property="og:title" content="Workshops — Youssef Boutaleb">
-  <meta property="og:description" content="Technical workshops on computer architecture, assembly, competitive programming and Python, delivered for OLIVESOFT, the IEEE Student Branch and Securinets at ENIS.">
+  <meta property="og:description" content="Technical workshops on computer architecture, ARM assembly, competitive programming and Python, delivered for OLIVESOFT, Securinets ENIS and the IEEE Student Branch at ENIS.">
   <meta property="og:url" content="https://youssefboutaleb.github.io/workshops.html">
   <meta property="og:locale" content="en_US">
   <meta property="og:site_name" content="Youssef Boutaleb">
   <meta property="og:image" content="https://youssefboutaleb.github.io/images/me.jpg">
   <meta name="twitter:card" content="summary">
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Workshops","url":"https://youssefboutaleb.github.io/workshops.html","description":"Technical workshops on computer architecture, assembly, competitive programming and Python, delivered for OLIVESOFT, the IEEE Student Branch and Securinets at ENIS.","isPartOf":{"@type":"WebSite","name":"Youssef Boutaleb","url":"https://youssefboutaleb.github.io/"},"author":{"@type":"Person","name":"Youssef Boutaleb","url":"https://youssefboutaleb.github.io/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Workshops","url":"https://youssefboutaleb.github.io/workshops.html","description":"Technical workshops on computer architecture, ARM assembly, competitive programming and Python, delivered for OLIVESOFT, Securinets ENIS and the IEEE Student Branch at ENIS.","isPartOf":{"@type":"WebSite","name":"Youssef Boutaleb","url":"https://youssefboutaleb.github.io/"},"author":{"@type":"Person","name":"Youssef Boutaleb","url":"https://youssefboutaleb.github.io/"}}</script>
 </head>
 
 <body>
@@ -109,90 +110,81 @@
           <h1 class="page-title">Workshops</h1>
         </header>
 
-        <section class="block" aria-labelledby="workshop-list">
-          <h3 class="block__title" id="workshop-list">Sessions Delivered</h3>
+        <section class="block" aria-labelledby="workshops-delivered">
+          <h3 class="block__title" id="workshops-delivered">Workshops Delivered</h3>
+          <p class="block__intro">
+            Sessions designed and taught for a company training programme and for two engineering-school
+            clubs, covering computer architecture and digital logic, ARM assembly, competitive programming
+            and Python. Each was written from scratch: slides, exercises and worked solutions.
+          </p>
           <ul class="entries">
-
+            <!-- Records live in src/data/workshops.json; tag order and colour come
+                 from MODELS in tools/build.py. Never hand-write entries here. -->
             <li class="entry">
-              <p class="entry__title">
-                Introduction to CS Fundamentals (Hardware)
-                <a class="icon-link" href="data/Introduction_to_CS_Fundamentals_Hardware_Workshop.pptx" target="_blank" rel="noopener" title="Download the slides (PPTX)">
-                  <img class="icon icon--sm" src="images/icons/powerpoint.svg" alt="Download the slides (PPTX)" width="15" height="15">
-                </a>
-              </p>
-              <p class="entry__period">2026</p>
-              <ul class="tag-list">
-                <li class="tag tag--accent">Instructor</li>
-                <li class="tag tag--neutral">OLIVESOFT</li>
-                <li>
-                  <a class="tag tag--critical link-external" href="data/Introduction_to_CS_Fundamentals_Hardware_Workshop.pptx" target="_blank" rel="noopener" title="Download slides (PPTX)">
-                    <img class="icon icon--xs" src="images/icons/powerpoint.svg" alt="" width="12" height="12">Slides (.pptx)
-                  </a>
-                </li>
+              <p class="entry__title">Introduction to CS Fundamentals (Hardware)</p>
+              <p class="entry__period"><time datetime="2026">2026</time></p>
+              <ul class="tag-list" aria-label="Workshop details">
+                <li class="tag tag--format">Workshop Series</li>
+                <li class="tag tag--mode">Online</li>
+                <li class="tag tag--audience">Professionals &amp; Trainees</li>
+                <li class="tag tag--host">OLIVESOFT</li>
+                <li><a class="tag tag--critical link-external" href="https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fyoussefboutaleb.github.io%2Fdata%2FIntroduction_to_CS_Fundamentals_Hardware_Workshop.pptx" target="_blank" rel="noopener" title="View slides in PowerPoint Online"><img class="icon icon--xs" src="images/icons/powerpoint.svg" alt="" width="12" height="12">Slides (.pptx)</a></li>
               </ul>
-              <p class="entry__summary">
-                Delivered a two-part technical workshop for the <b>OLIVE-LEARN</b> program at
-                <b><a href="https://www.linkedin.com/company/olivesoft/posts/?feedView=all" target="_blank" rel="noopener">OLIVESOFT</a></b>:
-              </p>
+              <p class="entry__summary">Two sessions for the <b><a href="https://www.linkedin.com/company/olivesoft/posts/?feedView=all" target="_blank" rel="noopener">OLIVE-LEARN</a></b> programme, tracing a running program from the instruction pipeline down to the logic gates that execute it.</p>
               <ul class="points">
-                <li>
-                  <b>Part 1 &mdash; Efficient Code Execution &amp; Hardware Architectures:</b> modern
-                  computing architectures, CPU instruction pipelining, memory hierarchies &amp; caching,
-                  DMA, NIC, and APU interactions.
-                </li>
-                <li>
-                  <b>Part 2 &mdash; Circuit-Level Computation &amp; Storage:</b> designed foundational
-                  computing units from basic SR &amp; D latches up to a 4-bit register, 1-bit / 4-bit
-                  adders, and an Arithmetic Logic Unit (ALU).
-                </li>
+                <li><b>Part 1 &mdash; Efficient code execution:</b> CPU instruction pipelining, the memory hierarchy and caching, and how DMA, the NIC and the APU move work off the core.</li>
+                <li><b>Part 2 &mdash; Circuit-level computation:</b> built up from SR and D latches to a 4-bit register, 1-bit and 4-bit adders, and an arithmetic logic unit.</li>
               </ul>
             </li>
-
             <li class="entry">
-              <p class="entry__title">
-                Assembly Programming Workshop
-                <a class="icon-link" href="https://github.com/youssefboutaleb/Assembly_workshop/tree/main" target="_blank" rel="noopener" title="Materials on GitHub">
-                  <img class="icon icon--sm" src="images/icons/github.svg" alt="Materials on GitHub" width="15" height="15">
-                </a>
+              <p class="entry__title">Assembly Programming Workshop
+                <a class="icon-link" href="https://github.com/youssefboutaleb/Assembly_workshop" target="_blank" rel="noopener" title="Workshop materials on GitHub"><img class="icon icon--sm" src="images/icons/github.svg" alt="Workshop materials on GitHub" width="15" height="15"></a>
               </p>
-              <p class="entry__period">2023</p>
-              <ul class="tag-list">
-                <li class="tag tag--accent">Hands-on</li>
-                <li class="tag tag--neutral">Securinets Club</li>
+              <p class="entry__period"><time datetime="2023">2023</time></p>
+              <ul class="tag-list" aria-label="Workshop details">
+                <li class="tag tag--format">Hands-on Lab</li>
+                <li class="tag tag--mode">On-site</li>
+                <li class="tag tag--audience">Engineering Students</li>
+                <li class="tag tag--host">Securinets ENIS</li>
               </ul>
-              <p class="entry__summary">
-                Conducted a hands-on workshop exploring low-level programming with Assembly language,
-                organized with the <b>Securinets Club</b> at <b>ENIS</b>.
-              </p>
+              <p class="entry__summary">Low-level programming taught from the hardware upward, with every slide, exercise and solution published as a public repository.</p>
+              <ul class="points">
+                <li>Hardware groundwork: chipsets, buses, and the path an instruction takes to reach the CPU.</li>
+                <li>ARM assembly: definitions, the core instruction set and worked examples, followed by guided exercises.</li>
+                <li>Each exercise solved twice &mdash; once in ARM assembly, once in Python &mdash; so the cost of an abstraction was visible side by side.</li>
+                <li>Extension material: a Breakout game implemented in x86 assembly alongside C and C++ versions, for participants continuing on their own.</li>
+              </ul>
             </li>
-
             <li class="entry">
               <p class="entry__title">Introduction to Competitive Programming</p>
-              <p class="entry__period">2023</p>
-              <ul class="tag-list">
-                <li class="tag tag--accent">Instructor</li>
-                <li class="tag tag--neutral">IEEE Student Branch</li>
+              <p class="entry__period"><time datetime="2023">2023</time></p>
+              <ul class="tag-list" aria-label="Workshop details">
+                <li class="tag tag--format">Workshop</li>
+                <li class="tag tag--mode">On-site</li>
+                <li class="tag tag--audience">Engineering Students</li>
+                <li class="tag tag--host">IEEE Student Branch ENIS</li>
               </ul>
-              <p class="entry__summary">
-                Conducted a workshop on problem-solving concepts, data structures, and algorithm
-                patterns, in collaboration with the <b>IEEE Student Branch</b> at <b>ENIS</b>.
-              </p>
+              <p class="entry__summary">An entry point into contest-style problem solving, aimed at students with working code but no method for choosing an approach.</p>
+              <ul class="points">
+                <li>Complexity analysis first: reading a problem&rsquo;s constraints to rule out approaches before writing any code.</li>
+                <li>The core data structures and the recurring algorithm patterns that most contest problems reduce to.</li>
+              </ul>
             </li>
-
             <li class="entry">
               <p class="entry__title">Introduction to Python</p>
-              <p class="entry__period">2022</p>
-              <ul class="tag-list">
-                <li class="tag tag--accent">Instructor</li>
-                <li class="tag tag--neutral">IEEE Student Branch</li>
+              <p class="entry__period"><time datetime="2022">2022</time></p>
+              <ul class="tag-list" aria-label="Workshop details">
+                <li class="tag tag--format">Workshop</li>
+                <li class="tag tag--mode">Online</li>
+                <li class="tag tag--audience">Engineering Students</li>
+                <li class="tag tag--host">IEEE Student Branch ENIS</li>
               </ul>
-              <p class="entry__summary">
-                Conducted a beginner-friendly workshop covering Python fundamentals and practical
-                applications (building a console X and O game; reading and visualizing CSV data with
-                charts), organized with the <b>IEEE Student Branch</b> at <b>ENIS</b>.
-              </p>
+              <p class="entry__summary">A beginner track taught through two builds rather than through syntax slides.</p>
+              <ul class="points">
+                <li>A console tic-tac-toe game: representing board state, validating input and detecting a win.</li>
+                <li>A short data exercise: reading a CSV file and plotting it as charts.</li>
+              </ul>
             </li>
-
           </ul>
         </section>
       </main>

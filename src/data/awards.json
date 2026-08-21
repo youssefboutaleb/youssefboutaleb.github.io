@@ -1,0 +1,93 @@
+[
+  {
+    "title": "Hello World v4.0",
+    "venue": "Sfax",
+    "year": "2024",
+    "placement": 1,
+    "type": "Competitive Programming",
+    "scope": "Regional",
+    "scale": { "count": 86, "unit": "teams" },
+    "points": [
+      "Solved 8 problems"
+    ]
+  },
+  {
+    "title": "Hello World v3.0",
+    "venue": "Sfax",
+    "year": "2023",
+    "placement": 2,
+    "type": "Competitive Programming",
+    "scope": "Regional",
+    "scale": { "count": 52, "unit": "teams" },
+    "points": [
+      "Solved 6 problems"
+    ]
+  },
+  {
+    "title": "TCPC 23",
+    "venue": "Tunisian Collegiate Programming Contest",
+    "year": "2023",
+    "placement": 13,
+    "type": "Competitive Programming",
+    "scope": "National",
+    "scale": { "count": 90, "unit": "teams" }
+  },
+  {
+    "title": "IEEEXtreme Programming Competition 17.0",
+    "year": "2023",
+    "placement": 643,
+    "type": "Competitive Programming",
+    "scope": "International",
+    "scale": { "count": 7094, "unit": "teams" },
+    "points": [
+      "Solved 6 problems"
+    ]
+  },
+  {
+    "title": "A2SV (Africa to Silicon Valley) GenAI Hackathon",
+    "year": "2023",
+    "placement": "Quarter-finalist",
+    "type": "Hackathon",
+    "scope": "African",
+    "scale": { "count": 40, "unit": "teams" },
+    "points": [
+      "Designed and built a healthcare GenAI prototype",
+      "Presented the business case and product pitch to the jury"
+    ]
+  },
+  {
+    "title": "TCPC 22",
+    "venue": "Tunisian Collegiate Programming Contest",
+    "year": "2022",
+    "placement": 21,
+    "type": "Competitive Programming",
+    "scope": "National",
+    "scale": { "count": 80, "unit": "teams" },
+    "points": [
+      "Solved 5 problems"
+    ]
+  },
+  {
+    "title": "IEEEXtreme Programming Competition 16.0",
+    "year": "2022",
+    "placement": 1432,
+    "type": "Competitive Programming",
+    "scope": "International",
+    "scale": { "count": 6376, "unit": "teams" },
+    "points": [
+      "Solved 6 problems"
+    ]
+  },
+  {
+    "title": "Hello World v2.0",
+    "venue": "Sfax",
+    "year": "2022",
+    "placement": 7,
+    "type": "Competitive Programming",
+    "scope": "Regional",
+    "scale": { "count": 21, "unit": "teams" },
+    "points": [
+      "Solved 4 problems"
+    ]
+  }
+]

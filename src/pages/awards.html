@@ -7,88 +7,28 @@ nav: awards
   <h1 class="page-title">Honors &amp; Awards</h1>
 </header>
 
-<section class="block" aria-labelledby="awards-list">
-  <h3 class="block__title" id="awards-list">Competitions</h3>
+<section class="block" aria-labelledby="competitions">
+  <h3 class="block__title" id="competitions">Competitions</h3>
+  <p class="block__intro">
+    Demonstrated algorithmic problem solving, complexity analysis, and collaborative execution
+    under strict time constraints. These competitive programming contests reflect a consistent
+    track record of high placement across regional, national, and international engineering talent.
+  </p>
   <ul class="entries">
+    <!-- Records live in src/data/awards.json; tag order and colour come
+         from MODELS in tools/build.py, and the two blocks are a filter on
+         `type` in build(). Never hand-write entries here. -->
+{{ build.competitions }}
+  </ul>
+</section>
 
-    <li class="entry">
-      <p class="entry__title">Hello World v4.0 <span class="entry__role">&mdash; Sfax</span></p>
-      <p class="entry__period"><time datetime="2024">2024</time></p>
-      <ul class="tag-list">
-        <li class="tag tag--honor">1st Place (Winner)</li>
-        <li class="tag tag--neutral">86 Teams</li>
-      </ul>
-      <ul class="points">
-        <li>1st of 86 teams</li>
-        <li>Solved 8 problems</li>
-      </ul>
-    </li>
-
-    <li class="entry">
-      <p class="entry__title">Hello World v3.0 <span class="entry__role">&mdash; Sfax</span></p>
-      <p class="entry__period"><time datetime="2023">2023</time></p>
-      <ul class="tag-list">
-        <li class="tag tag--honor">2nd Place</li>
-        <li class="tag tag--neutral">52 Teams</li>
-      </ul>
-      <ul class="points">
-        <li>2nd of 52 teams</li>
-        <li>Solved 6 problems</li>
-      </ul>
-    </li>
-
-    <li class="entry">
-      <p class="entry__title">A2SV (Africa to Silicon Valley) GenAI Hackathon</p>
-      <p class="entry__period"><time datetime="2023">2023</time></p>
-      <ul class="tag-list">
-        <li class="tag tag--accent">Quarter-finalist</li>
-        <li class="tag tag--neutral">40 Teams</li>
-      </ul>
-      <ul class="points">
-        <li>Quarter-finalist of 40 teams</li>
-        <li>Designed and built a healthcare GenAI prototype</li>
-        <li>Presented the business case and product pitch to the jury</li>
-      </ul>
-    </li>
-
-    <li class="entry">
-      <p class="entry__title">TCPC <span class="entry__role">&mdash; Tunisian Collegiate Programming Contest</span></p>
-      <p class="entry__period"><time datetime="2022">2022</time></p>
-      <ul class="tag-list">
-        <li class="tag tag--accent">National Finalist</li>
-        <li class="tag tag--neutral">80 Teams</li>
-      </ul>
-      <ul class="points">
-        <li>21st of 80 teams</li>
-        <li>Solved 5 problems</li>
-      </ul>
-    </li>
-
-    <li class="entry">
-      <p class="entry__title">IEEEXtreme Programming Competition 16.0</p>
-      <p class="entry__period"><time datetime="2022">2022</time></p>
-      <ul class="tag-list">
-        <li class="tag tag--accent">International</li>
-        <li class="tag tag--neutral">24-Hour Marathon</li>
-      </ul>
-      <ul class="points">
-        <li>International 24-hour programming marathon</li>
-        <li>Solved 6 problems</li>
-      </ul>
-    </li>
-
-    <li class="entry">
-      <p class="entry__title">Hello World v2.0 <span class="entry__role">&mdash; Sfax</span></p>
-      <p class="entry__period"><time datetime="2022">2022</time></p>
-      <ul class="tag-list">
-        <li class="tag tag--accent">Finalist</li>
-        <li class="tag tag--neutral">21 Teams</li>
-      </ul>
-      <ul class="points">
-        <li>7th of 21 teams</li>
-        <li>Solved 4 problems</li>
-      </ul>
-    </li>
-
+<section class="block" aria-labelledby="hackathons">
+  <h3 class="block__title" id="hackathons">Hackathons</h3>
+  <p class="block__intro">
+    Rapid prototyping, product design, and end-to-end technical delivery under tight deadlines,
+    translating business requirements and emerging technologies into working solutions.
+  </p>
+  <ul class="entries">
+{{ build.hackathons }}
   </ul>
 </section>

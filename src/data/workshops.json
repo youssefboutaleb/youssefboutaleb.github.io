@@ -1,0 +1,58 @@
+[
+  {
+    "title": "Introduction to CS Fundamentals (Hardware)",
+    "year": "2026",
+    "format": "Workshop Series",
+    "mode": "Online",
+    "audience": "Professionals &amp; Trainees",
+    "host": "OLIVESOFT",
+    "slides": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fyoussefboutaleb.github.io%2Fdata%2FIntroduction_to_CS_Fundamentals_Hardware_Workshop.pptx",
+    "summary": "Two sessions for the <b><a href=\"https://www.linkedin.com/company/olivesoft/posts/?feedView=all\" target=\"_blank\" rel=\"noopener\">OLIVE-LEARN</a></b> programme, tracing a running program from the instruction pipeline down to the logic gates that execute it.",
+    "points": [
+      "<b>Part 1 &mdash; Efficient code execution:</b> CPU instruction pipelining, the memory hierarchy and caching, and how DMA, the NIC and the APU move work off the core.",
+      "<b>Part 2 &mdash; Circuit-level computation:</b> built up from SR and D latches to a 4-bit register, 1-bit and 4-bit adders, and an arithmetic logic unit."
+    ]
+  },
+  {
+    "title": "Assembly Programming Workshop",
+    "year": "2023",
+    "format": "Hands-on Lab",
+    "mode": "On-site",
+    "audience": "Engineering Students",
+    "host": "Securinets ENIS",
+    "repo": "https://github.com/youssefboutaleb/Assembly_workshop",
+    "summary": "Low-level programming taught from the hardware upward, with every slide, exercise and solution published as a public repository.",
+    "points": [
+      "Hardware groundwork: chipsets, buses, and the path an instruction takes to reach the CPU.",
+      "ARM assembly: definitions, the core instruction set and worked examples, followed by guided exercises.",
+      "Each exercise solved twice &mdash; once in ARM assembly, once in Python &mdash; so the cost of an abstraction was visible side by side.",
+      "Extension material: a Breakout game implemented in x86 assembly alongside C and C++ versions, for participants continuing on their own."
+    ]
+  },
+  {
+    "title": "Introduction to Competitive Programming",
+    "year": "2023",
+    "format": "Workshop",
+    "mode": "On-site",
+    "audience": "Engineering Students",
+    "host": "IEEE Student Branch ENIS",
+    "summary": "An entry point into contest-style problem solving, aimed at students with working code but no method for choosing an approach.",
+    "points": [
+      "Complexity analysis first: reading a problem&rsquo;s constraints to rule out approaches before writing any code.",
+      "The core data structures and the recurring algorithm patterns that most contest problems reduce to."
+    ]
+  },
+  {
+    "title": "Introduction to Python",
+    "year": "2022",
+    "format": "Workshop",
+    "mode": "Online",
+    "audience": "Engineering Students",
+    "host": "IEEE Student Branch ENIS",
+    "summary": "A beginner track taught through two builds rather than through syntax slides.",
+    "points": [
+      "A console tic-tac-toe game: representing board state, validating input and detecting a win.",
+      "A short data exercise: reading a CSV file and plotting it as charts."
+    ]
+  }
+]

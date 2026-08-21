@@ -4,6 +4,12 @@ The reference for every visual and structural decision on this site.
 The implementation lives in [`assets/css/main.css`](assets/css/main.css); this
 document explains the reasoning so the system can be extended without drifting.
 
+Its companion is [`awards.md`](awards.md), which owns the *information* model:
+what a record states about itself and in what order (with
+[`workshops.md`](workshops.md) and [`teaching.md`](teaching.md) declaring the
+models built on it). This document owns how any of that looks. The two meet at one point — a metadata category name binds to a
+`.tag--<category>` rule — and neither restates the other.
+
 ---
 
 ## The brief
@@ -162,15 +168,116 @@ carries that link's accessible name in its `alt`.
 ## 7. Tags
 
 The one addition to the classic vocabulary, and the one piece of colour on the
-page. Tags **classify**; they never decorate. Five semantic variants, no sixth:
+page. Tags **classify**; they never decorate. There are two families.
+
+### 7.1 Metadata tags — one treatment per category
+
+A record describes itself through a fixed, declared set of metadata categories
+rendered in a fixed order. **That model — which categories exist, what they
+mean, what order they take — is defined in the model documents
+([`awards.md`](awards.md), [`workshops.md`](workshops.md),
+[`teaching.md`](teaching.md), [`research.md`](research.md)), not here.** What belongs here is the single
+visual rule that makes it work:
+
+> **The treatment belongs to the category, never to the value.** Amber does not
+> mean "good", it means *this tag is a placement*. That is what lets a tag list
+> be read positionally after the first record instead of word by word — and it
+> is why a value may never be given styling of its own.
+
+Every declared category therefore binds to exactly one `.tag--<category>` rule.
+There is one model per record type. The four in use today:
+
+**Awards** — declared in [`awards.md`](awards.md)
+
+| Variant | Colour |
+|---|---|
+| `.tag--placement` | Amber (+ medal disc, below) |
+| `.tag--type` | Blue |
+| `.tag--scope` | Violet |
+| `.tag--scale` | Grey, regular weight |
+
+**Workshops** — declared in [`workshops.md`](workshops.md)
+
+| Variant | Colour |
+|---|---|
+| `.tag--format` | Blue |
+| `.tag--mode` | Violet |
+| `.tag--audience` | Amber |
+| `.tag--host` | Grey, regular weight |
+
+**Teaching** — declared in [`teaching.md`](teaching.md)
+
+| Variant | Colour |
+|---|---|
+| `.tag--level` | Amber |
+| `.tag--workload` | Blue |
+| `.tag--scale` | Grey, regular weight — *the same rule as Awards* |
+
+**Research** — declared in [`research.md`](research.md)
+
+| Variant | Colour |
+|---|---|
+| `.tag--status` | Amber |
+| `.tag--authorship` | Blue |
+| `.tag--publisher` | Grey, regular weight |
+
+`status` is the sharpest illustration of the rule above. *Published* and *In
+Progress* take the **same** amber, because the treatment says *this tag is a
+status* and never *this status is the good one*. The hand-written version of
+the Research page gave *Published* a green and *In Progress* an amber, which
+read as a verdict on the record rather than as a category — and would have made
+the tag unreadable positionally the moment a third status appeared.
+
+`scale` is borrowed rather than added: it means the size of the group a record
+involved wherever it appears — `86 teams`, `12 students` — so it keeps one
+name, one meaning and one rule across the models that use it. A shared name
+that meant two different things would be the defect; a shared name that means
+one thing is the system working.
+
+**No two categories in one model may share a treatment.** Two *different*
+models may reuse a hue, because they are never read side by side — a reader
+learns the mapping per page, from the first record. What breaks the system is
+ambiguity within a single tag list, not across the site. Adding a category
+means adding one row here and one rule in `main.css` — never a colour decision
+inside a page.
+
+`.tag--scale` and `.tag--host` are the metadata tags at regular weight: a field
+size, a cohort size, the organisation that ran the room. All are context for
+the record rather than claims of their own, so the eye lands on the categories
+before them first.
+
+**A category holds one value.** An earlier draft of the Teaching model gave
+`stack` a list of tool names, rendering one tag per tool. It was removed: a run
+of tags whose length changes per record destroys the positional reading the
+fixed order exists to provide, and a tool name means more beside the thing it
+was used for than it does in a row. Technologies are now named inside the
+syllabus module that teaches them.
+
+**Medals.** First, second and third place carry a small struck-metal disc
+(`.medal--gold` / `--silver` / `--bronze`) before the label. It exists so the
+top results are recognised *before* the text is read, and it is what makes
+wording like "Winner", "Champion" or "Runner-up" unnecessary — the label stays
+factual and the medal does the signalling. The disc is drawn in CSS, sized in
+`em` so it tracks the type, `aria-hidden` because the text beside it already
+says "1st Place", and forced through to the printer because greyscale would
+lose the one thing it encodes.
+
+### 7.2 Utility tags — single facts
+
+For the things that are not dimensions of a record. Written by hand where they
+apply; no ordering rule, because they do not form a sequence.
 
 | Variant | Meaning | Example |
 |---|---|---|
-| `.tag--neutral` | Factual context | `Azure`, `86 Teams` |
-| `.tag--accent` | Role or category | `Instructor`, `Graduate Level` |
+| `.tag--neutral` | Factual context | `Azure`, `Graduate Level` |
+| `.tag--accent` | Role or category | `Instructor` |
 | `.tag--success` | Verified, published, shipped | `Official Plugin PR #585` |
-| `.tag--honor` | Distinction or pending status | `1st Place`, `In Progress` |
+| `.tag--honor` | Distinction or pending status | `In Progress` |
 | `.tag--critical` | Downloadable artefact | `Slides (.pptx)` |
+
+Violet is the only hue this system added, and it was added for scope alone: it
+had to be unmistakable beside the blue that a record's type carries, without
+borrowing the green that means *verified* or the red that means *download*.
 
 ## 8. Interactive states
 
@@ -193,10 +300,24 @@ item**, exactly as the original CV pages were written by hand:
 ```
 • Title — Role                    .entry__title / .entry__role
   Aug 2024 – Present              .entry__period   (italic, muted)
-  [tags]                          .tag-list
+  [tags]                          .tag-list        (§7, fixed order)
   – point                         .points
   – point
 ```
+
+The tags carry the record's *metadata*; the bullets carry its *substance*. A
+fact stated by a tag is not repeated in a bullet — "1st Place" and "86 teams"
+are the tag list's job, so the bullets are free to say what was actually done.
+
+**Records that carry a metadata model are stored as data, not markup.**
+`src/data/awards.json`, `src/data/workshops.json`, `src/data/teaching.json` and
+`src/data/research.json` hold the records; the matching fragment in `src/pages/` holds only the section
+heading and its intro, and interpolates the rendered block. This is what makes
+the ordering and colour rules structurally true rather than a convention
+someone has to remember. [`awards.md`](awards.md) states the rules a new page
+follows to do the same; [`workshops.md`](workshops.md),
+[`teaching.md`](teaching.md) and [`research.md`](research.md) are the worked
+models.
 
 Optional `.entry__group` subdivides a long record (Data Integration / Cloud &
 Security / Observability), and `.issuer` heads a certification group with its
@@ -290,3 +411,11 @@ The site answers hiring questions in order:
 5. Run `python3 tools/check.py` — it fails on classes used in markup but absent
    from the stylesheet, undefined tokens, inline styles and broken links, and
    reports any CSS rule or token nothing uses.
+
+A new **metadata category** is not a new component. Declare it in the model
+document for its page ([`awards.md`](awards.md), [`workshops.md`](workshops.md),
+[`teaching.md`](teaching.md)), order it in `MODELS` in `tools/build.py`, give it
+one `.tag--<category>` rule in `main.css`, and add its row to §7.1. Never decide
+ordering or colour inside a page. Before adding one, check whether an existing
+category already means what you need — reusing `format` and `scale` cost two
+lines; a synonym would have cost a colour.

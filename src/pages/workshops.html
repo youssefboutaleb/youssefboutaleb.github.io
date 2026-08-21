@@ -1,95 +1,22 @@
 <!--
 title: Workshops
-description: Technical workshops on computer architecture, assembly, competitive programming and Python, delivered for OLIVESOFT, the IEEE Student Branch and Securinets at ENIS.
+description: Technical workshops on computer architecture, ARM assembly, competitive programming and Python, delivered for OLIVESOFT, Securinets ENIS and the IEEE Student Branch at ENIS.
 nav: workshops
 -->
 <header class="page-header">
   <h1 class="page-title">Workshops</h1>
 </header>
 
-<section class="block" aria-labelledby="workshop-list">
-  <h3 class="block__title" id="workshop-list">Sessions Delivered</h3>
+<section class="block" aria-labelledby="workshops-delivered">
+  <h3 class="block__title" id="workshops-delivered">Workshops Delivered</h3>
+  <p class="block__intro">
+    Sessions designed and taught for a company training programme and for two engineering-school
+    clubs, covering computer architecture and digital logic, ARM assembly, competitive programming
+    and Python. Each was written from scratch: slides, exercises and worked solutions.
+  </p>
   <ul class="entries">
-
-    <li class="entry">
-      <p class="entry__title">
-        Introduction to CS Fundamentals (Hardware)
-        <a class="icon-link" href="data/Introduction_to_CS_Fundamentals_Hardware_Workshop.pptx" target="_blank" rel="noopener" title="Download the slides (PPTX)">
-          <img class="icon icon--sm" src="images/icons/powerpoint.svg" alt="Download the slides (PPTX)" width="15" height="15">
-        </a>
-      </p>
-      <p class="entry__period">2026</p>
-      <ul class="tag-list">
-        <li class="tag tag--accent">Instructor</li>
-        <li class="tag tag--neutral">OLIVESOFT</li>
-        <li>
-          <a class="tag tag--critical link-external" href="data/Introduction_to_CS_Fundamentals_Hardware_Workshop.pptx" target="_blank" rel="noopener" title="Download slides (PPTX)">
-            <img class="icon icon--xs" src="images/icons/powerpoint.svg" alt="" width="12" height="12">Slides (.pptx)
-          </a>
-        </li>
-      </ul>
-      <p class="entry__summary">
-        Delivered a two-part technical workshop for the <b>OLIVE-LEARN</b> program at
-        <b><a href="https://www.linkedin.com/company/olivesoft/posts/?feedView=all" target="_blank" rel="noopener">OLIVESOFT</a></b>:
-      </p>
-      <ul class="points">
-        <li>
-          <b>Part 1 &mdash; Efficient Code Execution &amp; Hardware Architectures:</b> modern
-          computing architectures, CPU instruction pipelining, memory hierarchies &amp; caching,
-          DMA, NIC, and APU interactions.
-        </li>
-        <li>
-          <b>Part 2 &mdash; Circuit-Level Computation &amp; Storage:</b> designed foundational
-          computing units from basic SR &amp; D latches up to a 4-bit register, 1-bit / 4-bit
-          adders, and an Arithmetic Logic Unit (ALU).
-        </li>
-      </ul>
-    </li>
-
-    <li class="entry">
-      <p class="entry__title">
-        Assembly Programming Workshop
-        <a class="icon-link" href="https://github.com/youssefboutaleb/Assembly_workshop/tree/main" target="_blank" rel="noopener" title="Materials on GitHub">
-          <img class="icon icon--sm" src="images/icons/github.svg" alt="Materials on GitHub" width="15" height="15">
-        </a>
-      </p>
-      <p class="entry__period">2023</p>
-      <ul class="tag-list">
-        <li class="tag tag--accent">Hands-on</li>
-        <li class="tag tag--neutral">Securinets Club</li>
-      </ul>
-      <p class="entry__summary">
-        Conducted a hands-on workshop exploring low-level programming with Assembly language,
-        organized with the <b>Securinets Club</b> at <b>ENIS</b>.
-      </p>
-    </li>
-
-    <li class="entry">
-      <p class="entry__title">Introduction to Competitive Programming</p>
-      <p class="entry__period">2023</p>
-      <ul class="tag-list">
-        <li class="tag tag--accent">Instructor</li>
-        <li class="tag tag--neutral">IEEE Student Branch</li>
-      </ul>
-      <p class="entry__summary">
-        Conducted a workshop on problem-solving concepts, data structures, and algorithm
-        patterns, in collaboration with the <b>IEEE Student Branch</b> at <b>ENIS</b>.
-      </p>
-    </li>
-
-    <li class="entry">
-      <p class="entry__title">Introduction to Python</p>
-      <p class="entry__period">2022</p>
-      <ul class="tag-list">
-        <li class="tag tag--accent">Instructor</li>
-        <li class="tag tag--neutral">IEEE Student Branch</li>
-      </ul>
-      <p class="entry__summary">
-        Conducted a beginner-friendly workshop covering Python fundamentals and practical
-        applications (building a console X and O game; reading and visualizing CSV data with
-        charts), organized with the <b>IEEE Student Branch</b> at <b>ENIS</b>.
-      </p>
-    </li>
-
+    <!-- Records live in src/data/workshops.json; tag order and colour come
+         from MODELS in tools/build.py. Never hand-write entries here. -->
+{{ build.workshops }}
   </ul>
 </section>
