@@ -727,6 +727,13 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
      .tag--kind      — Kanboard Plugin, Notebook                (blue)
      .tag--stack     — Python · YOLOv8 · FastAPI · Gradio       (grey)
 
+     experience
+     .tag--domain    — E-commerce & Retail                      (blue)
+     .tag--stack     — Talend · Azure · Datadog · Salesforce    (grey, reused)
+
+     education
+     .tag--accreditation — EUR-ACE® Accredited        (grey, reused, linked)
+
    `scale` is shared rather than duplicated: it means the size of the group a
    record involved on both pages that use it — 86 teams, 12 students — so it
    keeps one name, one meaning and one rule. `format` is shared on the same
@@ -812,15 +819,31 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 .tag--upstream   { background: var(--status-honor-bg);  color: var(--status-honor-fg);   border-color: var(--status-honor-br); }
 .tag--kind       { background: var(--status-accent-bg); color: var(--status-accent-fg);  border-color: var(--status-accent-br); }
 
+/* `domain` is blue because it is the substance of the record — the same slot
+   `type` holds on an award and `kind` holds on a project. It says what the
+   data was about, which the job title beside it does not: two roles both
+   called Data Integration Engineer moved e-commerce orders in one case and
+   infrared sensor readings in the other. */
+.tag--domain     { background: var(--status-accent-bg); color: var(--status-accent-fg);  border-color: var(--status-accent-br); }
+
 /* The last category of each model is context rather than a claim — how large
    the field was, who hosted the room, who published it — so it is the one
    metadata tag that reads at regular weight, and the eye lands on the ones
-   before it first. */
+   before it first.
+
+   `accreditation` joins them rather than taking the utility success-green the
+   hand-written Career page gave it. It answers the same question `publisher`,
+   `host` and `platform` answer — who stands behind this — and DESIGN.md's rule
+   is to reuse the treatment when the question is the same. The green was doing
+   something else: it graded the value, telling the reader the accreditation
+   was the good news, when the category itself is the information and a degree
+   without one simply renders no tag. */
 .tag--scale,
 .tag--host,
 .tag--publisher,
 .tag--platform,
-.tag--stack {
+.tag--stack,
+.tag--accreditation {
   background: var(--status-neutral-bg);
   color: var(--status-neutral-fg);
   border-color: var(--status-neutral-br);

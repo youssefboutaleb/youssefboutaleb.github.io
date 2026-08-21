@@ -152,8 +152,9 @@ claims. Full rationale in [teaching.md](teaching.md).
 
 `block` selects which of the page's two sections the record lands in and is
 never rendered — unlike Awards, which filters on `type` and then tags it, no
-record here repeats the heading it sits under. `upstream` is the only category
-on the site whose value carries a link: `meta_url` builds the pull request
+record here repeats the heading it sits under. `upstream` was the first of the
+site's two categories whose value carries a link (`accreditation` on Education
+is the other): `meta_url` builds the pull request
 address from the stored repo and number, and the tag *is* the link, keeping its
 category's amber. That amber is deliberate — `state` is stored raw and
 `UPSTREAM_STATES` turns `open` into `Submitted upstream` and `merged` into
@@ -235,6 +236,115 @@ Where an article documents a project that has its own Projects entry, the link
 goes on the *project* record as a utility tag — the article stays declared once
 here and rendered once on Research.
 
+### Adding a job
+
+`src/data/experience.json`, rendering `domain → stack`:
+
+```json
+{
+  "company": "JACQUEMUS",
+  "url": "https://www.linkedin.com/company/jacquemus/posts/?feedView=all",
+  "role": "Data Integration Engineer &amp; Operations Engineer",
+  "start": "2024-08",
+  "domain": "E-commerce &amp; Retail",
+  "stack": ["Talend", "Azure", "Datadog", "Salesforce"],
+  "groups": [
+    { "title": "Observability", "points": ["Deployed a real-time Datadog monitoring solution …"] }
+  ]
+}
+```
+
+Two categories, because two is what the records honestly support. The
+hand-written page carried three to five loose technology chips per job, with
+the headline tool in `.tag--accent` and the rest in `.tag--neutral`: a run whose
+length changed per record, so no column existed to read down, and an accent that
+graded a *value* rather than naming a category. They are now one `stack` tag,
+the same category `projects.json` declares, capped at four names. `domain` is
+the blue substance slot — it answers what the *data* was about, which the job
+title does not: two of the three roles here are titled Data Integration
+Engineer, and one moved e-commerce orders while the other moved service-desk
+tickets. There is deliberately **no** `engagement` category (permanent /
+contract / internship): the fact is not recorded anywhere, and rule 5 says a
+gap beats an invented placeholder.
+
+Dates are stored raw as `"YYYY-MM"` and labelled by `month_year`, so `Aug 2024`
+and `August 2024` cannot both appear. Omitting `end` renders `Present` — the
+word lives in the renderer, because *Present* is not a date and a record that
+stores one keeps claiming the job after it ends. `tenure_sort_key` sorts
+newest-first on `start`, not `end`, so the one record without an end date needs
+no sentinel to stay on top. A role that did several separable things carries
+`groups`; a short one carries a flat `points`. Full rationale in
+[career.md](career.md).
+
+### Adding a qualification
+
+`src/data/education.json`, rendering `accreditation` — a **one-category
+model**, and the clearest illustration that categories are chosen for the
+reader rather than for symmetry:
+
+```json
+{
+  "degree": "Computer Science Engineer&rsquo;s Degree",
+  "institution": "ENIS",
+  "institution_full": "National Engineering School of Sfax",
+  "url": "https://enis.rnu.tn/",
+  "location": "Sfax",
+  "start": 2021,
+  "end": 2024,
+  "accreditation": {
+    "name": "EUR-ACE&reg; Accredited",
+    "url": "https://www.enaee.eu/eur-ace-system/"
+  }
+}
+```
+
+The degree is the title, the institution trails it, the years are the period
+line — a `field` or `level` category would restate one of the three. What is
+left is the single thing the title cannot say: who accredits the programme. The
+second record omits `accreditation` and renders zero tags.
+
+`accreditation` is the site's second linked metadata tag after `upstream`, and
+it is **grey**, not the success-green the hand-written page gave it. It answers
+the same question `publisher`, `host`, `platform` and `stack` answer — who
+stands behind this — so it takes their treatment; the green was grading the
+value rather than naming the category, and green is a *utility* meaning
+([DESIGN.md §7](DESIGN.md)).
+
+### Adding a certification or a course
+
+`src/data/certifications.json` and `src/data/courses.json`, both rendered by
+`render_credentials` into the `.issuer` component:
+
+```json
+{
+  "issuer": "Datadog",
+  "icon": "datadog.svg",
+  "credentials": [
+    { "name": "Datadog Certified: Fundamentals", "url": "https://www.credly.com/badges/…" }
+  ]
+}
+```
+
+These are the site's only records that are **data without a metadata model**,
+and deliberately so: who issued a credential is its only dimension a reader
+needs, and that is already the group heading with the issuer's brand mark on
+it — a tag would restate the heading on every row. `icon` is a bare filename;
+the renderer builds `images/icons/<icon>`.
+
+The two files key their groups differently, on `issuer` and on `platform`, and
+one renderer takes the field name as an argument. An issuer examined the holder;
+a platform hosted the lessons. One noun for both would let a Udemy course borrow
+a MuleSoft certification's authority — the same distinction `publisher` and
+`platform` make on Research.
+
+Whether a link is marked external is **derived from its URL**, never declared: a
+Credly badge is the issuer's own record and gets `.link-external`, while
+`data/DP-300.png` is a scan this site serves and renders as a plain link, so the
+external marker keeps meaning *checkable at the source*. The rule for adding a
+row is that the link must be the issuer's record of the credential — a
+course's catalogue page is not evidence anyone completed it. Full rationale in
+[career.md](career.md).
+
 ### What `check.py` verifies
 
 - Every local `href`/`src` resolves to a file that exists, and every in-page
@@ -270,8 +380,8 @@ Read it before adding a page of records. DESIGN.md defines how a tag looks;
 awards.md defines what it says.
 
 **[workshops.md](workshops.md)**, **[teaching.md](teaching.md)**,
-**[research.md](research.md)**, **[writing.md](writing.md)** and
-**[projects.md](projects.md)** are that
+**[research.md](research.md)**, **[writing.md](writing.md)**,
+**[projects.md](projects.md)** and **[career.md](career.md)** are that
 convention applied to a block each: the declared categories for the record, why
 they are in that order, the permitted value for each, and what deliberately
 stays out of the model. `teaching.md` also covers the three rules the third
@@ -289,6 +399,15 @@ tested against a live temptation: a pull request that has not been merged takes
 the same amber as one that has, states which it is in words, and links to
 itself so the claim can be checked — the earlier hand-written page had styled
 it success-green instead, asserting in colour what the work had not yet earned.
+`career.md` adds the seventh and eighth. A model may hold a **single**
+category — Education declares only `accreditation`, because the degree, the
+institution and the years are already on the record and a category that
+restates one of them is padding. And a set of records may be data with **no**
+model at all: certifications and courses group by issuer, which is the only
+dimension they have, so the `.issuer` heading carries it and no tag repeats it.
+It also documents the last loose-chip run on the site — the Career page's
+per-job technology tags — and why a varying-length run with one accented
+"important" value broke both the one-value rule and rule 4.
 
 `awards.md` doubles as the model document for its own page, since the
 convention was generalised from it: the Awards declaration, the

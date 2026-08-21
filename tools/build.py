@@ -22,6 +22,7 @@ import json
 import re
 import sys
 from pathlib import Path
+from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "src"
@@ -119,6 +120,8 @@ MODELS = {
     "research": ("status", "authorship", "publisher"),
     "writing": ("format", "reach", "platform"),
     "projects": ("upstream", "kind", "stack"),
+    "experience": ("domain", "stack"),
+    "education": ("accreditation",),
 }
 
 # Courses run on a two-semester year. Fall precedes Spring inside one academic
@@ -136,6 +139,8 @@ MODEL_LABELS = {
     "research": "Publication details",
     "writing": "Article details",
     "projects": "Project details",
+    "experience": "Role details",
+    "education": "Programme details",
 }
 
 # The top three placements carry a medal disc. It replaces wording like
@@ -213,6 +218,11 @@ def meta_label(field: str, value) -> tuple[str, str]:
         return "", " &middot; ".join(value)
     if field == "upstream":
         return "", f"{UPSTREAM_STATES[value['state']]} &middot; PR #{value['pr']}"
+    if field == "accreditation":
+        # The label is the accreditation's own name; the link beside it is the
+        # body that grants it. Stored as a pair for the same reason `upstream`
+        # is: the claim and its evidence travel together or not at all.
+        return "", value["name"]
     if field == "reach":
         # The pair is the unit, not two facts that happen to sit together.
         # Views alone counts everyone who opened the tab and reads alone hides
@@ -239,6 +249,8 @@ def meta_url(field: str, value) -> str | None:
     """
     if field == "upstream":
         return f"https://github.com/{value['repo']}/pull/{value['pr']}"
+    if field == "accreditation":
+        return value["url"]
     return None
 
 
@@ -271,6 +283,23 @@ def render_meta(record: dict, model: str, extra: tuple[str, ...] = ()) -> str:
         return ""
     body = "\n".join("  " + tag for tag in tags)
     return f'<ul class="tag-list" aria-label="{MODEL_LABELS[model]}">\n{body}\n</ul>'
+
+
+def render_group(title: str, points: list[str]) -> str:
+    """One `.entry__group` — a titled run of bullets inside a longer record.
+
+    Shared by Career and Teaching. The component was built for a job that does
+    three separable things (Data Integration / Cloud & Security / Observability)
+    and a syllabus reuses it unchanged, so it is defined once here rather than
+    twice inside the two renderers that emit it.
+    """
+    items = "\n".join(f"    <li>{point}</li>" for point in points)
+    return (
+        '<div class="entry__group">\n'
+        f'  <p class="entry__group-title">{title}</p>\n'
+        f'  <ul class="points">\n{items}\n  </ul>\n'
+        "</div>"
+    )
 
 
 def render_award(record: dict) -> str:
@@ -573,24 +602,162 @@ def render_course(record: dict) -> str:
     if record.get("summary"):
         parts.append(f'<p class="entry__summary">{record["summary"]}</p>')
 
-    def group(title: str, points: list[str]) -> str:
-        items = "\n".join(f"    <li>{point}</li>" for point in points)
-        return (
-            '<div class="entry__group">\n'
-            f'  <p class="entry__group-title">{title}</p>\n'
-            f'  <ul class="points">\n{items}\n  </ul>\n'
-            "</div>"
-        )
-
     for number, module in enumerate(record.get("syllabus", []), start=1):
-        parts.append(group(f"Module {number} &mdash; {module['title']}", module["points"]))
+        parts.append(render_group(f"Module {number} &mdash; {module['title']}",
+                                  module["points"]))
 
     capstone = record.get("capstone")
     if capstone:
-        parts.append(group(f"Final Project &mdash; {capstone['title']}", capstone["points"]))
+        parts.append(render_group(f"Final Project &mdash; {capstone['title']}",
+                                  capstone["points"]))
 
     body = "\n".join(indent(part, 2) for part in parts if part)
     return f'<li class="entry">\n{body}\n</li>'
+
+
+# --- career -----------------------------------------------------------------
+
+# Months are abbreviated here and never in the data, so a record cannot be
+# stored as "Aug 2024" in one row and "August 2024" in the next — awards.md
+# rule 7, the same mechanism that turns `1` into `1st Place`.
+MONTHS = ("Jan", "Feb", "Mar", "Apr", "May", "Jun",
+          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+
+# A role with no end date is the one being held now. The word is produced by
+# the renderer rather than typed into `end`, because "Present" is not a date
+# and storing it as one is how a leaver's record keeps claiming a job.
+ONGOING = "Present"
+
+
+def month_year(value: str) -> str:
+    """Render a stored "YYYY-MM" as "Aug 2024"."""
+    year, month = value.split("-")
+    return f"{MONTHS[int(month) - 1]} {year}"
+
+
+def tenure_sort_key(record: dict) -> str:
+    """Newest first, on the start date.
+
+    Sorting on the *start* rather than the end is what keeps the current role
+    at the top: it is the only record with no end date, and ordering on a field
+    it does not have would need a sentinel that outranks every real date.
+    Stored as "YYYY-MM", so a plain string comparison is a chronological one.
+    """
+    return record["start"]
+
+
+def render_experience(record: dict) -> str:
+    """One job as the site-wide .entry record.
+
+    The company is the `entry__title` and the role trails it in `entry__role`,
+    the same shape an award uses for its venue: the reader is scanning for
+    where the work happened, and the title column stays a column.
+
+    The period is plain text rather than a `<time>` element, because it is a
+    range and `datetime` takes one instant. Teaching's academic terms render
+    the same way for the same reason.
+
+    A record carries either `groups` — a job that did several separable things
+    — or a flat `points` list. Nothing forces a short role into three headed
+    groups of one bullet each, which is what a single shape would have done.
+    """
+    company = record["company"]
+    if record.get("url"):
+        company = (
+            f'<a href="{record["url"]}" target="_blank" rel="noopener">{company}</a>'
+        )
+    title = f'{company}\n  <span class="entry__role">&mdash; {record["role"]}</span>'
+
+    end = month_year(record["end"]) if record.get("end") else ONGOING
+    period = f'{month_year(record["start"])} &ndash; {end}'
+
+    parts = [
+        f'<p class="entry__title">\n  {title}\n</p>',
+        f'<p class="entry__period">{period}</p>',
+        render_meta(record, "experience"),
+    ]
+    if record.get("summary"):
+        parts.append(f'<p class="entry__summary">{record["summary"]}</p>')
+    if record.get("points"):
+        points = "\n".join(f"  <li>{point}</li>" for point in record["points"])
+        parts.append(f'<ul class="points">\n{points}\n</ul>')
+    for group in record.get("groups", []):
+        parts.append(render_group(group["title"], group["points"]))
+
+    body = "\n".join(indent(part, 2) for part in parts if part)
+    return f'<li class="entry">\n{body}\n</li>'
+
+
+def render_education(record: dict) -> str:
+    """One qualification as the site-wide .entry record.
+
+    The degree is the title and the institution trails it, because a degree is
+    read for what it is before where it is from — the same ordering the CV this
+    page descends from used.
+
+    The institution's full name rides on the link's `title`, so the page can
+    print the abbreviation the reader is scanning for without the abbreviation
+    being the only thing on offer.
+    """
+    institution = record["institution"]
+    if record.get("url"):
+        institution = (
+            f'<a href="{record["url"]}" target="_blank" rel="noopener"'
+            f' title="{record["institution_full"]}">{institution}</a>'
+        )
+    if record.get("location"):
+        institution += f', {record["location"]}'
+
+    period = f'{record["start"]} &ndash; {record["end"]}'
+    parts = [
+        f'<p class="entry__title">\n  {record["degree"]}\n'
+        f'  <span class="entry__role">&mdash; {institution}</span>\n</p>',
+        f'<p class="entry__period">{period}</p>',
+        render_meta(record, "education"),
+    ]
+
+    body = "\n".join(indent(part, 2) for part in parts if part)
+    return f'<li class="entry">\n{body}\n</li>'
+
+
+def render_credentials(record: dict, field: str) -> str:
+    """One issuer's or platform's credentials, as an `.issuer`-headed group.
+
+    Credentials carry no metadata model. The grouping *is* the metadata: who
+    granted it is the only dimension a certificate has that the reader needs,
+    and it is already the heading, so a tag restating it would break the rule
+    that a fact stated once is not restated.
+
+    `field` is `issuer` on a certification and `platform` on a course. They are
+    kept apart for writing.md's reason: both name who stands behind the entry,
+    but an issuer examined the holder and a platform hosted the lessons, and
+    one word for both would let the second borrow the first's authority.
+
+    Whether a link leaves the site is *derived*, not declared. An off-site
+    credential page is the issuer's own record and gets `.link-external`; a
+    stored copy of a certificate is a file this site serves and does not, so
+    the external marker keeps meaning "checkable at the source".
+    """
+    icon = f'images/icons/{record["icon"]}'
+    heading = (
+        '<p class="issuer">\n'
+        f'  <img class="icon icon--md" src="{icon}" alt="" width="18" height="18">\n'
+        f'  {record[field]}\n'
+        "</p>"
+    )
+
+    items = []
+    for credential in record["credentials"]:
+        offsite = bool(urlparse(credential["url"]).scheme)
+        css = ' class="link-external"' if offsite else ""
+        items.append(
+            f'  <li><a{css} href="{credential["url"]}" target="_blank"'
+            f' rel="noopener">{credential["name"]}</a></li>'
+        )
+    body = "\n".join(items)
+
+    parts = [heading, f'<ul class="points">\n{body}\n</ul>']
+    return '<li class="entry">\n' + "\n".join(indent(p, 2) for p in parts) + "\n</li>"
 
 
 # --- page assembly ----------------------------------------------------------
@@ -673,6 +840,21 @@ def build(check_only: bool = False) -> int:
         reverse=True,
     )
     articles_by_id = {a["id"]: a for a in articles}
+    # Career. Experience and Education sort newest-first on their start date;
+    # credentials keep the order they are written in, because an issuer group
+    # has no date to sort on and grouping by issuer is the ordering.
+    experience = sorted(
+        json.loads((DATA / "experience.json").read_text(encoding="utf-8")),
+        key=tenure_sort_key,
+        reverse=True,
+    )
+    education = sorted(
+        json.loads((DATA / "education.json").read_text(encoding="utf-8")),
+        key=lambda record: record["start"],
+        reverse=True,
+    )
+    certifications = json.loads((DATA / "certifications.json").read_text(encoding="utf-8"))
+    online_courses = json.loads((DATA / "courses.json").read_text(encoding="utf-8"))
     open_source = [p for p in projects if p.get("block") == "open-source"]
     ml_projects = [p for p in projects if p.get("block") == "machine-learning"]
     blocks = {
@@ -687,6 +869,14 @@ def build(check_only: bool = False) -> int:
             "\n".join(render_project(p, articles_by_id) for p in open_source), 4),
         "build.ml_projects": indent(
             "\n".join(render_project(p, articles_by_id) for p in ml_projects), 4),
+        "build.experience": indent(
+            "\n".join(render_experience(e) for e in experience), 4),
+        "build.education": indent(
+            "\n".join(render_education(e) for e in education), 4),
+        "build.certifications": indent(
+            "\n".join(render_credentials(c, "issuer") for c in certifications), 4),
+        "build.online_courses": indent(
+            "\n".join(render_credentials(c, "platform") for c in online_courses), 4),
     }
 
     stale: list[str] = []

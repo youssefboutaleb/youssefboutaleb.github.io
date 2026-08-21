@@ -177,7 +177,8 @@ rendered in a fixed order. **That model — which categories exist, what they
 mean, what order they take — is defined in the model documents
 ([`awards.md`](awards.md), [`workshops.md`](workshops.md),
 [`teaching.md`](teaching.md), [`research.md`](research.md),
-[`writing.md`](writing.md), [`projects.md`](projects.md)), not here.** What belongs here is the single
+[`writing.md`](writing.md), [`projects.md`](projects.md),
+[`career.md`](career.md)), not here.** What belongs here is the single
 visual rule that makes it work:
 
 > **The treatment belongs to the category, never to the value.** Amber does not
@@ -186,7 +187,7 @@ visual rule that makes it work:
 > is why a value may never be given styling of its own.
 
 Every declared category therefore binds to exactly one `.tag--<category>` rule.
-There is one model per record type. The six in use today:
+There is one model per record type. The eight in use today:
 
 **Awards** — declared in [`awards.md`](awards.md)
 
@@ -238,6 +239,19 @@ There is one model per record type. The six in use today:
 | `.tag--kind` | Blue |
 | `.tag--stack` | Grey, regular weight |
 
+**Experience** — declared in [`career.md`](career.md)
+
+| Variant | Colour |
+|---|---|
+| `.tag--domain` | Blue |
+| `.tag--stack` | Grey, regular weight — *the same rule as Projects* |
+
+**Education** — declared in [`career.md`](career.md)
+
+| Variant | Colour |
+|---|---|
+| `.tag--accreditation` | Grey, regular weight, and carries a link to the accrediting body |
+
 `status` is the sharpest illustration of the rule above. *Published* and *In
 Progress* take the **same** amber, because the treatment says *this tag is a
 status* and never *this status is the good one*. The hand-written version of
@@ -277,17 +291,27 @@ ambiguity within a single tag list, not across the site. Adding a category
 means adding one row here and one rule in `main.css` — never a colour decision
 inside a page.
 
-`.tag--scale`, `.tag--host`, `.tag--publisher`, `.tag--platform` and
-`.tag--stack` are the metadata tags at regular weight: a field size, a cohort
-size, the organisation that ran the room, the house that published the paper,
-the site that hosts the article, the tools a project is built from. All are
-context for the record rather than claims of their own, so the eye lands on the
-categories before them first.
+`.tag--scale`, `.tag--host`, `.tag--publisher`, `.tag--platform`,
+`.tag--stack` and `.tag--accreditation` are the metadata tags at regular
+weight: a field size, a cohort size, the organisation that ran the room, the
+house that published the paper, the site that hosts the article, the tools a
+project is built from, the body that accredits the degree. All are context for
+the record rather than claims of their own, so the eye lands on the categories
+before them first.
 
-**A metadata tag may carry a link without changing colour.** `upstream` is the
-only category that does today: the pull request is the evidence for the claim
-the tag makes, so the tag is the route to it. The link is a destination, not a
-kind — rule 4 still holds, and the treatment still belongs to the category.
+`accreditation` is the newest member and the one that had to be *moved* into
+the family. The hand-written Career page gave it `.tag--success` — the green
+below, reserved for *verified / published / shipped* — which graded the value
+instead of naming the category, and borrowed a utility treatment for a
+dimension of a record. It answers the same question `publisher`, `host` and
+`platform` answer, so it takes their treatment and keeps its own name.
+
+**A metadata tag may carry a link without changing colour.** Two categories do:
+`upstream` points at the pull request and `accreditation` at the accrediting
+body, and in both cases the destination is the evidence for the claim the tag
+makes, so the tag is the route to it. One is amber and one is grey, which is
+the rule working — the link is a destination, not a kind, so it changes
+nothing about the treatment the category already had.
 Utility tags such as `.tag--critical` on a slide deck link for the different
 reason that the artefact *is* the tag.
 
@@ -297,6 +321,13 @@ of tags whose length changes per record destroys the positional reading the
 fixed order exists to provide, and a tool name means more beside the thing it
 was used for than it does in a row. Technologies are now named inside the
 syllabus module that teaches them.
+
+The hand-written Career page was the last place that rule was broken, and it
+broke it twice in one tag list: three to five loose technology chips per job,
+with the headline tool given `.tag--accent` and the rest `.tag--neutral`. The
+varying length meant no column existed to read down, and the accent graded a
+*value* — *Talend is the important one* — which is the thing rule 4 forbids.
+Both are gone; the tools render as one `stack` tag, in the order they mattered.
 
 **Medals.** First, second and third place carry a small struck-metal disc
 (`.medal--gold` / `--silver` / `--bronze`) before the label. It exists so the
@@ -312,17 +343,27 @@ lose the one thing it encodes.
 For the things that are not dimensions of a record. Written by hand where they
 apply; no ordering rule, because they do not form a sequence.
 
-| Variant | Meaning | Example |
-|---|---|---|
-| `.tag--neutral` | Factual context | `Azure`, `Graduate Level` |
-| `.tag--accent` | Role or category | `Instructor` |
-| `.tag--success` | Verified, published, shipped | `Official Plugin PR #585` |
-| `.tag--honor` | Distinction or pending status | `In Progress` |
-| `.tag--critical` | Downloadable artefact | `Slides (.pptx)` |
+| Variant | Meaning | Example | In use |
+|---|---|---|---|
+| `.tag--neutral` | Factual context | `Azure`, `Graduate Level` | — |
+| `.tag--accent` | Role or category | `Instructor` | — |
+| `.tag--success` | Verified, published, shipped | `Article on Medium` | Projects |
+| `.tag--honor` | Distinction or pending status | `In Progress` | — |
+| `.tag--critical` | Downloadable artefact | `Slides (.pptx)` | Workshops |
 
 Violet is the only hue this system added, and it was added for scope alone: it
 had to be unmistakable beside the blue that a record's type carries, without
 borrowing the green that means *verified* or the red that means *download*.
+
+**Three of the five currently have no markup using them**, and `check.py`
+reports that as a note rather than a failure. It is the expected end state, not
+neglect: `.tag--neutral`, `.tag--accent` and `.tag--honor` were what the
+hand-written pages reached for whenever a record had a fact and no category to
+put it in — `Azure` on a job, `Instructor` on a course, `In Progress` on a
+paper. Every one of those facts is now a declared category on a model, which is
+the point of §7.1. The rules stay because a genuine one-off will appear again;
+what may not happen is a page reaching for one *instead of* declaring the
+category it needs.
 
 ## 8. Interactive states
 
@@ -354,19 +395,28 @@ The tags carry the record's *metadata*; the bullets carry its *substance*. A
 fact stated by a tag is not repeated in a bullet — "1st Place" and "86 teams"
 are the tag list's job, so the bullets are free to say what was actually done.
 
-**Records that carry a metadata model are stored as data, not markup.**
-`src/data/awards.json`, `src/data/workshops.json`, `src/data/teaching.json` and
-`src/data/research.json` hold the records; the matching fragment in `src/pages/` holds only the section
-heading and its intro, and interpolates the rendered block. This is what makes
-the ordering and colour rules structurally true rather than a convention
-someone has to remember. [`awards.md`](awards.md) states the rules a new page
-follows to do the same; [`workshops.md`](workshops.md),
-[`teaching.md`](teaching.md) and [`research.md`](research.md) are the worked
+**Records are stored as data, not markup — whether or not they carry a
+metadata model.** Every file in `src/data/` holds records; the matching
+fragment in `src/pages/` holds only the section heading and its intro, and
+interpolates the rendered block. This is what makes the ordering and colour
+rules structurally true rather than a convention someone has to remember.
+[`awards.md`](awards.md) states the rules a new page follows to do the same;
+[`workshops.md`](workshops.md), [`teaching.md`](teaching.md),
+[`research.md`](research.md), [`writing.md`](writing.md),
+[`projects.md`](projects.md) and [`career.md`](career.md) are the worked
 models.
 
+Certifications and Online Courses are the case that shows the two halves are
+separable: they are data (`src/data/certifications.json`,
+`src/data/courses.json`) and they carry **no** metadata model. Who issued a
+credential is its only dimension a reader needs, and that is already the
+`.issuer` heading the group sits under — so a tag would restate the heading on
+every row. [`career.md`](career.md) §3 has the reasoning.
+
 Optional `.entry__group` subdivides a long record (Data Integration / Cloud &
-Security / Observability), and `.issuer` heads a certification group with its
-brand mark.
+Security / Observability) and is emitted by one helper, `render_group`, shared
+by a job's disciplines and a course's syllabus modules. `.issuer` heads a
+credential group with its brand mark.
 
 Entries are **never boxed**. A CV is a document, not a feed of cards.
 

@@ -100,11 +100,12 @@ which is the right direction for this particular field to fail in.
 
 ### The link on the tag
 
-`upstream` is the one category on the site whose value carries a URL. The pull
-request *is* the evidence for the claim the tag makes, so the tag is the link;
-`meta_url` in `tools/build.py` builds the address from the stored repo and
-number, for the reason [`research.md`](research.md) builds a DOI link — the
-identifier is the durable fact and the URL is derived from it.
+`upstream` was the first of the two categories on the site whose value carries
+a URL — [`career.md`](career.md)'s `accreditation` is the other, and follows
+this reasoning. The pull request *is* the evidence for the claim the tag makes,
+so the tag is the link; `meta_url` in `tools/build.py` builds the address from
+the stored repo and number, for the reason [`research.md`](research.md) builds
+a DOI link — the identifier is the durable fact and the URL is derived from it.
 
 A linked tag keeps its category's colour. The link is a route to the evidence,
 not a different kind of tag.

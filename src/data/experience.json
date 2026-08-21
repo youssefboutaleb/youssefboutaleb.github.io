@@ -1,0 +1,58 @@
+[
+  {
+    "company": "JACQUEMUS",
+    "url": "https://www.linkedin.com/company/jacquemus/posts/?feedView=all",
+    "role": "Data Integration Engineer &amp; Operations Engineer",
+    "start": "2024-08",
+    "domain": "E-commerce &amp; Retail",
+    "stack": ["Talend", "Azure", "Datadog", "Salesforce"],
+    "groups": [
+      {
+        "title": "Data Integration",
+        "points": [
+          "Designed and implemented end-to-end <b>Talend ETL pipelines</b> and <b>RESTful APIs</b> enabling seamless data integration across multiple enterprise systems such as <b>Salesforce</b> (e-commerce), <b>ORLI</b> (warehouse management), and the <b>Azure</b> data platform.",
+          "Partnered with stakeholders to translate <b>functional requirements into scalable data transformation logic</b>, and authored <b>comprehensive technical documentation</b>, including system architecture, data flows, and deployment/recovery plans."
+        ]
+      },
+      {
+        "title": "Cloud &amp; Security Operations",
+        "points": [
+          "Managed and secured <b>Azure resources</b> by implementing IAM policies, SSL, and IP restrictions to maintain an organised and secure cloud environment.",
+          "<b>Optimised Azure resource utilisation</b> through automated scheduling scripts, saving <b>&euro;1,400 per month</b> while maintaining system reliability."
+        ]
+      },
+      {
+        "title": "Observability",
+        "points": [
+          "Deployed a real-time <b>Datadog monitoring solution</b> with custom dashboards and alerts, significantly reducing the <b>Mean Time to Detection (MTTD)</b> and enhancing observability and reliability across ETL pipelines."
+        ]
+      }
+    ]
+  },
+  {
+    "company": "OLIVESOFT",
+    "url": "https://www.linkedin.com/company/olivesoft/posts/?feedView=all",
+    "role": "Data Integration Engineer",
+    "start": "2024-02",
+    "end": "2024-05",
+    "domain": "Customer Service",
+    "stack": ["MuleSoft", "Salesforce"],
+    "points": [
+      "Implemented a fault-tolerant asynchronous integration using <b>MuleSoft API-led architecture</b> to connect <b>Salesforce Service Cloud</b> and the <b>Diduenjoy</b> feedback platform, ensuring reliable data delivery through robust error handling.",
+      "Chose an asynchronous design so a slow or unavailable downstream platform could never block the service desk, with explicit error handling to guarantee eventual delivery."
+    ]
+  },
+  {
+    "company": "OEM ENGINEERING S.A.R.L",
+    "url": "https://www.linkedin.com/company/oem-engineering-s-a-r-l/posts/?feedView=all",
+    "role": "Data Analysis &amp; Signal Processing Engineer",
+    "start": "2022-06",
+    "end": "2023-05",
+    "domain": "Industrial Instrumentation",
+    "stack": ["C++"],
+    "points": [
+      "Implemented a real-time C++ signal processing <b>Savitzky&ndash;Golay filter</b> to reduce infrared data noise, achieving a <b>100&times; speedup</b> in preprocessing for metal classification.",
+      "Developed and trained a <b>Random Forest classifier</b> for accurate metal classification, enabling near-instantaneous analysis."
+    ]
+  }
+]

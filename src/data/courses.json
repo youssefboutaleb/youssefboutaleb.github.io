@@ -1,0 +1,69 @@
+[
+  {
+    "platform": "Anthropic",
+    "icon": "anthropic-light.svg",
+    "credentials": [
+      { "name": "Claude Code 101", "url": "https://verify.skilljar.com/c/2pcvfbzbyo4h" },
+      { "name": "Claude 101", "url": "https://verify.skilljar.com/c/gzf53fciiabm" },
+      { "name": "Claude Code in Action", "url": "https://verify.skilljar.com/c/bwc9kokvugdr" }
+    ]
+  },
+  {
+    "platform": "OpenCV",
+    "icon": "opencv.svg",
+    "credentials": [
+      {
+        "name": "Vision Language Models (VLM) Bootcamp",
+        "url": "https://courses.opencv.org/certificates/bcfcdadd376044bebf23950ff6c74e78"
+      }
+    ]
+  },
+  {
+    "platform": "Coursera",
+    "icon": "coursera.svg",
+    "credentials": [
+      {
+        "name": "Machine Learning Specialization &mdash; 3-course series by DeepLearning.AI",
+        "url": "https://www.coursera.org/specializations/machine-learning-introduction"
+      },
+      {
+        "name": "Build a Modern Computer from First Principles: From Nand to Tetris",
+        "url": "https://www.coursera.org/account/accomplishments/verify/G9M3EHENPKFD"
+      }
+    ]
+  },
+  {
+    "platform": "Udemy",
+    "icon": "udemy.svg",
+    "credentials": [
+      {
+        "name": "Python and Flask Framework Complete Course",
+        "url": "https://www.udemy.com/certificate/UC-293eda56-12b8-4235-bd74-fea8533527c5/"
+      },
+      {
+        "name": "PyCharm Productivity and Debugging Techniques",
+        "url": "https://www.udemy.com/certificate/UC-8c541ba3-e7ff-4129-a794-5413fccc27bb/"
+      }
+    ]
+  },
+  {
+    "platform": "DataCamp",
+    "icon": "datacamp.svg",
+    "credentials": [
+      {
+        "name": "Data Analyst Associate",
+        "url": "https://www.datacamp.com/certificate/DAA0012060293881"
+      }
+    ]
+  },
+  {
+    "platform": "Scrumstudy",
+    "icon": "scrumstudy.svg",
+    "credentials": [
+      {
+        "name": "Scrum Fundamentals Certified (SFC)",
+        "url": "https://www.scrumstudy.com/certification/verify?type=SFC&amp;number=988484"
+      }
+    ]
+  }
+]

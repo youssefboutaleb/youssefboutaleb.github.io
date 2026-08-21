@@ -1,0 +1,23 @@
+[
+  {
+    "degree": "Computer Science Engineer&rsquo;s Degree",
+    "institution": "ENIS",
+    "institution_full": "National Engineering School of Sfax",
+    "url": "https://enis.rnu.tn/",
+    "location": "Sfax",
+    "start": 2021,
+    "end": 2024,
+    "accreditation": {
+      "name": "EUR-ACE&reg; Accredited",
+      "url": "https://www.enaee.eu/eur-ace-system/"
+    }
+  },
+  {
+    "degree": "Bachelor of Engineering (Mathematics and Physics)",
+    "institution": "ISSAT Mahdia",
+    "institution_full": "Higher Institute of Applied Sciences and Technology of Mahdia",
+    "url": "https://issatmh.rnu.tn/",
+    "start": 2019,
+    "end": 2021
+  }
+]
