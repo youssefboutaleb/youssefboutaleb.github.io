@@ -9,34 +9,76 @@ nav: teaching
 
 <section class="block" aria-labelledby="courses-taught">
   <h3 class="block__title" id="courses-taught">Graduate Courses</h3>
-  <ul class="points block__intro">
-    <li>
-      <b>Appointment:</b> University Lecturer (part-time) at
-      <a href="https://ihecsf.rnu.tn/" target="_blank" rel="noopener">IHEC Sfax</a>
-      (September 2024 &ndash; May 2026), teaching on-site on the
-      <a href="https://ihecsf.rnu.tn/fr/article/765/master-professionnel-en-data-science-for-business-amp-economics"
-        target="_blank" rel="noopener">M.Sc. Data Science</a> programme.
-    </li>
-    <li>
-      <b>Course Structure &amp; Workload (32 h per course):</b>
-      <ul class="points">
-        <li><b>Lectures (20 h):</b> 5 modules (4 hours each) covering theoretical foundations, architecture principles,
-          and guided exercises.</li>
-        <li><b>Labs (8 h):</b> 1 hands-on lab per module (1.5&ndash;2 hours) covering practical assignments and
-          collaborative solution reviews.</li>
-        <li><b>Final Project (4 h):</b> Dedicated workshop session for end-to-end pipeline implementation and project
-          guidance.</li>
-      </ul>
-    </li>
-    <li>
-      <b>Language &amp; Tooling:</b> Instruction delivered in French and English; all slides, code repositories,
-      assignments, and exams in English.
-    </li>
-    <li>
-      <b>Assessment Scheme:</b> Final Exam (<b>50%</b>), Module Homework Assignments (<b>20%</b>), Final Project
-      (<b>15%</b>), Attendance &amp; Active Participation (<b>15%</b>).
-    </li>
-  </ul>
+  <p class="block__intro">
+    University Lecturer at <a href="https://ihecsf.rnu.tn/" target="_blank" rel="noopener">IHEC Sfax</a>, teaching
+    on-site on the
+    <a href="https://ihecsf.rnu.tn/fr/article/765/master-professionnel-en-data-science-for-business-amp-economics"
+      target="_blank" rel="noopener">M.Sc. Data Science</a> programme.
+  </p>
+  <!-- The constants of the appointment, side by side rather than stacked. What
+       each column may carry, and why the assessment scheme lives here at all,
+       is in teaching.md; the component is DESIGN.md §10.1. -->
+  <div class="specs">
+    <div class="spec">
+      <p class="spec__title">Workload</p>
+      <p class="spec__lead">32 h per course</p>
+      <dl class="spec__rows">
+        <div class="spec__row">
+          <dt>Lectures</dt>
+          <dd>20 h</dd>
+          <dd class="spec__detail">5 modules &times; 4 h: theoretical foundations, architecture principles and
+            guided exercises.</dd>
+        </div>
+        <div class="spec__row">
+          <dt>Labs</dt>
+          <dd>8 h</dd>
+          <dd class="spec__detail">1 hands-on lab per module, 1.5-2 h: practical assignments and
+            collaborative solution reviews.</dd>
+        </div>
+        <div class="spec__row">
+          <dt>Final Project</dt>
+          <dd>4 h</dd>
+          <dd class="spec__detail">Dedicated workshop session: end-to-end pipeline implementation and project
+            guidance.</dd>
+        </div>
+      </dl>
+    </div>
+    <div class="spec">
+      <p class="spec__title">Language &amp; Tooling</p>
+      <dl class="spec__rows">
+        <div class="spec__row">
+          <dt>Instruction</dt>
+          <dd>French &amp; English</dd>
+        </div>
+        <div class="spec__row">
+          <dt>Materials</dt>
+          <dd>English</dd>
+          <dd class="spec__detail">Slides, code repositories, assignments and exams.</dd>
+        </div>
+      </dl>
+    </div>
+    <div class="spec">
+      <p class="spec__title">Assessment</p>
+      <dl class="spec__rows">
+        <div class="spec__row">
+          <dt>Final Exam</dt>
+          <dd>50%</dd>
+        </div>
+        <div class="spec__row">
+          <dt>Module Homework</dt>
+          <dd>20%</dd>
+        </div>
+        <div class="spec__row">
+          <dt>Final Project</dt>
+          <dd>15%</dd>
+        </div>
+        <div class="spec__row">
+          <dt>Attendance &amp; Participation</dt>
+          <dd>15%</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
   <ul class="entries">
     <!-- Records live in src/data/teaching.json; tag order and colour come
          from MODELS in tools/build.py, and the newest-first ordering from

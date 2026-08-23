@@ -4,8 +4,15 @@
     "term": "Fall",
     "year": 2025,
     "level": 2,
-    "workload": { "lecture": 20, "lab": 8, "project": 4 },
-    "scale": { "count": 12, "unit": "students" },
+    "workload": {
+      "lecture": 20,
+      "lab": 8,
+      "project": 4
+    },
+    "scale": {
+      "count": 12,
+      "unit": "students"
+    },
     "summary": "The second-year sequel, moving from building a pipeline to running one that survives contact with production.",
     "syllabus": [
       {
@@ -62,8 +69,15 @@
     "term": "Spring",
     "year": 2024,
     "level": 1,
-    "workload": { "lecture": 20, "lab": 8, "project": 4 },
-    "scale": { "count": 16, "unit": "students" },
+    "workload": {
+      "lecture": 20,
+      "lab": 8,
+      "project": 4
+    },
+    "scale": {
+      "count": 16,
+      "unit": "students"
+    },
     "summary": "The first-year data engineering course: how analytical data is stored, moved, and processed at a volume that no longer fits one machine.",
     "syllabus": [
       {
@@ -78,7 +92,7 @@
         "points": [
           "Why analytical storage is shaped differently from the transactional systems it draws from.",
           "Warehouse modelling worked against <b>PostgreSQL</b>.",
-          "<b>Lab:</b> a star schema designed from a normalised operational source &mdash; one fact table, conformed dimensions, explicit grain &mdash; and created in <b>PostgreSQL</b>, then queried to show what the denormalisation bought."
+          "<b>Lab:</b> a star schema designed from a normalised operational source (one fact table, conformed dimensions, explicit grain) and created in <b>PostgreSQL</b>, then queried to show what the denormalisation bought."
         ]
       },
       {
@@ -109,7 +123,7 @@
       "points": [
         "The four-hour project session: the whole path in one piece, from a raw operational source to a published <b>Power BI</b> dashboard, built on the schema each team had modelled themselves.",
         "Extraction and loading in <b>Python</b>, the heavier transformation step in <b>Apache Spark</b>, and the modelled tables served from <b>PostgreSQL</b>.",
-        "Delivered as the schema definition, the ETL code and the report, and defended on the modelling decisions &mdash; grain, keys, what was left out &mdash; rather than on the appearance of the dashboard."
+        "Delivered as the schema definition, the ETL code and the report, and defended on the modelling decisions (grain, keys, what was left out) rather than on the appearance of the dashboard."
       ]
     }
   },
@@ -118,17 +132,38 @@
     "term": "Fall",
     "year": 2024,
     "level": 2,
-    "workload": { "lecture": 20, "lab": 8, "project": 4 },
-    "scale": { "count": 12, "unit": "students" },
-    "summary": "The programme&rsquo;s applied machine learning course, taken from fitting a model to deciding whether the fit means anything.",
+    "workload": {
+      "lecture": 20,
+      "lab": 8,
+      "project": 4
+    },
+    "scale": {
+      "count": 12,
+      "unit": "students"
+    },
+    "summary": "The programme&rsquo;s applied machine learning course, taken from stating a deterministic domain problem as a learnable one to deciding whether the result means anything or the experiment has to be redesigned.",
     "syllabus": [
       {
         "title": "Supervised Learning",
         "points": [
-          "Learning from labelled data, and what fitting a model to it actually optimises.",
-          "Models built with <b>Scikit-learn</b> over data prepared in <b>Pandas</b>.",
-          "<b>Lab:</b> a <b>Scikit-learn</b> pipeline assembled over a <b>Pandas</b> frame &mdash; imputation, encoding, scaling, estimator &mdash; so that every preprocessing step is fitted on the training split alone and no leakage can survive the refactor."
-        ]
+          "<b>The frame, and what makes it hard.</b> The <a href=\"https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud/data\" target=\"_blank\" rel=\"noopener\">ULB card fraud frame</a>: 284,807 labelled card transactions, 492 of them fraud, so the only class worth predicting is 0.17% of the rows.",
+          "<b>The accuracy trap.</b> A model that never predicts fraud is already 99.83% accurate on that frame, so accuracy is never read on its own here: it is reported beside F1, and the gap between the two is the thing the module teaches students to look at.",
+          "<b>The data problems worth checking for.</b> Nulls, duplicates and class balance, run as a first pass before anything is fitted. On this frame nothing is missing and nothing is dirty, which is the useful result: the imbalance is the only real defect, and it is where the remaining effort goes.",
+          "<b>Feature engineering under constraint.</b> 28 of the 30 columns are anonymised principal components with no domain meaning attached, so Time and Amount are the only two columns a new feature can be built from. The limit is the exercise.",
+          "<b>Scaling, and the split that comes before it.</b> Normalisation with <b>Scikit-learn</b> and a stratified train/test split, so that 492 positives cannot land unevenly across the two halves, with the point that scaling decides whether the logistic regression converges and does nothing at all for a tree.",
+          "<b>Which tabular model, and where each one stops.</b> Decision trees, random forests and logistic regression set against what each of them assumes about the data, argued from a <b>Matplotlib</b> look at the frame rather than picked by reputation, and including the models that are the wrong tool for a problem this shape.",
+          "<b>The parameters that decide a fit, sorted by what owns them.</b> Batch size, epochs and convergence tolerance belong to anything fitted iteratively; depth, minimum leaf size and number of estimators belong to the tree family. Knowing which knob exists on which model is half of what tuning is.",
+          "<b>Lab:</b> twelve students in three teams of four, one estimator per team (decision tree, random forest, logistic regression) fitted in <b>Scikit-learn</b> over a single shared <b>Pandas</b> preparation in <b>Google Colab</b>, then scored on the same accuracy and F1 so that the three sets of results are numbers which can actually be compared across the room."
+        ],
+        "homework": {
+          "title": "Fraud Detection Benchmark",
+          "points": [
+            "Individual, in <b>Google Colab</b>, and deliberately the inverse of the lab: the dataset and the two metrics are fixed, and every student is free on all three of the levers that decide a score.",
+            "<b>The three levers:</b> which features are selected and how they are prepared, which estimator is fitted, and what parameters it is fitted with.",
+            "<b>Submitted as</b> a commented notebook carrying the best accuracy and F1 the student reached, with the run that produced those two numbers reproducible from the notebook itself.",
+            "<b>The comments are the argument:</b> which of the three levers moved the score, by how much, and which one turned out not to matter."
+          ]
+        }
       },
       {
         "title": "Gradient Descent &amp; Optimisation",
@@ -143,7 +178,7 @@
         "points": [
           "Finding structure without labels, and where that is the honest framing of a problem.",
           "K-Means end to end: assignment, centroid update, and the choice of k.",
-          "<b>Lab:</b> K-Means written by hand &mdash; assignment step, centroid update, convergence test &mdash; checked against the <b>Scikit-learn</b> implementation, with k argued from inertia and silhouette rather than picked."
+          "<b>Lab:</b> K-Means written by hand (assignment step, centroid update, convergence test) checked against the <b>Scikit-learn</b> implementation, with k argued from inertia and silhouette rather than picked."
         ]
       },
       {
@@ -158,7 +193,7 @@
         "title": "The Practical Workflow",
         "points": [
           "The whole path in one piece: data pulled from <b>PostgreSQL</b>, prepared in Pandas, fitted in Scikit-learn, evaluated and plotted.",
-          "<b>Lab:</b> that path written as one reproducible script &mdash; query, preparation, fitted pipeline, evaluation &mdash; with the model and its metrics persisted together so a result can be traced back to the run that produced it."
+          "<b>Lab:</b> that path written as one reproducible script (query, preparation, fitted pipeline, evaluation) with the model and its metrics persisted together so a result can be traced back to the run that produced it."
         ]
       }
     ],

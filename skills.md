@@ -1,0 +1,228 @@
+# Skills: the evidence model
+
+The Home page block that answers the only question a hiring manager is really
+asking: *can this person do the job, and how would I know?*
+
+Every other block on this site describes something that happened. This one
+makes a **claim about capability**, which is the one kind of statement a
+portfolio cannot be trusted on. So it never stands alone: each capability
+carries links to the records elsewhere on the site that prove it, and its
+standing is computed from what those links are, never typed, never chosen.
+
+---
+
+## The shape of a skill
+
+```
+Data pipeline engineering                       Production-proven   ← derived
+Talend · MuleSoft · Apache Airflow                                  ← tools
+[ETL across Salesforce, ORLI & Azure] [API-led integration at OLIVESOFT]
+[Talend Data Integration] [MuleSoft Developer L1] [Astronomer ×2]
+[Data Engineering 1 & 2]                                            ← citations
+```
+
+Three parts, and each answers a different question:
+
+| Part | Answers | Source |
+|---|---|---|
+| **Capability** | What can you do? | `name` |
+| **Tools** | What do you do it with? | `tools` |
+| **Evidence** | How would I know? | `evidence`, keyed by kind |
+| **Standing** | How strongly is it proven? | *derived*, see below |
+
+### A tool is not a skill
+
+`Talend` is not a capability; **building pipelines** is, and Talend is one of
+the things it is built with. This is why tools sit in a muted line *under* the
+capability rather than being the row heading. A list of tool names is what a
+keyword filter reads; a list of capabilities is what a person reads.
+
+It also fixes a problem the old Skills list had: *Talend* appeared once, under
+*Data Integration & APIs*, and the reader had no way to learn that it was
+certified, run in production at two companies, and taught at graduate level.
+
+---
+
+## The proof model
+
+Five kinds of evidence, in one fixed order, declared as `PROOF` in
+[`tools/build.py`](tools/build.py):
+
+```
+production → certification → taught → published → applied
+```
+
+| Kind | Means | Colour | Links to |
+|---|---|---|---|
+| `production` | Shipped and run in a paying job | Green | Career → Experience |
+| `certification` | A third party examined it | Blue | Career → Certifications |
+| `taught` | Taught to graduate students, or delivered as a workshop | Violet | Teaching, Workshops |
+| `published` | Written up publicly: peer-reviewed or self-published | Amber | Research |
+| `applied` | Built in a project, or contested | Grey | Projects, Awards |
+
+The order is **strongest proof first**, and it never varies. That is what makes
+the leading colour of a row readable as a fact: **a row that starts green ran
+in production; a row that starts blue did not.** The gradient is not a separate
+device layered on top: it falls out of the ordering.
+
+Green is the site's *verified/shipped* hue and keeps that meaning here
+([`DESIGN.md`](DESIGN.md) §7.2). Grey is the quiet terminal slot every model on
+this site ends on (`scale`, `host`, `publisher`, `platform`, `stack`) and
+`applied` joins it because a side project is real evidence and the weakest kind
+of it.
+
+---
+
+## The two rules this model breaks, and why
+
+### 1. A category may hold more than one value
+
+Every other model on the site holds one value per category, and
+[`teaching.md`](teaching.md) is emphatic about it: a `stack` category that
+rendered one chip per tool was removed, because *a run whose length changes per
+record destroys the positional reading the fixed order exists to give.*
+
+**Here the varying length is the information.** The other models tag a record
+with its *dimensions*: an award has one scope, one placement, one scale, and a
+second value in any of them would be a contradiction. This model does not tag
+dimensions. It lists **citations**, and citations accumulate: three Datadog
+certifications are three separate artifacts a reader can open separately, not
+one dimension holding three values.
+
+So the rule is not broken so much as inapplicable. What replaces positional
+reading is **colour-run reading**: the categories still appear in a fixed
+order, so a reader who wants "was this ever run in production" looks at the
+front of the row, and one who wants "is any of this written up" looks for
+amber. That is a weaker guarantee than the one-value models get, and it is
+bought deliberately: a reader comparing capabilities needs to see *how much*
+proof each has, and a model that renders one chip per category cannot show it.
+
+### 2. The block is data, and it restates facts held elsewhere
+
+[`DESIGN.md`](DESIGN.md) §10 draws the line: *a list stays in its page fragment
+when that page is the only place its facts live; it becomes data when it
+restates facts held elsewhere on the site.* Under that rule, the old Skills
+list was correctly markup: nothing else on the site claimed a proficiency.
+
+Adding evidence flipped it. Every chip now points at a record on another page,
+which makes this block the second one (after Selected Impact) that can
+quietly contradict the site it sits on. It is therefore data, for exactly the
+reason Selected Impact is: the failure mode is a link that names one thing and
+points at another, and `check.py` can only catch that if the link is generated.
+
+**Consequence: `check.py` validates every one of these citations.** A chip
+pointing at a page that does not exist, or an anchor that does not exist, fails
+the build. A skill cannot cite proof the site does not carry.
+
+---
+
+## Standing is derived, never typed
+
+`standing()` in [`tools/build.py`](tools/build.py) computes one of four labels
+from which kinds of evidence a skill actually has:
+
+| Standing | Condition |
+|---|---|
+| **Production-proven** | Run in production **and** verified outside it (certified, taught, or published) |
+| **Run in production** | Shipped, but nothing outside the job confirms it |
+| **Verified, not yet in production** | Certified and/or taught, no production record |
+| **Applied & studied** | A project or coursework only |
+
+Nothing in `src/data/skills.json` says how good anyone is at anything. That is
+the point. **A self-rated level is an opinion; "run in production and certified
+twice" is a pair of facts with links on them.** Percentages, five-star ratings
+and progress bars are all the same claim wearing a chart, and this site does
+not make it.
+
+The block **orders itself** by standing, then by how much evidence a skill
+carries: `skill_sort_key` in the same file. Hand-ordering would drift the
+moment a certification is added, and the one thing this block must never do is
+rank a skill above the evidence it now has.
+
+### Standing carries no colour
+
+The standing label is muted grey text and nothing else. Colouring it would
+break [`DESIGN.md`](DESIGN.md) §7.1 (*the treatment belongs to the category,
+never to the value*) and would repeat the mistake [`projects.md`](projects.md)
+records against an earlier version of this site, where an unmerged pull request
+was styled success-green and asserted in colour what the work had not earned.
+
+Green on a chip means *this is a production citation*. Green on a standing
+would mean *this skill is good*. The first is a fact; the second is the
+self-assessment this whole model exists to avoid.
+
+---
+
+## What is deliberately not evidence
+
+- **Online courses.** They are on the Career page and they are honest there,
+  but a completed course proves attendance, not capability
+  ([`career.md`](career.md) §3 draws the same line between an *issuer* who
+  examined you and a *platform* that hosted lessons). A skill whose only
+  support is a course belongs in **Applied & studied**, on its coursework.
+- **Years of experience.** A duration is not proof of anything; two years of
+  shipping beats five years of watching. The dates are on the Career page for a
+  reader who wants them.
+- **Self-assessment of any kind.** No levels, no ratings, no bars. See above.
+- **A tool with no capability above it.** If a tool cannot be filed under
+  something a person *does*, it is a keyword, and this block does not carry
+  keywords for their own sake.
+
+---
+
+## The honest rows are the point
+
+Two rows on the page today carry no green chip:
+
+- **Workflow orchestration**: Airflow 3, certified twice by Astronomer and
+  taught as a graduate module, but never run in production.
+- **Distributed processing**: Spark, taught only.
+
+Leaving these out would make the block shorter and stronger-looking, and would
+destroy it. A matrix where everything is maximally proven is a matrix nobody
+believes; the two unproven rows are what make the six proven ones credible, and
+they are the same argument [`CLAUDE.md`](CLAUDE.md) §5 makes for showing
+unmerged pull requests. They also state something true and useful: this is an
+engineer who knows the difference between having a certificate and having run
+the thing at 3 a.m.
+
+When Airflow reaches production, the row moves up **because the data changed**,
+not because anyone re-ranked it.
+
+---
+
+## Adding or updating a skill
+
+`src/data/skills.json`:
+
+```json
+{
+  "name": "Workflow orchestration",
+  "tools": ["Apache Airflow 3"],
+  "evidence": {
+    "certification": [
+      { "text": "Airflow 3 Fundamentals", "href": "career.html#certifications" },
+      { "text": "DAG Authoring", "href": "career.html#certifications" }
+    ],
+    "taught": [
+      { "text": "Packaging & Delivery module", "href": "teaching.html#courses-taught" }
+    ]
+  }
+}
+```
+
+1. **The capability is a thing you do**, not a thing you use. Tools go in
+   `tools`.
+2. **Every evidence entry needs an `href` to a record already on this site.**
+   If the proof is not on the site, add the record first: a citation to
+   nothing is the one thing this block cannot survive.
+3. **Chip text says what the evidence *is*,** specifically: *€1,400/month
+   saved*, not *Azure work*. The chip is the reason to click.
+4. **Do not set a standing or a position.** Both are computed. Adding a
+   certification is the only way to move a row up, which is as it should be.
+5. Run `python3 tools/build.py && python3 tools/check.py`. A broken citation
+   fails the build.
+
+A new *kind* of evidence is a change to `PROOF` in `tools/build.py`, one
+`.tag--<kind>` rule in `main.css`, and a row in the table above: the same
+three steps [`awards.md`](awards.md) requires for a new metadata category.

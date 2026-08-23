@@ -31,7 +31,7 @@ PARTIALS = SRC / "partials"
 DATA = SRC / "data"
 
 BANNER = (
-    "<!-- GENERATED FILE — do not edit.\n"
+    "<!-- GENERATED FILE: do not edit.\n"
     "     Source: src/layout.html + src/pages/{source} (content),\n"
     "             src/site.json + src/data/*.json (data).\n"
     "     Rebuild: python3 tools/build.py\n"
@@ -105,7 +105,7 @@ def parse_front_matter(raw: str) -> tuple[dict, str]:
 #
 # Two rules make that hold as records are added. Order comes from MODELS and
 # nowhere else, so a page cannot choose its own. Colour comes from the *field*,
-# not the value — each category has one .tag--<field> rule in main.css, so
+# not the value: each category has one .tag--<field> rule in main.css, so
 # amber always means placement and violet always means delivery mode. A new
 # category is added here, once, and every record on that page picks it up.
 #
@@ -114,8 +114,8 @@ def parse_front_matter(raw: str) -> tuple[dict, str]:
 # how a page ends up rendering empty or meaningless dimensions. Two models may
 # share a category name only if they mean the same thing by it.
 MODELS = {
-    "awards": ("placement", "type", "scope", "scale"),
-    "workshops": ("format", "mode", "audience", "host"),
+    "awards": ("placement", "type", "scope", "scale", "duration", "track"),
+    "workshops": ("format", "mode", "duration", "audience", "scale", "host"),
     "teaching": ("level", "workload", "scale"),
     "research": ("status", "authorship", "publisher"),
     "writing": ("format", "reach", "platform"),
@@ -124,9 +124,45 @@ MODELS = {
     "education": ("accreditation",),
 }
 
+# Skills are the one block whose tags are *citations* rather than dimensions,
+# so their model is declared apart from MODELS and read only by render_skill.
+# Order runs strongest proof first and never varies, which is what lets the
+# leading colour of a row be read as its standing: a row that starts green ran
+# in production, a row that starts blue did not. skills.md carries the full
+# argument, including why this is the one model where a category may repeat.
+PROOF = ("production", "certification", "taught", "published", "applied")
+
+# What each kind of proof is called when a reader hovers the group. The label
+# is on the list, not on every chip, for the reason MODEL_LABELS exists.
+PROOF_LABEL = "Evidence"
+
+# Standing is derived from which kinds of proof a skill actually has, never
+# typed into the data. A self-assessed level is the thing this block exists to
+# replace: "advanced" is an opinion, "run in production and certified" is a
+# pair of facts a reader can open in a new tab.
+def standing(evidence: dict) -> str:
+    shipped = bool(evidence.get("production"))
+    outside = any(evidence.get(kind) for kind in ("certification", "taught", "published"))
+    if shipped and outside:
+        return "Production-proven"
+    if shipped:
+        return "Run in production"
+    if outside:
+        return "Verified: not yet in production"
+    return "Applied &amp; studied"
+
+
+# The order the standings rank in, and therefore the order the block renders.
+STANDING_ORDER = {
+    "Production-proven": 0,
+    "Run in production": 1,
+    "Verified: not yet in production": 2,
+    "Applied &amp; studied": 3,
+}
+
 # Courses run on a two-semester year. Fall precedes Spring inside one academic
 # year, so newest-first means sorting on (year, term) descending with Fall
-# ranked below Spring — not on the year alone.
+# ranked below Spring, not on the year alone.
 TERM_ORDER = {"Fall": 0, "Spring": 1}
 
 # The accessible name of each model's tag list. It is what a screen reader
@@ -173,7 +209,7 @@ def ordinal(number: int) -> str:
 
 def abbreviate(count: int) -> str:
     """Medium's own display convention: exact below 1,000, then K to one
-    decimal with a trailing .0 dropped — 723 stays 723, 1,500 becomes 1.5K,
+    decimal with a trailing .0 dropped: 723 stays 723, 1,500 becomes 1.5K,
     3,000 becomes 3K.
 
     The site never prints more precision than its source gave it. Medium
@@ -227,7 +263,7 @@ def meta_label(field: str, value) -> tuple[str, str]:
         # The pair is the unit, not two facts that happen to sit together.
         # Views alone counts everyone who opened the tab and reads alone hides
         # the ratio; it is the gap between them that says whether the piece
-        # held up. A record carries both figures or neither — writing.md.
+        # held up. A record carries both figures or neither: writing.md.
         return "", (f"{abbreviate(value['views'])} views"
                     f" &middot; {abbreviate(value['reads'])} reads")
     return "", str(value)
@@ -240,7 +276,7 @@ def meta_url(field: str, value) -> str | None:
     submission is not: the pull request *is* the evidence for the claim the tag
     makes, and a reader who wants to check it should not have to go looking.
     The address is built from the stored repo and number rather than typed, for
-    the reason research.md builds a DOI link — the identifier is the durable
+    the reason research.md builds a DOI link: the identifier is the durable
     fact and the URL is derived from it.
 
     A linked tag keeps its category's colour. The link is a route to the
@@ -261,7 +297,7 @@ def render_meta(record: dict, model: str, extra: tuple[str, ...] = ()) -> str:
     placeholder: a contest that never published a rank shows three tags, not an
     invented placement.
 
-    `extra` holds already-rendered utility tags — a link to an artefact, say.
+    `extra` holds already-rendered utility tags: a link to an artefact, say.
     Those are not dimensions of the record, so they carry no ordering rule and
     are appended after the model's tags rather than sequenced among them.
     """
@@ -286,7 +322,7 @@ def render_meta(record: dict, model: str, extra: tuple[str, ...] = ()) -> str:
 
 
 def render_group(title: str, points: list[str]) -> str:
-    """One `.entry__group` — a titled run of bullets inside a longer record.
+    """One `.entry__group`: a titled run of bullets inside a longer record.
 
     Shared by Career and Teaching. The component was built for a job that does
     three separable things (Data Integration / Cloud & Security / Observability)
@@ -305,8 +341,13 @@ def render_group(title: str, points: list[str]) -> str:
 def render_award(record: dict) -> str:
     """One award as the site-wide .entry record."""
     title = record["title"]
+    if record.get("url"):
+        title = (
+            f'<a class="link-external" href="{record["url"]}" target="_blank"'
+            f' rel="noopener">{title}</a>'
+        )
     if record.get("venue"):
-        title += f'<span class="entry__role"> &mdash; {record["venue"]}</span>'
+        title += f'<span class="entry__role"> &middot; {record["venue"]}</span>'
 
     year = record["year"]
     parts = [
@@ -370,7 +411,7 @@ def publication_sort_key(record: dict) -> int:
 
     An unpublished record has no publication year to sort on, and guessing one
     from the year the work started would put it above papers that are actually
-    out. Nothing is invented — it simply sorts behind everything with a date.
+    out. Nothing is invented: it simply sorts behind everything with a date.
 
     Shared with the Technical Articles block, which orders on the same rule.
     The two blocks are sorted separately and never merged: what they order is
@@ -396,7 +437,7 @@ def author_position(record: dict) -> str | None:
 def render_authors(authors: list[dict]) -> str:
     """The author list, Scholar-linked where a profile exists.
 
-    The site's owner is bolded — the ordinary convention on a publication list,
+    The site's owner is bolded: the ordinary convention on a publication list,
     and the thing that makes the page scannable for the reason it exists. An
     author with no `scholar` renders as plain text rather than as a dead link.
     """
@@ -427,7 +468,7 @@ def render_publication(record: dict) -> str:
 
     The journal name is deliberately not a tag. It is already in the citation
     line one row above, and `awards.md` rule 1 is that a fact stated once is
-    not restated — so the model asks who the author was and who published it,
+    not restated, so the model asks who the author was and who published it,
     which the citation does not answer.
     """
     link = record.get("url")
@@ -451,7 +492,7 @@ def render_publication(record: dict) -> str:
 
     citation = render_authors(record["authors"])
     if record.get("venue"):
-        citation += f' &mdash; <i>{record["venue"]}</i>'
+        citation += f' &middot; <i>{record["venue"]}</i>'
     parts.append(f'<p class="entry__meta">{citation}</p>')
 
     position = author_position(record)
@@ -474,13 +515,13 @@ def render_article(record: dict) -> str:
     It shares the .entry component with a paper but deliberately not the paper
     model. `status` and `publisher` would be the same two words making a
     materially different claim, and `authorship` says nothing on a piece with
-    one author — so writing gets its own model rather than borrowing one that
+    one author, so writing gets its own model rather than borrowing one that
     degrades, exactly as the comment on MODELS requires.
 
     What survives is the parallel that matters: `platform` takes the quiet grey
     terminal position that `publisher` takes one block above it, so the reader
     who has learned that the last tag says who stands behind the work reads
-    *Medium* there against *Elsevier* — the distinction the page exists to make
+    *Medium* there against *Elsevier*: the distinction the page exists to make
     honestly, stated by the layout rather than argued in prose.
 
     The title carries the link for the same reason it does on a publication:
@@ -577,7 +618,7 @@ def render_course(record: dict) -> str:
     """One taught course as the site-wide .entry record.
 
     The body is a syllabus rather than a list of achievements, so it uses
-    .entry__group — the component the Career page already uses to subdivide a
+    .entry__group: the component the Career page already uses to subdivide a
     long record. Module numbers are produced here rather than written into the
     data, for the same reason placements are: hand-numbered lists are how a
     reordered syllabus ends up with two Module 3s.
@@ -590,9 +631,15 @@ def render_course(record: dict) -> str:
     The capstone is its own group rather than a trailing module, because it is
     not one: the workload states five lecture modules and one project session,
     and a sixth numbered module would contradict the hours it is counted in.
+
+    A module may carry a `homework`, which renders as its own group directly
+    beneath it. It is stored on the module rather than on the record so that
+    its number is the module's own and cannot drift when the syllabus is
+    reordered, and it is a separate group because the specs strip grades it
+    separately: labs are the 8 taught hours, homework is the 20%.
     """
     year, term = record["year"], record["term"]
-    period = f"{term} {year} &ndash; {year + 1}"
+    period = f"{term} {year}-{year + 1}"
 
     parts = [
         f'<p class="entry__title">{record["title"]}</p>',
@@ -603,12 +650,17 @@ def render_course(record: dict) -> str:
         parts.append(f'<p class="entry__summary">{record["summary"]}</p>')
 
     for number, module in enumerate(record.get("syllabus", []), start=1):
-        parts.append(render_group(f"Module {number} &mdash; {module['title']}",
+        parts.append(render_group(f"Module {number}: {module['title']}",
                                   module["points"]))
+        homework = module.get("homework")
+        if homework:
+            parts.append(render_group(
+                f"Module {number} Homework: {homework['title']}",
+                homework["points"]))
 
     capstone = record.get("capstone")
     if capstone:
-        parts.append(render_group(f"Final Project &mdash; {capstone['title']}",
+        parts.append(render_group(f"Final Project: {capstone['title']}",
                                   capstone["points"]))
 
     body = "\n".join(indent(part, 2) for part in parts if part)
@@ -618,7 +670,7 @@ def render_course(record: dict) -> str:
 # --- career -----------------------------------------------------------------
 
 # Months are abbreviated here and never in the data, so a record cannot be
-# stored as "Aug 2024" in one row and "August 2024" in the next — awards.md
+# stored as "Aug 2024" in one row and "August 2024" in the next: awards.md
 # rule 7, the same mechanism that turns `1` into `1st Place`.
 MONTHS = ("Jan", "Feb", "Mar", "Apr", "May", "Jun",
           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
@@ -657,8 +709,8 @@ def render_experience(record: dict) -> str:
     range and `datetime` takes one instant. Teaching's academic terms render
     the same way for the same reason.
 
-    A record carries either `groups` — a job that did several separable things
-    — or a flat `points` list. Nothing forces a short role into three headed
+    A record carries either `groups` (a job that did several separable things)
+    or a flat `points` list. Nothing forces a short role into three headed
     groups of one bullet each, which is what a single shape would have done.
     """
     company = record["company"]
@@ -666,10 +718,10 @@ def render_experience(record: dict) -> str:
         company = (
             f'<a href="{record["url"]}" target="_blank" rel="noopener">{company}</a>'
         )
-    title = f'{company}\n  <span class="entry__role">&mdash; {record["role"]}</span>'
+    title = f'{company}\n  <span class="entry__role">&middot; {record["role"]}</span>'
 
     end = month_year(record["end"]) if record.get("end") else ONGOING
-    period = f'{month_year(record["start"])} &ndash; {end}'
+    period = f'{month_year(record["start"])} - {end}'
 
     parts = [
         f'<p class="entry__title">\n  {title}\n</p>',
@@ -692,7 +744,7 @@ def render_education(record: dict) -> str:
     """One qualification as the site-wide .entry record.
 
     The degree is the title and the institution trails it, because a degree is
-    read for what it is before where it is from — the same ordering the CV this
+    read for what it is before where it is from: the same ordering the CV this
     page descends from used.
 
     The institution's full name rides on the link's `title`, so the page can
@@ -708,13 +760,20 @@ def render_education(record: dict) -> str:
     if record.get("location"):
         institution += f', {record["location"]}'
 
-    period = f'{record["start"]} &ndash; {record["end"]}'
+    period = f'{record["start"]}-{record["end"]}'
     parts = [
         f'<p class="entry__title">\n  {record["degree"]}\n'
-        f'  <span class="entry__role">&mdash; {institution}</span>\n</p>',
+        f'  <span class="entry__role">&middot; {institution}</span>\n</p>',
         f'<p class="entry__period">{period}</p>',
         render_meta(record, "education"),
     ]
+    if record.get("summary"):
+        parts.append(f'<p class="entry__summary">{record["summary"]}</p>')
+    if record.get("points"):
+        points = "\n".join(f"  <li>{point}</li>" for point in record["points"])
+        parts.append(f'<ul class="points">\n{points}\n</ul>')
+    for group in record.get("groups", []):
+        parts.append(render_group(group["title"], group["points"]))
 
     body = "\n".join(indent(part, 2) for part in parts if part)
     return f'<li class="entry">\n{body}\n</li>'
@@ -766,7 +825,7 @@ def render_impact(record: dict, page_labels: dict) -> str:
     """One Selected Impact line: a figure, its evidence, and where to check it.
 
     This block is the one place on the site that deliberately *restates* facts
-    held elsewhere — a saving from a job record, a placement from a contest —
+    held elsewhere (a saving from a job record, a placement from a contest)
     so it is the one place where a claim can drift away from the record it
     summarises without anything noticing. It did: the Kanboard line read
     "2 plugins accepted upstream / both listed in the official directory" while
@@ -803,14 +862,14 @@ def render_impact(record: dict, page_labels: dict) -> str:
 def render_volunteering(record: dict) -> str:
     """One volunteering record as the site-wide .entry component.
 
-    It carries no metadata model — there is nothing a reader needs about it
-    that the four lines do not already say — but it is an `.entry`, and every
+    It carries no metadata model (there is nothing a reader needs about it
+    that the four lines do not already say) but it is an `.entry`, and every
     other `.entry` on the site is rendered from data. A single hand-written one
     is how the next one gets hand-written too.
     """
     title = record["organisation"]
     if record.get("branch"):
-        title += f' <span class="entry__role">&mdash; {record["branch"]}</span>'
+        title += f' <span class="entry__role">&middot; {record["branch"]}</span>'
 
     parts = [
         f'<p class="entry__title">{title}</p>',
@@ -819,6 +878,47 @@ def render_volunteering(record: dict) -> str:
     ]
     body = "\n".join(indent(part, 2) for part in parts)
     return f'<li class="entry">\n{body}\n</li>'
+
+
+def render_skill(record: dict) -> str:
+    """One capability, its tools, and every record on the site that proves it.
+
+    The chips are links, and that is the whole point of the component: a claim
+    about what someone can do is worth what its evidence is worth, so the
+    evidence is one click away rather than asserted. Tools sit *under* the
+    capability because Talend is not a skill: building pipelines is, and
+    Talend is one of the things it is built with.
+    """
+    evidence = record["evidence"]
+    chips = []
+    for kind in PROOF:
+        for item in evidence.get(kind, []):
+            chips.append(
+                f'  <li><a class="tag tag--{kind}" href="{item["href"]}">'
+                f'{item["text"]}</a></li>'
+            )
+    tags = "\n".join(chips)
+
+    parts = [
+        f'<p class="skill__head"><span class="skill__name">{record["name"]}</span>'
+        f' <span class="skill__standing">{standing(evidence)}</span></p>',
+        f'<p class="skill__tools">{" &middot; ".join(record["tools"])}</p>',
+        f'<ul class="tag-list" aria-label="{PROOF_LABEL}">\n{tags}\n</ul>',
+    ]
+    body = "\n".join(indent(part, 2) for part in parts)
+    return f'<li class="skill">\n{body}\n</li>'
+
+
+def skill_sort_key(record: dict) -> tuple[int, int]:
+    """Strongest standing first, and within a standing, best evidenced first.
+
+    Ordering is computed for the reason awards.md rule 2 gives: a hand-ordered
+    list drifts the moment a record gains a certification, and the one thing
+    this block must never do is rank a skill above the evidence it now has.
+    """
+    evidence = record["evidence"]
+    return (STANDING_ORDER[standing(evidence)],
+            -sum(len(items) for items in evidence.values()))
 
 
 # --- page assembly ----------------------------------------------------------
@@ -893,7 +993,7 @@ def build(check_only: bool = False) -> int:
     # The Projects split is a filter on `block`, exactly as Awards filters on
     # `type`. It differs in one respect, deliberately: `block` is not a
     # metadata category and never renders, so no record carries a tag
-    # restating the heading it already sits under — the tension awards.md
+    # restating the heading it already sits under: the tension awards.md
     # records, resolved research.md's way.
     projects = sorted(
         json.loads((DATA / "projects.json").read_text(encoding="utf-8")),
@@ -922,6 +1022,10 @@ def build(check_only: bool = False) -> int:
     page_labels = {entry["href"]: entry["label"] for entry in site["nav"]}
     impact = json.loads((DATA / "impact.json").read_text(encoding="utf-8"))
     volunteering = json.loads((DATA / "volunteering.json").read_text(encoding="utf-8"))
+    skills = sorted(
+        json.loads((DATA / "skills.json").read_text(encoding="utf-8")),
+        key=skill_sort_key,
+    )
     open_source = [p for p in projects if p.get("block") == "open-source"]
     ml_projects = [p for p in projects if p.get("block") == "machine-learning"]
     blocks = {
@@ -946,6 +1050,8 @@ def build(check_only: bool = False) -> int:
             "\n".join(render_credentials(c, "platform") for c in online_courses), 4),
         "build.impact": indent(
             "\n\n".join(render_impact(i, page_labels) for i in impact), 4),
+        "build.skills": indent(
+            "\n".join(render_skill(s) for s in skills), 4),
         "build.volunteering": indent(
             "\n".join(render_volunteering(v) for v in volunteering), 4),
     }
@@ -960,7 +1066,7 @@ def build(check_only: bool = False) -> int:
 
         output_name = nav_entry["href"]
         canonical = f"{site['base_url']}/{'' if output_name == 'index.html' else output_name}"
-        title_tag = meta["title"] if meta.get("nav") == "home" else f"{meta['title']} — {site['name']}"
+        title_tag = meta["title"] if meta.get("nav") == "home" else f"{meta['title']} &middot; {site['name']}"
 
         nav_items = [
             {
@@ -1002,7 +1108,7 @@ def build(check_only: bool = False) -> int:
         if stale:
             print("stale (run: python3 tools/build.py): " + ", ".join(stale), file=sys.stderr)
             return 1
-        print(f"up to date — {len(site['nav'])} pages")
+        print(f"up to date: {len(site['nav'])} pages")
         return 0
 
     print(f"built {len(written)} pages @ assets {asset_version}: " + ", ".join(written))

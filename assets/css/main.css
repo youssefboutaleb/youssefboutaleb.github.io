@@ -1,8 +1,8 @@
 /* =============================================================================
-   YOUSSEF BOUTALEB — PORTFOLIO DESIGN SYSTEM
+   YOUSSEF BOUTALEB: PORTFOLIO DESIGN SYSTEM
    -----------------------------------------------------------------------------
    A classic academic stylesheet in the lineage of the orderedlist "Minimal"
-   theme this site was forked from — sticky identity rail on the left, a plain
+   theme this site was forked from: sticky identity rail on the left, a plain
    document on the right, Noto Sans throughout, one blue for links, hairlines
    for structure. Nothing decorative, nothing animated, nothing that will look
    dated in five years, because it did not look current in the first place.
@@ -34,7 +34,7 @@
      - Every value comes from a token. No literals in component rules.
      - Structure is headings, hairlines and whitespace. No cards, no shadows
        (one exception: the portrait), no gradients, no fills.
-     - One typeface, two weights (400 / 700) — the family ships no others.
+     - One typeface, two weights (400 / 700): the family ships no others.
      - Naming is BEM-ish: .block, .block__element, .block--modifier.
      - Presentation lives here. Content lives in src/pages/. Never inline styles.
    ========================================================================== */
@@ -92,7 +92,7 @@
 :root {
 
   /* --- Typeface ---------------------------------------------------------- */
-  /* One family. The original theme's restraint is the point — a second
+  /* One family. The original theme's restraint is the point: a second
      typeface is what tips an academic page into looking like a magazine. */
   --font-sans: 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-mono: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Consolas,
@@ -101,14 +101,14 @@
   /* --- Type scale -------------------------------------------------------- */
   /* The original theme's proportions, with body raised 14px → 15px. That one
      step is the whole accessibility argument, and it costs nothing visually. */
-  --text-xs:   0.6875rem;  /* 11px — tags */
-  --text-sm:   0.75rem;    /* 12px — dates, footnotes, "last update" */
-  --text-md:   0.8125rem;  /* 13px — navigation, sidebar meta, contact */
-  --text-base: 0.9375rem;  /* 15px — body copy */
-  --text-lg:   1rem;       /* 16px — page lede, entry titles */
-  --text-xl:   1.125rem;   /* 18px — section headings (h3) */
-  --text-2xl:  1.5rem;     /* 24px — page title (h1) */
-  --text-3xl:  1.75rem;    /* 28px — the name in the sidebar */
+  --text-xs:   0.75rem;     /* 12px: tags */
+  --text-sm:   0.8125rem;   /* 13px: dates, footnotes, "last update" */
+  --text-md:   0.875rem;    /* 14px: sidebar meta, contact */
+  --text-base: 1rem;        /* 16px: body copy */
+  --text-lg:   1.0625rem;   /* 17px: navigation, page lede, entry titles */
+  --text-xl:   1.1875rem;   /* 19px: section headings (h3) */
+  --text-2xl:  1.5625rem;   /* 25px: page title (h1) */
+  --text-3xl:  1.8125rem;   /* 29px: the name in the sidebar */
 
   --leading-tight: 1.2;
   --leading-snug:  1.45;
@@ -125,7 +125,7 @@
   --ink-700: #494949;   /* h3, secondary prose */
   --ink-600: #373737;   /* body */
   --ink-500: #676767;   /* meta */
-  --ink-400: #6b6b6b;   /* muted — the theme's #777 darkened to clear AA */
+  --ink-400: #6b6b6b;   /* muted: the theme's #777 darkened to clear AA */
 
   --paper:      #ffffff;
   --paper-soft: #f8f8f8;
@@ -133,7 +133,7 @@
   --rule:      #e5e5e5;
   --rule-soft: #eaeaea;
 
-  --blue-600: #267cb9;  /* the theme's link blue — 4.6:1 on white */
+  --blue-600: #267cb9;  /* the theme's link blue: 4.6:1 on white */
   --blue-800: #006699;  /* its hover */
   --blue-050: #f0f4f9;
 
@@ -201,18 +201,18 @@
   --space-2: 0.5rem;    /*  8 */
   --space-3: 0.75rem;   /* 12 */
   --space-4: 1rem;      /* 16 */
-  --space-5: 1.25rem;   /* 20 — the block rhythm */
+  --space-5: 1.25rem;   /* 20: the block rhythm */
   --space-6: 2rem;      /* 32 */
-  --space-7: 2.5rem;    /* 40 — column gap, section separation */
+  --space-7: 2.5rem;    /* 40: column gap, section separation */
   --space-8: 3.75rem;   /* 60 */
 
   /* --- Layout ------------------------------------------------------------ */
-  --container-max: 1120px;
-  --container-fluid: 95%;
+  --container-max: 1600px;
+  --container-fluid: 98%;
   --sidebar-width: 280px;
-  --column-gap: var(--space-7);
-  --gutter: var(--space-5);
-  --measure: 74ch;
+  --column-gap: var(--space-5);
+  --gutter: var(--space-2);
+  --measure: 100%;
 
   /* --- Border radius ----------------------------------------------------- */
   --radius-sm:   3px;   /* tags */
@@ -252,7 +252,7 @@ html {
 
 body {
   margin: 0;
-  padding: var(--space-2) 0;
+  padding: 0;
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
@@ -365,7 +365,7 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 .prose { max-width: var(--measure); }
 .prose p { margin-bottom: var(--space-4); }
 
-/* Marks an outbound link with a trailing arrow. Presentation, not content —
+/* Marks an outbound link with a trailing arrow. Presentation, not content:
    the original hard-coded the character into the text of every such link. */
 .link-external::after {
   content: '\2197';
@@ -522,6 +522,42 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 /* The theme rendered this as a <table> row, which meant the site's real tables
    inherited its styling and no page could show which one you were on. Same
    look, as a list, with an active state. */
+/* Top bar container holding the sidebar toggle control */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: var(--space-2);
+}
+
+.sidebar-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-heading-3);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  cursor: pointer;
+  transition: background var(--duration) var(--ease), color var(--duration) var(--ease);
+}
+.sidebar-toggle:hover {
+  background: var(--color-border);
+  color: var(--color-heading);
+}
+
+.layout--sidebar-collapsed .sidebar {
+  display: none;
+}
+.layout--sidebar-collapsed .content {
+  width: 100%;
+  max-width: 100%;
+}
+
 .nav { margin-bottom: var(--space-5); }
 
 .nav__list {
@@ -537,8 +573,9 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 
 .nav__link {
   display: block;
-  padding: var(--space-1) var(--space-3) var(--space-2);
-  font-size: var(--text-md);
+  padding: var(--space-2) var(--space-4) var(--space-2);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
 }
 .nav__item:first-child .nav__link { padding-left: 0; }
 
@@ -566,7 +603,7 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 /* 09. COMPONENT: BLOCK ===================================================== */
 
 /* A block is one section of the document, introduced by an h3 with the light
-   underline the original used on its Projects page — applied everywhere now,
+   underline the original used on its Projects page: applied everywhere now,
    so the pages finally share one section treatment. */
 .block { margin-bottom: var(--space-6); }
 .block:last-child { margin-bottom: 0; }
@@ -598,10 +635,28 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 
 /* The universal content record: a job, a project, a paper, a course, a
    workshop, an award. A bulleted list item, exactly as the original CV pages
-   were written — one component now instead of six hand-built variants. */
+   were written: one component now instead of six hand-built variants. */
 .entries {
   margin: 0;
   padding-left: 1.4em;
+}
+
+/* Multi-column grid for grouped credential / issuer entries */
+.entries--grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: var(--space-4) var(--space-5);
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: var(--space-5);
+}
+
+.entries--grid > .entry {
+  margin-bottom: 0;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
 }
 
 .entry { margin-bottom: var(--space-5); }
@@ -664,7 +719,7 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 /* 11. COMPONENT: DEFINITION LIST =========================================== */
 
 /* Skills, languages and other "category: values" content. The original wrote
-   these as <li><b>Label:</b> values</li> — correct on screen, but the pairing
+   these as <li><b>Label:</b> values</li>: correct on screen, but the pairing
    lived only in the punctuation. This renders identically while being a real
    definition list: the bullet, the bold label, the colon and the values all sit
    on one line. The wrapper div is valid inside <dl> and is what lets a dt/dd
@@ -692,7 +747,142 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 .impact__source { white-space: nowrap; }
 
 
-/* 12. COMPONENT: TAG ======================================================= */
+/* 12. COMPONENT: SPEC STRIP =============================================== */
+
+/* Constants of an appointment, set side by side instead of stacked: the three
+   things a reader wants from a teaching page (how much of it, in what
+   language, graded how) each answered in a fixed place.
+
+   It is a run of definition lists, like §11, and it exists because §11 cannot
+   do this job: a .deflist is one label and its values on one line, and these
+   are three groups of several rows that have to align as columns. The figures
+   sit right, so hours and percentages stack into a readable edge rather than
+   hiding mid-sentence.
+
+   Deliberately not a table. Nothing here is a grid of one datum per cell: the
+   columns are independent groups that happen to sit alongside each other, and
+   auto-fit lets them become one column on a narrow screen without a breakpoint
+   of their own. */
+.specs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: var(--space-5) var(--space-6);
+  margin-bottom: var(--space-5);
+}
+
+/* No max-width: this is the one intro-level component that is meant to use the
+   full content column. The measure cap on .block__intro governs prose, and a
+   column of label/figure rows is not prose. */
+.spec { margin: 0; }
+
+/* A <p>, not a heading: .entry__group-title sets the precedent: subdivisions
+   inside a block stay out of the document outline (§11 of DESIGN.md). The
+   hairline is the same one .block__title uses, which is what separates the
+   columns without a border, a rule or a card. */
+.spec__title {
+  margin: 0 0 var(--space-2);
+  padding-bottom: var(--space-1);
+  border-bottom: 1px solid var(--color-border-soft);
+  color: var(--color-heading-3);
+  font-size: var(--text-md);
+  font-weight: var(--weight-bold);
+}
+
+/* The column's headline figure, when it has one: "32 h per course" sitting
+   above the components that sum to it. */
+.spec__lead {
+  margin: 0 0 var(--space-3);
+  color: var(--color-heading);
+  font-weight: var(--weight-bold);
+}
+
+.spec__rows { margin: 0; }
+
+/* Label left, figure right, and the detail line dropping full-width beneath.
+   Flex rather than a two-column grid so that a value too long for its column
+   wraps onto its own line instead of being crushed against the right edge. */
+.spec__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0 var(--space-3);
+  margin-bottom: var(--space-2);
+}
+.spec__row:last-child { margin-bottom: 0; }
+
+/* The weighting is inverted from .deflist on purpose. There the label is the
+   bold thing you scan for; here the reader is scanning the figures, so the
+   label recedes and the value carries the weight. */
+.spec__row > dt {
+  color: var(--color-text);
+  font-weight: var(--weight-regular);
+}
+
+.spec__row > dd {
+  margin: 0;
+  color: var(--color-heading);
+  font-weight: var(--weight-bold);
+  text-align: right;
+}
+
+/* The qualifier under a row: what the hours consist of, what the materials
+   are. Full-width so it never competes with the figure for the same line. */
+.spec__row > .spec__detail {
+  flex-basis: 100%;
+  margin: var(--space-1) 0 0;
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-regular);
+  text-align: left;
+}
+
+
+/* 13. COMPONENT: SKILL ===================================================== */
+
+/* A capability, the tools it is exercised with, and links to every record on
+   the site that proves it. The one block whose tag list is a run of citations
+   rather than a fixed set of dimensions: skills.md argues why that is worth
+   giving up positional reading for. */
+.skills { margin: 0; padding: 0; list-style: none; }
+
+.skill { margin-bottom: var(--space-5); }
+.skill:last-child { margin-bottom: 0; }
+
+/* Name and standing share a baseline: the standing is a caption on the name,
+   not a second line of content. */
+.skill__head {
+  margin-bottom: var(--space-1);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+}
+
+.skill__name {
+  color: var(--color-heading);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-lg);
+}
+
+/* Deliberately uncoloured. Standing is a *value* ("production-proven" versus
+   "applied & studied") and §7.1 forbids styling a value, for the reason
+   projects.md gives: colour that grades a value asserts what the record has
+   not earned. The gradient is carried by the evidence chips instead, which is
+   why the leading chip's colour is worth reading. */
+.skill__standing {
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+}
+
+.skill__tools {
+  margin-bottom: var(--space-2);
+  color: var(--color-secondary);
+  font-size: var(--text-md);
+}
+
+
+/* 14. COMPONENT: TAG ======================================================= */
 
 /* Tags classify; they never decorate. There are two families and no third.
 
@@ -700,59 +890,63 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
    belongs to the *dimension*, not to the value, which is the whole point: a
    reader learns once that amber is placement and violet is reach, and from
    then on reads a tag list positionally instead of word by word. Order is not
-   set here or in the markup — it comes from META_ORDER in tools/build.py, so
+   set here or in the markup: it comes from META_ORDER in tools/build.py, so
    no page can put scope before type.
 
    There is one model per page, each with its own categories:
 
      awards
-     .tag--placement — 1st Place, Finalist, 21st Place        (amber + medal)
-     .tag--type      — Competitive Programming, Hackathon     (blue)
-     .tag--scope     — Regional, National, African            (violet)
-     .tag--scale     — 86 teams, 300 participants             (grey)
+     .tag--placement (1st Place, Finalist, 21st Place        (amber + medal)
+     .tag--type      Competitive Programming, Hackathon      (blue)
+     .tag--scope     Regional, National, African             (violet)
+     .tag--scale     86 teams, 300 participants              (grey)
+     .tag--duration  48h                                     (grey)
+     .tag--track     GenAI for Healthcare                    (grey)
 
      workshops
-     .tag--format    — Workshop, Workshop Series, Hands-on Lab (blue)
-     .tag--mode      — On-site, Online                         (violet)
-     .tag--audience  — Engineering Students, Professionals     (amber)
-     .tag--host      — OLIVESOFT, Securinets ENIS              (grey)
+     .tag--format    (Workshop, Workshop Series, Hands-on Lab (blue)
+     .tag--mode)     On-site, Online                         (violet)
+     .tag--duration  4h                                      (grey, reused)
+     .tag--audience  (Engineering Students, Professionals     (amber)
+     .tag--scale     60 students                             (grey, reused)
+     .tag--host)     OLIVESOFT, Securinets ENIS              (grey)
 
      teaching
-     .tag--level     — Master's Year 1, Master's Year 2        (amber)
-     .tag--workload  — 32 h · 20 lecture + 8 lab + 4 project   (blue)
-     .tag--scale     — 12 students                             (grey, reused)
+     .tag--level     (Master's Year 1, Master's Year 2        (amber)
+     .tag--workload) 32 h · 20 lecture + 8 lab + 4 project   (blue)
+     .tag--scale: 12 students                             (grey, reused)
 
      research
-     .tag--status     — Published, In Progress                 (amber)
-     .tag--authorship — Second Author                          (blue)
-     .tag--publisher  — Elsevier                               (grey)
+     .tag--status     (Published, In Progress                 (amber)
+     .tag--authorship) Second Author                          (blue)
+     .tag--publisher: Elsevier                               (grey)
 
      writing
-     .tag--format    — Walkthrough, Configuration Guide         (blue, reused)
-     .tag--reach     — 3K views · 1.5K reads                    (violet)
-     .tag--platform  — Medium                                   (grey)
+     .tag--format    (Walkthrough, Configuration Guide         (blue, reused)
+     .tag--reach) 3K views · 1.5K reads                    (violet)
+     .tag--platform: Medium                                   (grey)
 
      projects
-     .tag--upstream  — Submitted upstream · PR #586             (amber, linked)
-     .tag--kind      — Kanboard Plugin, Notebook                (blue)
-     .tag--stack     — Python · YOLOv8 · FastAPI · Gradio       (grey)
+     .tag--upstream  (Submitted upstream · PR #586             (amber, linked)
+     .tag--kind) Kanboard Plugin, Notebook                (blue)
+     .tag--stack: Python · YOLOv8 · FastAPI · Gradio       (grey)
 
      experience
-     .tag--domain    — E-commerce & Retail                      (blue)
-     .tag--stack     — Talend · Azure · Datadog · Salesforce    (grey, reused)
+     .tag--domain    (E-commerce & Retail                      (blue)
+     .tag--stack) Talend · Azure · Datadog · Salesforce    (grey, reused)
 
      education
-     .tag--accreditation — EUR-ACE® Accredited        (grey, reused, linked)
+     .tag--accreditation: EUR-ACE® Accredited        (grey, reused, linked)
 
    `scale` is shared rather than duplicated: it means the size of the group a
-   record involved on both pages that use it — 86 teams, 12 students — so it
+   record involved on both pages that use it (86 teams, 12 students) so it
    keeps one name, one meaning and one rule. `format` is shared on the same
    terms: on Workshops and on Writing alike it names the shape the deliverable
-   takes — a Hands-on Lab, a Configuration Guide — and so keeps one rule too.
+   takes (a Hands-on Lab, a Configuration Guide) and so keeps one rule too.
 
    `publisher` and `platform` are the case that proves the opposite half of
    that test. Both sit last, both are grey, and both answer *who stands behind
-   this* — but Elsevier peer-reviewed the work and Medium hosted it, which are
+   this*, but Elsevier peer-reviewed the work and Medium hosted it, which are
    not the same claim, so they keep separate names and separate models. The
    shared grey is what makes the pair legible down the Research page; the
    separate names are what stops the second block borrowing the first block's
@@ -767,11 +961,11 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
    UTILITY tags mark a single fact about a record that is not one of those
    dimensions, and are written by hand where they apply:
 
-     .tag--neutral  — factual context (technology, cohort, institution)
-     .tag--accent   — role or category
-     .tag--success  — verified / published / shipped
-     .tag--honor    — distinction or pending status
-     .tag--critical — downloadable artefact */
+     .tag--neutral  (factual context (technology, cohort, institution)
+     .tag--accent) role or category
+     .tag--success  (verified / published / shipped
+     .tag--honor) distinction or pending status
+     .tag--critical: downloadable artefact */
 .tag-list {
   display: flex;
   flex-wrap: wrap;
@@ -796,7 +990,7 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
   white-space: nowrap;
 }
 
-/* Metadata family — one dimension, one colour, for the whole of its model.
+/* Metadata family: one dimension, one colour, for the whole of its model.
    The two models are read on separate pages and so may reuse a hue; what may
    never happen is two categories of the *same* model sharing one, because
    that is what lets a tag list be read positionally. */
@@ -816,12 +1010,12 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 
 /* `reach` takes the violet the family already spends on reach: scope says how
    far an award travelled, mode says how far a room did, and this says how far
-   an article did. The hue was not chosen for this category — it was already
+   an article did. The hue was not chosen for this category: it was already
    the answer to the question this category asks. */
 .tag--reach      { background: var(--status-scope-bg);  color: var(--status-scope-fg);   border-color: var(--status-scope-br); }
 
 /* `upstream` is amber because it is a status, and amber is what a status looks
-   like here — the same rule that puts Published and In Progress in one colour
+   like here: the same rule that puts Published and In Progress in one colour
    on Research. It is emphatically NOT green: an open pull request is a
    submission, and the earlier hand-written version of this page styled it with
    the success green, which said "accepted" about work that had not been. The
@@ -829,30 +1023,40 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 .tag--upstream   { background: var(--status-honor-bg);  color: var(--status-honor-fg);   border-color: var(--status-honor-br); }
 .tag--kind       { background: var(--status-accent-bg); color: var(--status-accent-fg);  border-color: var(--status-accent-br); }
 
-/* `domain` is blue because it is the substance of the record — the same slot
+/* `domain` is blue because it is the substance of the record: the same slot
    `type` holds on an award and `kind` holds on a project. It says what the
    data was about, which the job title beside it does not: two roles both
    called Data Integration Engineer moved e-commerce orders in one case and
    infrared sensor readings in the other. */
 .tag--domain     { background: var(--status-accent-bg); color: var(--status-accent-fg);  border-color: var(--status-accent-br); }
 
-/* The last category of each model is context rather than a claim — how large
-   the field was, who hosted the room, who published it — so it is the one
+/* Skills: declared in skills.md. Green leads because production leads: the
+   colour of a row's first chip is how its standing reads at a glance. */
+.tag--production    { background: var(--status-success-bg); color: var(--status-success-fg); border-color: var(--status-success-br); }
+.tag--certification { background: var(--status-accent-bg);  color: var(--status-accent-fg);  border-color: var(--status-accent-br); }
+.tag--taught        { background: var(--status-scope-bg);   color: var(--status-scope-fg);   border-color: var(--status-scope-br); }
+.tag--published     { background: var(--status-honor-bg);   color: var(--status-honor-fg);   border-color: var(--status-honor-br); }
+
+/* The last category of each model is context rather than a claim (how large
+   the field was, who hosted the room, who published it) so it is the one
    metadata tag that reads at regular weight, and the eye lands on the ones
    before it first.
 
    `accreditation` joins them rather than taking the utility success-green the
    hand-written Career page gave it. It answers the same question `publisher`,
-   `host` and `platform` answer — who stands behind this — and DESIGN.md's rule
+   `host` and `platform` answer (who stands behind this) and DESIGN.md's rule
    is to reuse the treatment when the question is the same. The green was doing
    something else: it graded the value, telling the reader the accreditation
    was the good news, when the category itself is the information and a degree
    without one simply renders no tag. */
 .tag--scale,
+.tag--duration,
+.tag--track,
 .tag--host,
 .tag--publisher,
 .tag--platform,
 .tag--stack,
+.tag--applied,
 .tag--accreditation {
   background: var(--status-neutral-bg);
   color: var(--status-neutral-fg);
@@ -871,7 +1075,7 @@ a.tag:hover { text-decoration: underline; opacity: 0.85; }
 a.tag.link-external::after { margin-left: 0; }
 
 /* The medal disc on a top-three placement. It carries no information the tag's
-   own text does not already give — "1st Place" is right beside it — so it is
+   own text does not already give ("1st Place" is right beside it) so it is
    aria-hidden and exists only to be recognised before the text is read. This
    is why the placement tag never says "Winner": the medal is the signal and
    the wording stays factual. Drawn in CSS rather than shipped as an image so
@@ -889,9 +1093,9 @@ a.tag.link-external::after { margin-left: 0; }
 .medal--bronze { background: var(--medal-bronze); border-color: var(--medal-bronze-ring); }
 
 
-/* 13. COMPONENT: ICON ====================================================== */
+/* 15. COMPONENT: ICON ====================================================== */
 
-/* Brand logos arrive in wildly different aspect ratios — square, 2500x1184
+/* Brand logos arrive in wildly different aspect ratios: square, 2500x1184
    wordmarks, 412x800 portraits. Every icon therefore renders inside a fixed
    square box with object-fit: contain, which is what keeps them undistorted
    and optically aligned. Icons are never sized inline. */
@@ -922,9 +1126,9 @@ a.tag.link-external::after { margin-left: 0; }
 .icon-link:hover { opacity: 1; }
 
 
-/* 14. COMPONENT: SITE FOOTER =============================================== */
+/* 16. COMPONENT: SITE FOOTER =============================================== */
 
-/* Provenance, at the foot of the identity rail — where the theme put it. */
+/* Provenance, at the foot of the identity rail, where the theme put it. */
 .site-footer {
   margin-top: var(--space-6);
   padding-top: var(--space-4);
@@ -938,7 +1142,7 @@ a.tag.link-external::after { margin-left: 0; }
 .site-footer a { color: var(--color-secondary); }
 
 
-/* 15. RESPONSIVE =========================================================== */
+/* 17. RESPONSIVE =========================================================== */
 
 /* --- ≤960px: two columns become one (the theme's own breakpoint) ---------- */
 @media (max-width: 960px) {
@@ -1002,7 +1206,7 @@ a.tag.link-external::after { margin-left: 0; }
 }
 
 
-/* 16. MOTION & ACCESSIBILITY PREFERENCES =================================== */
+/* 18. MOTION & ACCESSIBILITY PREFERENCES =================================== */
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -1023,7 +1227,7 @@ a.tag.link-external::after { margin-left: 0; }
 }
 
 
-/* 17. PRINT ================================================================ */
+/* 19. PRINT ================================================================ */
 
 /* The portfolio doubles as a printable CV. */
 @media print {
@@ -1053,7 +1257,7 @@ a.tag.link-external::after { margin-left: 0; }
   .sidebar__portrait { display: none; }
 
   a { text-decoration: none; }
-  .entry, .block { page-break-inside: avoid; }
+  .entry, .block, .skill { page-break-inside: avoid; }
   .block__title, .page-title { page-break-after: avoid; }
   .tag { border-color: #999; }
 

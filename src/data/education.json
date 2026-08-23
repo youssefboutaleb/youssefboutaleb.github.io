@@ -10,7 +10,24 @@
     "accreditation": {
       "name": "EUR-ACE&reg; Accredited",
       "url": "https://www.enaee.eu/eur-ace-system/"
-    }
+    },
+    "summary": "3-year computer science engineering program specializing in Data Engineering, Distributed Systems, Cloud Architectures, and Applied AI.",
+    "groups": [
+      {
+        "title": "Graduation Thesis (PFE at OLIVESOFT)",
+        "points": [
+          "<b>Fault-tolerant API integration:</b> designed and deployed an asynchronous MuleSoft API-led architecture connecting Salesforce Service Cloud to the Diduenjoy customer feedback platform.",
+          "<b>Decoupled reliability:</b> implemented asynchronous message queues and explicit error-handling strategies, ensuring downstream system outages never block active service desk workflows."
+        ]
+      },
+      {
+        "title": "Data &amp; Systems Specialization",
+        "points": [
+          "<b>Data engineering &amp; cloud:</b> advanced coursework in Big Data processing, Database Management Systems (SGBD), Business Intelligence, Parallel &amp; Distributed Computing, and Cloud Architectures.",
+          "<b>AI &amp; software craftsmanship:</b> Machine Learning, Computer Vision, DevOps, Microservices, Industrial Blockchain, and Clean Coding principles."
+        ]
+      }
+    ]
   },
   {
     "degree": "Bachelor of Engineering (Mathematics and Physics)",
@@ -18,6 +35,11 @@
     "institution_full": "Higher Institute of Applied Sciences and Technology of Mahdia",
     "url": "https://issatmh.rnu.tn/",
     "start": 2019,
-    "end": 2021
+    "end": 2021,
+    "summary": "Intensive 2-year National Engineering Preparatory Program (MP Track: Mathematics and Physics), ranking for admission to the National Engineering School of Sfax (ENIS).",
+    "points": [
+      "<b>Advanced mathematics:</b> rigorous foundation in real and complex analysis, linear algebra, matrix theory, differential equations, numerical methods, and probability theory.",
+      "<b>Physics &amp; computational foundations:</b> classical mechanics, electromagnetism, thermodynamics, wave physics, and algorithmic problem solving."
+    ]
   }
 ]

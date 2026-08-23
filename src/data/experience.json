@@ -51,7 +51,7 @@
     "domain": "Industrial Instrumentation",
     "stack": ["C++"],
     "points": [
-      "Implemented a real-time C++ signal processing <b>Savitzky&ndash;Golay filter</b> to reduce infrared data noise, achieving a <b>100&times; speedup</b> in preprocessing for metal classification.",
+      "Implemented a real-time C++ signal processing <b>Savitzky-Golay filter</b> to reduce infrared data noise, achieving a <b>100&times; speedup</b> in preprocessing for metal classification.",
       "Developed and trained a <b>Random Forest classifier</b> for accurate metal classification, enabling near-instantaneous analysis."
     ]
   }

@@ -10,7 +10,7 @@
     },
     "platform": "Medium",
     "url": "https://medium.com/@youssefboutaleb.info/developingyolov8-custom-object-detection-with-fastapi-and-gradio-e9314fad0782",
-    "summary": "Carries one annotated dataset the whole way through &mdash; Roboflow labelling, 100 epochs of distributed training on Kaggle, then the same weights behind two surfaces: a containerised FastAPI service and a Gradio space on Hugging Face."
+    "summary": "End-to-end computer vision data pipeline: from Roboflow dataset annotation and 100 epochs of distributed Kaggle training to containerized FastAPI inference and Hugging Face Gradio serving."
   },
   {
     "id": "datadog-log4j2-mulesoft",
@@ -23,6 +23,6 @@
     },
     "platform": "Medium",
     "url": "https://medium.com/@youssefboutaleb.info/simplify-your-log-management-configuring-datadog-integration-with-log4j2-in-mulesoft-44e83b56e0c4",
-    "summary": "Ships logs without installing the DataDog agent: a Log4j2 HTTP appender POSTs JSONLayout-formatted events straight to the Send Logs API, behind an async root logger rather than a blocking one."
+    "summary": "Agentless log streaming architecture: configuring an asynchronous Log4j2 HTTP appender to POST JSONLayout events directly to Datadog's Send Logs API without blocking execution threads."
   }
 ]

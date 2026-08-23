@@ -7,7 +7,7 @@
     "upstream": { "repo": "kanboard/website", "pr": 586, "state": "open" },
     "kind": "Kanboard Plugin",
     "stack": ["PHP", "JavaScript"],
-    "summary": "Embeds <b>diagrams.net</b> into Kanboard tasks and projects, so an architecture diagram is created, edited and stored beside the task it documents rather than in a separate tool."
+    "summary": "Embeds <b>diagrams.net</b> into Kanboard tasks and projects, so system architecture diagrams are created, edited, and stored beside the tasks they document."
   },
   {
     "title": "Kanboard Plugin: File Attachment Interaction",
@@ -17,7 +17,7 @@
     "upstream": { "repo": "kanboard/website", "pr": 585, "state": "open" },
     "kind": "Kanboard Plugin",
     "stack": ["PHP", "JavaScript"],
-    "summary": "Reworks how task attachments are handled: previewing a file in place, and shortening the path between a board and the document a task depends on."
+    "summary": "Streamlines task document management by adding in-place file previews and shortening the path between Kanban boards and technical attachments."
   },
   {
     "title": "Custom YOLOv8 Model for Number Detection on Meters",
@@ -27,7 +27,7 @@
     "article": "yolov8-fastapi-gradio",
     "kind": "Model &amp; Service",
     "stack": ["Python", "YOLOv8", "FastAPI", "Gradio"],
-    "summary": "Reads the digits off a utility meter photograph. The trained weights are served two ways from one repository &mdash; a containerised API deployed to Vercel, and a Gradio interface running as a Hugging Face Space."
+    "summary": "Automates digit reading from utility meter photographs, serving trained weights through a containerized FastAPI REST service and a Hugging Face Gradio space."
   },
   {
     "title": "Image Colorization with Deep Learning",
@@ -36,6 +36,6 @@
     "repo": "https://github.com/youssefboutaleb/colorizeblack-whitephotos",
     "kind": "Notebook",
     "stack": ["Python", "TensorFlow", "Keras"],
-    "summary": "Recovers plausible colour for a grayscale photograph, built up across four successive versions in one notebook &mdash; from a baseline convolutional model to an adversarial one &mdash; so the effect of each change on the output is visible side by side."
+    "summary": "Reconstructs plausible color for grayscale images across four progressive notebook models (from baseline convolutional networks to adversarial GANs) to evaluate structural and color fidelity."
   }
 ]

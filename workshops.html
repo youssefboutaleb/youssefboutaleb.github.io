@@ -1,4 +1,4 @@
-<!-- GENERATED FILE — do not edit.
+<!-- GENERATED FILE: do not edit.
      Source: src/layout.html + src/pages/workshops.html (content),
              src/site.json + src/data/*.json (data).
      Rebuild: python3 tools/build.py
@@ -11,7 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
 
-  <title>Workshops — Youssef Boutaleb</title>
+  <title>Workshops &middot; Youssef Boutaleb</title>
   <meta name="description" content="Technical workshops on computer architecture, ARM assembly, competitive programming and Python, delivered for OLIVESOFT, Securinets ENIS and the IEEE Student Branch at ENIS.">
   <meta name="author" content="Youssef Boutaleb">
   <meta name="google-site-verification" content="_EoRy_lTXm3RCqZdWpUgQ9bWDF7KCrEdSZBocueWMUk">
@@ -19,10 +19,10 @@
   <link rel="canonical" href="https://youssefboutaleb.github.io/workshops.html">
   <link rel="icon" type="image/svg+xml" href="images/icons/icon.svg">
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Noto-Sans-regular/Noto-Sans-regular.woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=815642697fe7">
+  <link rel="stylesheet" href="assets/css/main.css?v=9641cbfffa14">
 
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Workshops — Youssef Boutaleb">
+  <meta property="og:title" content="Workshops &middot; Youssef Boutaleb">
   <meta property="og:description" content="Technical workshops on computer architecture, ARM assembly, competitive programming and Python, delivered for OLIVESOFT, Securinets ENIS and the IEEE Student Branch at ENIS.">
   <meta property="og:url" content="https://youssefboutaleb.github.io/workshops.html">
   <meta property="og:locale" content="en_US">
@@ -38,7 +38,7 @@
 
   <div class="layout">
 
-    <!-- Identity, credentials and contact — present on every page. -->
+    <!-- Identity, credentials and contact: present on every page. -->
     <header class="sidebar">
       <p class="sidebar__updated"><small>Last update: August 2026</small></p>
       <a class="sidebar__name" href="index.html">Youssef Boutaleb</a>
@@ -65,6 +65,7 @@
 
       <div class="sidebar__section">
         <h2 class="sidebar__heading">Contact</h2>
+        <p>Open to Data Engineering roles, and to talking about pipelines, integration and observability.</p>
         <ul class="contact">
           <li><span class="contact__label">Email:</span> <a class="contact__value" href="mailto:youssefboutaleb.info@gmail.com">youssefboutaleb.info@gmail.com</a></li>
           <li><span class="contact__label">University:</span> <a class="contact__value" href="mailto:youssef.boutaleb@enis.tn">youssef.boutaleb@enis.tn</a></li>
@@ -93,12 +94,18 @@
       </div>
 
       <div class="site-footer">
-        <p>Hosted on GitHub Pages &mdash; theme lineage <a href="https://github.com/orderedlist" target="_blank" rel="noopener">orderedlist</a>.</p>
+        <p>Hosted on GitHub Pages: theme lineage <a href="https://github.com/orderedlist" target="_blank" rel="noopener">orderedlist</a>.</p>
         <p>Forked from <a href="https://github.com/elyesmanai/elyesmanai.github.io" target="_blank" rel="noopener">elyesmanai/elyesmanai.github.io</a>.</p>
       </div>
     </header>
 
     <div class="content">
+      <div class="top-bar">
+        <button id="sidebar-toggle" class="sidebar-toggle" type="button" aria-expanded="true">
+          <img class="icon icon--xs" src="images/icons/icon.svg" alt="" width="12" height="12">
+          <span id="sidebar-toggle-text">Hide Profile</span>
+        </button>
+      </div>
       <nav class="nav" aria-label="Primary">
         <ul class="nav__list">
           <li class="nav__item"><a class="nav__link" href="index.html">Home</a></li>
@@ -119,25 +126,28 @@
         <section class="block" aria-labelledby="workshops-delivered">
           <h3 class="block__title" id="workshops-delivered">Workshops Delivered</h3>
           <p class="block__intro">
-            Happy to share what I know &mdash; simple slides, small demos, and bigger sessions ahead.
+            Teaching how data moves through hardware: from memory hierarchies and CPU pipelines to efficient data structures and algorithms.
           </p>
           <ul class="entries">
             <!-- Records live in src/data/workshops.json; tag order and colour come
                  from MODELS in tools/build.py. Never hand-write entries here. -->
-            <li class="entry">
+                <li class="entry">
               <p class="entry__title">Introduction to CS Fundamentals (Hardware)</p>
               <p class="entry__period"><time datetime="2026">2026</time></p>
               <ul class="tag-list" aria-label="Workshop details">
                 <li class="tag tag--format">Workshop Series</li>
                 <li class="tag tag--mode">Online</li>
-                <li class="tag tag--audience">Professionals &amp; Trainees</li>
+                <li class="tag tag--duration">2h</li>
+                <li class="tag tag--audience">Engineers &amp; Executives</li>
+                <li class="tag tag--scale">30 participants</li>
                 <li class="tag tag--host">OLIVESOFT</li>
                 <li><a class="tag tag--critical link-external" href="https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fyoussefboutaleb.github.io%2Fdata%2FIntroduction_to_CS_Fundamentals_Hardware_Workshop.pptx" target="_blank" rel="noopener" title="View slides in PowerPoint Online"><img class="icon icon--xs" src="images/icons/powerpoint.svg" alt="" width="12" height="12">Slides (.pptx)</a></li>
               </ul>
-              <p class="entry__summary">Two sessions for the <b><a href="https://www.linkedin.com/company/olivesoft/posts/?feedView=all" target="_blank" rel="noopener">OLIVE-LEARN</a></b> programme, tracing a running program from the instruction pipeline down to the logic gates that execute it.</p>
+              <p class="entry__summary">Two-part workshop series delivered for <b><a href="https://www.linkedin.com/company/olivesoft/posts/?feedView=all" target="_blank" rel="noopener">OLIVE-LEARN</a></b> (OLIVESOFT's internal workshop training programme), tracing data movement from parallel hardware architectures down to logic gates.</p>
               <ul class="points">
-                <li><b>Part 1 &mdash; Efficient code execution:</b> CPU instruction pipelining, the memory hierarchy and caching, and how DMA, the NIC and the APU move work off the core.</li>
-                <li><b>Part 2 &mdash; Circuit-level computation:</b> built up from SR and D latches to a 4-bit register, 1-bit and 4-bit adders, and an arithmetic logic unit.</li>
+                <li><b>Part 1.a: Efficient data &amp; code execution:</b> CPU instruction pipelining, memory hierarchy (L1/L2/L3 caching), and how DMA, NICs, and APUs offload data movement from the main core.</li>
+                <li><b>Part 1.b: Parallel compute &amp; Python bindings:</b> SIMD, SIMT, and MIMD execution models, demonstrating how high-level Python code (NumPy vectorization, PyTorch GPU threads) targets underlying vector hardware.</li>
+                <li><b>Part 2: Circuit-level computation:</b> data storage and arithmetic built up from SR/D latches to 4-bit registers, adders, and an arithmetic logic unit.</li>
               </ul>
             </li>
             <li class="entry">
@@ -148,15 +158,17 @@
               <ul class="tag-list" aria-label="Workshop details">
                 <li class="tag tag--format">Hands-on Lab</li>
                 <li class="tag tag--mode">On-site</li>
+                <li class="tag tag--duration">4h</li>
                 <li class="tag tag--audience">Engineering Students</li>
+                <li class="tag tag--scale">60 participants</li>
                 <li class="tag tag--host">Securinets ENIS</li>
               </ul>
-              <p class="entry__summary">Low-level programming taught from the hardware upward, with every slide, exercise and solution published as a public repository.</p>
+              <p class="entry__summary">A hands-on lab on hardware execution and low-level data handling, demonstrating the performance gap between high-level Python and bare-metal assembly.</p>
               <ul class="points">
-                <li>Hardware groundwork: chipsets, buses, and the path an instruction takes to reach the CPU.</li>
-                <li>ARM assembly: definitions, the core instruction set and worked examples, followed by guided exercises.</li>
-                <li>Each exercise solved twice &mdash; once in ARM assembly, once in Python &mdash; so the cost of an abstraction was visible side by side.</li>
-                <li>Extension material: a Breakout game implemented in x86 assembly alongside C and C++ versions, for participants continuing on their own.</li>
+                <li><b>Bus &amp; memory architecture:</b> system bus data transfers, byte ordering (endianness), memory-mapped I/O, and register alignment.</li>
+                <li><b>ARM assembly &amp; stack management:</b> register pressure, bitwise operations, stack frames, conditional execution, and guided coding exercises.</li>
+                <li><b>Python vs. ARM assembly benchmarking:</b> dual implementations showing how high-level abstractions introduce memory and stack overhead compared to direct register manipulation.</li>
+                <li><b>Bare-metal game build:</b> extension Breakout game implemented in x86 assembly, C, and C++ to compare manual memory control and execution speed.</li>
               </ul>
             </li>
             <li class="entry">
@@ -165,13 +177,16 @@
               <ul class="tag-list" aria-label="Workshop details">
                 <li class="tag tag--format">Workshop</li>
                 <li class="tag tag--mode">On-site</li>
+                <li class="tag tag--duration">4h</li>
                 <li class="tag tag--audience">Engineering Students</li>
+                <li class="tag tag--scale">40 participants</li>
                 <li class="tag tag--host">IEEE Student Branch ENIS</li>
               </ul>
-              <p class="entry__summary">An entry point into contest-style problem solving, aimed at students with working code but no method for choosing an approach.</p>
+              <p class="entry__summary">A live-coding session guiding participants from brute-force thinking to optimized, pattern-based problem solving.</p>
               <ul class="points">
-                <li>Complexity analysis first: reading a problem&rsquo;s constraints to rule out approaches before writing any code.</li>
-                <li>The core data structures and the recurring algorithm patterns that most contest problems reduce to.</li>
+                <li><b>Core technique drills:</b> solved LeetCode problems live using prefix sums, binary search, and two-pointer strategies, converting <i>O</i>(<i>N</i><sup>2</sup>) approaches into <i>O</i>(<i>N</i>) and <i>O</i>(log <i>N</i>) solutions.</li>
+                <li><b>Complexity reasoning:</b> broke down Big-O time and space analysis for iterative and recursive/backtracking code, including theoretical lower bounds for sorting under different assumptions (<i>O</i>(<i>N</i> log <i>N</i>) vs. <i>O</i>(<i>N</i>) when min/max are known).</li>
+                <li><b>Practice roadmap:</b> provided a self-study path through NeetCode, Codeforces, HackerRank, <i>Competitive Programming 4</i>, CLRS, and Sedgewick's Coursera algorithms course.</li>
               </ul>
             </li>
             <li class="entry">
@@ -180,13 +195,16 @@
               <ul class="tag-list" aria-label="Workshop details">
                 <li class="tag tag--format">Workshop</li>
                 <li class="tag tag--mode">Online</li>
+                <li class="tag tag--duration">2h</li>
                 <li class="tag tag--audience">Engineering Students</li>
+                <li class="tag tag--scale">12 participants</li>
                 <li class="tag tag--host">IEEE Student Branch ENIS</li>
               </ul>
-              <p class="entry__summary">A beginner track taught through two builds rather than through syntax slides.</p>
+              <p class="entry__summary">A foundational session that took students from Python syntax to parsing real datasets and visualizing them as charts.</p>
               <ul class="points">
-                <li>A console tic-tac-toe game: representing board state, validating input and detecting a win.</li>
-                <li>A short data exercise: reading a CSV file and plotting it as charts.</li>
+                <li><b>Environment setup:</b> configured PyCharm with isolated virtual environments (<code>venv</code>) to establish clean, reproducible project workflows.</li>
+                <li><b>Core language &amp; data structures:</b> covered Python syntax, dynamic state logic, and native structures (lists, tuples, dictionaries) as building blocks for organizing data.</li>
+                <li><b>File handling &amp; visualization:</b> parsed CSV files using context managers (<code>with open</code>) and the <code>csv</code> module, then plotted the resulting data with Matplotlib.</li>
               </ul>
             </li>
           </ul>
@@ -202,6 +220,27 @@
     function gtag(){ dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-71KWCMXZ0P');
+    (function() {
+      var toggleBtn = document.getElementById('sidebar-toggle');
+      var toggleText = document.getElementById('sidebar-toggle-text');
+      var layout = document.querySelector('.layout');
+      if (!toggleBtn || !layout) return;
+
+      if (localStorage.getItem('sidebar_collapsed') === 'true') {
+        layout.classList.add('layout--sidebar-collapsed');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        if (toggleText) toggleText.textContent = 'Show Profile';
+      }
+
+      toggleBtn.addEventListener('click', function() {
+        var isCollapsed = layout.classList.toggle('layout--sidebar-collapsed');
+        localStorage.setItem('sidebar_collapsed', isCollapsed ? 'true' : 'false');
+        toggleBtn.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
+        if (toggleText) {
+          toggleText.textContent = isCollapsed ? 'Show Profile' : 'Hide Profile';
+        }
+      });
+    })();
   </script>
 </body>
 

@@ -3,7 +3,7 @@
 
     python3 tools/check.py
 
-There is no test framework here because there is no application code — the
+There is no test framework here because there is no application code: the
 things that actually break on a static portfolio are dead links, a class name
 that exists in the markup but not the stylesheet, a stray inline style, and an
 image with no alt text. This checks exactly those, plus that the committed
@@ -53,7 +53,7 @@ class PageAudit(HTMLParser):
             self.in_script_or_style = True
 
         if "style" in attrs:
-            fail(self.page, f"line {line}: inline style on <{tag}> — belongs in main.css")
+            fail(self.page, f"line {line}: inline style on <{tag}>: belongs in main.css")
         for name in attrs:
             if name.startswith("on"):
                 fail(self.page, f"line {line}: inline event handler {name}= on <{tag}>")
@@ -160,7 +160,7 @@ def main() -> int:
                     fail(page.name, f"line {line}: '{ref}' points at a missing anchor")
 
     # Dead CSS is a maintenance tax: the next person cannot tell which rules
-    # still matter. Reported, not fatal — a rule may be staged for a new page.
+    # still matter. Reported, not fatal: a rule may be staged for a new page.
     unused = sorted(known_classes - used_classes)
     if unused:
         notes.append(f"css classes with no markup using them: {', '.join(unused)}")

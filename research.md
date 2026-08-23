@@ -1,4 +1,4 @@
-# Research — metadata model
+# Research: metadata model
 
 The declaration for the Journal Articles block on the Research & Writing page:
 which categories a paper states about itself, in what order, and what a value
@@ -10,7 +10,7 @@ treatments in [`DESIGN.md`](DESIGN.md) §7.1. Neither of those is restated here.
 models.
 
 This model governs the **Journal Articles** block only. The page carries a
-second block, *Technical Articles*, on its own model — declared in
+second block, *Technical Articles*, on its own model: declared in
 [`writing.md`](writing.md), which also gives the reason the two are not merged.
 
 ---
@@ -46,7 +46,7 @@ from the title. It sits directly under `status` because together they answer
 
 **`publisher` last, and quiet.** It is attribution rather than a claim about
 the work, which is why it takes the regular-weight grey and the terminal
-position — exactly as `host` does on Workshops and `scale` on Awards.
+position, exactly as `host` does on Workshops and `scale` on Awards.
 
 ### Vocabulary
 
@@ -57,8 +57,8 @@ position — exactly as `host` does on Workshops and `scale` on Awards.
 | `publisher` | The publishing house, not the platform: `Elsevier`, not `ScienceDirect` |
 
 `Under Review` is declared but currently unused. It exists because
-`In Progress` covers two genuinely different states — a manuscript still being
-written and one sitting with reviewers — and the next record should not have to
+`In Progress` covers two genuinely different states (a manuscript still being
+written and one sitting with reviewers) and the next record should not have to
 invent a word for the distinction under time pressure. Where the stage is
 known, prefer the precise value.
 
@@ -72,7 +72,7 @@ produces `First Author`, `Second Author`, and so on.
 A hand-typed `"Second Author"` survives an author list being corrected and then
 quietly says the wrong thing. Deriving it makes the two impossible to disagree.
 
-Positions past the fifth fall back to the ordinal — `6th Author` — which is the
+Positions past the fifth fall back to the ordinal (`6th Author`), which is the
 honest way to say *well down a long author list*. The word form is used for the
 first five because a paper is not a leaderboard: `Second Author` is a role in a
 collaboration, where `2nd` would read as a placing.
@@ -87,8 +87,8 @@ distributed across three components rather than pushed into tags:
 ```
 Secure and transparent energy management using …      .entry__title  (linked)
 2025                                                  .entry__period
-N. Moumni, Y. Boutaleb, F. Chaabane, and F. Drira     .entry__meta
-  — Computers & Industrial Engineering
+N. Moumni, Y. Boutaleb, F. Chaabane, and F. Drira     .entry__meta:
+  Computers & Industrial Engineering
 [ Published ] [ Second Author ] [ Elsevier ]          .tag-list
 ```
 
@@ -105,19 +105,19 @@ work; the authors are the line beneath it.
    `authorship` then has to assert.
 2. **The site's owner is bolded.** It is the ordinary convention on a
    publication list and the thing that makes the page scannable for the reason
-   it exists. This is prose, not a tag — [`awards.md`](awards.md) rule 4
+   it exists. This is prose, not a tag: [`awards.md`](awards.md) rule 4
    forbids styling a *value*, and says nothing about a citation line.
 3. **Each author links to their Google Scholar profile where one exists**, from
    `authors[].scholar`. An author with no profile renders as plain text rather
-   than as a dead or invented link — rule 5, applied to a person.
+   than as a dead or invented link: rule 5, applied to a person.
 4. **The journal is italic, and follows an em dash.** It is set in
    `.entry__meta` with the authors because it is part of the citation, not a
    dimension of the record.
 
 These are also the two mechanics the block intro used to describe. It no longer
 does: an author link and a title link announce themselves, and the intro is one
-line — *Applied machine learning taken all the way to peer-reviewed
-publication* — per [`DESIGN.md`](DESIGN.md) §11.1.
+line (*Applied machine learning taken all the way to peer-reviewed
+publication*) per [`DESIGN.md`](DESIGN.md) §11.1.
 
 ### The link on the title
 
@@ -140,7 +140,7 @@ the title clickable.
   citation does not give.
 - **The type.** *Journal Article* is what the block heading says. When a
   conference paper is added it takes a second `.block` titled *Conference
-  Papers*, exactly as Awards splits into *Competitions* and *Hackathons* — a
+  Papers*, exactly as Awards splits into *Competitions* and *Hackathons*: a
   fact true of every record in a block belongs to the block. *Technical
   Articles* is that rule already exercised: self-published writing sits in its
   own block rather than carrying a per-record tag saying so.
@@ -157,7 +157,7 @@ the title clickable.
 ## Editorial rules for the summary
 
 The tags carry metadata; the prose carries substance. On this page, substance
-means **the engineering problem the paper actually solves** — the thing an
+means **the engineering problem the paper actually solves**: the thing an
 abstract buries in its fourth sentence.
 
 1. **One sentence, and it is not the abstract.** `entry__summary` says what the
@@ -170,9 +170,9 @@ abstract buries in its fourth sentence.
    descriptive enough to make a paraphrase read as padding.
 4. **Claim only what the paper supports.** A summary written from the title
    alone stays at the granularity the title actually gives. A thin entry is
-   better than an invented one — [`workshops.md`](workshops.md) rule 4, applied
+   better than an invented one: [`workshops.md`](workshops.md) rule 4, applied
    to a paper where the cost of being wrong is higher.
-5. **`points` are for a paper that needs enumerating** — a contribution list, a
+5. **`points` are for a paper that needs enumerating**: a contribution list, a
    dataset, a result. Most do not; an entry that would repeat its summary uses
    only the summary.
 
@@ -180,7 +180,7 @@ abstract buries in its fourth sentence.
 
 ## Adding a publication
 
-1. Append a record to `src/data/research.json` — position in the file does not
+1. Append a record to `src/data/research.json`: position in the file does not
    matter, `publication_sort_key` orders it newest first, and a record with no
    `year` yet sorts last. Give it a `title`, `authors`, `venue`, `status`,
    `publisher`, a `summary`, and a `year` and `doi` once it is out.

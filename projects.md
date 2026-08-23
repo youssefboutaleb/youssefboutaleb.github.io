@@ -1,4 +1,4 @@
-# Projects — metadata model
+# Projects: metadata model
 
 The declaration for the Projects page: which categories a project states about
 itself, in what order, and what a value in each looks like.
@@ -40,7 +40,7 @@ rather than an invented one.
 **`kind` second.** It is the substance: it says what the reader will find on
 the other end of the repository link, which the title usually does not. *Model
 & Service* and *Notebook* are the difference between something deployed and
-something that runs when you open it — the single most useful fact about an
+something that runs when you open it: the single most useful fact about an
 applied ML project, and invisible from a title.
 
 **`stack` last, and quiet.** Regular-weight grey and the terminal position,
@@ -53,7 +53,7 @@ that says so.
 
 | Category | Shape and permitted values |
 |---|---|
-| `upstream` | `{ "repo": "kanboard/website", "pr": 586, "state": "open" }` — label and URL both derived |
+| `upstream` | `{ "repo": "kanboard/website", "pr": 586, "state": "open" }`: label and URL both derived |
 | `kind` | `Kanboard Plugin` · `Model &amp; Service` · `Notebook` |
 | `stack` | A list of at most four tool names, rendered as one tag |
 
@@ -73,7 +73,7 @@ over the claim.
 ## `upstream` states the state, and the colour grades nothing
 
 `state` is stored raw and the wording comes from `UPSTREAM_STATES` in
-`tools/build.py` — [`awards.md`](awards.md) rule 7, the same mechanism that
+`tools/build.py`: [`awards.md`](awards.md) rule 7, the same mechanism that
 turns `1` into `1st Place`:
 
 | `state` | Renders as |
@@ -90,7 +90,7 @@ upstream status* and never *this status is the good one*. This is the rule
 `status` proves on Research, applied to the page where it is easiest to break.
 
 > **What this replaced.** The hand-written version of this page rendered the
-> pull request as `Official Plugin PR #585` in the utility **success green** —
+> pull request as `Official Plugin PR #585` in the utility **success green**:
 > the colour `DESIGN.md` reserves for *verified / published / shipped*. Neither
 > pull request has been merged. The styling made a claim the work had not yet
 > earned, and it made it in a colour rather than in words, which is precisely
@@ -105,11 +105,11 @@ which is the right direction for this particular field to fail in.
 ### The link on the tag
 
 `upstream` was the first of the two categories on the site whose value carries
-a URL — [`career.md`](career.md)'s `accreditation` is the other, and follows
+a URL: [`career.md`](career.md)'s `accreditation` is the other, and follows
 this reasoning. The pull request *is* the evidence for the claim the tag makes,
 so the tag is the link; `meta_url` in `tools/build.py` builds the address from
 the stored repo and number, for the reason [`research.md`](research.md) builds
-a DOI link — the identifier is the durable fact and the URL is derived from it.
+a DOI link: the identifier is the durable fact and the URL is derived from it.
 
 A linked tag keeps its category's colour. The link is a route to the evidence,
 not a different kind of tag.
@@ -130,14 +130,14 @@ plugins carried a category tag and a PR link, while the ML projects carried
 four loose `.tag--neutral` technology chips. Two records could not be compared
 down a column because no column existed.
 
-Projects nonetheless *needs* the category — [`awards.md`](awards.md) rule 3
-names `stack` among the things a reader may genuinely need — so it is kept and
+Projects nonetheless *needs* the category ([`awards.md`](awards.md) rule 3
+names `stack` among the things a reader may genuinely need) so it is kept and
 rendered as **one tag**, joined by `·`, the way `workload` renders a total with
 its breakdown and `reach` renders a pair. One value, one position, one colour.
 
 **Four tools is the cap.** A `.tag` is `white-space: nowrap`, so a long value
 cannot wrap and will push past a narrow viewport. A stack that will not fit in
-four names is a sign the record should name the rest in its summary — which is
+four names is a sign the record should name the rest in its summary, which is
 what the YOLOv8 entry does with Docker and Vercel.
 
 ---
@@ -154,7 +154,7 @@ ml_projects = [p for p in projects if p.get("block") == "machine-learning"]
 
 `block` is **not a metadata category and never renders.** This is the one place
 Projects deliberately departs from Awards, which filters on `type` and then
-tags `type` on every record, restating the heading it already sits under —
+tags `type` on every record, restating the heading it already sits under:
 the tension [`awards.md`](awards.md) records against itself. Projects resolves
 it [`research.md`](research.md)'s way: a fact true of every record in a block
 belongs to the block.
@@ -168,19 +168,19 @@ second without relearning them.
 ## Editorial rules for the summary
 
 The tags carry metadata; the prose carries substance. On this page, substance
-means **what the thing does for whoever uses it** — not the technique, which
+means **what the thing does for whoever uses it**, not the technique, which
 `stack` already names.
 
 1. **One sentence, and it says what the software does.** "Reads the digits off
    a utility meter photograph" is the record; "designed and implemented a deep
    learning model" is a description of having done work.
 2. **Never restate a tag.** *YOLOv8*, *FastAPI* and *Gradio* are in `stack` one
-   row up. The summary's job is the part no tag carries — where the weights are
+   row up. The summary's job is the part no tag carries, where the weights are
    actually served from.
 3. **Name what the reader would otherwise have to clone the repo to learn.**
    Four successive versions in one notebook; a containerised API on Vercel and
    a Gradio Space beside it.
-4. **Claim only what the repository supports** — [`research.md`](research.md)
+4. **Claim only what the repository supports**: [`research.md`](research.md)
    rule 4. A summary written from the title alone invents the parts it does not
    know.
 5. **`points` are for a project that needs enumerating.** Most do not; an entry
@@ -192,11 +192,11 @@ means **what the thing does for whoever uses it** — not the technique, which
 
 Where a project has a write-up on the Research page, the project record carries
 `"article": "<id>"` and `render_project` resolves it against
-`src/data/writing.json`. The URL is not repeated here — one address, one file,
+`src/data/writing.json`. The URL is not repeated here: one address, one file,
 and a project can no longer point at something the Research page has changed.
 
 The article renders as a utility tag after the model's three, because it is an
-artefact of the work rather than a dimension of it — the same standing a slide
+artefact of the work rather than a dimension of it: the same standing a slide
 deck has on a workshop. See [`writing.md`](writing.md) for why the link runs in
 this direction and not the other.
 
@@ -204,7 +204,7 @@ this direction and not the other.
 
 ## Adding a project
 
-1. Append a record to `src/data/projects.json` — position in the file does not
+1. Append a record to `src/data/projects.json`: position in the file does not
    matter for ordering across years, `project_sort_key` sorts newest first, and
    records sharing a year keep their file order. Give it a `title`, `block`,
    `year`, `repo`, `kind`, `stack` and a `summary`.

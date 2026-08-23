@@ -1,4 +1,4 @@
-# Career — experience and credential models
+# Career: experience and credential models
 
 The declaration for the Career page. It carries **three** record types, not
 one: a job, a qualification, and a credential. The first two answer metadata
@@ -27,7 +27,7 @@ The order is defined once, in `MODELS["experience"]` in `tools/build.py`.
 
 ### Why two categories and not five
 
-The hand-written version of this page carried a loose run of chips — one
+The hand-written version of this page carried a loose run of chips: one
 `.tag--accent` for the headline tool and three or four `.tag--neutral` for the
 rest:
 
@@ -44,12 +44,12 @@ fix.
 
 **The run had no fixed length**, so no column existed and the three jobs could
 not be compared down one. Five chips on the first record, three on the second,
-three on the third — [`teaching.md`](teaching.md)'s rule: *a category holds one
+three on the third: [`teaching.md`](teaching.md)'s rule: *a category holds one
 value.*
 
 **The accent on `Talend` graded a value.** Amber-blue said *this is the
 important one*, which is a claim about the tool rather than a statement of a
-category — exactly what [`awards.md`](awards.md) rule 4 forbids. The stack now
+category, exactly what [`awards.md`](awards.md) rule 4 forbids. The stack now
 renders as one grey tag and names its tools in the order they mattered, which
 says the same thing without spending a colour on it.
 
@@ -59,21 +59,21 @@ first bullet already. It is gone from the tag and stayed in the bullet.
 What replaced them is two categories, because two is what the records honestly
 support:
 
-**`domain` first, and blue.** It is the substance of the record — the slot
+**`domain` first, and blue.** It is the substance of the record: the slot
 `type` takes on an award and `kind` takes on a project. It answers the question
 a job title does not: *what was the data about.* Two of the three roles here
 are titled *Data Integration Engineer*, and one moved e-commerce orders while
 the other moved service-desk tickets. That difference is the single most useful
 fact on the record and it was previously invisible.
 
-**`stack` last, and quiet.** Reused from [`projects.md`](projects.md) — same
+**`stack` last, and quiet.** Reused from [`projects.md`](projects.md), same
 name, same meaning, same rule, capped at four names and rendered as one tag
 joined by `·`. [`awards.md`](awards.md) rule 3: when a page needs a category
 another model already defines, it takes that category rather than coining a
 synonym.
 
 **No `engagement` category**, tempting as it is. Whether a role was permanent,
-a contract or an internship is genuinely useful and genuinely *not recorded* —
+a contract or an internship is genuinely useful and genuinely *not recorded*:
 neither the CV nor the LinkedIn entries state it. Rule 5: an entry with nothing
 to say in a category renders one tag fewer, and a plausible-looking placeholder
 is worse than a visible gap. Add the category the day the fact is known for all
@@ -94,7 +94,7 @@ domain cannot be read off its bullets should get the fact added to a bullet
 rather than a tag invented for it.
 
 `stack` names tools, not techniques. The OEM role reads `C++` alone: a
-Savitzky–Golay filter and a Random Forest classifier are things that were
+Savitzky-Golay filter and a Random Forest classifier are things that were
 *built*, and they are named in the bullets that describe building them. A
 one-name stack is the honest rendering of a role that used one language.
 
@@ -109,8 +109,8 @@ Order:  accreditation
   accreditation  who vouches for the programme   "EUR-ACE® Accredited"
 ```
 
-One category. This is [`awards.md`](awards.md) rule 3 taken at its word —
-*categories are chosen for the reader, not for symmetry* — and it is worth
+One category. This is [`awards.md`](awards.md) rule 3 taken at its word
+(*categories are chosen for the reader, not for symmetry*) and it is worth
 stating plainly, because the pull towards padding it is real.
 
 Everything else an education record carries is already on the record and would
@@ -137,7 +137,7 @@ The hand-written page rendered it as a utility tag:
 
 `.tag--success` is the green [`DESIGN.md`](DESIGN.md) §7.2 reserves for
 *verified / published / shipped*. Read as a category it is wrong twice over: it
-grades the value — *the accreditation is the good news* — where the category
+grades the value (*the accreditation is the good news*) where the category
 itself is the information, and it borrows a utility treatment for a dimension
 of the record.
 
@@ -147,7 +147,7 @@ those categories answer: **who stands behind this.** *Elsevier* peer-reviewed
 the paper, *IEEE Student Branch ENIS* ran the room, *ENAEE* accredits the
 degree. [`DESIGN.md`](DESIGN.md) §7.1: reuse the *treatment* whenever the
 question is the same; reuse the *name* only when the answer means the same
-thing — so the treatment is shared and the name is not.
+thing, so the treatment is shared and the name is not.
 
 ### The link, and why it is on the tag
 
@@ -155,7 +155,7 @@ thing — so the treatment is shared and the name is not.
 after `upstream`. The reasoning is [`projects.md`](projects.md)'s exactly: the
 ENAEE page **is** the evidence for the claim the tag makes, and a reader who
 wants to check what EUR-ACE® means should not have to go looking. The tag keeps
-its category's grey — a link is a route to evidence, not a different kind of
+its category's grey: a link is a route to evidence, not a different kind of
 tag.
 
 It is stored as a pair so the two cannot separate:
@@ -178,7 +178,7 @@ No metadata model, no categories, no order to declare.
 **The grouping is the metadata.** Who granted a certificate is the only
 dimension of it a reader needs, and it is already the group heading with the
 issuer's brand mark beside it. A `.tag--issuer` on every credential inside a
-block headed *Datadog* would restate the heading on every row — the tension
+block headed *Datadog* would restate the heading on every row: the tension
 [`awards.md`](awards.md) records against its own page, resolved
 [`research.md`](research.md)'s way: **a fact true of every record in a block
 belongs to the block.**
@@ -197,7 +197,7 @@ A credential is therefore two fields:
 
 `icon` is a bare filename; `render_credentials` builds `images/icons/<icon>`.
 The directory is stated once in the renderer rather than seven times in the
-data — [`awards.md`](awards.md) rule 7 applied to a path.
+data: [`awards.md`](awards.md) rule 7 applied to a path.
 
 ### `issuer` and `platform` are two words on purpose
 
@@ -208,14 +208,14 @@ This is [`writing.md`](writing.md)'s distinction, in the place it matters most.
 An **issuer** examined the holder and stands behind the result; a **platform**
 hosted lessons the holder watched. Both name who is behind the entry, both sit
 in the same position, and collapsing them into one word would let the second
-borrow the first's authority — a Udemy course sitting under the same noun as a
+borrow the first's authority: a Udemy course sitting under the same noun as a
 MuleSoft certification. The two blocks are also separated by heading, so a
 reader who reads no further than *Certifications* and *Online Courses* has
 already been told the difference.
 
 That is also why neither block intro spells the distinction out any more. An
 earlier pair of intros explained the link policy and defined *course work
-rather than examined credentials* in the first line of each block — mechanics
+rather than examined credentials* in the first line of each block: mechanics
 this document already owns (see below), stated where the reader had not yet
 been given a reason to care. Both are now one line and both are a pitch, per
 [`DESIGN.md`](DESIGN.md) §11.1: *Vendor-certified across every layer of the
@@ -230,12 +230,12 @@ Whether a credential link leaves the site is computed from the URL, in
 
 | Link | Renders as |
 |---|---|
-| `https://www.credly.com/badges/…` | `.link-external` — the issuer's own record, checkable at the source |
-| `data/DP-300.png` | a plain link — a copy of the certificate, served from this site |
+| `https://www.credly.com/badges/…` | `.link-external`: the issuer's own record, checkable at the source |
+| `data/DP-300.png` | a plain link: a copy of the certificate, served from this site |
 
 Nothing in the data says which; the scheme says it. This keeps the external
-marker meaning one thing on this page — *the issuer, not me, is showing you
-this* — and it is why the two Microsoft entries look different from the rest.
+marker meaning one thing on this page (*the issuer, not me, is showing you
+this*) and it is why the two Microsoft entries look different from the rest.
 They are scans this site hosts, and the page should not dress a file it serves
 itself as third-party verification.
 
@@ -258,7 +258,7 @@ is the one that goes in.
 It reads **Microsoft**, not *Microsoft Fabric*. DP-300 is *Azure Database
 Administrator Associate* and has nothing to do with Fabric; the issuer of both
 certificates is Microsoft, and grouping is by issuer. The brand mark beside it
-is still `microsoft-fabric.svg`, which is now a mismatch — a generic Microsoft
+is still `microsoft-fabric.svg`, which is now a mismatch: a generic Microsoft
 mark would be the correct icon.
 
 ---
@@ -271,9 +271,9 @@ An experience record stores two raw dates and no prose:
 "start": "2024-02", "end": "2024-05"
 ```
 
-`month_year` in `tools/build.py` renders `Feb 2024 – May 2024`, so `Aug 2024`
+`month_year` in `tools/build.py` renders `Feb 2024 - May 2024`, so `Aug 2024`
 and `August 2024` cannot appear on the same page. A record with **no** `end` is the
-role being held now and renders `Present` — the word comes from `ONGOING` in
+role being held now and renders `Present`: the word comes from `ONGOING` in
 the renderer and is never stored, because *Present* is not a date and a record
 that stores it keeps claiming the job after it ends.
 
@@ -283,7 +283,7 @@ for the same reason.
 
 `tenure_sort_key` sorts newest-first on `start`, not on `end`. Sorting on the
 end date would need a sentinel that outranks every real date just to keep the
-current role — the one record with no end date — at the top.
+current role (the one record with no end date) at the top.
 
 Education stores plain integer years and sorts the same way.
 
@@ -295,7 +295,7 @@ The tags carry metadata; the bullets carry substance. On this page substance
 means **what changed because the work happened**.
 
 1. **State the outcome and its measure.** "saving €1,400 per month", "a 100×
-   speedup" — a figure a reader can weigh. A bullet that ends at "designed and
+   speedup": a figure a reader can weigh. A bullet that ends at "designed and
    implemented" describes having been employed.
 2. **Never restate a tag.** *Talend*, *Azure*, *Datadog* and *Salesforce* are
    in `stack` one row up. A bullet names a tool only where it says what the
@@ -308,7 +308,7 @@ means **what changed because the work happened**.
    bullet each. `render_group` emits the same `.entry__group` component the
    Teaching syllabus uses.
 5. **A group title names a discipline, not a project.** *Data Integration*,
-   *Cloud & Security Operations*, *Observability* — three of them, and a reader
+   *Cloud & Security Operations*, *Observability*: three of them, and a reader
    scanning for whether this person has run anything in production finds the
    third without reading the first two.
 
@@ -327,7 +327,7 @@ the new value to that table in the same change.
 body has a page to point at.
 
 **A credential.** Append to the right group in `src/data/certifications.json`
-or `src/data/courses.json`, or add a new group with its `icon` filename — the
+or `src/data/courses.json`, or add a new group with its `icon` filename: the
 SVG goes in `images/icons/`. The link is the issuer's record of the credential;
 see the rule above.
 

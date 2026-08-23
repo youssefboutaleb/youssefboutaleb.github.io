@@ -1,4 +1,4 @@
-<!-- GENERATED FILE — do not edit.
+<!-- GENERATED FILE: do not edit.
      Source: src/layout.html + src/pages/teaching.html (content),
              src/site.json + src/data/*.json (data).
      Rebuild: python3 tools/build.py
@@ -11,7 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
 
-  <title>Teaching — Youssef Boutaleb</title>
+  <title>Teaching &middot; Youssef Boutaleb</title>
   <meta name="description" content="Graduate lecturer at IHEC Sfax, teaching Machine Learning and two Data Engineering courses on the M.Sc. Data Science programme, covering Spark, Airflow, Docker and Loguru.">
   <meta name="author" content="Youssef Boutaleb">
   <meta name="google-site-verification" content="_EoRy_lTXm3RCqZdWpUgQ9bWDF7KCrEdSZBocueWMUk">
@@ -19,10 +19,10 @@
   <link rel="canonical" href="https://youssefboutaleb.github.io/teaching.html">
   <link rel="icon" type="image/svg+xml" href="images/icons/icon.svg">
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Noto-Sans-regular/Noto-Sans-regular.woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=815642697fe7">
+  <link rel="stylesheet" href="assets/css/main.css?v=9641cbfffa14">
 
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Teaching — Youssef Boutaleb">
+  <meta property="og:title" content="Teaching &middot; Youssef Boutaleb">
   <meta property="og:description" content="Graduate lecturer at IHEC Sfax, teaching Machine Learning and two Data Engineering courses on the M.Sc. Data Science programme, covering Spark, Airflow, Docker and Loguru.">
   <meta property="og:url" content="https://youssefboutaleb.github.io/teaching.html">
   <meta property="og:locale" content="en_US">
@@ -38,7 +38,7 @@
 
   <div class="layout">
 
-    <!-- Identity, credentials and contact — present on every page. -->
+    <!-- Identity, credentials and contact: present on every page. -->
     <header class="sidebar">
       <p class="sidebar__updated"><small>Last update: August 2026</small></p>
       <a class="sidebar__name" href="index.html">Youssef Boutaleb</a>
@@ -65,6 +65,7 @@
 
       <div class="sidebar__section">
         <h2 class="sidebar__heading">Contact</h2>
+        <p>Open to Data Engineering roles, and to talking about pipelines, integration and observability.</p>
         <ul class="contact">
           <li><span class="contact__label">Email:</span> <a class="contact__value" href="mailto:youssefboutaleb.info@gmail.com">youssefboutaleb.info@gmail.com</a></li>
           <li><span class="contact__label">University:</span> <a class="contact__value" href="mailto:youssef.boutaleb@enis.tn">youssef.boutaleb@enis.tn</a></li>
@@ -93,12 +94,18 @@
       </div>
 
       <div class="site-footer">
-        <p>Hosted on GitHub Pages &mdash; theme lineage <a href="https://github.com/orderedlist" target="_blank" rel="noopener">orderedlist</a>.</p>
+        <p>Hosted on GitHub Pages: theme lineage <a href="https://github.com/orderedlist" target="_blank" rel="noopener">orderedlist</a>.</p>
         <p>Forked from <a href="https://github.com/elyesmanai/elyesmanai.github.io" target="_blank" rel="noopener">elyesmanai/elyesmanai.github.io</a>.</p>
       </div>
     </header>
 
     <div class="content">
+      <div class="top-bar">
+        <button id="sidebar-toggle" class="sidebar-toggle" type="button" aria-expanded="true">
+          <img class="icon icon--xs" src="images/icons/icon.svg" alt="" width="12" height="12">
+          <span id="sidebar-toggle-text">Hide Profile</span>
+        </button>
+      </div>
       <nav class="nav" aria-label="Primary">
         <ul class="nav__list">
           <li class="nav__item"><a class="nav__link" href="index.html">Home</a></li>
@@ -118,41 +125,83 @@
 
         <section class="block" aria-labelledby="courses-taught">
           <h3 class="block__title" id="courses-taught">Graduate Courses</h3>
-          <ul class="points block__intro">
-            <li>
-              <b>Appointment:</b> University Lecturer (part-time) at
-              <a href="https://ihecsf.rnu.tn/" target="_blank" rel="noopener">IHEC Sfax</a>
-              (September 2024 &ndash; May 2026), teaching on-site on the
-              <a href="https://ihecsf.rnu.tn/fr/article/765/master-professionnel-en-data-science-for-business-amp-economics"
-                target="_blank" rel="noopener">M.Sc. Data Science</a> programme.
-            </li>
-            <li>
-              <b>Course Structure &amp; Workload (32 h per course):</b>
-              <ul class="points">
-                <li><b>Lectures (20 h):</b> 5 modules (4 hours each) covering theoretical foundations, architecture principles,
-                  and guided exercises.</li>
-                <li><b>Labs (8 h):</b> 1 hands-on lab per module (1.5&ndash;2 hours) covering practical assignments and
-                  collaborative solution reviews.</li>
-                <li><b>Final Project (4 h):</b> Dedicated workshop session for end-to-end pipeline implementation and project
-                  guidance.</li>
-              </ul>
-            </li>
-            <li>
-              <b>Language &amp; Tooling:</b> Instruction delivered in French and English; all slides, code repositories,
-              assignments, and exams in English.
-            </li>
-            <li>
-              <b>Assessment Scheme:</b> Final Exam (<b>50%</b>), Module Homework Assignments (<b>20%</b>), Final Project
-              (<b>15%</b>), Attendance &amp; Active Participation (<b>15%</b>).
-            </li>
-          </ul>
+          <p class="block__intro">
+            University Lecturer at <a href="https://ihecsf.rnu.tn/" target="_blank" rel="noopener">IHEC Sfax</a>, teaching
+            on-site on the
+            <a href="https://ihecsf.rnu.tn/fr/article/765/master-professionnel-en-data-science-for-business-amp-economics"
+              target="_blank" rel="noopener">M.Sc. Data Science</a> programme.
+          </p>
+          <!-- The constants of the appointment, side by side rather than stacked. What
+               each column may carry, and why the assessment scheme lives here at all,
+               is in teaching.md; the component is DESIGN.md §10.1. -->
+          <div class="specs">
+            <div class="spec">
+              <p class="spec__title">Workload</p>
+              <p class="spec__lead">32 h per course</p>
+              <dl class="spec__rows">
+                <div class="spec__row">
+                  <dt>Lectures</dt>
+                  <dd>20 h</dd>
+                  <dd class="spec__detail">5 modules &times; 4 h: theoretical foundations, architecture principles and
+                    guided exercises.</dd>
+                </div>
+                <div class="spec__row">
+                  <dt>Labs</dt>
+                  <dd>8 h</dd>
+                  <dd class="spec__detail">1 hands-on lab per module, 1.5-2 h: practical assignments and
+                    collaborative solution reviews.</dd>
+                </div>
+                <div class="spec__row">
+                  <dt>Final Project</dt>
+                  <dd>4 h</dd>
+                  <dd class="spec__detail">Dedicated workshop session: end-to-end pipeline implementation and project
+                    guidance.</dd>
+                </div>
+              </dl>
+            </div>
+            <div class="spec">
+              <p class="spec__title">Language &amp; Tooling</p>
+              <dl class="spec__rows">
+                <div class="spec__row">
+                  <dt>Instruction</dt>
+                  <dd>French &amp; English</dd>
+                </div>
+                <div class="spec__row">
+                  <dt>Materials</dt>
+                  <dd>English</dd>
+                  <dd class="spec__detail">Slides, code repositories, assignments and exams.</dd>
+                </div>
+              </dl>
+            </div>
+            <div class="spec">
+              <p class="spec__title">Assessment</p>
+              <dl class="spec__rows">
+                <div class="spec__row">
+                  <dt>Final Exam</dt>
+                  <dd>50%</dd>
+                </div>
+                <div class="spec__row">
+                  <dt>Module Homework</dt>
+                  <dd>20%</dd>
+                </div>
+                <div class="spec__row">
+                  <dt>Final Project</dt>
+                  <dd>15%</dd>
+                </div>
+                <div class="spec__row">
+                  <dt>Attendance &amp; Participation</dt>
+                  <dd>15%</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
           <ul class="entries">
             <!-- Records live in src/data/teaching.json; tag order and colour come
                  from MODELS in tools/build.py, and the newest-first ordering from
                  course_sort_key. Never hand-write entries here. -->
                 <li class="entry">
               <p class="entry__title">Data Engineering 2</p>
-              <p class="entry__period">Fall 2025 &ndash; 2026</p>
+              <p class="entry__period">Fall 2025-2026</p>
               <ul class="tag-list" aria-label="Course details">
                 <li class="tag tag--level">Master&rsquo;s Year 2</li>
                 <li class="tag tag--workload">32 h &middot; 20 lecture + 8 lab + 4 project</li>
@@ -160,7 +209,7 @@
               </ul>
               <p class="entry__summary">The second-year sequel, moving from building a pipeline to running one that survives contact with production.</p>
               <div class="entry__group">
-                <p class="entry__group-title">Module 1 &mdash; Synchronous &amp; Asynchronous Data Flows</p>
+                <p class="entry__group-title">Module 1: Synchronous &amp; Asynchronous Data Flows</p>
                 <ul class="points">
                   <li>The two flow models set side by side, and the different failure modes each one hands the engineer downstream.</li>
                   <li>Choosing between them from the coupling and latency a system can actually tolerate.</li>
@@ -168,7 +217,7 @@
                 </ul>
               </div>
               <div class="entry__group">
-                <p class="entry__group-title">Module 2 &mdash; Resilient Pipeline Design</p>
+                <p class="entry__group-title">Module 2: Resilient Pipeline Design</p>
                 <ul class="points">
                   <li>Retry management and recovery paths, designed on the assumption that failure is the normal case rather than the exception.</li>
                   <li>Orchestration, scheduling and backfills with <b>Apache Airflow</b>.</li>
@@ -176,14 +225,14 @@
                 </ul>
               </div>
               <div class="entry__group">
-                <p class="entry__group-title">Module 3 &mdash; Processing at Volume</p>
+                <p class="entry__group-title">Module 3: Processing at Volume</p>
                 <ul class="points">
                   <li>Distributed processing with <b>Apache Spark</b> over <b>PostgreSQL</b> sources.</li>
                   <li><b>Lab:</b> a join-and-aggregate transformation written in <b>Spark</b> against tables read from <b>PostgreSQL</b>, then reworked once the query plan showed where the shuffle was, and the two runs compared.</li>
                 </ul>
               </div>
               <div class="entry__group">
-                <p class="entry__group-title">Module 4 &mdash; Logging &amp; Monitoring</p>
+                <p class="entry__group-title">Module 4: Logging &amp; Monitoring</p>
                 <ul class="points">
                   <li>Structured logging and error tracking with <b>Loguru</b>.</li>
                   <li>Monitoring, dashboards and alerting in <b>Datadog</b>.</li>
@@ -191,7 +240,7 @@
                 </ul>
               </div>
               <div class="entry__group">
-                <p class="entry__group-title">Module 5 &mdash; Packaging &amp; Delivery</p>
+                <p class="entry__group-title">Module 5: Packaging &amp; Delivery</p>
                 <ul class="points">
                   <li>Pipelines containerised with <b>Docker</b>; datasets and models versioned with <b>DVC</b>.</li>
                   <li>Automated build and publish through <b>GitHub Actions</b> into the <b>GitHub Container Registry</b>.</li>
@@ -199,7 +248,7 @@
                 </ul>
               </div>
               <div class="entry__group">
-                <p class="entry__group-title">Final Project &mdash; Fault-Tolerant Ingestion Pipeline</p>
+                <p class="entry__group-title">Final Project: Fault-Tolerant Ingestion Pipeline</p>
                 <ul class="points">
                   <li>The four-hour project session: one pipeline carrying data from a <b>PostgreSQL</b> source through a <b>Spark</b> transformation into an analytical target, scheduled as an <b>Airflow</b> DAG with retries and a working backfill path.</li>
                   <li>Operability was graded alongside the data flow: structured <b>Loguru</b> logging surfaced on a <b>Datadog</b> dashboard, the whole pipeline containerised with <b>Docker</b>, and the input dataset reproducible from <b>DVC</b>.</li>
@@ -209,7 +258,7 @@
             </li>
             <li class="entry">
               <p class="entry__title">Data Engineering 1</p>
-              <p class="entry__period">Spring 2024 &ndash; 2025</p>
+              <p class="entry__period">Spring 2024-2025</p>
               <ul class="tag-list" aria-label="Course details">
                 <li class="tag tag--level">Master&rsquo;s Year 1</li>
                 <li class="tag tag--workload">32 h &middot; 20 lecture + 8 lab + 4 project</li>
@@ -217,22 +266,22 @@
               </ul>
               <p class="entry__summary">The first-year data engineering course: how analytical data is stored, moved, and processed at a volume that no longer fits one machine.</p>
               <div class="entry__group">
-                <p class="entry__group-title">Module 1 &mdash; Big Data Fundamentals</p>
+                <p class="entry__group-title">Module 1: Big Data Fundamentals</p>
                 <ul class="points">
                   <li>What changes once data outgrows a single machine, and why that reshapes the tooling around it.</li>
                   <li><b>Lab:</b> the same aggregation run over a dataset held whole in memory and then over one read and partitioned in chunks, timed on both, to find the point where the single-machine habit stops working.</li>
                 </ul>
               </div>
               <div class="entry__group">
-                <p class="entry__group-title">Module 2 &mdash; Data Warehousing</p>
+                <p class="entry__group-title">Module 2: Data Warehousing</p>
                 <ul class="points">
                   <li>Why analytical storage is shaped differently from the transactional systems it draws from.</li>
                   <li>Warehouse modelling worked against <b>PostgreSQL</b>.</li>
-                  <li><b>Lab:</b> a star schema designed from a normalised operational source &mdash; one fact table, conformed dimensions, explicit grain &mdash; and created in <b>PostgreSQL</b>, then queried to show what the denormalisation bought.</li>
+                  <li><b>Lab:</b> a star schema designed from a normalised operational source (one fact table, conformed dimensions, explicit grain) and created in <b>PostgreSQL</b>, then queried to show what the denormalisation bought.</li>
                 </ul>
               </div>
               <div class="entry__group">
-                <p class="entry__group-title">Module 3 &mdash; ETL Architectures</p>
+                <p class="entry__group-title">Module 3: ETL Architectures</p>
                 <ul class="points">
                   <li>Extract, transform and load followed from source system through to warehouse.</li>
                   <li>Transformations written in <b>Python</b>.</li>
@@ -240,47 +289,61 @@
                 </ul>
               </div>
               <div class="entry__group">
-                <p class="entry__group-title">Module 4 &mdash; Processing at Volume</p>
+                <p class="entry__group-title">Module 4: Processing at Volume</p>
                 <ul class="points">
                   <li>Distributed data processing with <b>Apache Spark</b>.</li>
                   <li><b>Lab:</b> the same transformation rewritten as <b>Spark</b> DataFrame operations and run against a larger extract, set beside the single-machine <b>Python</b> version to see where the distributed one starts paying for itself.</li>
                 </ul>
               </div>
               <div class="entry__group">
-                <p class="entry__group-title">Module 5 &mdash; Analytics &amp; Reporting</p>
+                <p class="entry__group-title">Module 5: Analytics &amp; Reporting</p>
                 <ul class="points">
                   <li>Closing the loop: warehouse data out into a <b>Power BI</b> report.</li>
                   <li><b>Lab:</b> <b>Power BI</b> connected to the warehouse and a report built over the star schema, with the measures defined in the model rather than hard-coded into each visual.</li>
                 </ul>
               </div>
               <div class="entry__group">
-                <p class="entry__group-title">Final Project &mdash; Source-to-Dashboard Warehouse</p>
+                <p class="entry__group-title">Final Project: Source-to-Dashboard Warehouse</p>
                 <ul class="points">
                   <li>The four-hour project session: the whole path in one piece, from a raw operational source to a published <b>Power BI</b> dashboard, built on the schema each team had modelled themselves.</li>
                   <li>Extraction and loading in <b>Python</b>, the heavier transformation step in <b>Apache Spark</b>, and the modelled tables served from <b>PostgreSQL</b>.</li>
-                  <li>Delivered as the schema definition, the ETL code and the report, and defended on the modelling decisions &mdash; grain, keys, what was left out &mdash; rather than on the appearance of the dashboard.</li>
+                  <li>Delivered as the schema definition, the ETL code and the report, and defended on the modelling decisions (grain, keys, what was left out) rather than on the appearance of the dashboard.</li>
                 </ul>
               </div>
             </li>
             <li class="entry">
               <p class="entry__title">Machine Learning</p>
-              <p class="entry__period">Fall 2024 &ndash; 2025</p>
+              <p class="entry__period">Fall 2024-2025</p>
               <ul class="tag-list" aria-label="Course details">
                 <li class="tag tag--level">Master&rsquo;s Year 2</li>
                 <li class="tag tag--workload">32 h &middot; 20 lecture + 8 lab + 4 project</li>
                 <li class="tag tag--scale">12 students</li>
               </ul>
-              <p class="entry__summary">The programme&rsquo;s applied machine learning course, taken from fitting a model to deciding whether the fit means anything.</p>
+              <p class="entry__summary">The programme&rsquo;s applied machine learning course, taken from stating a deterministic domain problem as a learnable one to deciding whether the result means anything or the experiment has to be redesigned.</p>
               <div class="entry__group">
-                <p class="entry__group-title">Module 1 &mdash; Supervised Learning</p>
+                <p class="entry__group-title">Module 1: Supervised Learning</p>
                 <ul class="points">
-                  <li>Learning from labelled data, and what fitting a model to it actually optimises.</li>
-                  <li>Models built with <b>Scikit-learn</b> over data prepared in <b>Pandas</b>.</li>
-                  <li><b>Lab:</b> a <b>Scikit-learn</b> pipeline assembled over a <b>Pandas</b> frame &mdash; imputation, encoding, scaling, estimator &mdash; so that every preprocessing step is fitted on the training split alone and no leakage can survive the refactor.</li>
+                  <li><b>The frame, and what makes it hard.</b> The <a href="https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud/data" target="_blank" rel="noopener">ULB card fraud frame</a>: 284,807 labelled card transactions, 492 of them fraud, so the only class worth predicting is 0.17% of the rows.</li>
+                  <li><b>The accuracy trap.</b> A model that never predicts fraud is already 99.83% accurate on that frame, so accuracy is never read on its own here: it is reported beside F1, and the gap between the two is the thing the module teaches students to look at.</li>
+                  <li><b>The data problems worth checking for.</b> Nulls, duplicates and class balance, run as a first pass before anything is fitted. On this frame nothing is missing and nothing is dirty, which is the useful result: the imbalance is the only real defect, and it is where the remaining effort goes.</li>
+                  <li><b>Feature engineering under constraint.</b> 28 of the 30 columns are anonymised principal components with no domain meaning attached, so Time and Amount are the only two columns a new feature can be built from. The limit is the exercise.</li>
+                  <li><b>Scaling, and the split that comes before it.</b> Normalisation with <b>Scikit-learn</b> and a stratified train/test split, so that 492 positives cannot land unevenly across the two halves, with the point that scaling decides whether the logistic regression converges and does nothing at all for a tree.</li>
+                  <li><b>Which tabular model, and where each one stops.</b> Decision trees, random forests and logistic regression set against what each of them assumes about the data, argued from a <b>Matplotlib</b> look at the frame rather than picked by reputation, and including the models that are the wrong tool for a problem this shape.</li>
+                  <li><b>The parameters that decide a fit, sorted by what owns them.</b> Batch size, epochs and convergence tolerance belong to anything fitted iteratively; depth, minimum leaf size and number of estimators belong to the tree family. Knowing which knob exists on which model is half of what tuning is.</li>
+                  <li><b>Lab:</b> twelve students in three teams of four, one estimator per team (decision tree, random forest, logistic regression) fitted in <b>Scikit-learn</b> over a single shared <b>Pandas</b> preparation in <b>Google Colab</b>, then scored on the same accuracy and F1 so that the three sets of results are numbers which can actually be compared across the room.</li>
                 </ul>
               </div>
               <div class="entry__group">
-                <p class="entry__group-title">Module 2 &mdash; Gradient Descent &amp; Optimisation</p>
+                <p class="entry__group-title">Module 1 Homework: Fraud Detection Benchmark</p>
+                <ul class="points">
+                  <li>Individual, in <b>Google Colab</b>, and deliberately the inverse of the lab: the dataset and the two metrics are fixed, and every student is free on all three of the levers that decide a score.</li>
+                  <li><b>The three levers:</b> which features are selected and how they are prepared, which estimator is fitted, and what parameters it is fitted with.</li>
+                  <li><b>Submitted as</b> a commented notebook carrying the best accuracy and F1 the student reached, with the run that produced those two numbers reproducible from the notebook itself.</li>
+                  <li><b>The comments are the argument:</b> which of the three levers moved the score, by how much, and which one turned out not to matter.</li>
+                </ul>
+              </div>
+              <div class="entry__group">
+                <p class="entry__group-title">Module 2: Gradient Descent &amp; Optimisation</p>
                 <ul class="points">
                   <li>Gradient descent taught as the mechanism underneath model fitting rather than as a library call.</li>
                   <li>The parameters that decide whether it converges at all.</li>
@@ -288,15 +351,15 @@
                 </ul>
               </div>
               <div class="entry__group">
-                <p class="entry__group-title">Module 3 &mdash; Unsupervised Learning &amp; Clustering</p>
+                <p class="entry__group-title">Module 3: Unsupervised Learning &amp; Clustering</p>
                 <ul class="points">
                   <li>Finding structure without labels, and where that is the honest framing of a problem.</li>
                   <li>K-Means end to end: assignment, centroid update, and the choice of k.</li>
-                  <li><b>Lab:</b> K-Means written by hand &mdash; assignment step, centroid update, convergence test &mdash; checked against the <b>Scikit-learn</b> implementation, with k argued from inertia and silhouette rather than picked.</li>
+                  <li><b>Lab:</b> K-Means written by hand (assignment step, centroid update, convergence test) checked against the <b>Scikit-learn</b> implementation, with k argued from inertia and silhouette rather than picked.</li>
                 </ul>
               </div>
               <div class="entry__group">
-                <p class="entry__group-title">Module 4 &mdash; Model Evaluation</p>
+                <p class="entry__group-title">Module 4: Model Evaluation</p>
                 <ul class="points">
                   <li>The techniques that separate a model fitting its training data from one that generalises.</li>
                   <li>Results inspected as <b>Matplotlib</b> plots, not only as a single score.</li>
@@ -304,14 +367,14 @@
                 </ul>
               </div>
               <div class="entry__group">
-                <p class="entry__group-title">Module 5 &mdash; The Practical Workflow</p>
+                <p class="entry__group-title">Module 5: The Practical Workflow</p>
                 <ul class="points">
                   <li>The whole path in one piece: data pulled from <b>PostgreSQL</b>, prepared in Pandas, fitted in Scikit-learn, evaluated and plotted.</li>
-                  <li><b>Lab:</b> that path written as one reproducible script &mdash; query, preparation, fitted pipeline, evaluation &mdash; with the model and its metrics persisted together so a result can be traced back to the run that produced it.</li>
+                  <li><b>Lab:</b> that path written as one reproducible script (query, preparation, fitted pipeline, evaluation) with the model and its metrics persisted together so a result can be traced back to the run that produced it.</li>
                 </ul>
               </div>
               <div class="entry__group">
-                <p class="entry__group-title">Final Project &mdash; Applied Prediction Study</p>
+                <p class="entry__group-title">Final Project: Applied Prediction Study</p>
                 <ul class="points">
                   <li>The four-hour project session: a supervised problem carried from a <b>PostgreSQL</b> extract to a defended conclusion, with the model choice argued from the evaluation rather than asserted.</li>
                   <li>A <b>Scikit-learn</b> pipeline over <b>Pandas</b> preparation, tuned by cross-validated search and measured against a trivial baseline that had to be beaten for the result to count.</li>
@@ -332,6 +395,27 @@
     function gtag(){ dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-71KWCMXZ0P');
+    (function() {
+      var toggleBtn = document.getElementById('sidebar-toggle');
+      var toggleText = document.getElementById('sidebar-toggle-text');
+      var layout = document.querySelector('.layout');
+      if (!toggleBtn || !layout) return;
+
+      if (localStorage.getItem('sidebar_collapsed') === 'true') {
+        layout.classList.add('layout--sidebar-collapsed');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        if (toggleText) toggleText.textContent = 'Show Profile';
+      }
+
+      toggleBtn.addEventListener('click', function() {
+        var isCollapsed = layout.classList.toggle('layout--sidebar-collapsed');
+        localStorage.setItem('sidebar_collapsed', isCollapsed ? 'true' : 'false');
+        toggleBtn.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
+        if (toggleText) {
+          toggleText.textContent = isCollapsed ? 'Show Profile' : 'Hide Profile';
+        }
+      });
+    })();
   </script>
 </body>
 

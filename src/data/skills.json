@@ -1,0 +1,156 @@
+[
+  {
+    "name": "Data pipeline engineering",
+    "tools": ["Talend", "MuleSoft", "Apache Airflow"],
+    "evidence": {
+      "production": [
+        { "text": "ETL across Salesforce, ORLI &amp; Azure", "href": "career.html#experience" },
+        { "text": "API-led integration at OLIVESOFT", "href": "career.html#experience" }
+      ],
+      "certification": [
+        { "text": "Talend Data Integration", "href": "career.html#certifications" },
+        { "text": "MuleSoft Developer L1", "href": "career.html#certifications" },
+        { "text": "Astronomer &times;2", "href": "career.html#certifications" }
+      ],
+      "taught": [
+        { "text": "Data Engineering 1 &amp; 2", "href": "teaching.html#courses-taught" }
+      ]
+    }
+  },
+  {
+    "name": "Observability &amp; incident response",
+    "tools": ["Datadog", "APM &amp; distributed tracing", "log management"],
+    "evidence": {
+      "production": [
+        { "text": "Cut MTTD at JACQUEMUS", "href": "career.html#experience" }
+      ],
+      "certification": [
+        { "text": "Datadog &times;3", "href": "career.html#certifications" }
+      ],
+      "taught": [
+        { "text": "Logging &amp; Monitoring module", "href": "teaching.html#courses-taught" }
+      ],
+      "published": [
+        { "text": "Datadog + Log4j2 write-up", "href": "research.html#technical-articles" }
+      ]
+    }
+  },
+  {
+    "name": "Systems integration &amp; APIs",
+    "tools": ["MuleSoft API-led", "REST", "ActiveMQ", "SFTP"],
+    "evidence": {
+      "production": [
+        { "text": "Fault-tolerant async integration", "href": "career.html#experience" },
+        { "text": "Enterprise systems at JACQUEMUS", "href": "career.html#experience" }
+      ],
+      "certification": [
+        { "text": "MuleSoft Developer L1", "href": "career.html#certifications" }
+      ],
+      "taught": [
+        { "text": "Sync &amp; Async Data Flows", "href": "teaching.html#courses-taught" }
+      ]
+    }
+  },
+  {
+    "name": "Cloud platform operations",
+    "tools": ["Azure", "IAM", "Automation Accounts", "Application Gateway", "Microsoft Fabric"],
+    "evidence": {
+      "production": [
+        { "text": "&euro;1,400/month saved", "href": "career.html#experience" },
+        { "text": "IAM, SSL &amp; IP restrictions", "href": "career.html#experience" }
+      ],
+      "certification": [
+        { "text": "Azure DB Administrator (DP-300)", "href": "career.html#certifications" },
+        { "text": "Fabric Data Engineer (DP-700)", "href": "career.html#certifications" }
+      ]
+    }
+  },
+  {
+    "name": "Data warehousing &amp; analytics",
+    "tools": ["Azure SQL", "SQL Server", "PostgreSQL", "Microsoft Fabric"],
+    "evidence": {
+      "production": [
+        { "text": "Azure data platform", "href": "career.html#experience" }
+      ],
+      "certification": [
+        { "text": "Azure DB Administrator (DP-300)", "href": "career.html#certifications" },
+        { "text": "Fabric Data Engineer (DP-700)", "href": "career.html#certifications" }
+      ],
+      "taught": [
+        { "text": "Data Warehousing", "href": "teaching.html#courses-taught" },
+        { "text": "Analytics &amp; Reporting", "href": "teaching.html#courses-taught" }
+      ]
+    }
+  },
+  {
+    "name": "Machine learning &amp; computer vision",
+    "tools": ["Python", "YOLOv8", "TensorFlow", "Keras", "scikit-learn"],
+    "evidence": {
+      "production": [
+        { "text": "Metal classifier at OEM", "href": "career.html#experience" }
+      ],
+      "taught": [
+        { "text": "Machine Learning course", "href": "teaching.html#courses-taught" }
+      ],
+      "published": [
+        { "text": "Peer-reviewed, Elsevier", "href": "research.html#journal-articles" },
+        { "text": "YOLOv8 write-up, 3K views", "href": "research.html#technical-articles" }
+      ],
+      "applied": [
+        { "text": "YOLOv8 meter detection", "href": "projects.html#applied-ml" },
+        { "text": "Image colorisation", "href": "projects.html#applied-ml" }
+      ]
+    }
+  },
+  {
+    "name": "Programming &amp; scripting",
+    "tools": ["Python", "Java", "SQL", "PowerShell", "C++", "PHP"],
+    "evidence": {
+      "production": [
+        { "text": "C++ filter, 100&times; speedup", "href": "career.html#experience" },
+        { "text": "PowerShell automation", "href": "career.html#experience" }
+      ],
+      "taught": [
+        { "text": "Introduction to Python", "href": "workshops.html#workshops-delivered" }
+      ],
+      "applied": [
+        { "text": "2 Kanboard plugins", "href": "projects.html#open-source" },
+        { "text": "8 contest results", "href": "awards.html#competitions" }
+      ]
+    }
+  },
+  {
+    "name": "Delivery &amp; collaboration",
+    "tools": ["Git", "GitHub Actions", "Postman", "Agile/Scrum", "Jira", "Confluence"],
+    "evidence": {
+      "production": [
+        { "text": "Architecture &amp; recovery docs", "href": "career.html#experience" }
+      ],
+      "applied": [
+        { "text": "2 upstream pull requests", "href": "projects.html#open-source" }
+      ]
+    }
+  },
+  {
+    "name": "Workflow orchestration",
+    "tools": ["Apache Airflow 3"],
+    "evidence": {
+      "certification": [
+        { "text": "Airflow 3 Fundamentals", "href": "career.html#certifications" },
+        { "text": "DAG Authoring", "href": "career.html#certifications" }
+      ],
+      "taught": [
+        { "text": "Packaging &amp; Delivery module", "href": "teaching.html#courses-taught" }
+      ]
+    }
+  },
+  {
+    "name": "Distributed processing",
+    "tools": ["Apache Spark"],
+    "evidence": {
+      "taught": [
+        { "text": "Processing at Volume", "href": "teaching.html#courses-taught" }
+      ]
+    }
+  }
+]

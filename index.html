@@ -1,4 +1,4 @@
-<!-- GENERATED FILE — do not edit.
+<!-- GENERATED FILE: do not edit.
      Source: src/layout.html + src/pages/index.html (content),
              src/site.json + src/data/*.json (data).
      Rebuild: python3 tools/build.py
@@ -11,7 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
 
-  <title>Youssef Boutaleb — Data Engineer</title>
+  <title>Youssef Boutaleb: Data Engineer</title>
   <meta name="description" content="Data Engineer building enterprise-scale ETL/ELT pipelines, API-led integrations and observability on Microsoft Azure. Microsoft, MuleSoft, Talend, Datadog and Astronomer certified.">
   <meta name="author" content="Youssef Boutaleb">
   <meta name="google-site-verification" content="_EoRy_lTXm3RCqZdWpUgQ9bWDF7KCrEdSZBocueWMUk">
@@ -19,10 +19,10 @@
   <link rel="canonical" href="https://youssefboutaleb.github.io/">
   <link rel="icon" type="image/svg+xml" href="images/icons/icon.svg">
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Noto-Sans-regular/Noto-Sans-regular.woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=815642697fe7">
+  <link rel="stylesheet" href="assets/css/main.css?v=9641cbfffa14">
 
   <meta property="og:type" content="profile">
-  <meta property="og:title" content="Youssef Boutaleb — Data Engineer">
+  <meta property="og:title" content="Youssef Boutaleb: Data Engineer">
   <meta property="og:description" content="Data Engineer building enterprise-scale ETL/ELT pipelines, API-led integrations and observability on Microsoft Azure. Microsoft, MuleSoft, Talend, Datadog and Astronomer certified.">
   <meta property="og:url" content="https://youssefboutaleb.github.io/">
   <meta property="og:locale" content="en_US">
@@ -38,7 +38,7 @@
 
   <div class="layout">
 
-    <!-- Identity, credentials and contact — present on every page. -->
+    <!-- Identity, credentials and contact: present on every page. -->
     <header class="sidebar">
       <p class="sidebar__updated"><small>Last update: August 2026</small></p>
       <a class="sidebar__name" href="index.html">Youssef Boutaleb</a>
@@ -65,6 +65,7 @@
 
       <div class="sidebar__section">
         <h2 class="sidebar__heading">Contact</h2>
+        <p>Open to Data Engineering roles, and to talking about pipelines, integration and observability.</p>
         <ul class="contact">
           <li><span class="contact__label">Email:</span> <a class="contact__value" href="mailto:youssefboutaleb.info@gmail.com">youssefboutaleb.info@gmail.com</a></li>
           <li><span class="contact__label">University:</span> <a class="contact__value" href="mailto:youssef.boutaleb@enis.tn">youssef.boutaleb@enis.tn</a></li>
@@ -93,12 +94,18 @@
       </div>
 
       <div class="site-footer">
-        <p>Hosted on GitHub Pages &mdash; theme lineage <a href="https://github.com/orderedlist" target="_blank" rel="noopener">orderedlist</a>.</p>
+        <p>Hosted on GitHub Pages: theme lineage <a href="https://github.com/orderedlist" target="_blank" rel="noopener">orderedlist</a>.</p>
         <p>Forked from <a href="https://github.com/elyesmanai/elyesmanai.github.io" target="_blank" rel="noopener">elyesmanai/elyesmanai.github.io</a>.</p>
       </div>
     </header>
 
     <div class="content">
+      <div class="top-bar">
+        <button id="sidebar-toggle" class="sidebar-toggle" type="button" aria-expanded="true">
+          <img class="icon icon--xs" src="images/icons/icon.svg" alt="" width="12" height="12">
+          <span id="sidebar-toggle-text">Hide Profile</span>
+        </button>
+      </div>
       <nav class="nav" aria-label="Primary">
         <ul class="nav__list">
           <li class="nav__item"><a class="nav__link" href="index.html" aria-current="page">Home</a></li>
@@ -115,7 +122,7 @@
         <header class="page-header">
           <h1 class="page-title">Data Engineer | Cloud &amp; Integration</h1>
           <p class="page-lede">
-            I build and operate enterprise-scale data platforms on <b>Microsoft Azure</b> &mdash;
+            I build and operate enterprise-scale data platforms on <b>Microsoft Azure</b>:
             ETL/ELT pipelines, API-led integrations between business-critical systems, and the
             observability that keeps them dependable in production.
           </p>
@@ -127,12 +134,12 @@
             <p>
               I am a <b>Data Engineer</b>. I have been designing, deploying and optimising enterprise
               data ecosystems on <b>Microsoft Azure</b> since <b>2024</b>, and working in engineering
-              roles since <b>2022</b> &mdash; building end-to-end <b>ETL/ELT</b> pipelines with
+              roles since <b>2022</b>: building end-to-end <b>ETL/ELT</b> pipelines with
               <b>Talend</b> and <b>MuleSoft</b>, and instrumenting them with <b>Datadog</b>.
             </p>
             <p>
               My work sits where integration meets operations: the pipelines I ship, I also run. That
-              is deliberate &mdash; integration work is judged on what happens at 3&nbsp;a.m., so error
+              is deliberate: integration work is judged on what happens at 3&nbsp;a.m., so error
               handling, alerting, recovery plans and written architecture documentation are part of the
               deliverable rather than follow-up.
             </p>
@@ -143,47 +150,124 @@
           </div>
         </section>
 
+        <!-- The block that answers "can this person actually do the job". Every chip
+             is a link to the record that proves the capability, so a claim here can
+             be checked in one click rather than taken on trust. Records live in
+             src/data/skills.json; the proof order and the derived standing come from
+             PROOF and standing() in tools/build.py. Never hand-write entries here. -->
         <section class="block" aria-labelledby="skills">
-          <h3 class="block__title" id="skills">Skills</h3>
+          <h3 class="block__title" id="skills">Skills &amp; Evidence</h3>
+          <p class="block__intro">What I can do, and what proves it.</p>
+          <ul class="skills">
+            <li class="skill">
+              <p class="skill__head"><span class="skill__name">Data pipeline engineering</span> <span class="skill__standing">Production-proven</span></p>
+              <p class="skill__tools">Talend &middot; MuleSoft &middot; Apache Airflow</p>
+              <ul class="tag-list" aria-label="Evidence">
+                <li><a class="tag tag--production" href="career.html#experience">ETL across Salesforce, ORLI &amp; Azure</a></li>
+                <li><a class="tag tag--production" href="career.html#experience">API-led integration at OLIVESOFT</a></li>
+                <li><a class="tag tag--certification" href="career.html#certifications">Talend Data Integration</a></li>
+                <li><a class="tag tag--certification" href="career.html#certifications">MuleSoft Developer L1</a></li>
+                <li><a class="tag tag--certification" href="career.html#certifications">Astronomer &times;2</a></li>
+                <li><a class="tag tag--taught" href="teaching.html#courses-taught">Data Engineering 1 &amp; 2</a></li>
+              </ul>
+            </li>
+            <li class="skill">
+              <p class="skill__head"><span class="skill__name">Machine learning &amp; computer vision</span> <span class="skill__standing">Production-proven</span></p>
+              <p class="skill__tools">Python &middot; YOLOv8 &middot; TensorFlow &middot; Keras &middot; scikit-learn</p>
+              <ul class="tag-list" aria-label="Evidence">
+                <li><a class="tag tag--production" href="career.html#experience">Metal classifier at OEM</a></li>
+                <li><a class="tag tag--taught" href="teaching.html#courses-taught">Machine Learning course</a></li>
+                <li><a class="tag tag--published" href="research.html#journal-articles">Peer-reviewed, Elsevier</a></li>
+                <li><a class="tag tag--published" href="research.html#technical-articles">YOLOv8 write-up, 3K views</a></li>
+                <li><a class="tag tag--applied" href="projects.html#applied-ml">YOLOv8 meter detection</a></li>
+                <li><a class="tag tag--applied" href="projects.html#applied-ml">Image colorisation</a></li>
+              </ul>
+            </li>
+            <li class="skill">
+              <p class="skill__head"><span class="skill__name">Data warehousing &amp; analytics</span> <span class="skill__standing">Production-proven</span></p>
+              <p class="skill__tools">Azure SQL &middot; SQL Server &middot; PostgreSQL &middot; Microsoft Fabric</p>
+              <ul class="tag-list" aria-label="Evidence">
+                <li><a class="tag tag--production" href="career.html#experience">Azure data platform</a></li>
+                <li><a class="tag tag--certification" href="career.html#certifications">Azure DB Administrator (DP-300)</a></li>
+                <li><a class="tag tag--certification" href="career.html#certifications">Fabric Data Engineer (DP-700)</a></li>
+                <li><a class="tag tag--taught" href="teaching.html#courses-taught">Data Warehousing</a></li>
+                <li><a class="tag tag--taught" href="teaching.html#courses-taught">Analytics &amp; Reporting</a></li>
+              </ul>
+            </li>
+            <li class="skill">
+              <p class="skill__head"><span class="skill__name">Programming &amp; scripting</span> <span class="skill__standing">Production-proven</span></p>
+              <p class="skill__tools">Python &middot; Java &middot; SQL &middot; PowerShell &middot; C++ &middot; PHP</p>
+              <ul class="tag-list" aria-label="Evidence">
+                <li><a class="tag tag--production" href="career.html#experience">C++ filter, 100&times; speedup</a></li>
+                <li><a class="tag tag--production" href="career.html#experience">PowerShell automation</a></li>
+                <li><a class="tag tag--taught" href="workshops.html#workshops-delivered">Introduction to Python</a></li>
+                <li><a class="tag tag--applied" href="projects.html#open-source">2 Kanboard plugins</a></li>
+                <li><a class="tag tag--applied" href="awards.html#competitions">8 contest results</a></li>
+              </ul>
+            </li>
+            <li class="skill">
+              <p class="skill__head"><span class="skill__name">Observability &amp; incident response</span> <span class="skill__standing">Production-proven</span></p>
+              <p class="skill__tools">Datadog &middot; APM &amp; distributed tracing &middot; log management</p>
+              <ul class="tag-list" aria-label="Evidence">
+                <li><a class="tag tag--production" href="career.html#experience">Cut MTTD at JACQUEMUS</a></li>
+                <li><a class="tag tag--certification" href="career.html#certifications">Datadog &times;3</a></li>
+                <li><a class="tag tag--taught" href="teaching.html#courses-taught">Logging &amp; Monitoring module</a></li>
+                <li><a class="tag tag--published" href="research.html#technical-articles">Datadog + Log4j2 write-up</a></li>
+              </ul>
+            </li>
+            <li class="skill">
+              <p class="skill__head"><span class="skill__name">Systems integration &amp; APIs</span> <span class="skill__standing">Production-proven</span></p>
+              <p class="skill__tools">MuleSoft API-led &middot; REST &middot; ActiveMQ &middot; SFTP</p>
+              <ul class="tag-list" aria-label="Evidence">
+                <li><a class="tag tag--production" href="career.html#experience">Fault-tolerant async integration</a></li>
+                <li><a class="tag tag--production" href="career.html#experience">Enterprise systems at JACQUEMUS</a></li>
+                <li><a class="tag tag--certification" href="career.html#certifications">MuleSoft Developer L1</a></li>
+                <li><a class="tag tag--taught" href="teaching.html#courses-taught">Sync &amp; Async Data Flows</a></li>
+              </ul>
+            </li>
+            <li class="skill">
+              <p class="skill__head"><span class="skill__name">Cloud platform operations</span> <span class="skill__standing">Production-proven</span></p>
+              <p class="skill__tools">Azure &middot; IAM &middot; Automation Accounts &middot; Application Gateway &middot; Microsoft Fabric</p>
+              <ul class="tag-list" aria-label="Evidence">
+                <li><a class="tag tag--production" href="career.html#experience">&euro;1,400/month saved</a></li>
+                <li><a class="tag tag--production" href="career.html#experience">IAM, SSL &amp; IP restrictions</a></li>
+                <li><a class="tag tag--certification" href="career.html#certifications">Azure DB Administrator (DP-300)</a></li>
+                <li><a class="tag tag--certification" href="career.html#certifications">Fabric Data Engineer (DP-700)</a></li>
+              </ul>
+            </li>
+            <li class="skill">
+              <p class="skill__head"><span class="skill__name">Delivery &amp; collaboration</span> <span class="skill__standing">Run in production</span></p>
+              <p class="skill__tools">Git &middot; GitHub Actions &middot; Postman &middot; Agile/Scrum &middot; Jira &middot; Confluence</p>
+              <ul class="tag-list" aria-label="Evidence">
+                <li><a class="tag tag--production" href="career.html#experience">Architecture &amp; recovery docs</a></li>
+                <li><a class="tag tag--applied" href="projects.html#open-source">2 upstream pull requests</a></li>
+              </ul>
+            </li>
+            <li class="skill">
+              <p class="skill__head"><span class="skill__name">Workflow orchestration</span> <span class="skill__standing">Verified: not yet in production</span></p>
+              <p class="skill__tools">Apache Airflow 3</p>
+              <ul class="tag-list" aria-label="Evidence">
+                <li><a class="tag tag--certification" href="career.html#certifications">Airflow 3 Fundamentals</a></li>
+                <li><a class="tag tag--certification" href="career.html#certifications">DAG Authoring</a></li>
+                <li><a class="tag tag--taught" href="teaching.html#courses-taught">Packaging &amp; Delivery module</a></li>
+              </ul>
+            </li>
+            <li class="skill">
+              <p class="skill__head"><span class="skill__name">Distributed processing</span> <span class="skill__standing">Verified: not yet in production</span></p>
+              <p class="skill__tools">Apache Spark</p>
+              <ul class="tag-list" aria-label="Evidence">
+                <li><a class="tag tag--taught" href="teaching.html#courses-taught">Processing at Volume</a></li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section class="block" aria-labelledby="domains">
+          <h3 class="block__title" id="domains">Domains</h3>
           <dl class="deflist">
             <div class="deflist__item">
-              <dt>Data Integration &amp; APIs</dt>
-              <dd>Talend, MuleSoft (API-led), Apache Airflow 3, Apache Karaf, REST APIs</dd>
-            </div>
-
-            <div class="deflist__item">
-              <dt>Cloud &amp; Infrastructure</dt>
-              <dd>Azure (VMs, Application Gateway, Automation Accounts, Blob Storage, Azure SQL), Microsoft Fabric, IAM, SSL/TLS, IP restrictions</dd>
-            </div>
-
-            <div class="deflist__item">
-              <dt>Databases &amp; Storage</dt>
-              <dd>SQL Server, PostgreSQL, ActiveMQ, SFTP, SMB</dd>
-            </div>
-
-            <div class="deflist__item">
-              <dt>Monitoring &amp; Observability</dt>
-              <dd>Datadog (custom dashboards, monitors &amp; alerting, APM &amp; distributed tracing, log management)</dd>
-            </div>
-
-            <div class="deflist__item">
-              <dt>CI/CD &amp; Tooling</dt>
-              <dd>GitHub Actions, Git, Postman, PowerShell automation</dd>
-            </div>
-
-            <div class="deflist__item">
-              <dt>Programming &amp; Scripting</dt>
-              <dd>Python, Java, SQL, PowerShell, C++</dd>
-            </div>
-
-            <div class="deflist__item">
-              <dt>Collaboration &amp; Agile</dt>
-              <dd>Agile/Scrum, Atlassian (Jira, Confluence), architecture &amp; recovery documentation</dd>
-            </div>
-
-            <div class="deflist__item">
-              <dt>Expertise Domains</dt>
-              <dd>E-commerce, Retail, Order Management</dd>
+              <dt>Industries</dt>
+              <dd>E-commerce, Retail, Order Management, Customer Service, Industrial Instrumentation</dd>
             </div>
           </dl>
         </section>
@@ -202,17 +286,17 @@
 
             <div class="deflist__item">
               <dt>100&times; faster preprocessing</dt>
-              <dd>A real-time C++ Savitzky&ndash;Golay filter replaced the existing infrared signal pipeline. <span class="impact__source">(<a href="career.html">Career</a>)</span></dd>
+              <dd>A real-time C++ Savitzky-Golay filter replaced the existing infrared signal pipeline. <span class="impact__source">(<a href="career.html">Career</a>)</span></dd>
             </div>
 
             <div class="deflist__item">
               <dt>2 plugins authored and submitted upstream</dt>
-              <dd>Draw.io embedding and a file-attachment rework, both open against the official Kanboard plugin directory &mdash; PR #586 and PR #585. <span class="impact__source">(<a href="projects.html">Projects</a>)</span></dd>
+              <dd>Draw.io embedding and a file-attachment rework, both open against the official Kanboard plugin directory: PR #586 and PR #585. <span class="impact__source">(<a href="projects.html">Projects</a>)</span></dd>
             </div>
 
             <div class="deflist__item">
               <dt>1st of 86 teams</dt>
-              <dd>Hello World v4.0, Sfax &mdash; regional competitive programming contest. <span class="impact__source">(<a href="awards.html">Awards</a>)</span></dd>
+              <dd>Hello World v4.0, Sfax: regional competitive programming contest. <span class="impact__source">(<a href="awards.html">Awards</a>)</span></dd>
             </div>
           </dl>
         </section>
@@ -241,7 +325,7 @@
           <h3 class="block__title" id="volunteering">Volunteering</h3>
           <ul class="entries">
             <li class="entry">
-              <p class="entry__title">Tunisian Red Crescent <span class="entry__role">&mdash; Houmt Souk branch, Djerba</span></p>
+              <p class="entry__title">Tunisian Red Crescent <span class="entry__role">&middot; Houmt Souk branch, Djerba</span></p>
               <p class="entry__period">COVID-19 response</p>
               <p class="entry__summary">Volunteered during the COVID-19 crisis, helping organise aid distribution, assisting with crowd coordination, supporting elderly individuals, and participating in collecting and distributing essential supplies.</p>
             </li>
@@ -258,6 +342,27 @@
     function gtag(){ dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-71KWCMXZ0P');
+    (function() {
+      var toggleBtn = document.getElementById('sidebar-toggle');
+      var toggleText = document.getElementById('sidebar-toggle-text');
+      var layout = document.querySelector('.layout');
+      if (!toggleBtn || !layout) return;
+
+      if (localStorage.getItem('sidebar_collapsed') === 'true') {
+        layout.classList.add('layout--sidebar-collapsed');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        if (toggleText) toggleText.textContent = 'Show Profile';
+      }
+
+      toggleBtn.addEventListener('click', function() {
+        var isCollapsed = layout.classList.toggle('layout--sidebar-collapsed');
+        localStorage.setItem('sidebar_collapsed', isCollapsed ? 'true' : 'false');
+        toggleBtn.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
+        if (toggleText) {
+          toggleText.textContent = isCollapsed ? 'Show Profile' : 'Hide Profile';
+        }
+      });
+    })();
   </script>
 </body>
 

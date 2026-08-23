@@ -7,8 +7,8 @@ document explains the reasoning so the system can be extended without drifting.
 Its companion is [`awards.md`](awards.md), which owns the *information* model:
 what a record states about itself and in what order (with
 [`workshops.md`](workshops.md) and [`teaching.md`](teaching.md) declaring the
-models built on it). This document owns how any of that looks. The two meet at one point — a metadata category name binds to a
-`.tag--<category>` rule — and neither restates the other.
+models built on it). This document owns how any of that looks. The two meet at one point (a metadata category name binds to a
+`.tag--<category>` rule) and neither restates the other.
 
 ---
 
@@ -16,7 +16,7 @@ models built on it). This document owns how any of that looks. The two meet at o
 
 Classic, restrained, academic. This site descends from the orderedlist
 **Minimal** theme by way of [elyesmanai.github.io](https://elyesmanai.github.io/),
-and that lineage is the design — a sticky identity rail on the left, a plain
+and that lineage is the design: a sticky identity rail on the left, a plain
 document on the right, one typeface, one blue for links, hairlines for
 structure.
 
@@ -62,7 +62,7 @@ If a future addition needs one of these, the addition is probably wrong.
 ## 1. Typography
 
 **One family: Noto Sans**, self-hosted (woff2 / woff / ttf), in **two weights
-only — 400 and 700**. The family ships no others, so any 500 or 600 would be a
+only: 400 and 700**. The family ships no others, so any 500 or 600 would be a
 synthesised fake. Emphasis comes from weight, colour and size.
 
 A second typeface was the single biggest thing that tipped an earlier draft out
@@ -70,14 +70,14 @@ of register: a serif for titles reads as *magazine*, not as *academic page*.
 
 | Token | Size | Use |
 |---|---|---|
-| `--text-xs` | 11px | Tags |
-| `--text-sm` | 12px | Dates, "last update", footer |
-| `--text-md` | 13px | Navigation, sidebar, contact |
-| `--text-base` | 15px | Body copy |
-| `--text-lg` | 16px | Page lede, entry titles, sidebar headings |
-| `--text-xl` | 18px | Section headings (`h3`) |
-| `--text-2xl` | 24px | Page title (`h1`) |
-| `--text-3xl` | 28px | The name in the sidebar |
+| `--text-xs` | 12px | Tags |
+| `--text-sm` | 13px | Dates, "last update", footer |
+| `--text-md` | 14px | Sidebar, contact |
+| `--text-base` | 16px | Body copy |
+| `--text-lg` | 17px | Navigation, page lede, entry titles, sidebar headings |
+| `--text-xl` | 19px | Section headings (`h3`) |
+| `--text-2xl` | 25px | Page title (`h1`) |
+| `--text-3xl` | 29px | The name in the sidebar |
 
 These are the original theme's proportions with **one change: body copy moved
 from 14px to 15px.** That step is the whole accessibility argument and costs
@@ -88,7 +88,7 @@ Prose is capped at `--measure` (74ch).
 
 ### Heading ramp
 
-The theme's signature is a *stepped* grey ramp — each heading level one notch
+The theme's signature is a *stepped* grey ramp: each heading level one notch
 lighter than the one above:
 
 | Level | Colour | Role |
@@ -96,7 +96,7 @@ lighter than the one above:
 | `h1` / the name / `strong` | `#222222` | Strongest |
 | `h2` / page title | `#393939` | Page-level |
 | `h3` / section headings | `#494949` | Section-level |
-| Body | `#373737` | — |
+| Body | `#373737` | - |
 
 Note that body text is *darker* than `h3`. That is not a mistake; it is the
 original ramp and it is why the page reads calm rather than shouty.
@@ -105,19 +105,19 @@ original ramp and it is why the page reads calm rather than shouty.
 
 One grey ramp and one blue. Nothing else may be introduced.
 
-- **Links** — `--blue-600` `#267cb9`, the theme's blue (4.6:1 on white, AA).
+- **Links**: `--blue-600` `#267cb9`, the theme's blue (4.6:1 on white, AA).
   Hover is `--blue-800` `#006699`.
-- **Rules** — `--rule` `#e5e5e5` for structural hairlines, `--rule-soft`
+- **Rules**: `--rule` `#e5e5e5` for structural hairlines, `--rule-soft`
   `#eaeaea` for the lighter underline beneath section headings.
-- **Muted text** — the theme's `#777` was darkened to `#6b6b6b`, the smallest
+- **Muted text**: the theme's `#777` was darkened to `#6b6b6b`, the smallest
   change that clears AA at 12px.
 
 **Semantic layer.** Components address `--color-text`, `--color-heading`,
-`--color-link`, `--color-border` and so on — never a primitive. Re-theming
+`--color-link`, `--color-border` and so on, never a primitive. Re-theming
 means editing one block. `tools/check.py` fails on an undefined token and
 reports any token nothing consumes.
 
-**Status colours** exist for tags alone — see §7.
+**Status colours** exist for tags alone, see §7.
 
 Light-only, and it prints cleanly. Dark mode is deliberately deferred: the
 brand logos in `images/icons/` are fixed-colour SVGs that would each need a
@@ -136,11 +136,11 @@ so the vertical texture of the original page survives:
 
 ## 4. Layout & containers
 
-`--container-max` 1120px at `--container-fluid` 95%, holding a fixed
+`--container-max` 1600px at `--container-fluid` 98%, holding a fixed
 `--sidebar-width` 280px rail and a fluid content column, `--column-gap` apart.
 
 The rail is sticky and scrolls independently, so identity, credentials, the CV
-link and contact details stay reachable from anywhere in a long document —
+link and contact details stay reachable from anywhere in a long document:
 the most useful thing a portfolio can do for someone reading it in order to
 get in touch.
 
@@ -155,7 +155,7 @@ Separation is a 1px hairline.
 
 ## 6. Iconography
 
-Brand logos arrive in wildly different aspect ratios — square, 2500×1184
+Brand logos arrive in wildly different aspect ratios: square, 2500×1184
 wordmarks, 412×800 portraits. **Every icon renders inside a fixed square box
 with `object-fit: contain`** via `.icon` plus a size modifier (`--xs` 12,
 `--sm` 15, `--md` 18, `--lg` 32). This is the rule that keeps logos
@@ -170,11 +170,11 @@ carries that link's accessible name in its `alt`.
 The one addition to the classic vocabulary, and the one piece of colour on the
 page. Tags **classify**; they never decorate. There are two families.
 
-### 7.1 Metadata tags — one treatment per category
+### 7.1 Metadata tags: one treatment per category
 
 A record describes itself through a fixed, declared set of metadata categories
-rendered in a fixed order. **That model — which categories exist, what they
-mean, what order they take — is defined in the model documents
+rendered in a fixed order. **That model (which categories exist, what they
+mean, what order they take) is defined in the model documents
 ([`awards.md`](awards.md), [`workshops.md`](workshops.md),
 [`teaching.md`](teaching.md), [`research.md`](research.md),
 [`writing.md`](writing.md), [`projects.md`](projects.md),
@@ -183,13 +183,13 @@ visual rule that makes it work:
 
 > **The treatment belongs to the category, never to the value.** Amber does not
 > mean "good", it means *this tag is a placement*. That is what lets a tag list
-> be read positionally after the first record instead of word by word — and it
+> be read positionally after the first record instead of word by word, and it
 > is why a value may never be given styling of its own.
 
 Every declared category therefore binds to exactly one `.tag--<category>` rule.
-There is one model per record type. The eight in use today:
+There is one model per record type. The nine in use today:
 
-**Awards** — declared in [`awards.md`](awards.md)
+**Awards**: declared in [`awards.md`](awards.md)
 
 | Variant | Colour |
 |---|---|
@@ -197,25 +197,29 @@ There is one model per record type. The eight in use today:
 | `.tag--type` | Blue |
 | `.tag--scope` | Violet |
 | `.tag--scale` | Grey, regular weight |
+| `.tag--duration` | Grey, regular weight |
+| `.tag--track` | Grey, regular weight |
 
-**Workshops** — declared in [`workshops.md`](workshops.md)
+**Workshops**: declared in [`workshops.md`](workshops.md)
 
 | Variant | Colour |
 |---|---|
 | `.tag--format` | Blue |
 | `.tag--mode` | Violet |
+| `.tag--duration` | Grey, regular weight |
 | `.tag--audience` | Amber |
+| `.tag--scale` | Grey, regular weight |
 | `.tag--host` | Grey, regular weight |
 
-**Teaching** — declared in [`teaching.md`](teaching.md)
+**Teaching**: declared in [`teaching.md`](teaching.md)
 
 | Variant | Colour |
 |---|---|
 | `.tag--level` | Amber |
 | `.tag--workload` | Blue |
-| `.tag--scale` | Grey, regular weight — *the same rule as Awards* |
+| `.tag--scale` | Grey, regular weight: *the same rule as Awards* |
 
-**Research** — declared in [`research.md`](research.md)
+**Research**: declared in [`research.md`](research.md)
 
 | Variant | Colour |
 |---|---|
@@ -223,15 +227,15 @@ There is one model per record type. The eight in use today:
 | `.tag--authorship` | Blue |
 | `.tag--publisher` | Grey, regular weight |
 
-**Writing** — declared in [`writing.md`](writing.md)
+**Writing**: declared in [`writing.md`](writing.md)
 
 | Variant | Colour |
 |---|---|
-| `.tag--format` | Blue — *the same rule as Workshops* |
-| `.tag--reach` | Violet — *the same hue as Awards' `scope`* |
+| `.tag--format` | Blue: *the same rule as Workshops* |
+| `.tag--reach` | Violet: *the same hue as Awards' `scope`* |
 | `.tag--platform` | Grey, regular weight |
 
-**Projects** — declared in [`projects.md`](projects.md)
+**Projects**: declared in [`projects.md`](projects.md)
 
 | Variant | Colour |
 |---|---|
@@ -239,14 +243,33 @@ There is one model per record type. The eight in use today:
 | `.tag--kind` | Blue |
 | `.tag--stack` | Grey, regular weight |
 
-**Experience** — declared in [`career.md`](career.md)
+**Skills**: declared in [`skills.md`](skills.md)
+
+| Variant | Colour |
+|---|---|
+| `.tag--production` | Green: *the hue §7.2 gives to verified/shipped* |
+| `.tag--certification` | Blue |
+| `.tag--taught` | Violet |
+| `.tag--published` | Amber |
+| `.tag--applied` | Grey, regular weight |
+
+> **The one model whose categories repeat.** Everywhere else a category is a
+> *dimension* of the record and holds one value. On Skills the categories are
+> *citations*, and citations accumulate: three certifications are three
+> artifacts, not one dimension with three values. Positional reading is given
+> up for colour-run reading: the fixed order means a row that starts green ran
+> in production and a row that starts blue did not.
+> [`skills.md`](skills.md) argues it in full. This is an exception with a
+> written case, not a precedent: a second one needs its own.
+
+**Experience**: declared in [`career.md`](career.md)
 
 | Variant | Colour |
 |---|---|
 | `.tag--domain` | Blue |
-| `.tag--stack` | Grey, regular weight — *the same rule as Projects* |
+| `.tag--stack` | Grey, regular weight: *the same rule as Projects* |
 
-**Education** — declared in [`career.md`](career.md)
+**Education**: declared in [`career.md`](career.md)
 
 | Variant | Colour |
 |---|---|
@@ -256,20 +279,20 @@ There is one model per record type. The eight in use today:
 Progress* take the **same** amber, because the treatment says *this tag is a
 status* and never *this status is the good one*. The hand-written version of
 the Research page gave *Published* a green and *In Progress* an amber, which
-read as a verdict on the record rather than as a category — and would have made
+read as a verdict on the record rather than as a category, and would have made
 the tag unreadable positionally the moment a third status appeared.
 
 `scale` is borrowed rather than added: it means the size of the group a record
-involved wherever it appears — `86 teams`, `12 students` — so it keeps one
+involved wherever it appears (`86 teams`, `12 students`) so it keeps one
 name, one meaning and one rule across the models that use it. A shared name
 that meant two different things would be the defect; a shared name that means
 one thing is the system working. `format` is borrowed on the same terms: on
-Workshops and on Writing alike it names the shape the deliverable takes — a
-`Hands-on Lab`, a `Configuration Guide` — so it too keeps one rule.
+Workshops and on Writing alike it names the shape the deliverable takes (a
+`Hands-on Lab`, a `Configuration Guide`) so it too keeps one rule.
 
 `reach` is the reverse case done right: a **new name** on a **reused hue**.
-Violet is what this system already spends on how far something travelled —
-`scope` for an award, `mode` for a room, `reach` for an article — so a reader
+Violet is what this system already spends on how far something travelled
+(`scope` for an award, `mode` for a room, `reach` for an article) so a reader
 who has learned the mapping anywhere reads it here without being taught again.
 The hue was not picked for the category; it was already the answer to the
 question the category asks. Reuse the *treatment* whenever the question is the
@@ -277,7 +300,7 @@ same; reuse the *name* only when the answer means the same thing.
 
 `publisher` and `platform` are the reverse test, and the reason the Research
 page's two blocks do not share a model. Both sit last, both are grey, and both
-answer *who stands behind this* — but *Elsevier* peer-reviewed the work and
+answer *who stands behind this*, but *Elsevier* peer-reviewed the work and
 *Medium* hosted it, which are not the same claim, so they take separate names.
 The shared treatment is what lets a reader scan the page and find the answer in
 the same position both times; the separate names are what stops the second
@@ -285,23 +308,23 @@ block borrowing the first block's authority. Reuse a category when the meaning
 is identical, never when only the position is.
 
 **No two categories in one model may share a treatment.** Two *different*
-models may reuse a hue, because they are never read side by side — a reader
+models may reuse a hue, because they are never read side by side: a reader
 learns the mapping per page, from the first record. What breaks the system is
 ambiguity within a single tag list, not across the site. Adding a category
-means adding one row here and one rule in `main.css` — never a colour decision
+means adding one row here and one rule in `main.css`, never a colour decision
 inside a page.
 
-`.tag--scale`, `.tag--host`, `.tag--publisher`, `.tag--platform`,
-`.tag--stack` and `.tag--accreditation` are the metadata tags at regular
-weight: a field size, a cohort size, the organisation that ran the room, the
-house that published the paper, the site that hosts the article, the tools a
-project is built from, the body that accredits the degree. All are context for
-the record rather than claims of their own, so the eye lands on the categories
-before them first.
+`.tag--scale`, `.tag--duration`, `.tag--track`, `.tag--host`, `.tag--publisher`,
+`.tag--platform`, `.tag--stack` and `.tag--accreditation` are the metadata tags at
+regular weight: a field size, an event duration, a hackathon track, a cohort size,
+the organisation that ran the room, the house that published the paper, the site
+that hosts the article, the tools a project is built from, the body that accredits
+the degree. All are context for the record rather than claims of their own, so
+the eye lands on the categories before them first.
 
 `accreditation` is the newest member and the one that had to be *moved* into
-the family. The hand-written Career page gave it `.tag--success` — the green
-below, reserved for *verified / published / shipped* — which graded the value
+the family. The hand-written Career page gave it `.tag--success` (the green
+below, reserved for *verified / published / shipped*), which graded the value
 instead of naming the category, and borrowed a utility treatment for a
 dimension of a record. It answers the same question `publisher`, `host` and
 `platform` answer, so it takes their treatment and keeps its own name.
@@ -310,7 +333,7 @@ dimension of a record. It answers the same question `publisher`, `host` and
 `upstream` points at the pull request and `accreditation` at the accrediting
 body, and in both cases the destination is the evidence for the claim the tag
 makes, so the tag is the route to it. One is amber and one is grey, which is
-the rule working — the link is a destination, not a kind, so it changes
+the rule working: the link is a destination, not a kind, so it changes
 nothing about the treatment the category already had.
 Utility tags such as `.tag--critical` on a slide deck link for the different
 reason that the artefact *is* the tag.
@@ -326,29 +349,29 @@ The hand-written Career page was the last place that rule was broken, and it
 broke it twice in one tag list: three to five loose technology chips per job,
 with the headline tool given `.tag--accent` and the rest `.tag--neutral`. The
 varying length meant no column existed to read down, and the accent graded a
-*value* — *Talend is the important one* — which is the thing rule 4 forbids.
+*value* (*Talend is the important one*), which is the thing rule 4 forbids.
 Both are gone; the tools render as one `stack` tag, in the order they mattered.
 
 **Medals.** First, second and third place carry a small struck-metal disc
 (`.medal--gold` / `--silver` / `--bronze`) before the label. It exists so the
 top results are recognised *before* the text is read, and it is what makes
-wording like "Winner", "Champion" or "Runner-up" unnecessary — the label stays
+wording like "Winner", "Champion" or "Runner-up" unnecessary: the label stays
 factual and the medal does the signalling. The disc is drawn in CSS, sized in
 `em` so it tracks the type, `aria-hidden` because the text beside it already
 says "1st Place", and forced through to the printer because greyscale would
 lose the one thing it encodes.
 
-### 7.2 Utility tags — single facts
+### 7.2 Utility tags: single facts
 
 For the things that are not dimensions of a record. Written by hand where they
 apply; no ordering rule, because they do not form a sequence.
 
 | Variant | Meaning | Example | In use |
 |---|---|---|---|
-| `.tag--neutral` | Factual context | `Azure`, `Graduate Level` | — |
-| `.tag--accent` | Role or category | `Instructor` | — |
+| `.tag--neutral` | Factual context | `Azure`, `Graduate Level` | - |
+| `.tag--accent` | Role or category | `Instructor` | - |
 | `.tag--success` | Verified, published, shipped | `Article on Medium` | Projects |
-| `.tag--honor` | Distinction or pending status | `In Progress` | — |
+| `.tag--honor` | Distinction or pending status | `In Progress` | - |
 | `.tag--critical` | Downloadable artefact | `Slides (.pptx)` | Workshops |
 
 Violet is the only hue this system added, and it was added for scope alone: it
@@ -359,7 +382,7 @@ borrowing the green that means *verified* or the red that means *download*.
 reports that as a note rather than a failure. It is the expected end state, not
 neglect: `.tag--neutral`, `.tag--accent` and `.tag--honor` were what the
 hand-written pages reached for whenever a record had a fact and no category to
-put it in — `Azure` on a job, `Instructor` on a course, `In Progress` on a
+put it in: `Azure` on a job, `Instructor` on a course, `In Progress` on a
 paper. Every one of those facts is now a declared category on a model, which is
 the point of §7.1. The rules stay because a genuine one-off will appear again;
 what may not happen is a page reaching for one *instead of* declaring the
@@ -370,7 +393,7 @@ category it needs.
 Every interactive element defines rest, hover and `:focus-visible` (2px blue
 outline, 2px offset).
 
-Links get colour plus an underline on hover — **never a weight change**. The
+Links get colour plus an underline on hover, **never a weight change**. The
 original's `a:hover { font-weight: bold }` reflowed the sentence under the
 cursor.
 
@@ -384,18 +407,18 @@ project, a paper, a course, a workshop, an award. It is a **bulleted list
 item**, exactly as the original CV pages were written by hand:
 
 ```
-• Title — Role                    .entry__title / .entry__role
-  Aug 2024 – Present              .entry__period   (italic, muted)
+• Title · Role                    .entry__title / .entry__role
+  Aug 2024 - Present              .entry__period   (italic, muted)
   [tags]                          .tag-list        (§7, fixed order)
-  – point                         .points
-  – point
+  - point                         .points
+  - point
 ```
 
 The tags carry the record's *metadata*; the bullets carry its *substance*. A
-fact stated by a tag is not repeated in a bullet — "1st Place" and "86 teams"
+fact stated by a tag is not repeated in a bullet: "1st Place" and "86 teams"
 are the tag list's job, so the bullets are free to say what was actually done.
 
-**Records are stored as data, not markup — whether or not they carry a
+**Records are stored as data, not markup: whether or not they carry a
 metadata model.** Every file in `src/data/` holds records; the matching
 fragment in `src/pages/` holds only the section heading and its intro, and
 interpolates the rendered block. This is what makes the ordering and colour
@@ -411,7 +434,7 @@ halves are separable: they are data (`src/data/certifications.json`,
 `src/data/courses.json`, `src/data/volunteering.json`) and they carry **no**
 metadata model. Who issued a
 credential is its only dimension a reader needs, and that is already the
-`.issuer` heading the group sits under — so a tag would restate the heading on
+`.issuer` heading the group sits under, so a tag would restate the heading on
 every row. [`career.md`](career.md) §3 has the reasoning. Volunteering is a
 single record and still comes from data, because one hand-written `.entry` is
 how the second one gets hand-written too. §10 draws the matching line for
@@ -424,14 +447,41 @@ credential group with its brand mark.
 
 Entries are **never boxed**. A CV is a document, not a feed of cards.
 
+### 9.1 The one record that is not an `.entry`
+
+`.skill` is the exception, and it earns it by being a different kind of
+statement. Every `.entry` on the site reports **something that happened**: a
+job held, a paper published, a contest entered. A skill is a **claim about
+capability**, which is the one assertion a portfolio cannot be trusted on, so
+the component is built so the claim cannot appear without its proof:
+
+```
+Data pipeline engineering            Production-proven   .skill__name / __standing
+Talend · MuleSoft · Apache Airflow                       .skill__tools
+[production] [certification ×3] [taught]                 .tag-list  (§7.1, fixed order)
+```
+
+Three things make it work, all argued in [`skills.md`](skills.md):
+
+1. **Every chip is a link to a record elsewhere on this site**, so `check.py`
+   fails the build on a citation that points nowhere.
+2. **The standing is derived** from which kinds of evidence exist, never
+   typed, never chosen, and the block sorts itself by it.
+3. **The standing carries no colour.** It is a *value*, and §7.1 forbids
+   styling a value. The gradient is carried by the chips, whose fixed category
+   order makes the leading colour of a row meaningful on its own.
+
+No percentages, no ratings, no bars. A self-assessed level is an opinion; "run
+in production and certified twice" is a pair of facts with links on them.
+
 ## 10. Definition lists
 
-`.deflist` handles all "category: values" content — skills, languages, impact.
+`.deflist` handles all "category: values" content: skills, languages, impact.
 The original wrote these as `<li><b>Label:</b> values</li>`: correct on screen,
 but the pairing lived only in the punctuation.
 
-`.deflist` renders **identically** — bullet, bold label, colon, values, all on
-one line — while being a real `<dl>`. The `.deflist__item` wrapper `<div>` is
+`.deflist` renders **identically** (bullet, bold label, colon, values, all on
+one line) while being a real `<dl>`. The `.deflist__item` wrapper `<div>` is
 valid inside a `<dl>` and is what lets a `dt`/`dd` pair share one list marker.
 
 ### When a list is data and when it is markup
@@ -444,13 +494,21 @@ Languages and Selected Impact are the same component doing two different jobs.
 > facts live. It becomes data when it restates facts held elsewhere on the
 > site.**
 
-Skills and Languages are the sole source of truth for what they say. Nothing
-else on the site claims a proficiency level, and moving eight `dt`/`dd` pairs
-into JSON would buy a build step and no guarantee.
+Languages is the sole source of truth for what it says, so it stays in the
+fragment: nothing else on the site claims a proficiency, and moving three
+`dt`/`dd` pairs into JSON would buy a build step and no guarantee. Domains is
+the same case.
+
+**Skills used to be that example, and stopped being it.** The moment the block
+began citing the records that prove each capability, it started restating facts
+held elsewhere, which is the second half of the rule, and it moved to
+`src/data/skills.json` on its own component (`.skills`, §9.1). The migration
+was not a change of mind about the rule; it is the rule working. See
+[`skills.md`](skills.md).
 
 Selected Impact is the opposite and the reason the rule exists. Every line in
-it is a second telling of a record on another page — a saving from a job, a
-placement from a contest, a pull request from a project — so it is the one
+it is a second telling of a record on another page (a saving from a job, a
+placement from a contest, a pull request from a project) so it is the one
 block that can quietly contradict the site it sits on. It did: the front page
 read *2 plugins accepted upstream, both listed in the official directory* while
 `projects.json` had both pull requests still `open`, and the promotional
@@ -464,21 +522,64 @@ The figure itself is still written by hand, and deliberately: deriving
 is a worse liar than a person who checks. That half is an editorial rule, and
 it is stated in the fragment directly above the block.
 
+### 10.1 `.specs`: the spec strip
+
+The variant `.deflist` could not absorb. A `.deflist` is one label and its
+values on **one line**; the Teaching appointment needed three *groups* of
+several rows each, aligned as columns, and a `<dd>` holding another list stops
+being the pairing `.deflist` exists to render.
+
+```
+Workload              Language & Tooling     Assessment
+32 h per course       Instruction  FR & EN   Final Exam        50%
+Lectures       20 h   Materials         EN   Module Homework   20%
+  5 modules × 4 h       Slides, code…       Final Project      15%
+Labs            8 h                          Attendance        15%
+```
+
+`.specs` is a `repeat(auto-fit, minmax(13rem, 1fr))` grid of `.spec` columns.
+Each column is a `.spec__title` (a `<p>`, like `.entry__group-title`: block
+subdivisions stay out of the document outline, §11), an optional
+`.spec__lead` for a headline figure, and a `.spec__rows` definition list of
+`.spec__row` pairs. A row may carry a `.spec__detail` that drops full-width
+beneath it.
+
+Three decisions worth keeping:
+
+- **It is not a table, and must not become one.** The columns are independent
+  groups that happen to sit alongside each other; no cell means anything by its
+  row and column position. `auto-fit` is what lets them collapse to one column
+  on a narrow screen with no breakpoint of their own, and what keeps Principle
+  1 intact: printed, it is still three headed lists.
+- **The weighting is inverted from `.deflist`.** There the bold label is what
+  you scan for; here the reader is scanning **figures**, so the label recedes
+  to regular weight and the value takes the heading ink and the right edge.
+  Hours and percentages stack into a readable column instead of hiding
+  mid-sentence.
+- **It is the one intro-level component with no `--measure` cap.** The cap
+  governs prose, and a column of label/figure rows is not prose. The sentence
+  above the strip keeps its cap; the strip uses the full content column.
+
+Reach for it only when a block has **several constants of different kinds** to
+state at once. Two labelled facts are a `.deflist`; one is a sentence.
+
+
 ## 11. Page structure
 
 Every page is the same stack:
 
 ```
 page-header   h1 + optional lede
-block         h3 (underlined) + optional intro + entries or deflist
+block         h3 (underlined) + optional intro
+              + entries, deflist or skills
               + optional note                                        ← repeated
 ```
 
-Each page has exactly one `<h1>` — its own title. The site name in the rail is
+Each page has exactly one `<h1>`: its own title. The site name in the rail is
 a link styled to the old `h1`'s size, not a heading, so every page gets a
 unique document outline. Enforced by `tools/check.py`.
 
-### 11.1 Section intros — one line, and it is the pitch
+### 11.1 Section intros: one line, and it is the pitch
 
 **A `block__intro` is a single punchy line.** One sentence, no second sentence,
 no conversational run-up, no explanation of how the block works.
@@ -486,17 +587,17 @@ no conversational run-up, no explanation of how the block works.
 The intro is the one place on the site that is allowed to *sell*. The people
 who read this page are a hiring manager, a recruiter and an engineer, in that
 order, and each of them decides in a second whether the block below is worth
-their attention. An intro that opens with mechanics — where a link points, what
-a tag means, which records were filtered in — spends that second on plumbing
+their attention. An intro that opens with mechanics (where a link points, what
+a tag means, which records were filtered in) spends that second on plumbing
 nobody asked about, and the block loses the reader before its first record.
 
 So the intro says **why this work exists and what it shows about the person who
 did it**; the records below it carry the evidence. The reference pair is
 Awards:
 
-> Competitions — *Engineering background plus competitive programming edge.*
+> Competitions: *Engineering background plus competitive programming edge.*
 >
-> Hackathons — *Rapid prototyping, product design, and fast technical delivery.*
+> Hackathons: *Rapid prototyping, product design, and fast technical delivery.*
 
 This does not soften Principle 3, *credibility before persuasion*. The intro
 persuades **once**, in one line, and every claim underneath it still carries a
@@ -508,27 +609,35 @@ Rules:
 1. **One sentence.** If it needs a semicolon it is probably still one line; if
    it needs a full stop and a second clause, cut the second clause.
 2. **No mechanics.** *"Each entry links to the issuer's own record"*, *"a pull
-   request tag says whether it was merged"*, *"author names link to Scholar"* —
+   request tag says whether it was merged"*, *"author names link to Scholar"*:
    all true, all obvious on sight, none of it earns the first line of a block.
    Mechanics that genuinely need stating go in the model document for the page.
 3. **No per-record facts.** A fact true of one record is a tag or a bullet on
    that record (§7, §9). The intro speaks for the whole block or it does not
    belong there.
-4. **Dated or hedged facts go in a `block__note`**, below the records — see
+4. **Dated or hedged facts go in a `block__note`**, below the records, see
    §11.2. They are provenance, and provenance is a footnote.
 5. **Write it as a person, not as a résumé.** Curiosity, effort and intent are
    the point; "leveraged", "demonstrated" and "consistent track record of" are
    the register this whole site exists to avoid.
 
-**The one exception** is Teaching, whose intro is a `ul.points.block__intro` of
-four labelled facts (appointment, workload, language, assessment) rather than
-prose. Those are constants true of every course on the page, and a reader
-scans them positionally exactly as they scan the tags on the records below —
-the same argument §9 makes for tags. [`teaching.md`](teaching.md) owns the
-reasoning. A second such exception needs the same argument made in writing
-first; prose intros get no exceptions at all.
+**The one exception** is Teaching, and it is now an exception on one count
+rather than two. Its intro was a `ul.points.block__intro` of four labelled
+facts; the three that are specifications (workload, language, assessment)
+moved out into a `.specs` strip (§10.1) below the intro, and the appointment
+stayed behind as a single prose line. So the *shape* rule is no longer broken:
+the intro is one sentence again.
 
-### 11.2 `block__note` — the dated footnote
+What is still broken is rule 5's spirit. That sentence states an appointment:
+*University Lecturer at IHEC Sfax, on the M.Sc. Data Science programme*, where
+every other block on the site opens with a pitch. Constants true of every
+record on a page have to be said once somewhere, and a reader scans them
+positionally exactly as they scan the tags on the records below: the same
+argument §9 makes for tags. [`teaching.md`](teaching.md) owns the reasoning.
+
+A second such exception needs the same argument made in writing first.
+
+### 11.2 `block__note`: the dated footnote
 
 Some figures come from a source that does not refresh them. A note in
 `--text-sm` muted ink, placed **after** the records, carries their provenance
@@ -544,7 +653,7 @@ sentences the intro rule removed.
 
 The original rendered this as a `<table>` row, which meant the site's real
 tables inherited its styling and **no page could show which one you were on**.
-`.nav` keeps the look — evenly distributed links over a hairline — as a list,
+`.nav` keeps the look (evenly distributed links over a hairline) as a list,
 with `aria-current="page"` rendered as bold ink.
 
 ## 13. Responsive behaviour
@@ -583,7 +692,7 @@ The site answers hiring questions in order:
 |---|---|
 | Who is this engineer? | Rail identity + Home page title |
 | How do they work? | Home → Profile |
-| What technologies do they actually use? | Home → Skills |
+| What can they actually do, and how would I know? | Home → Skills & Evidence |
 | What impact did they create? | Home → Selected Impact |
 | What problems have they solved? | Career → Experience |
 | What can they build? | Projects |
@@ -600,7 +709,7 @@ The site answers hiring questions in order:
    in a component rule is a bug.
 3. Check it against **Explicitly out of scope** at the top of this document.
 4. Add it here and to `assets/css/main.css` under a numbered section.
-5. Run `python3 tools/check.py` — it fails on classes used in markup but absent
+5. Run `python3 tools/check.py`: it fails on classes used in markup but absent
    from the stylesheet, undefined tokens, inline styles and broken links, and
    reports any CSS rule or token nothing uses.
 
@@ -609,5 +718,5 @@ document for its page ([`awards.md`](awards.md), [`workshops.md`](workshops.md),
 [`teaching.md`](teaching.md)), order it in `MODELS` in `tools/build.py`, give it
 one `.tag--<category>` rule in `main.css`, and add its row to §7.1. Never decide
 ordering or colour inside a page. Before adding one, check whether an existing
-category already means what you need — reusing `format` and `scale` cost two
+category already means what you need: reusing `format` and `scale` cost two
 lines; a synonym would have cost a colour.

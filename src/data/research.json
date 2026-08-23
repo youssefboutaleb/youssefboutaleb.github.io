@@ -11,8 +11,14 @@
     "year": 2025,
     "status": "Published",
     "publisher": "Elsevier",
+    "doi": "10.1016/j.cie.2025.111040",
     "url": "https://www.sciencedirect.com/science/article/abs/pii/S036083522500186X",
-    "summary": "Blockchain used to make energy exchange records auditable, with machine-learning anomaly detection over the consumption data on top; evaluated against the Ausgrid smart-meter dataset."
+    "summary": "Decentralized energy data architecture combining blockchain immutability for smart-meter audit trails with unsupervised machine learning pipelines to detect consumption anomalies.",
+    "points": [
+      "<b>Data pipeline &amp; auditability:</b> ingests high-frequency smart-meter time-series into a decentralized ledger to ensure tamper-proof consumption records.",
+      "<b>Anomaly detection engine:</b> applies machine learning models over smart-meter streams to catch power theft and sensor anomalies.",
+      "<b>Empirical validation:</b> benchmarked against 300 residential solar and grid consumption feeds from Australia's Ausgrid smart-meter dataset."
+    ]
   },
   {
     "title": "Dual verification-based multimodal approach for reliable pothole and speed bump detection on embedded system",
@@ -23,7 +29,10 @@
     ],
     "venue": "Computers &amp; Industrial Engineering",
     "status": "In Progress",
-    "publisher": "Elsevier",
-    "summary": "Road-surface hazard detection running on an embedded target, where two sensing modalities have to agree before a detection is reported &mdash; the check that keeps a single noisy channel from raising it alone."
+    "summary": "Edge-computing data pipeline combining accelerometer telemetry and vision streams with dual-verification consensus, preventing single noisy sensor channels from triggering false hazard alerts.",
+    "points": [
+      "<b>Multimodal sensor stream fusion:</b> synchronizes IMU motion telemetry with visual detection models on resource-constrained embedded targets.",
+      "<b>Dual-verification consensus:</b> requires agreement between inertial and vision channels before registering a road anomaly, eliminating false positives from single-sensor noise."
+    ]
   }
 ]

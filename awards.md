@@ -6,7 +6,7 @@ validated Awards implementation.
 This document defines an **information model**: what an entry states about
 itself, how those statements are named, and in what order they appear. It says
 nothing about how any of it looks. [`DESIGN.md`](DESIGN.md) owns that, and the
-two must not be merged — see [Relationship to `DESIGN.md`](#relationship-to-designmd).
+two must not be merged, see [Relationship to `DESIGN.md`](#relationship-to-designmd).
 
 The rules here are general. [`workshops.md`](workshops.md),
 [`teaching.md`](teaching.md) and [`research.md`](research.md) apply them to a
@@ -17,15 +17,15 @@ model itself is declared below, because this file is where it lives.
 
 ## The shape of an entry
 
-Every record on the site — a job, a project, a paper, a course, a workshop, an
-award — is the same component:
+Every record on the site (a job, a project, a paper, a course, a workshop, an
+award) is the same component:
 
 ```
-Title — Qualifier              identity
+Title: Qualifier              identity
 Period                         when
 [ metadata tags ]              the facts, in a fixed order   ← this document
-– point                        what was actually done
-– point
+- point                        what was actually done
+- point
 ```
 
 The tags carry **metadata**; the bullets carry **substance**. A fact stated by
@@ -46,7 +46,7 @@ belongs in a bullet.
 
 ### 2. Order is centralized, never per entry
 
-The display order lives in exactly one place — the model definition — and the
+The display order lives in exactly one place (the model definition) and the
 renderer emits tags in that sequence. Entries are stored as data with their
 fields in whatever order is convenient; no entry, page or template chooses an
 order of its own.
@@ -57,7 +57,7 @@ line, and every entry that uses the model follows.
 ### 3. Categories are chosen for the reader, not for symmetry
 
 Pick the categories a recruiter or hiring manager actually needs in order to
-judge the record in a glance — typically some subset of *context, significance,
+judge the record in a glance: typically some subset of *context, significance,
 scope, scale, role, status, stack*. A page includes a category only if it
 carries real information there, and it can define categories no other page has.
 
@@ -67,7 +67,7 @@ pages needing different categories should have different models.
 
 The corollary is worth stating, because it is the half that gets forgotten:
 **when a page genuinely needs a category another model already defines, it
-takes that category — name, meaning and treatment — rather than coining a
+takes that category (name, meaning and treatment) rather than coining a
 synonym.** Teaching reuses `format` from Workshops and `scale` from Awards for
 exactly this reason. A model built only from new categories is as much a smell
 as one that forces a fact into a category that does not fit.
@@ -80,7 +80,7 @@ it says *"this tag is a status"*, never *"this value is good"*. A value is
 therefore never given styling of its own.
 
 Once a reader has parsed one entry, they read the rest positionally instead of
-word by word — which only works if the mapping never varies.
+word by word, which only works if the mapping never varies.
 
 ### 5. Missing data is omitted, never invented
 
@@ -92,8 +92,8 @@ cannot tell it apart from a real value.
 
 One phrasing per concept, and the phrasing lives in the renderer rather than in
 the data, so it cannot drift between entries. Prefer the plain fact over the
-claim: state the rank, the count, the status. Avoid promotional wording —
-*Winner*, *Elite*, *Award-winning* — and anything the reader cannot verify.
+claim: state the rank, the count, the status. Avoid promotional wording
+(*Winner*, *Elite*, *Award-winning*) and anything the reader cannot verify.
 
 Where the plain wording is genuinely weak, add a **visual signal beside it**
 rather than inflating the words. (The Awards page marks its top three
@@ -102,7 +102,7 @@ placements with a small medal disc for exactly this reason; the label stays
 
 ### 7. Values may be derived from data, not written by hand
 
-Store the raw fact — an integer, a count, a date — and let the renderer produce
+Store the raw fact (an integer, a count, a date) and let the renderer produce
 the label. `1` becomes `1st Place`; `{ "count": 86, "unit": "teams" }` becomes
 `86 teams`. Hand-written labels are how `1st Place`, `1st place` and `First`
 end up on the same page.
@@ -116,13 +116,15 @@ other three so it can be read the same way.
 
 ```
 Model:  awards
-Order:  placement → type → scope → scale
+Order:  placement → type → scope → scale → duration → track
 
   placement  where the entry finished          1, 2, 13, "Quarter-finalist"
   type       what kind of event it was         "Competitive Programming", "Hackathon"
   scope      how far the field reached         "Regional", "National",
                                                "African", "International"
-  scale      how large the field was           "7,094 teams", "86 teams"
+  scale      how large the field was           "7,094 teams", "86 teams", "200 teams"
+  duration   how long the event lasted         "48h"
+  track      event focus / topic area          "GenAI for Healthcare"
 ```
 
 The order is defined once, in `MODELS["awards"]` in `tools/build.py`.
@@ -131,9 +133,10 @@ The order is defined once, in `MODELS["awards"]` in `tools/build.py`.
 and it carries the medal disc for a top-three finish (rule 6). **`type`
 second**, because a 13th place in a programming contest and a 13th place in a
 hackathon are different results. **`scope` third**, as the qualifier on how far
-that result reaches. **`scale` last, and quiet** — a field size is the context
+that result reaches. **`scale` fourth, and quiet**: a field size is the context
 that makes a placement legible rather than a claim of its own, which is why it
-takes the regular-weight grey and the terminal position.
+takes the regular-weight grey. **`duration` and `track`** provide situational
+context for time-bounded hackathons, taking the same regular-weight grey.
 
 ### Vocabulary
 
@@ -143,9 +146,11 @@ takes the regular-weight grey and the terminal position.
 | `type` | `Competitive Programming` · `Hackathon` |
 | `scope` | `Regional` · `National` · `African` · `International` |
 | `scale` | `{"count": 7094, "unit": "teams"}` → `7,094 teams` |
+| `duration` | `"48h"` |
+| `track` | `"GenAI for Healthcare"` |
 
 `venue` is not a category. It renders as the `.entry__role` qualifier after the
-title — *TCPC 23 — Tunisian Collegiate Programming Contest* — because it
+title (*TCPC 23) Tunisian Collegiate Programming Contest*, because it
 expands what the title names rather than classifying the record.
 
 ### One model, two blocks
@@ -161,16 +166,16 @@ hackathons   = [a for a in awards if a.get("type") == "Hackathon"]
 Both blocks render through `render_award` and the one `MODELS["awards"]` order,
 so a reader who has learned the tag positions in the first block reads the
 second without relearning them. Each block carries a one-line `block__intro`
-naming what that kind of result actually shows about the person who earned it —
-*Engineering background plus competitive programming edge* versus *Rapid
-prototyping, product design, and fast technical delivery* — which is the fact
+naming what that kind of result actually shows about the person who earned it
+(*Engineering background plus competitive programming edge* versus *Rapid
+prototyping, product design, and fast technical delivery*), which is the fact
 the two blocks exist to separate. These two lines are the reference examples
 for the site-wide intro rule; see below and [`DESIGN.md`](DESIGN.md) §11.1.
 
 > **Known tension.** Because the split is on `type`, every record inside a
 > block now carries a `type` tag that repeats its heading. By the test in
-> [`teaching.md`](teaching.md) — *does this distinguish this record from its
-> neighbours?* — it no longer does, and [`research.md`](research.md) resolves
+> [`teaching.md`](teaching.md) (*does this distinguish this record from its
+> neighbours?*) it no longer does, and [`research.md`](research.md) resolves
 > the same situation the other way, keeping the type in the block heading and
 > out of the model. Awards keeps the tag for now; if it goes, it goes from
 > `MODELS["awards"]` and nowhere else.
@@ -181,32 +186,27 @@ Eight results, newest first, in `src/data/awards.json`:
 
 | Result | Year | Placement | Scope | Field |
 |---|---|---|---|---|
-| Hello World v4.0 — Sfax | 2024 | 1st | Regional | 86 teams |
-| Hello World v3.0 — Sfax | 2023 | 2nd | Regional | 52 teams |
-| TCPC 23 — Tunisian Collegiate Programming Contest | 2023 | 13th | National | 90 teams |
+| Hello World v4.0: Sfax | 2024 | 1st | Regional | 86 teams |
+| Hello World v3.0: Sfax | 2023 | 2nd | Regional | 52 teams |
+| TCPC 23: Tunisian Collegiate Programming Contest | 2023 | 13th | National | 90 teams |
 | IEEEXtreme Programming Competition 17.0 | 2023 | 643rd | International | 7,094 teams |
-| A2SV GenAI Hackathon | 2023 | Quarter-finalist | African | 40 teams |
-| TCPC 22 — Tunisian Collegiate Programming Contest | 2022 | 21st | National | 80 teams |
+| A2SV GenAI Hackathon | 2023 | Quarter-finalist | African | 200 teams |
+| TCPC 22: Tunisian Collegiate Programming Contest | 2022 | 21st | National | 80 teams |
 | IEEEXtreme Programming Competition 16.0 | 2022 | 1,432nd | International | 6,376 teams |
-| Hello World v2.0 — Sfax | 2022 | 7th | Regional | 21 teams |
+| Hello World v2.0: Sfax | 2022 | 7th | Regional | 21 teams |
 
 ### Editorial rules for the bullets
 
 A contest result is almost entirely metadata, so the bullets are thin by
 design and there is exactly one thing worth saying in them.
 
-1. **State the score, not the experience.** `Solved 6 problems` is the whole
-   bullet. It is the one fact the tags do not carry, it is checkable against a
-   published scoreboard, and it is what separates a 643rd of 7,094 from a
-   643rd that timed out on the first problem.
-2. **A record with no published score has no bullet.** TCPC 23 carries none,
-   because the count was not recorded — rule 5, and a visible gap is better
-   than a remembered number.
-3. **A hackathon is the exception, and says what was built.** There is no
-   problem count to state, so the bullets carry the artefact and the pitch —
-   *Designed and built a healthcare GenAI prototype* — which is the substance a
-   placement of *Quarter-finalist* leaves unexplained.
-4. **Never restate a tag.** The field size, the scope and the rank are already
+1. **State the score, duration, and team size.** `Solved 8 / 8 problems in 4h (Team of 2)` is the whole
+   bullet. It carries the score context, total problems, time constraint, and team size.
+2. **A hackathon is the exception, and says what was built.** There is no
+   problem count to state, so the bullets carry the artefact, architecture ownership,
+   and model details (*Team of 2 — built an MVP in 48h...*), which is the substance a
+   placement leaves unexplained.
+3. **Never restate a tag.** The field size, the scope and the rank are already
    on screen. A bullet reading "competed against 86 teams nationally" is a
    third copy of two facts.
 
@@ -235,11 +235,11 @@ rendered block. A page that hand-writes tag markup has already broken the
 convention.
 
 > Current state: `MODELS` in `tools/build.py` maps a model name to its ordered
-> categories — `awards`, `workshops`, `teaching` and `research` today. A fifth
+> categories: `awards`, `workshops`, `teaching` and `research` today. A fifth
 > page adds a fifth entry; it never merges its categories into an existing
 > tuple, because a model that has to answer another page's questions is two
 > models wearing one name. Reusing an individual *category* across models is
-> the opposite and is encouraged — see rule 3 and the note below. `scale` is
+> the opposite and is encouraged, see rule 3 and the note below. `scale` is
 > shared by Awards and Teaching for exactly that reason.
 
 **3. Bind each category to a treatment.** Add one `.tag--<category>` rule in
@@ -251,8 +251,8 @@ data refers to colour.
 The prose the fragment holds is **one sentence per block**, and it is a pitch,
 not a manual. The reader is a hiring manager, a recruiter or an engineer
 deciding in about a second whether to read the records below; an intro that
-opens on mechanics — where a link points, what a tag means, which records were
-filtered in — spends that second on plumbing. Say why the work exists and what
+opens on mechanics (where a link points, what a tag means, which records were
+filtered in) spends that second on plumbing. Say why the work exists and what
 it shows about the person who did it, and let the records carry the evidence.
 
 Mechanics still get written down; they get written down **here**, in the model
@@ -303,7 +303,7 @@ rules that go with them.
 
 Two documents, one boundary: **meaning versus appearance.**
 
-| | [`DESIGN.md`](DESIGN.md) | `awards.md` (this file), [`workshops.md`](workshops.md), [`teaching.md`](teaching.md), [`research.md`](research.md) |
+| | [`DESIGN.md`](DESIGN.md) | `awards.md` (this file), [`workshops.md`](workshops.md), [`teaching.md`](teaching.md), [`research.md`](research.md), [`skills.md`](skills.md) |
 |---|---|---|
 | Owns | The visual and structural system | The information model |
 | Answers | *What does a tag look like?* | *What does an entry state, and in what order?* |
