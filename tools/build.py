@@ -290,7 +290,7 @@ def meta_url(field: str, value) -> str | None:
     return None
 
 
-def render_meta(record: dict, model: str, extra: tuple[str, ...] = ()) -> str:
+def render_meta(record: dict, model: str, extra: tuple[str, ...] = (), extra_head: tuple[str, ...] = ()) -> str:
     """The metadata tag list for one record, always in its model's order.
 
     A field the record does not carry is omitted rather than filled with a
@@ -300,8 +300,9 @@ def render_meta(record: dict, model: str, extra: tuple[str, ...] = ()) -> str:
     `extra` holds already-rendered utility tags: a link to an artefact, say.
     Those are not dimensions of the record, so they carry no ordering rule and
     are appended after the model's tags rather than sequenced among them.
+    `extra_head` holds leading utility tags placed before the model's tags.
     """
-    tags = []
+    tags = list(extra_head)
     for field in MODELS[model]:
         if field not in record:
             continue
@@ -585,19 +586,33 @@ def render_project(record: dict, articles: dict) -> str:
             f' width="15" height="15"></a>\n'
         )
 
-    extra = ()
+    extra_head = []
+    extra_tail = []
+    if record.get("demo"):
+        demo = record["demo"]
+        demo_url = demo["url"] if isinstance(demo, dict) else demo
+        demo_label = demo.get("label", "Live Demo on Hugging Face") if isinstance(demo, dict) else "Live Demo on Hugging Face"
+        extra_head.append(
+            f'<li><a class="tag tag--upstream link-external" href="{demo_url}"'
+            f' target="_blank" rel="noopener">{demo_label}</a></li>'
+        )
+    if record.get("slides"):
+        extra_tail.append(
+            f'<li><a class="tag tag--critical link-external" href="{record["slides"]}"'
+            f' target="_blank" rel="noopener" title="View slides in PowerPoint Online">Slides (.pptx)</a></li>'
+        )
     if record.get("article"):
         article = articles[record["article"]]
-        extra = (
+        extra_tail.append(
             f'<li><a class="tag tag--success link-external" href="{article["url"]}"'
-            f' target="_blank" rel="noopener">Article on {article["platform"]}</a></li>',
+            f' target="_blank" rel="noopener">Article on {article["platform"]}</a></li>'
         )
 
     year = record["year"]
     parts = [
         f'<p class="entry__title">{title}</p>',
         f'<p class="entry__period"><time datetime="{year}">{year}</time></p>',
-        render_meta(record, "projects", extra),
+        render_meta(record, "projects", extra=tuple(extra_tail), extra_head=tuple(extra_head)),
     ]
     if record.get("summary"):
         parts.append(f'<p class="entry__summary">{record["summary"]}</p>')

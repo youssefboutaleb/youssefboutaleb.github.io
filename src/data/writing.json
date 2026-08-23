@@ -10,7 +10,7 @@
     },
     "platform": "Medium",
     "url": "https://medium.com/@youssefboutaleb.info/developingyolov8-custom-object-detection-with-fastapi-and-gradio-e9314fad0782",
-    "summary": "End-to-end computer vision data pipeline: from Roboflow dataset annotation and 100 epochs of distributed Kaggle training to containerized FastAPI inference and Hugging Face Gradio serving."
+    "summary": "End-to-end computer vision data pipeline: from Roboflow dataset annotation and Kaggle TPU x2 parallel training (DataParallel) to containerized FastAPI inference and Hugging Face Gradio serving."
   },
   {
     "id": "datadog-log4j2-mulesoft",

@@ -4,38 +4,60 @@
     "block": "open-source",
     "year": 2026,
     "repo": "https://github.com/youssefboutaleb/kanboard-plugin-drawio",
-    "upstream": { "repo": "kanboard/website", "pr": 586, "state": "open" },
+    "upstream": { "repo": "kanboard/website", "pr": 586, "state": "merged" },
     "kind": "Kanboard Plugin",
     "stack": ["PHP", "JavaScript"],
-    "summary": "Embeds <b>diagrams.net</b> into Kanboard tasks and projects, so system architecture diagrams are created, edited, and stored beside the tasks they document."
+    "summary": "Embeds <b>diagrams.net</b> into Kanboard Markdown with live in-browser editing, full-screen diagram viewing, and Wiki.js interop, accepted into the official Kanboard plugin directory.",
+    "points": [
+      "<b>Embedded diagram architecture:</b> renders fenced diagram blocks natively as sandboxed image elements across task descriptions, comments, and swimlanes without database schema modifications.",
+      "<b>Interoperability &amp; live editing:</b> integrates draw.io editor iframe messaging via postMessage with full-size diagram viewing and byte-for-byte Wiki.js format compatibility.",
+      "<b>Security &amp; CSP hardening:</b> enforces image-mode SVG rendering to neutralize active scripts, pins iframe origins, and restricts Content Security Policy to same-origin contexts."
+    ]
   },
   {
     "title": "Kanboard Plugin: File Attachment Interaction",
     "block": "open-source",
     "year": 2026,
     "repo": "https://github.com/youssefboutaleb/kanboard-file-attachment-interaction",
-    "upstream": { "repo": "kanboard/website", "pr": 585, "state": "open" },
+    "upstream": { "repo": "kanboard/website", "pr": 585, "state": "merged" },
     "kind": "Kanboard Plugin",
     "stack": ["PHP", "JavaScript"],
-    "summary": "Streamlines task document management by adding in-place file previews and shortening the path between Kanban boards and technical attachments."
+    "summary": "Enterprise attachment framework adding in-modal previews (Office, PDF, CSV, code), live grid/text editors, and version branching, accepted into the official Kanboard plugin directory.",
+    "points": [
+      "<b>Multi-format parsing engine:</b> parses Office OpenXML (Word, PowerPoint, Excel), PDFs, Markdown, and source code directly inside task modals using pure-PHP DOM traversal.",
+      "<b>Interactive editing &amp; versioning:</b> provides in-browser spreadsheet grid editing, live text/code validation, and safe in-place updates or version branching for attachment revisions.",
+      "<b>Defense-in-depth &amp; verification:</b> neutralizes XXE attacks via LIBXML_NONET, restricts PDF iframe streaming with frame-ancestors CSP, and maintains 770 automated tests at PHPStan Level 8."
+    ]
   },
   {
     "title": "Custom YOLOv8 Model for Number Detection on Meters",
     "block": "machine-learning",
     "year": 2023,
     "repo": "https://github.com/youssefboutaleb/yolov8_fastapi_gradio",
+    "demo": "https://huggingface.co/spaces/youssefboutaleb/Yolov8_meter",
     "article": "yolov8-fastapi-gradio",
-    "kind": "Model &amp; Service",
+    "kind": "Notebook",
     "stack": ["Python", "YOLOv8", "FastAPI", "Gradio"],
-    "summary": "Automates digit reading from utility meter photographs, serving trained weights through a containerized FastAPI REST service and a Hugging Face Gradio space."
+    "summary": "Automates digit reading from utility meter photographs, serving trained weights through a containerized FastAPI REST service and a Hugging Face Gradio space.",
+    "points": [
+      "<b>End-to-end vision pipeline:</b> annotates custom utility meter datasets on Roboflow and trains YOLOv8 object detection weights across 100-epoch iterations.",
+      "<b>Parallel accelerator acceleration:</b> speeds up feature extraction and bounding-box regression using Kaggle dual-accelerator parallel execution with DataParallel.",
+      "<b>Containerized REST &amp; Gradio serving:</b> packages trained weights into Dockerized FastAPI endpoints for automated image inference beside interactive Hugging Face Gradio spaces."
+    ]
   },
   {
     "title": "Image Colorization with Deep Learning",
     "block": "machine-learning",
     "year": 2023,
     "repo": "https://github.com/youssefboutaleb/colorizeblack-whitephotos",
+    "slides": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fraw.githubusercontent.com%2Fyoussefboutaleb%2Fcolorizeblack-whitephotos%2Fmain%2Fpresentation.pptx",
     "kind": "Notebook",
     "stack": ["Python", "TensorFlow", "Keras"],
-    "summary": "Reconstructs plausible color for grayscale images across four progressive notebook models (from baseline convolutional networks to adversarial GANs) to evaluate structural and color fidelity."
+    "summary": "Reconstructs plausible color for grayscale images across four progressive notebook models (from baseline convolutional networks to adversarial GANs) to evaluate structural and color fidelity.",
+    "points": [
+      "<b>Progressive model architecture:</b> implements four sequential neural architectures (from baseline convolutional networks to generative adversarial networks) to reconstruct grayscale photos.",
+      "<b>Perceptual loss &amp; training:</b> optimizes generator networks using combined pixel loss and adversarial discriminator loss to balance structural consistency and vibrant colorization.",
+      "<b>Fidelity evaluation:</b> evaluates color reconstruction across test datasets to measure structural similarity, chromatic accuracy, and visual artifact reduction."
+    ]
   }
 ]
