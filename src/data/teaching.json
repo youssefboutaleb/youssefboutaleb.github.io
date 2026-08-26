@@ -13,54 +13,57 @@
       "count": 12,
       "unit": "students"
     },
-    "summary": "The second-year sequel, moving from building a pipeline to running one that survives contact with production.",
+    "summary": "The second-year sequel, moving from building a pipeline to running one that survives contact with production failure modes.",
     "syllabus": [
       {
         "title": "Synchronous &amp; Asynchronous Data Flows",
         "points": [
-          "The two flow models set side by side, and the different failure modes each one hands the engineer downstream.",
-          "Choosing between them from the coupling and latency a system can actually tolerate.",
-          "<b>Lab:</b> the same ingestion written twice, once as a blocking request-response call and once decoupled behind a queue, then stalled on purpose to see which one loses records and which one only loses time."
+          "<b>Flow model trade-offs:</b> setting blocking request-response side by side with message queues to evaluate coupling vs. latency tolerance.",
+          "<b>Downstream failure propagation:</b> tracing how backpressure and queue growth prevent record loss under heavy load.",
+          "<b>Lab:</b> the same ingestion pipeline implemented twice (blocking HTTP vs. decoupled queue), then stalled under synthetic load to compare record loss against processing latency."
         ]
       },
       {
-        "title": "Resilient Pipeline Design",
+        "title": "Resilient Pipeline Design &amp; Idempotency",
         "points": [
-          "Retry management and recovery paths, designed on the assumption that failure is the normal case rather than the exception.",
-          "Orchestration, scheduling and backfills with <b>Apache Airflow</b>.",
-          "<b>Lab:</b> a multi-task <b>Airflow</b> DAG authored with task-level retries, exponential backoff and idempotent writes, then made to fail mid-run and repaired with a dated backfill over the missing window."
+          "<b>The core idempotency principle:</b> Airflow guarantees that a task can be retried; your data model and transaction strategy must guarantee that the retry is safe.",
+          "<b>Safe retry mechanics:</b> enforcing unique business key UPSERTs, staging-table MERGE patterns, and transactional delete-before-write over date partitions.",
+          "<b>Orchestration vs. Idempotency:</b> separating Airflow DAG retry configurations from database-level transactional guarantees.",
+          "<b>Lab:</b> a multi-task <b>Airflow</b> DAG authored with task-level retries, exponential backoff, and idempotent UPSERTs, then made to fail mid-run and repaired with a dated backfill over the missing window."
         ]
       },
       {
-        "title": "Processing at Volume",
+        "title": "Processing at Volume with Apache Spark",
         "points": [
-          "Distributed processing with <b>Apache Spark</b> over <b>PostgreSQL</b> sources.",
-          "<b>Lab:</b> a join-and-aggregate transformation written in <b>Spark</b> against tables read from <b>PostgreSQL</b>, then reworked once the query plan showed where the shuffle was, and the two runs compared."
+          "<b>Distributed processing mechanics:</b> running <b>Apache Spark</b> transformations against <b>PostgreSQL</b> operational sources.",
+          "<b>Query plan inspection:</b> reading <b>Spark</b> execution plans via <code>EXPLAIN</code> to identify shuffle stages and disk spill bottlenecks.",
+          "<b>Lab:</b> a join-and-aggregate transformation written in <b>Spark</b> against <b>PostgreSQL</b> source tables, refactored once the execution plan revealed shuffle bottlenecks, and the execution times compared."
         ]
       },
       {
-        "title": "Logging &amp; Monitoring",
+        "title": "Logging, Monitoring &amp; Observability",
         "points": [
-          "Structured logging and error tracking with <b>Loguru</b>.",
-          "Monitoring, dashboards and alerting in <b>Datadog</b>.",
-          "<b>Lab:</b> the pipeline instrumented with structured <b>Loguru</b> records carrying run and task identifiers, shipped into a <b>Datadog</b> dashboard, with an alert wired to the failure rate and proved by triggering it."
+          "<b>Structured error tracking:</b> embedding contextual task identifiers and execution IDs using <b>Loguru</b>.",
+          "<b>Operational monitoring:</b> building real-time dashboards and threshold alert rules in <b>Datadog</b>.",
+          "<b>Lab:</b> a pipeline instrumented with structured <b>Loguru</b> records shipped to <b>Datadog</b>, with an automated failure alert triggered and verified under synthetic error injection."
         ]
       },
       {
         "title": "Packaging &amp; Delivery",
         "points": [
-          "Pipelines containerised with <b>Docker</b>; datasets and models versioned with <b>DVC</b>.",
-          "Automated build and publish through <b>GitHub Actions</b> into the <b>GitHub Container Registry</b>.",
-          "<b>Lab:</b> a pipeline packaged into a <b>Docker</b> image with its dataset placed under <b>DVC</b>, and a <b>GitHub Actions</b> workflow that builds, tags and pushes to the <b>GitHub Container Registry</b> on every commit to the main branch."
+          "<b>Environment containerisation:</b> packaging Python data pipelines into reproducible <b>Docker</b> images.",
+          "<b>Data &amp; artifact versioning:</b> tracking datasets and intermediate models using <b>DVC</b>.",
+          "<b>CI/CD automation:</b> building automated workflows with <b>GitHub Actions</b> to push images into the <b>GitHub Container Registry</b>.",
+          "<b>Lab:</b> a pipeline packaged into a <b>Docker</b> image with <b>DVC</b> data tracking and a <b>GitHub Actions</b> workflow that builds, tests, and publishes containers on main-branch commits."
         ]
       }
     ],
     "capstone": {
       "title": "Fault-Tolerant Ingestion Pipeline",
       "points": [
-        "The four-hour project session: one pipeline carrying data from a <b>PostgreSQL</b> source through a <b>Spark</b> transformation into an analytical target, scheduled as an <b>Airflow</b> DAG with retries and a working backfill path.",
-        "Operability was graded alongside the data flow: structured <b>Loguru</b> logging surfaced on a <b>Datadog</b> dashboard, the whole pipeline containerised with <b>Docker</b>, and the input dataset reproducible from <b>DVC</b>.",
-        "Delivered as a repository that runs from a single command, with an architecture diagram and a short written defence of where each retry, timeout and alert threshold was set, and why."
+        "<b>Technical Architecture &amp; Data Flow:</b> end-to-end ingestion pipeline carrying data from a <b>PostgreSQL</b> operational source through a <b>Spark</b> transformation into an analytical target, scheduled as an <b>Airflow</b> DAG with retries and a working backfill path.",
+        "<b>Operability, Containerisation &amp; Monitoring:</b> structured <b>Loguru</b> logging surfaced on a <b>Datadog</b> dashboard, the complete pipeline containerised with <b>Docker</b>, and the input dataset versioned under <b>DVC</b>.",
+        "<b>Written Report &amp; Oral Defense:</b> single-command execution repository accompanied by an architecture diagram and oral defense of retry, timeout, and alert threshold choices."
       ]
     }
   },
@@ -81,49 +84,52 @@
     "summary": "The first-year data engineering course: how analytical data is stored, moved, and processed at a volume that no longer fits one machine.",
     "syllabus": [
       {
-        "title": "Big Data Fundamentals",
+        "title": "Big Data Fundamentals &amp; Memory Limits",
         "points": [
-          "What changes once data outgrows a single machine, and why that reshapes the tooling around it.",
-          "<b>Lab:</b> the same aggregation run over a dataset held whole in memory and then over one read and partitioned in chunks, timed on both, to find the point where the single-machine habit stops working."
+          "<b>Single-machine boundaries:</b> identifying the memory limit where single-machine processing fails and distributed tooling becomes necessary.",
+          "<b>In-memory vs. chunked execution:</b> comparing whole-dataset memory loading against partitioned chunk processing.",
+          "<b>Lab:</b> the same aggregation run over a dataset held whole in memory versus one read and partitioned in chunks, timed on both to locate the single-machine memory threshold."
         ]
       },
       {
-        "title": "Data Warehousing",
+        "title": "Data Warehousing &amp; Dimensional Modeling",
         "points": [
-          "Why analytical storage is shaped differently from the transactional systems it draws from.",
-          "Warehouse modelling worked against <b>PostgreSQL</b>.",
-          "<b>Lab:</b> a star schema designed from a normalised operational source (one fact table, conformed dimensions, explicit grain) and created in <b>PostgreSQL</b>, then queried to show what the denormalisation bought."
+          "<b>OLTP vs. OLAP architectures:</b> why analytical storage is structured differently from transactional operational databases.",
+          "<b>Star schema modeling:</b> defining facts, conformed dimensions, surrogate keys, and explicit grain in <b>PostgreSQL</b>.",
+          "<b>Lab:</b> a star schema designed from a normalised operational source and created in <b>PostgreSQL</b>, then queried to measure analytical query performance gains."
         ]
       },
       {
-        "title": "ETL Architectures",
+        "title": "ETL Architectures &amp; Safe Transformations",
         "points": [
-          "Extract, transform and load followed from source system through to warehouse.",
-          "Transformations written in <b>Python</b>.",
-          "<b>Lab:</b> a <b>Python</b> ETL job extracting from the operational database, cleaning and conforming the records, and loading them into the star schema from the previous lab so the job can be re-run without duplicating rows."
+          "<b>Pipeline stages:</b> extracting, cleaning, conforming, and loading data from operational systems to warehouses.",
+          "<b>Transformation logic:</b> authoring robust ETL routines in <b>Python</b> with atomic database operations.",
+          "<b>Lab:</b> a <b>Python</b> ETL job extracting from an operational database, conforming records, and loading them into a <b>PostgreSQL</b> star schema without introducing duplicate rows."
         ]
       },
       {
-        "title": "Processing at Volume",
+        "title": "Processing at Volume with Apache Spark",
         "points": [
-          "Distributed data processing with <b>Apache Spark</b>.",
-          "<b>Lab:</b> the same transformation rewritten as <b>Spark</b> DataFrame operations and run against a larger extract, set beside the single-machine <b>Python</b> version to see where the distributed one starts paying for itself."
+          "<b>Distributed compute paradigms:</b> distributed data processing using <b>Apache Spark</b> DataFrame abstractions.",
+          "<b>Scalability comparison:</b> evaluating distributed Spark compute against single-machine Python execution.",
+          "<b>Lab:</b> rewriting Python ETL transformations into <b>Spark</b> DataFrame operations against larger extracts to identify the crossover point where distributed compute pays for itself."
         ]
       },
       {
         "title": "Analytics &amp; Reporting",
         "points": [
-          "Closing the loop: warehouse data out into a <b>Power BI</b> report.",
-          "<b>Lab:</b> <b>Power BI</b> connected to the warehouse and a report built over the star schema, with the measures defined in the model rather than hard-coded into each visual."
+          "<b>Analytical serving:</b> connecting operational warehouses to BI tools for business reporting.",
+          "<b>Semantic measure modeling:</b> building <b>Power BI</b> reports over conformed star schemas using modeled measures rather than visual calculations.",
+          "<b>Lab:</b> <b>Power BI</b> connected to a <b>PostgreSQL</b> star schema with a dashboard constructed over conformed dimensions and explicit semantic measures."
         ]
       }
     ],
     "capstone": {
       "title": "Source-to-Dashboard Warehouse",
       "points": [
-        "The four-hour project session: the whole path in one piece, from a raw operational source to a published <b>Power BI</b> dashboard, built on the schema each team had modelled themselves.",
-        "Extraction and loading in <b>Python</b>, the heavier transformation step in <b>Apache Spark</b>, and the modelled tables served from <b>PostgreSQL</b>.",
-        "Delivered as the schema definition, the ETL code and the report, and defended on the modelling decisions (grain, keys, what was left out) rather than on the appearance of the dashboard."
+        "<b>Technical Architecture &amp; Data Flow:</b> end-to-end data pipeline from an operational source to a published <b>Power BI</b> dashboard, featuring <b>Python</b> extraction, <b>Spark</b> transformations, and <b>PostgreSQL</b> serving.",
+        "<b>Operability &amp; Data Modeling:</b> star schema implementation with explicit grain definitions, surrogate keys, and atomic transformation pipelines.",
+        "<b>Written Report &amp; Oral Defense:</b> delivery of schema definitions, ETL code, and oral defense of dimensional modeling decisions (grain, keys, and normalization trade-offs)."
       ]
     }
   },
@@ -144,65 +150,63 @@
     "summary": "The programme&rsquo;s applied machine learning course, taken from stating a deterministic domain problem as a learnable one to deciding whether the result means anything or the experiment has to be redesigned.",
     "syllabus": [
       {
-        "title": "Supervised Learning",
+        "title": "Supervised Learning &amp; Imbalanced Classification",
         "points": [
-          "<b>The frame, and what makes it hard.</b> The <a href=\"https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud/data\" target=\"_blank\" rel=\"noopener\">ULB card fraud frame</a>: 284,807 labelled card transactions, 492 of them fraud, so the only class worth predicting is 0.17% of the rows.",
-          "<b>The accuracy trap.</b> A model that never predicts fraud is already 99.83% accurate on that frame, so accuracy is never read on its own here: it is reported beside F1, and the gap between the two is the thing the module teaches students to look at.",
-          "<b>The data problems worth checking for.</b> Nulls, duplicates and class balance, run as a first pass before anything is fitted. On this frame nothing is missing and nothing is dirty, which is the useful result: the imbalance is the only real defect, and it is where the remaining effort goes.",
-          "<b>Feature engineering under constraint.</b> 28 of the 30 columns are anonymised principal components with no domain meaning attached, so Time and Amount are the only two columns a new feature can be built from. The limit is the exercise.",
-          "<b>Scaling, and the split that comes before it.</b> Normalisation with <b>Scikit-learn</b> and a stratified train/test split, so that 492 positives cannot land unevenly across the two halves, with the point that scaling decides whether the logistic regression converges and does nothing at all for a tree.",
-          "<b>Which tabular model, and where each one stops.</b> Decision trees, random forests and logistic regression set against what each of them assumes about the data, argued from a <b>Matplotlib</b> look at the frame rather than picked by reputation, and including the models that are the wrong tool for a problem this shape.",
-          "<b>The parameters that decide a fit, sorted by what owns them.</b> Batch size, epochs and convergence tolerance belong to anything fitted iteratively; depth, minimum leaf size and number of estimators belong to the tree family. Knowing which knob exists on which model is half of what tuning is.",
-          "<b>Lab:</b> twelve students in three teams of four, one estimator per team (decision tree, random forest, logistic regression) fitted in <b>Scikit-learn</b> over a single shared <b>Pandas</b> preparation in <b>Google Colab</b>, then scored on the same accuracy and F1 so that the three sets of results are numbers which can actually be compared across the room."
+          "<b>The frame, and what makes it hard:</b> the <a href=\"https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud/data\" target=\"_blank\" rel=\"noopener\">ULB card fraud frame</a> carrying 284,807 transactions with 492 frauds (0.17% positive class).",
+          "<b>The accuracy trap:</b> demonstrating why a naive baseline predicting zero fraud reaches 99.83% accuracy, requiring evaluation via F1 score.",
+          "<b>Feature engineering under constraint:</b> working with 28 principal component columns where Time and Amount are the primary features available for transformation.",
+          "<b>Estimator trade-offs:</b> evaluating Decision Trees, Random Forests, and Logistic Regression in <b>Scikit-learn</b> against data assumptions.",
+          "<b>Lab:</b> twelve students in three teams, fitting one estimator per team (Decision Tree, Random Forest, Logistic Regression) over shared <b>Pandas</b> preparation in <b>Google Colab</b>, scoring accuracy vs. F1 across the room."
         ],
         "homework": {
           "title": "Fraud Detection Benchmark",
           "points": [
-            "Individual, in <b>Google Colab</b>, and deliberately the inverse of the lab: the dataset and the two metrics are fixed, and every student is free on all three of the levers that decide a score.",
-            "<b>The three levers:</b> which features are selected and how they are prepared, which estimator is fitted, and what parameters it is fitted with.",
-            "<b>Submitted as</b> a commented notebook carrying the best accuracy and F1 the student reached, with the run that produced those two numbers reproducible from the notebook itself.",
-            "<b>The comments are the argument:</b> which of the three levers moved the score, by how much, and which one turned out not to matter."
+            "<b>Individual Colab Challenge:</b> an individual assignment in <b>Google Colab</b> where dataset and evaluation metrics are fixed while feature selection, estimator choice, and hyperparameter tuning are free.",
+            "<b>The three levers:</b> feature selection/preparation, estimator selection, and hyperparameter optimization.",
+            "<b>Submitted as:</b> a commented notebook carrying the best accuracy and F1 score reached, reproducible directly from the notebook.",
+            "<b>Oral argument:</b> defending which levers moved the score and which parameters had negligible effect."
           ]
         }
       },
       {
-        "title": "Gradient Descent &amp; Optimisation",
+        "title": "Gradient Descent &amp; Optimisation (From Scratch)",
         "points": [
-          "Gradient descent taught as the mechanism underneath model fitting rather than as a library call.",
-          "The parameters that decide whether it converges at all.",
-          "<b>Lab:</b> gradient descent implemented from the derivative upward in <b>NumPy</b>, with the loss traced across learning rates until it stalled at one end and diverged at the other."
+          "<b>First-principles optimization:</b> learning gradient descent as the underlying mechanism of model fitting rather than a library call.",
+          "<b>Convergence parameters:</b> analyzing learning rates, loss surfaces, and parameter update steps.",
+          "<b>Lab:</b> gradient descent implemented from the derivative upward in pure <b>NumPy</b>, tracing loss curves across learning rates until observing stall or divergence."
         ]
       },
       {
-        "title": "Unsupervised Learning &amp; Clustering",
+        "title": "Unsupervised Learning &amp; Clustering (From Scratch)",
         "points": [
-          "Finding structure without labels, and where that is the honest framing of a problem.",
-          "K-Means end to end: assignment, centroid update, and the choice of k.",
-          "<b>Lab:</b> K-Means written by hand (assignment step, centroid update, convergence test) checked against the <b>Scikit-learn</b> implementation, with k argued from inertia and silhouette rather than picked."
+          "<b>Unsupervised representation:</b> discovering latent structure without ground-truth labels.",
+          "<b>K-Means mechanics:</b> assignment step, centroid update rule, and selecting optimal k via inertia and silhouette analysis.",
+          "<b>Lab:</b> K-Means implemented by hand in <b>NumPy</b> (assignment, centroid update, convergence test) and validated against <b>Scikit-learn</b>."
         ]
       },
       {
-        "title": "Model Evaluation",
+        "title": "Model Evaluation &amp; Diagnostic Curves",
         "points": [
-          "The techniques that separate a model fitting its training data from one that generalises.",
-          "Results inspected as <b>Matplotlib</b> plots, not only as a single score.",
-          "<b>Lab:</b> a classifier cross-validated and then read properly: confusion matrix, precision and recall against a deliberately imbalanced target, and a <b>Matplotlib</b> learning curve used to tell underfitting from overfitting."
+          "<b>Generalization validation:</b> cross-validation techniques that separate training fit from generalization performance.",
+          "<b>Diagnostic visualization:</b> evaluating confusion matrices, precision-recall trade-offs, and <b>Matplotlib</b> learning curves.",
+          "<b>Lab:</b> a classifier cross-validated on an imbalanced target, with confusion matrices and <b>Matplotlib</b> learning curves used to diagnose underfitting vs. overfitting."
         ]
       },
       {
-        "title": "The Practical Workflow",
+        "title": "The Practical Workflow &amp; Model Export",
         "points": [
-          "The whole path in one piece: data pulled from <b>PostgreSQL</b>, prepared in Pandas, fitted in Scikit-learn, evaluated and plotted.",
-          "<b>Lab:</b> that path written as one reproducible script (query, preparation, fitted pipeline, evaluation) with the model and its metrics persisted together so a result can be traced back to the run that produced it."
+          "<b>End-to-end integration:</b> pulling data from <b>PostgreSQL</b>, preparing features in <b>Pandas</b>, fitting <b>Scikit-learn</b> pipelines, and evaluating metrics.",
+          "<b>Reproducibility &amp; persistence:</b> exporting fitted pipeline artifacts alongside evaluation metadata.",
+          "<b>Lab:</b> an end-to-end Python workflow script (query ➔ prep ➔ fit ➔ evaluate) with model artifacts and metrics persisted together."
         ]
       }
     ],
     "capstone": {
       "title": "Applied Prediction Study",
       "points": [
-        "The four-hour project session: a supervised problem carried from a <b>PostgreSQL</b> extract to a defended conclusion, with the model choice argued from the evaluation rather than asserted.",
-        "A <b>Scikit-learn</b> pipeline over <b>Pandas</b> preparation, tuned by cross-validated search and measured against a trivial baseline that had to be beaten for the result to count.",
-        "Delivered as a notebook with the <b>Matplotlib</b> figures the claims rest on, and graded on whether the evaluation actually supports what the report concludes."
+        "<b>Technical Architecture &amp; Data Flow:</b> supervised prediction study carried from a <b>PostgreSQL</b> extract through <b>Pandas</b> feature preparation into a tuned <b>Scikit-learn</b> model beating a naive baseline.",
+        "<b>Operability &amp; Pipeline Tuning:</b> cross-validated hyperparameter search over scikit-learn pipelines with persisted model metrics.",
+        "<b>Written Report &amp; Oral Defense:</b> notebook delivery featuring <b>Matplotlib</b> evaluation figures, defended on whether empirical results support the final conclusion."
       ]
     }
   }

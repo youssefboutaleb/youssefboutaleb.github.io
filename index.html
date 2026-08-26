@@ -19,7 +19,7 @@
   <link rel="canonical" href="https://youssefboutaleb.github.io/">
   <link rel="icon" type="image/svg+xml" href="images/icons/icon.svg">
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Noto-Sans-regular/Noto-Sans-regular.woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=9641cbfffa14">
+  <link rel="stylesheet" href="assets/css/main.css?v=eed270122b6e">
 
   <meta property="og:type" content="profile">
   <meta property="og:title" content="Youssef Boutaleb: Data Engineer">
@@ -38,73 +38,13 @@
 
   <div class="layout">
 
-    <!-- Identity, credentials and contact: present on every page. -->
-    <header class="sidebar">
-      <p class="sidebar__updated"><small>Last update: August 2026</small></p>
-      <a class="sidebar__name" href="index.html">Youssef Boutaleb</a>
-
-      <img class="sidebar__portrait" src="images/me.jpg" alt="Portrait of Youssef Boutaleb" width="150" height="150">
-
-      <p class="sidebar__role">Data Engineer</p>
-      <ul class="credentials">
-          <li>MuleSoft &amp; Talend Certified</li>
-          <li>Datadog Certified in Fundamentals, APM &amp; Log Management</li>
-          <li>Astronomer Certified in Apache Airflow 3</li>
-          <li>Microsoft Certified in Azure Databases &amp; Fabric</li>
-      </ul>
-
-      <div class="sidebar__section">
-        <h2 class="sidebar__heading">Availability</h2>
-        <p>EU residence permit holder. Open to relocation within the EU and to fully remote roles.</p>
-      </div>
-
-      <div class="sidebar__section">
-        <h2 class="sidebar__heading">Downloadables</h2>
-        <p><a href="data/Youssef_BOUTALEB_cv_en.pdf" target="_blank" rel="noopener">Resume / CV</a></p>
-      </div>
-
-      <div class="sidebar__section">
-        <h2 class="sidebar__heading">Contact</h2>
-        <p>Open to Data Engineering roles, and to talking about pipelines, integration and observability.</p>
-        <ul class="contact">
-          <li><span class="contact__label">Email:</span> <a class="contact__value" href="mailto:youssefboutaleb.info@gmail.com">youssefboutaleb.info@gmail.com</a></li>
-          <li><span class="contact__label">University:</span> <a class="contact__value" href="mailto:youssef.boutaleb@enis.tn">youssef.boutaleb@enis.tn</a></li>
-          <li><span class="contact__label">Phone:</span> <a class="contact__value" href="tel:+21653035448">+216 53 035 448</a></li>
-        </ul>
-      </div>
-
-      <div class="sidebar__section">
-        <ul class="social">
-          <li>
-            <a class="social__link" href="https://www.linkedin.com/in/youssef-boutaleb/" target="_blank" rel="noopener" title="LinkedIn">
-              <img class="icon icon--lg" src="images/icons/linkedin.svg" alt="LinkedIn" width="32" height="32">
-            </a>
-          </li>
-          <li>
-            <a class="social__link" href="https://github.com/youssefboutaleb" target="_blank" rel="noopener" title="GitHub">
-              <img class="icon icon--lg" src="images/icons/github.svg" alt="GitHub" width="32" height="32">
-            </a>
-          </li>
-          <li>
-            <a class="social__link" href="https://medium.com/@youssefboutaleb.info" target="_blank" rel="noopener" title="Medium">
-              <img class="icon icon--lg" src="images/icons/medium.svg" alt="Medium" width="32" height="32">
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <div class="site-footer">
-        <p>Hosted on GitHub Pages: theme lineage <a href="https://github.com/orderedlist" target="_blank" rel="noopener">orderedlist</a>.</p>
-        <p>Forked from <a href="https://github.com/elyesmanai/elyesmanai.github.io" target="_blank" rel="noopener">elyesmanai/elyesmanai.github.io</a>.</p>
-      </div>
-    </header>
-
-    <div class="content">
-      <div class="top-bar">
-        <button id="sidebar-toggle" class="sidebar-toggle" type="button" aria-expanded="true">
-          <img class="icon icon--xs" src="images/icons/icon.svg" alt="" width="12" height="12">
-          <span id="sidebar-toggle-text">Hide Profile</span>
-        </button>
+    <header class="site-header">
+      <div class="site-header__brand">
+        <a class="site-header__name" href="index.html">Youssef Boutaleb</a>
+        <div class="site-header__details">
+          <span class="site-header__role">Data Engineer</span>
+          <a class="site-header__cv" href="data/Youssef_BOUTALEB_cv_en.pdf" target="_blank" rel="noopener">CV (PDF)</a>
+        </div>
       </div>
       <nav class="nav" aria-label="Primary">
         <ul class="nav__list">
@@ -115,39 +55,192 @@
           <li class="nav__item"><a class="nav__link" href="teaching.html">Teaching</a></li>
           <li class="nav__item"><a class="nav__link" href="workshops.html">Workshops</a></li>
           <li class="nav__item"><a class="nav__link" href="awards.html">Awards</a></li>
+          <li class="nav__item"><a class="nav__link" href="contact.html">Contact</a></li>
         </ul>
       </nav>
+    </header>
 
-      <main id="main">
-        <header class="page-header">
-          <h1 class="page-title">Data Engineer | Cloud &amp; Integration</h1>
-          <p class="page-lede">
-            I build and operate enterprise-scale data platforms on <b>Microsoft Azure</b>:
-            ETL/ELT pipelines, API-led integrations between business-critical systems, and the
-            observability that keeps them dependable in production.
-          </p>
+    <div class="page-body">
+      <aside class="sidebar-context" aria-label="Page shortcuts">
+        <nav class="book-toc" aria-label="On this page">
+          <div class="book-toc__header">
+            <svg class="book-toc__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+            <span class="book-toc__title">On this page</span>
+          </div>
+          <ul class="book-toc__list">
+          <li class="book-toc__item book-toc__item--level-1">
+            <a class="book-toc__link" href="#currently">Currently</a>
+          </li>
+          <li class="book-toc__item book-toc__item--level-1">
+            <a class="book-toc__link" href="#impact">Selected Impact</a>
+          </li>
+          <li class="book-toc__item book-toc__item--level-1">
+            <a class="book-toc__link" href="#skills">Skills &amp; Evidence</a>
+          </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main id="main" class="content">
+        <!-- The page's one opening. It used to be two: a hero (portrait, role, lede,
+             availability) and a Profile block (intro, prose, credentials), stacked,
+             both introducing the same person. That is what produced the duplication,
+             because two blocks with the same job will always find the same things to
+             say: the lede and the Profile paragraph both named Azure, ETL/ELT,
+             integration and observability, about 45 words spent twice before the
+             reader reached a single piece of evidence.
+
+             home.md's rule is that Home may restate a fact only by projection,
+             citation or quotation. Those two paragraphs were the one restatement on
+             the page that was hand-written on both sides, so nothing could catch them
+             drifting. Merging is the fix that removes the surface rather than
+             patching it. home-opening-options.md carries the full finding. -->
+        <header class="page-header hero-header">
+          <div class="hero-header__content">
+            <img class="hero-header__portrait" src="images/me.jpg" alt="Portrait of Youssef Boutaleb" width="180" height="220">
+            <div class="hero-header__bio">
+              <!-- One word, deliberately. The h1 read "Data Engineer | Cloud &
+                   Integration": a pipe, which is not a separator this repository owns,
+                   joining two things as peers. CLAUDE.md section 3 makes cloud and
+                   integration a qualifier of the role and not a second one, and the
+                   h1 is where that is tested. The qualifier is the first clause of
+                   the lede below, and rows 3 and 4 of Skills & Evidence. -->
+              <h1 class="page-title">Data Engineer</h1>
+              <p class="page-lede">
+                I build and operate enterprise-scale data platforms on <b>Microsoft Azure</b>:
+                ETL/ELT pipelines, API-led integrations between business-critical systems, and the
+                observability that keeps them dependable in production.
+              </p>
+              <!-- The facts a recruiter filters on, in the first screen, because a
+                   filter reached late is a filter applied by guessing.
+
+                   A label column, not three sentences with a bold word at the front.
+                   Languages is three pairs of its own, and an inline run would need
+                   one separator to divide the languages and another to bind each to
+                   its level: the grid does that with alignment instead of
+                   punctuation. DESIGN.md section 10.2.
+
+                   CLAUDE.md section 4: the availability sentence has one owner,
+                   src/site.json, and is never typed into a fragment or paraphrased.
+                   The way three wordings appeared was that three places each held
+                   their own copy. The other two rows are generated, from
+                   src/data/certifications.json and src/data/languages.json. -->
+              <dl class="hero-facts">
+                <div class="hero-facts__row">
+                  <dt>Availability</dt>
+                  <dd>EU residence permit holder. Open to relocation within the EU and to fully remote roles.</dd>
+                </div>
+                <div class="hero-facts__row">
+                  <dt>Certified</dt>
+                  <dd><a href="career.html#certifications">Microsoft &times;3</a> &middot; <a href="career.html#certifications">Astronomer &times;2</a> &middot; <a href="career.html#certifications">MuleSoft</a> &middot; <a href="career.html#certifications">Talend</a> &middot; <a href="career.html#certifications">Datadog &times;3</a></dd>
+                </div>
+                <div class="hero-facts__row">
+                  <dt>Languages</dt>
+                  <dd>
+                    <dl class="hero-facts__langs">
+                      <div class="hero-facts__lang">
+                        <dt>Arabic</dt>
+                        <dd>Native</dd>
+                      </div>
+                      <div class="hero-facts__lang">
+                        <dt>French</dt>
+                        <dd>Full professional proficiency
+                        <span class="hero-facts__proof"><a href="teaching.html#courses-taught">Taught in French</a></span></dd>
+                      </div>
+                      <div class="hero-facts__lang">
+                        <dt>English</dt>
+                        <dd>Full professional proficiency
+                        <span class="hero-facts__proof"><a href="teaching.html#courses-taught">Taught in English</a> &middot; <a href="research.html#journal-articles">Published in English</a></span></dd>
+                      </div>
+                    </dl>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
         </header>
 
-        <section class="block" aria-labelledby="profile">
-          <h3 class="block__title" id="profile">Profile</h3>
-          <div class="prose">
-            <p>
-              I am a <b>Data Engineer</b>. I have been designing, deploying and optimising enterprise
-              data ecosystems on <b>Microsoft Azure</b> since <b>2024</b>, and working in engineering
-              roles since <b>2022</b>: building end-to-end <b>ETL/ELT</b> pipelines with
-              <b>Talend</b> and <b>MuleSoft</b>, and instrumenting them with <b>Datadog</b>.
-            </p>
-            <p>
-              My work sits where integration meets operations: the pipelines I ship, I also run. That
-              is deliberate: integration work is judged on what happens at 3&nbsp;a.m., so error
-              handling, alerting, recovery plans and written architecture documentation are part of the
-              deliverable rather than follow-up.
-            </p>
-            <p>
-              I am seeking a <b>full-time Data Engineering</b> role to apply this expertise and continue
-              growing professionally.
-            </p>
-          </div>
+        <!-- A projection, not a summary: every string here is read from the same
+             record Career renders, so the two pages cannot disagree about the job
+             being done now. It is experience[0] after tenure_sort_key, so it follows
+             a job change on its own. Never give this block content of its own; the
+             one sentence is `home_summary`, on the record. See home.md. -->
+        <section class="block" aria-labelledby="currently">
+          <h3 class="block__title" id="currently">Currently</h3>
+          <p class="block__intro">Running the data platform behind a luxury fashion house.</p>
+          <ul class="entries">
+            <li class="entry">
+              <p class="entry__title">
+                <span class="entry__role">Data Engineer</span> &middot; <span class="entry__company"><a href="https://www.linkedin.com/company/jacquemus/posts/?feedView=all" target="_blank" rel="noopener">JACQUEMUS</a></span>
+              </p>
+              <p class="entry__period"><span class="entry__location">Paris, France</span> &middot; Aug 2024 - Present (2 years)</p>
+              <ul class="tag-list" aria-label="Role details">
+                <li class="tag tag--domain">Luxury E-commerce &amp; Retail</li>
+                <li class="tag tag--engagement">Permanent</li>
+                <li class="tag tag--mode">Remote</li>
+                <li class="tag tag--scale"><b>150+</b> pipelines</li>
+                <li class="tag tag--stack">Azure Data Factory</li>
+                <li class="tag tag--stack">Azure Fabric</li>
+                <li class="tag tag--stack">Apache Spark</li>
+                <li class="tag tag--stack">Datadog</li>
+                <li><a class="tag tag--neutral" href="career.html#experience">Full role on Career</a></li>
+              </ul>
+              <p class="entry__summary">Order, customer, product and pricing data into a medallion lakehouse, on flows carrying roughly 800,000 events and records a day and order peaks near 5,000 an hour at sale events.</p>
+            </li>
+          </ul>
+        </section>
+
+        <!-- The one block on the site that restates facts held on other pages, so the
+             one block where a claim can drift away from its record. It has, twice, in
+             both directions: home.md opens on both. The sentence is quoted from the
+             bullet a record cites, the provenance line and the link are derived from
+             the same lookup, and the upstream state comes from projects.json. The
+             figure is the one hand-written claim on this page, and it moves in the
+             same commit as the record it summarises or neither does.
+
+             It sits above Skills & Evidence because a hiring manager who reads three
+             blocks and leaves should have read what changed. Skills & Evidence is the
+             longest block on the page and it is aimed at the reader who has already
+             decided to keep going. Records: src/data/impact.json. -->
+        <section class="block" aria-labelledby="impact">
+          <h3 class="block__title" id="impact">Selected Impact</h3>
+          <!-- INTERIM, awaiting the author's sentence. The line it replaced read
+               "Five results, each one quoting the record that earned it.": a count
+               typed in a fragment while the records are `home: true` flags in data,
+               so a sixth record made it silently wrong, followed by a description of
+               the mechanism, which CLAUDE.md section 6 keeps off the page entirely.
+               A block__intro is one line and it is a pitch. -->
+          <p class="block__intro">What changed because the work shipped.</p>
+          <ul class="results">
+            <li class="result">
+              <p class="result__figure"><b>&euro;1,400</b> per month</p>
+              <p class="result__consequence">A recurring monthly saving on the platform budget, taken with no SLA impact on the morning reporting pipelines.</p>
+              <p class="result__source">JACQUEMUS &middot; <a href="career.html#jq-finops">Career</a></p>
+            </li>
+            <li class="result">
+              <p class="result__figure"><b>150+</b> jobs under alerting</p>
+              <p class="result__consequence">Alert coverage across the <b>150+ job estate</b>, so a silent job or API failure surfaces before the business-hours reporting window rather than through a user report.</p>
+              <p class="result__source">JACQUEMUS &middot; <a href="career.html#jq-observability">Career</a></p>
+            </li>
+            <li class="result">
+              <p class="result__figure"><b>Zero</b> feedback data lost</p>
+              <p class="result__consequence">Guaranteed zero feedback data loss during downstream outages and established reliable customer-satisfaction tracking for the account.</p>
+              <p class="result__source">OLIVESOFT &middot; <a href="career.html#olivesoft-dlq">Career</a></p>
+            </li>
+            <li class="result">
+              <p class="result__figure"><b>100&times;</b> faster</p>
+              <p class="result__consequence">Preprocessing stopped being the bottleneck, and this is the path that went inline the following autumn, where the filter has to keep pace with the camera rather than catch up behind it.</p>
+              <p class="result__source">OEM ENGINEERING S.A.R.L &middot; <a href="career.html#oem-speedup">Career</a></p>
+            </li>
+            <li class="result">
+              <p class="result__figure"><b>2</b> Kanboard plugins</p>
+              <p class="result__consequence">Draw.io embedding and a file-attachment rework: 2 plugins now in the official Kanboard plugin directory, PR #586 and PR #585.</p>
+              <p class="result__source">Accepted upstream &middot; <a href="projects.html">Projects</a></p>
+            </li>
+          </ul>
         </section>
 
         <!-- The block that answers "can this person actually do the job". Every chip
@@ -158,181 +251,220 @@
         <section class="block" aria-labelledby="skills">
           <h3 class="block__title" id="skills">Skills &amp; Evidence</h3>
           <p class="block__intro">What I can do, and what proves it.</p>
+          <ul class="tag-list tag-list--key" aria-label="What the evidence colours mean">
+            <li class="tag tag--production">Run in production</li>
+            <li class="tag tag--certification">Certified</li>
+            <li class="tag tag--taught">Taught</li>
+            <li class="tag tag--published">Published</li>
+            <li class="tag tag--applied">Applied</li>
+          </ul>
           <ul class="skills">
             <li class="skill">
-              <p class="skill__head"><span class="skill__name">Data pipeline engineering</span> <span class="skill__standing">Production-proven</span></p>
-              <p class="skill__tools">Talend &middot; MuleSoft &middot; Apache Airflow</p>
-              <ul class="tag-list" aria-label="Evidence">
-                <li><a class="tag tag--production" href="career.html#experience">ETL across Salesforce, ORLI &amp; Azure</a></li>
-                <li><a class="tag tag--production" href="career.html#experience">API-led integration at OLIVESOFT</a></li>
-                <li><a class="tag tag--certification" href="career.html#certifications">Talend Data Integration</a></li>
-                <li><a class="tag tag--certification" href="career.html#certifications">MuleSoft Developer L1</a></li>
-                <li><a class="tag tag--certification" href="career.html#certifications">Astronomer &times;2</a></li>
-                <li><a class="tag tag--taught" href="teaching.html#courses-taught">Data Engineering 1 &amp; 2</a></li>
-              </ul>
+              <div class="skill__head">
+                <p class="skill__name">Data pipeline engineering</p>
+                <p class="skill__standing">Production-proven</p>
+              </div>
+              <div class="skill__proof">
+                <ul class="tag-list skill__tools" aria-label="Tools">
+                  <li class="tag tag--stack">Talend</li>
+                  <li class="tag tag--stack">MuleSoft</li>
+                  <li class="tag tag--stack">Apache Airflow</li>
+                </ul>
+                <ul class="tag-list" aria-label="Evidence">
+                  <li><a class="tag tag--production" href="career.html#experience">Azure Data Factory &amp; Fabric at JACQUEMUS</a></li>
+                  <li><a class="tag tag--production" href="career.html#experience">API-led integration at OLIVESOFT</a></li>
+                  <li><a class="tag tag--certification" href="career.html#certifications">Talend Data Integration</a></li>
+                  <li><a class="tag tag--certification" href="career.html#certifications">MuleSoft Developer L1</a></li>
+                  <li><a class="tag tag--certification" href="career.html#certifications">Astronomer &times;2</a></li>
+                  <li><a class="tag tag--taught" href="teaching.html#courses-taught">Data Engineering 1 &amp; 2</a></li>
+                </ul>
+              </div>
             </li>
             <li class="skill">
-              <p class="skill__head"><span class="skill__name">Machine learning &amp; computer vision</span> <span class="skill__standing">Production-proven</span></p>
-              <p class="skill__tools">Python &middot; YOLOv8 &middot; TensorFlow &middot; Keras &middot; scikit-learn</p>
-              <ul class="tag-list" aria-label="Evidence">
-                <li><a class="tag tag--production" href="career.html#experience">Metal classifier at OEM</a></li>
-                <li><a class="tag tag--taught" href="teaching.html#courses-taught">Machine Learning course</a></li>
-                <li><a class="tag tag--published" href="research.html#journal-articles">Peer-reviewed, Elsevier</a></li>
-                <li><a class="tag tag--published" href="research.html#technical-articles">YOLOv8 write-up, 3K views</a></li>
-                <li><a class="tag tag--applied" href="projects.html#applied-ml">YOLOv8 meter detection</a></li>
-                <li><a class="tag tag--applied" href="projects.html#applied-ml">Image colorisation</a></li>
-              </ul>
+              <div class="skill__head">
+                <p class="skill__name">Data warehousing &amp; analytics</p>
+                <p class="skill__standing">Production-proven</p>
+              </div>
+              <div class="skill__proof">
+                <ul class="tag-list skill__tools" aria-label="Tools">
+                  <li class="tag tag--stack">Azure SQL</li>
+                  <li class="tag tag--stack">SQL Server</li>
+                  <li class="tag tag--stack">PostgreSQL</li>
+                  <li class="tag tag--stack">Microsoft Fabric</li>
+                </ul>
+                <ul class="tag-list" aria-label="Evidence">
+                  <li><a class="tag tag--production" href="career.html#experience">Azure data platform</a></li>
+                  <li><a class="tag tag--certification" href="career.html#certifications">Azure DB Administrator (DP-300)</a></li>
+                  <li><a class="tag tag--certification" href="career.html#certifications">Fabric Data Engineer (DP-700)</a></li>
+                  <li><a class="tag tag--taught" href="teaching.html#courses-taught">Data Warehousing</a></li>
+                  <li><a class="tag tag--taught" href="teaching.html#courses-taught">Analytics &amp; Reporting</a></li>
+                </ul>
+              </div>
             </li>
             <li class="skill">
-              <p class="skill__head"><span class="skill__name">Data warehousing &amp; analytics</span> <span class="skill__standing">Production-proven</span></p>
-              <p class="skill__tools">Azure SQL &middot; SQL Server &middot; PostgreSQL &middot; Microsoft Fabric</p>
-              <ul class="tag-list" aria-label="Evidence">
-                <li><a class="tag tag--production" href="career.html#experience">Azure data platform</a></li>
-                <li><a class="tag tag--certification" href="career.html#certifications">Azure DB Administrator (DP-300)</a></li>
-                <li><a class="tag tag--certification" href="career.html#certifications">Fabric Data Engineer (DP-700)</a></li>
-                <li><a class="tag tag--taught" href="teaching.html#courses-taught">Data Warehousing</a></li>
-                <li><a class="tag tag--taught" href="teaching.html#courses-taught">Analytics &amp; Reporting</a></li>
-              </ul>
+              <div class="skill__head">
+                <p class="skill__name">Programming &amp; scripting</p>
+                <p class="skill__standing">Production-proven</p>
+              </div>
+              <div class="skill__proof">
+                <ul class="tag-list skill__tools" aria-label="Tools">
+                  <li class="tag tag--stack">Python</li>
+                  <li class="tag tag--stack">Java</li>
+                  <li class="tag tag--stack">SQL</li>
+                  <li class="tag tag--stack">PowerShell</li>
+                  <li class="tag tag--stack">C++</li>
+                  <li class="tag tag--stack">PHP</li>
+                </ul>
+                <ul class="tag-list" aria-label="Evidence">
+                  <li><a class="tag tag--production" href="career.html#experience">C++ filter, 100&times; speedup</a></li>
+                  <li><a class="tag tag--production" href="career.html#experience">PowerShell automation</a></li>
+                  <li><a class="tag tag--taught" href="workshops.html#workshops-delivered">Introduction to Python</a></li>
+                  <li><a class="tag tag--applied" href="projects.html#open-source">2 Kanboard plugins</a></li>
+                  <li><a class="tag tag--applied" href="awards.html#competitions">8 contest results</a></li>
+                </ul>
+              </div>
             </li>
             <li class="skill">
-              <p class="skill__head"><span class="skill__name">Programming &amp; scripting</span> <span class="skill__standing">Production-proven</span></p>
-              <p class="skill__tools">Python &middot; Java &middot; SQL &middot; PowerShell &middot; C++ &middot; PHP</p>
-              <ul class="tag-list" aria-label="Evidence">
-                <li><a class="tag tag--production" href="career.html#experience">C++ filter, 100&times; speedup</a></li>
-                <li><a class="tag tag--production" href="career.html#experience">PowerShell automation</a></li>
-                <li><a class="tag tag--taught" href="workshops.html#workshops-delivered">Introduction to Python</a></li>
-                <li><a class="tag tag--applied" href="projects.html#open-source">2 Kanboard plugins</a></li>
-                <li><a class="tag tag--applied" href="awards.html#competitions">8 contest results</a></li>
-              </ul>
+              <div class="skill__head">
+                <p class="skill__name">Observability &amp; incident response</p>
+                <p class="skill__standing">Production-proven</p>
+              </div>
+              <div class="skill__proof">
+                <ul class="tag-list skill__tools" aria-label="Tools">
+                  <li class="tag tag--stack">Datadog</li>
+                  <li class="tag tag--stack">APM &amp; distributed tracing</li>
+                  <li class="tag tag--stack">log management</li>
+                </ul>
+                <ul class="tag-list" aria-label="Evidence">
+                  <li><a class="tag tag--production" href="career.html#experience">Datadog monitoring &amp; logging at JACQUEMUS</a></li>
+                  <li><a class="tag tag--certification" href="career.html#certifications">Datadog &times;3</a></li>
+                  <li><a class="tag tag--taught" href="teaching.html#courses-taught">Logging &amp; Monitoring module</a></li>
+                  <li><a class="tag tag--published" href="research.html#technical-articles">Datadog + Log4j2 write-up</a></li>
+                </ul>
+              </div>
             </li>
             <li class="skill">
-              <p class="skill__head"><span class="skill__name">Observability &amp; incident response</span> <span class="skill__standing">Production-proven</span></p>
-              <p class="skill__tools">Datadog &middot; APM &amp; distributed tracing &middot; log management</p>
-              <ul class="tag-list" aria-label="Evidence">
-                <li><a class="tag tag--production" href="career.html#experience">Cut MTTD at JACQUEMUS</a></li>
-                <li><a class="tag tag--certification" href="career.html#certifications">Datadog &times;3</a></li>
-                <li><a class="tag tag--taught" href="teaching.html#courses-taught">Logging &amp; Monitoring module</a></li>
-                <li><a class="tag tag--published" href="research.html#technical-articles">Datadog + Log4j2 write-up</a></li>
-              </ul>
+              <div class="skill__head">
+                <p class="skill__name">Systems integration &amp; APIs</p>
+                <p class="skill__standing">Production-proven</p>
+              </div>
+              <div class="skill__proof">
+                <ul class="tag-list skill__tools" aria-label="Tools">
+                  <li class="tag tag--stack">MuleSoft API-led</li>
+                  <li class="tag tag--stack">REST</li>
+                  <li class="tag tag--stack">ActiveMQ</li>
+                  <li class="tag tag--stack">SFTP</li>
+                </ul>
+                <ul class="tag-list" aria-label="Evidence">
+                  <li><a class="tag tag--production" href="career.html#experience">Fault-tolerant async integration</a></li>
+                  <li><a class="tag tag--production" href="career.html#experience">Enterprise systems at JACQUEMUS</a></li>
+                  <li><a class="tag tag--certification" href="career.html#certifications">MuleSoft Developer L1</a></li>
+                  <li><a class="tag tag--taught" href="teaching.html#courses-taught">Sync &amp; Async Data Flows</a></li>
+                </ul>
+              </div>
             </li>
             <li class="skill">
-              <p class="skill__head"><span class="skill__name">Systems integration &amp; APIs</span> <span class="skill__standing">Production-proven</span></p>
-              <p class="skill__tools">MuleSoft API-led &middot; REST &middot; ActiveMQ &middot; SFTP</p>
-              <ul class="tag-list" aria-label="Evidence">
-                <li><a class="tag tag--production" href="career.html#experience">Fault-tolerant async integration</a></li>
-                <li><a class="tag tag--production" href="career.html#experience">Enterprise systems at JACQUEMUS</a></li>
-                <li><a class="tag tag--certification" href="career.html#certifications">MuleSoft Developer L1</a></li>
-                <li><a class="tag tag--taught" href="teaching.html#courses-taught">Sync &amp; Async Data Flows</a></li>
-              </ul>
+              <div class="skill__head">
+                <p class="skill__name">Cloud platform operations</p>
+                <p class="skill__standing">Production-proven</p>
+              </div>
+              <div class="skill__proof">
+                <ul class="tag-list skill__tools" aria-label="Tools">
+                  <li class="tag tag--stack">Azure</li>
+                  <li class="tag tag--stack">IAM</li>
+                  <li class="tag tag--stack">Automation Accounts</li>
+                  <li class="tag tag--stack">Application Gateway</li>
+                  <li class="tag tag--stack">Microsoft Fabric</li>
+                </ul>
+                <ul class="tag-list" aria-label="Evidence">
+                  <li><a class="tag tag--production" href="career.html#experience">&euro;1,400/month saved</a></li>
+                  <li><a class="tag tag--production" href="career.html#experience">Azure Data Lake &amp; SQL integration</a></li>
+                  <li><a class="tag tag--certification" href="career.html#certifications">Azure DB Administrator (DP-300)</a></li>
+                  <li><a class="tag tag--certification" href="career.html#certifications">Fabric Data Engineer (DP-700)</a></li>
+                </ul>
+              </div>
             </li>
             <li class="skill">
-              <p class="skill__head"><span class="skill__name">Cloud platform operations</span> <span class="skill__standing">Production-proven</span></p>
-              <p class="skill__tools">Azure &middot; IAM &middot; Automation Accounts &middot; Application Gateway &middot; Microsoft Fabric</p>
-              <ul class="tag-list" aria-label="Evidence">
-                <li><a class="tag tag--production" href="career.html#experience">&euro;1,400/month saved</a></li>
-                <li><a class="tag tag--production" href="career.html#experience">IAM, SSL &amp; IP restrictions</a></li>
-                <li><a class="tag tag--certification" href="career.html#certifications">Azure DB Administrator (DP-300)</a></li>
-                <li><a class="tag tag--certification" href="career.html#certifications">Fabric Data Engineer (DP-700)</a></li>
-              </ul>
+              <div class="skill__head">
+                <p class="skill__name">Machine learning &amp; computer vision</p>
+                <p class="skill__standing">Production-proven</p>
+              </div>
+              <div class="skill__proof">
+                <ul class="tag-list skill__tools" aria-label="Tools">
+                  <li class="tag tag--stack">Python</li>
+                  <li class="tag tag--stack">YOLOv8</li>
+                  <li class="tag tag--stack">TensorFlow</li>
+                  <li class="tag tag--stack">Keras</li>
+                  <li class="tag tag--stack">scikit-learn</li>
+                </ul>
+                <ul class="tag-list" aria-label="Evidence">
+                  <li><a class="tag tag--production" href="career.html#experience">Metal classifier at OEM</a></li>
+                  <li><a class="tag tag--taught" href="teaching.html#courses-taught">Machine Learning course</a></li>
+                  <li><a class="tag tag--published" href="research.html#journal-articles">Peer-reviewed, Elsevier</a></li>
+                  <li><a class="tag tag--published" href="research.html#technical-articles">YOLOv8 write-up, 3K views</a></li>
+                  <li><a class="tag tag--applied" href="projects.html#applied-ml">YOLOv8 meter detection</a></li>
+                  <li><a class="tag tag--applied" href="projects.html#applied-ml">Image colorisation</a></li>
+                </ul>
+              </div>
             </li>
             <li class="skill">
-              <p class="skill__head"><span class="skill__name">Delivery &amp; collaboration</span> <span class="skill__standing">Run in production</span></p>
-              <p class="skill__tools">Git &middot; GitHub Actions &middot; Postman &middot; Agile/Scrum &middot; Jira &middot; Confluence</p>
-              <ul class="tag-list" aria-label="Evidence">
-                <li><a class="tag tag--production" href="career.html#experience">Architecture &amp; recovery docs</a></li>
-                <li><a class="tag tag--applied" href="projects.html#open-source">2 upstream pull requests</a></li>
-              </ul>
+              <div class="skill__head">
+                <p class="skill__name">Delivery &amp; collaboration</p>
+                <p class="skill__standing">Run in production</p>
+              </div>
+              <div class="skill__proof">
+                <ul class="tag-list skill__tools" aria-label="Tools">
+                  <li class="tag tag--stack">Git</li>
+                  <li class="tag tag--stack">GitHub Actions</li>
+                  <li class="tag tag--stack">Postman</li>
+                  <li class="tag tag--stack">Agile/Scrum</li>
+                  <li class="tag tag--stack">Jira</li>
+                  <li class="tag tag--stack">Confluence</li>
+                </ul>
+                <ul class="tag-list" aria-label="Evidence">
+                  <li><a class="tag tag--production" href="career.html#experience">Architecture &amp; recovery docs</a></li>
+                  <li><a class="tag tag--applied" href="projects.html#open-source">2 upstream pull requests</a></li>
+                </ul>
+              </div>
             </li>
             <li class="skill">
-              <p class="skill__head"><span class="skill__name">Workflow orchestration</span> <span class="skill__standing">Verified: not yet in production</span></p>
-              <p class="skill__tools">Apache Airflow 3</p>
-              <ul class="tag-list" aria-label="Evidence">
-                <li><a class="tag tag--certification" href="career.html#certifications">Airflow 3 Fundamentals</a></li>
-                <li><a class="tag tag--certification" href="career.html#certifications">DAG Authoring</a></li>
-                <li><a class="tag tag--taught" href="teaching.html#courses-taught">Packaging &amp; Delivery module</a></li>
-              </ul>
+              <div class="skill__head">
+                <p class="skill__name">Workflow orchestration</p>
+                <p class="skill__standing">Verified: not yet in production</p>
+              </div>
+              <div class="skill__proof">
+                <ul class="tag-list skill__tools" aria-label="Tools">
+                  <li class="tag tag--stack">Apache Airflow 3</li>
+                </ul>
+                <ul class="tag-list" aria-label="Evidence">
+                  <li><a class="tag tag--certification" href="career.html#certifications">Airflow 3 Fundamentals</a></li>
+                  <li><a class="tag tag--certification" href="career.html#certifications">DAG Authoring</a></li>
+                  <li><a class="tag tag--taught" href="teaching.html#courses-taught">Packaging &amp; Delivery module</a></li>
+                </ul>
+              </div>
             </li>
             <li class="skill">
-              <p class="skill__head"><span class="skill__name">Distributed processing</span> <span class="skill__standing">Verified: not yet in production</span></p>
-              <p class="skill__tools">Apache Spark</p>
-              <ul class="tag-list" aria-label="Evidence">
-                <li><a class="tag tag--taught" href="teaching.html#courses-taught">Processing at Volume</a></li>
-              </ul>
-            </li>
-          </ul>
-        </section>
-
-        <section class="block" aria-labelledby="domains">
-          <h3 class="block__title" id="domains">Domains</h3>
-          <dl class="deflist">
-            <div class="deflist__item">
-              <dt>Industries</dt>
-              <dd>E-commerce, Retail, Order Management, Customer Service, Industrial Instrumentation</dd>
-            </div>
-          </dl>
-        </section>
-
-        <!-- The one block on the site that restates facts held on other pages, so the
-             one block where a claim can drift away from its record. Every figure here
-             is evidenced on the page it links to; the figure and that record move in
-             the same change, or neither does. Records: src/data/impact.json. -->
-        <section class="block" aria-labelledby="impact">
-          <h3 class="block__title" id="impact">Selected Impact</h3>
-          <dl class="deflist">
-            <div class="deflist__item">
-              <dt>&euro;1,400 per month saved</dt>
-              <dd>Azure spend removed through automated resource-scheduling scripts, with no loss of availability. <span class="impact__source">(<a href="career.html">Career</a>)</span></dd>
-            </div>
-
-            <div class="deflist__item">
-              <dt>100&times; faster preprocessing</dt>
-              <dd>A real-time C++ Savitzky-Golay filter replaced the existing infrared signal pipeline. <span class="impact__source">(<a href="career.html">Career</a>)</span></dd>
-            </div>
-
-            <div class="deflist__item">
-              <dt>2 plugins authored and submitted upstream</dt>
-              <dd>Draw.io embedding and a file-attachment rework, both open against the official Kanboard plugin directory: PR #586 and PR #585. <span class="impact__source">(<a href="projects.html">Projects</a>)</span></dd>
-            </div>
-
-            <div class="deflist__item">
-              <dt>1st of 86 teams</dt>
-              <dd>Hello World v4.0, Sfax: regional competitive programming contest. <span class="impact__source">(<a href="awards.html">Awards</a>)</span></dd>
-            </div>
-          </dl>
-        </section>
-
-        <section class="block" aria-labelledby="languages">
-          <h3 class="block__title" id="languages">Languages</h3>
-          <dl class="deflist">
-            <div class="deflist__item">
-              <dt>Arabic</dt>
-              <dd>Bilingual proficiency (native)</dd>
-            </div>
-
-            <div class="deflist__item">
-              <dt>English</dt>
-              <dd>Full professional proficiency</dd>
-            </div>
-
-            <div class="deflist__item">
-              <dt>French</dt>
-              <dd>Full professional proficiency</dd>
-            </div>
-          </dl>
-        </section>
-
-        <section class="block" aria-labelledby="volunteering">
-          <h3 class="block__title" id="volunteering">Volunteering</h3>
-          <ul class="entries">
-            <li class="entry">
-              <p class="entry__title">Tunisian Red Crescent <span class="entry__role">&middot; Houmt Souk branch, Djerba</span></p>
-              <p class="entry__period">COVID-19 response</p>
-              <p class="entry__summary">Volunteered during the COVID-19 crisis, helping organise aid distribution, assisting with crowd coordination, supporting elderly individuals, and participating in collecting and distributing essential supplies.</p>
+              <div class="skill__head">
+                <p class="skill__name">Distributed processing</p>
+                <p class="skill__standing">Verified: not yet in production</p>
+              </div>
+              <div class="skill__proof">
+                <ul class="tag-list skill__tools" aria-label="Tools">
+                  <li class="tag tag--stack">Apache Spark</li>
+                </ul>
+                <ul class="tag-list" aria-label="Evidence">
+                  <li><a class="tag tag--taught" href="teaching.html#courses-taught">Processing at Volume</a></li>
+                </ul>
+              </div>
             </li>
           </ul>
         </section>
       </main>
     </div>
+
+    <footer class="site-footer">
+      <p>Last update: August 2026 &middot; Hosted on GitHub Pages &middot; Youssef Boutaleb</p>
+    </footer>
 
   </div>
 
@@ -342,27 +474,6 @@
     function gtag(){ dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-71KWCMXZ0P');
-    (function() {
-      var toggleBtn = document.getElementById('sidebar-toggle');
-      var toggleText = document.getElementById('sidebar-toggle-text');
-      var layout = document.querySelector('.layout');
-      if (!toggleBtn || !layout) return;
-
-      if (localStorage.getItem('sidebar_collapsed') === 'true') {
-        layout.classList.add('layout--sidebar-collapsed');
-        toggleBtn.setAttribute('aria-expanded', 'false');
-        if (toggleText) toggleText.textContent = 'Show Profile';
-      }
-
-      toggleBtn.addEventListener('click', function() {
-        var isCollapsed = layout.classList.toggle('layout--sidebar-collapsed');
-        localStorage.setItem('sidebar_collapsed', isCollapsed ? 'true' : 'false');
-        toggleBtn.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
-        if (toggleText) {
-          toggleText.textContent = isCollapsed ? 'Show Profile' : 'Hide Profile';
-        }
-      });
-    })();
   </script>
 </body>
 

@@ -4,35 +4,98 @@ description: Data Engineer building enterprise-scale ETL/ELT pipelines, API-led 
 nav: home
 schema_type: ProfilePage
 -->
-<header class="page-header">
-  <h1 class="page-title">Data Engineer | Cloud &amp; Integration</h1>
-  <p class="page-lede">
-    I build and operate enterprise-scale data platforms on <b>Microsoft Azure</b>:
-    ETL/ELT pipelines, API-led integrations between business-critical systems, and the
-    observability that keeps them dependable in production.
-  </p>
+<!-- The page's one opening. It used to be two: a hero (portrait, role, lede,
+     availability) and a Profile block (intro, prose, credentials), stacked,
+     both introducing the same person. That is what produced the duplication,
+     because two blocks with the same job will always find the same things to
+     say: the lede and the Profile paragraph both named Azure, ETL/ELT,
+     integration and observability, about 45 words spent twice before the
+     reader reached a single piece of evidence.
+
+     home.md's rule is that Home may restate a fact only by projection,
+     citation or quotation. Those two paragraphs were the one restatement on
+     the page that was hand-written on both sides, so nothing could catch them
+     drifting. Merging is the fix that removes the surface rather than
+     patching it. home-opening-options.md carries the full finding. -->
+<header class="page-header hero-header">
+  <div class="hero-header__content">
+    <img class="hero-header__portrait" src="{{ site.portrait }}" alt="{{ site.portrait_alt }}" width="180" height="220">
+    <div class="hero-header__bio">
+      <!-- One word, deliberately. The h1 read "Data Engineer | Cloud &
+           Integration": a pipe, which is not a separator this repository owns,
+           joining two things as peers. CLAUDE.md section 3 makes cloud and
+           integration a qualifier of the role and not a second one, and the
+           h1 is where that is tested. The qualifier is the first clause of
+           the lede below, and rows 3 and 4 of Skills & Evidence. -->
+      <h1 class="page-title">Data Engineer</h1>
+      <p class="page-lede">
+        I build and operate enterprise-scale data platforms on <b>Microsoft Azure</b>:
+        ETL/ELT pipelines, API-led integrations between business-critical systems, and the
+        observability that keeps them dependable in production.
+      </p>
+      <!-- The facts a recruiter filters on, in the first screen, because a
+           filter reached late is a filter applied by guessing.
+
+           A label column, not three sentences with a bold word at the front.
+           Languages is three pairs of its own, and an inline run would need
+           one separator to divide the languages and another to bind each to
+           its level: the grid does that with alignment instead of
+           punctuation. DESIGN.md section 10.2.
+
+           CLAUDE.md section 4: the availability sentence has one owner,
+           src/site.json, and is never typed into a fragment or paraphrased.
+           The way three wordings appeared was that three places each held
+           their own copy. The other two rows are generated, from
+           src/data/certifications.json and src/data/languages.json. -->
+      <dl class="hero-facts">
+        <div class="hero-facts__row">
+          <dt>Availability</dt>
+          <dd>{{ site.availability }}</dd>
+        </div>
+{{ build.credential_row }}
+{{ build.language_row }}
+      </dl>
+    </div>
+  </div>
 </header>
 
-<section class="block" aria-labelledby="profile">
-  <h3 class="block__title" id="profile">Profile</h3>
-  <div class="prose">
-    <p>
-      I am a <b>Data Engineer</b>. I have been designing, deploying and optimising enterprise
-      data ecosystems on <b>Microsoft Azure</b> since <b>2024</b>, and working in engineering
-      roles since <b>2022</b>: building end-to-end <b>ETL/ELT</b> pipelines with
-      <b>Talend</b> and <b>MuleSoft</b>, and instrumenting them with <b>Datadog</b>.
-    </p>
-    <p>
-      My work sits where integration meets operations: the pipelines I ship, I also run. That
-      is deliberate: integration work is judged on what happens at 3&nbsp;a.m., so error
-      handling, alerting, recovery plans and written architecture documentation are part of the
-      deliverable rather than follow-up.
-    </p>
-    <p>
-      I am seeking a <b>full-time Data Engineering</b> role to apply this expertise and continue
-      growing professionally.
-    </p>
-  </div>
+<!-- A projection, not a summary: every string here is read from the same
+     record Career renders, so the two pages cannot disagree about the job
+     being done now. It is experience[0] after tenure_sort_key, so it follows
+     a job change on its own. Never give this block content of its own; the
+     one sentence is `home_summary`, on the record. See home.md. -->
+<section class="block" aria-labelledby="currently">
+  <h3 class="block__title" id="currently">Currently</h3>
+  <p class="block__intro">Running the data platform behind a luxury fashion house.</p>
+  <ul class="entries">
+{{ build.current_role }}
+  </ul>
+</section>
+
+<!-- The one block on the site that restates facts held on other pages, so the
+     one block where a claim can drift away from its record. It has, twice, in
+     both directions: home.md opens on both. The sentence is quoted from the
+     bullet a record cites, the provenance line and the link are derived from
+     the same lookup, and the upstream state comes from projects.json. The
+     figure is the one hand-written claim on this page, and it moves in the
+     same commit as the record it summarises or neither does.
+
+     It sits above Skills & Evidence because a hiring manager who reads three
+     blocks and leaves should have read what changed. Skills & Evidence is the
+     longest block on the page and it is aimed at the reader who has already
+     decided to keep going. Records: src/data/impact.json. -->
+<section class="block" aria-labelledby="impact">
+  <h3 class="block__title" id="impact">Selected Impact</h3>
+  <!-- INTERIM, awaiting the author's sentence. The line it replaced read
+       "Five results, each one quoting the record that earned it.": a count
+       typed in a fragment while the records are `home: true` flags in data,
+       so a sixth record made it silently wrong, followed by a description of
+       the mechanism, which CLAUDE.md section 6 keeps off the page entirely.
+       A block__intro is one line and it is a pitch. -->
+  <p class="block__intro">What changed because the work shipped.</p>
+  <ul class="results">
+{{ build.impact }}
+  </ul>
 </section>
 
 <!-- The block that answers "can this person actually do the job". Every chip
@@ -43,55 +106,8 @@ schema_type: ProfilePage
 <section class="block" aria-labelledby="skills">
   <h3 class="block__title" id="skills">Skills &amp; Evidence</h3>
   <p class="block__intro">What I can do, and what proves it.</p>
+{{ build.proof_key }}
   <ul class="skills">
 {{ build.skills }}
-  </ul>
-</section>
-
-<section class="block" aria-labelledby="domains">
-  <h3 class="block__title" id="domains">Domains</h3>
-  <dl class="deflist">
-    <div class="deflist__item">
-      <dt>Industries</dt>
-      <dd>E-commerce, Retail, Order Management, Customer Service, Industrial Instrumentation</dd>
-    </div>
-  </dl>
-</section>
-
-<!-- The one block on the site that restates facts held on other pages, so the
-     one block where a claim can drift away from its record. Every figure here
-     is evidenced on the page it links to; the figure and that record move in
-     the same change, or neither does. Records: src/data/impact.json. -->
-<section class="block" aria-labelledby="impact">
-  <h3 class="block__title" id="impact">Selected Impact</h3>
-  <dl class="deflist">
-{{ build.impact }}
-  </dl>
-</section>
-
-<section class="block" aria-labelledby="languages">
-  <h3 class="block__title" id="languages">Languages</h3>
-  <dl class="deflist">
-    <div class="deflist__item">
-      <dt>Arabic</dt>
-      <dd>Bilingual proficiency (native)</dd>
-    </div>
-
-    <div class="deflist__item">
-      <dt>English</dt>
-      <dd>Full professional proficiency</dd>
-    </div>
-
-    <div class="deflist__item">
-      <dt>French</dt>
-      <dd>Full professional proficiency</dd>
-    </div>
-  </dl>
-</section>
-
-<section class="block" aria-labelledby="volunteering">
-  <h3 class="block__title" id="volunteering">Volunteering</h3>
-  <ul class="entries">
-{{ build.volunteering }}
   </ul>
 </section>

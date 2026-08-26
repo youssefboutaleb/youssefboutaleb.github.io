@@ -19,7 +19,7 @@
   <link rel="canonical" href="https://youssefboutaleb.github.io/workshops.html">
   <link rel="icon" type="image/svg+xml" href="images/icons/icon.svg">
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Noto-Sans-regular/Noto-Sans-regular.woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=9641cbfffa14">
+  <link rel="stylesheet" href="assets/css/main.css?v=eed270122b6e">
 
   <meta property="og:type" content="article">
   <meta property="og:title" content="Workshops &middot; Youssef Boutaleb">
@@ -38,73 +38,13 @@
 
   <div class="layout">
 
-    <!-- Identity, credentials and contact: present on every page. -->
-    <header class="sidebar">
-      <p class="sidebar__updated"><small>Last update: August 2026</small></p>
-      <a class="sidebar__name" href="index.html">Youssef Boutaleb</a>
-
-      <img class="sidebar__portrait" src="images/me.jpg" alt="Portrait of Youssef Boutaleb" width="150" height="150">
-
-      <p class="sidebar__role">Data Engineer</p>
-      <ul class="credentials">
-          <li>MuleSoft &amp; Talend Certified</li>
-          <li>Datadog Certified in Fundamentals, APM &amp; Log Management</li>
-          <li>Astronomer Certified in Apache Airflow 3</li>
-          <li>Microsoft Certified in Azure Databases &amp; Fabric</li>
-      </ul>
-
-      <div class="sidebar__section">
-        <h2 class="sidebar__heading">Availability</h2>
-        <p>EU residence permit holder. Open to relocation within the EU and to fully remote roles.</p>
-      </div>
-
-      <div class="sidebar__section">
-        <h2 class="sidebar__heading">Downloadables</h2>
-        <p><a href="data/Youssef_BOUTALEB_cv_en.pdf" target="_blank" rel="noopener">Resume / CV</a></p>
-      </div>
-
-      <div class="sidebar__section">
-        <h2 class="sidebar__heading">Contact</h2>
-        <p>Open to Data Engineering roles, and to talking about pipelines, integration and observability.</p>
-        <ul class="contact">
-          <li><span class="contact__label">Email:</span> <a class="contact__value" href="mailto:youssefboutaleb.info@gmail.com">youssefboutaleb.info@gmail.com</a></li>
-          <li><span class="contact__label">University:</span> <a class="contact__value" href="mailto:youssef.boutaleb@enis.tn">youssef.boutaleb@enis.tn</a></li>
-          <li><span class="contact__label">Phone:</span> <a class="contact__value" href="tel:+21653035448">+216 53 035 448</a></li>
-        </ul>
-      </div>
-
-      <div class="sidebar__section">
-        <ul class="social">
-          <li>
-            <a class="social__link" href="https://www.linkedin.com/in/youssef-boutaleb/" target="_blank" rel="noopener" title="LinkedIn">
-              <img class="icon icon--lg" src="images/icons/linkedin.svg" alt="LinkedIn" width="32" height="32">
-            </a>
-          </li>
-          <li>
-            <a class="social__link" href="https://github.com/youssefboutaleb" target="_blank" rel="noopener" title="GitHub">
-              <img class="icon icon--lg" src="images/icons/github.svg" alt="GitHub" width="32" height="32">
-            </a>
-          </li>
-          <li>
-            <a class="social__link" href="https://medium.com/@youssefboutaleb.info" target="_blank" rel="noopener" title="Medium">
-              <img class="icon icon--lg" src="images/icons/medium.svg" alt="Medium" width="32" height="32">
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <div class="site-footer">
-        <p>Hosted on GitHub Pages: theme lineage <a href="https://github.com/orderedlist" target="_blank" rel="noopener">orderedlist</a>.</p>
-        <p>Forked from <a href="https://github.com/elyesmanai/elyesmanai.github.io" target="_blank" rel="noopener">elyesmanai/elyesmanai.github.io</a>.</p>
-      </div>
-    </header>
-
-    <div class="content">
-      <div class="top-bar">
-        <button id="sidebar-toggle" class="sidebar-toggle" type="button" aria-expanded="true">
-          <img class="icon icon--xs" src="images/icons/icon.svg" alt="" width="12" height="12">
-          <span id="sidebar-toggle-text">Hide Profile</span>
-        </button>
+    <header class="site-header">
+      <div class="site-header__brand">
+        <a class="site-header__name" href="index.html">Youssef Boutaleb</a>
+        <div class="site-header__details">
+          <span class="site-header__role">Data Engineer</span>
+          <a class="site-header__cv" href="data/Youssef_BOUTALEB_cv_en.pdf" target="_blank" rel="noopener">CV (PDF)</a>
+        </div>
       </div>
       <nav class="nav" aria-label="Primary">
         <ul class="nav__list">
@@ -115,10 +55,44 @@
           <li class="nav__item"><a class="nav__link" href="teaching.html">Teaching</a></li>
           <li class="nav__item"><a class="nav__link" href="workshops.html" aria-current="page">Workshops</a></li>
           <li class="nav__item"><a class="nav__link" href="awards.html">Awards</a></li>
+          <li class="nav__item"><a class="nav__link" href="contact.html">Contact</a></li>
         </ul>
       </nav>
+    </header>
 
-      <main id="main">
+    <div class="page-body">
+      <aside class="sidebar-context" aria-label="Page shortcuts">
+        <nav class="book-toc" aria-label="On this page">
+          <div class="book-toc__header">
+            <svg class="book-toc__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+            <span class="book-toc__title">On this page</span>
+          </div>
+          <ul class="book-toc__list">
+          <li class="book-toc__item book-toc__item--level-1">
+            <a class="book-toc__link" href="#workshops-delivered">Workshops Delivered</a>
+            <ul class="book-toc__sublist book-toc__sublist--level-1">
+            <li class="book-toc__item book-toc__item--level-2">
+              <a class="book-toc__sublink" href="#ws-introduction-to-cs-fundamentals-hardware">Introduction to CS Fundamentals (Hardware)</a>
+            </li>
+            <li class="book-toc__item book-toc__item--level-2">
+              <a class="book-toc__sublink" href="#ws-assembly-programming-workshop">Assembly Programming Workshop</a>
+            </li>
+            <li class="book-toc__item book-toc__item--level-2">
+              <a class="book-toc__sublink" href="#ws-introduction-to-competitive-programming">Introduction to Competitive Programming</a>
+            </li>
+            <li class="book-toc__item book-toc__item--level-2">
+              <a class="book-toc__sublink" href="#ws-introduction-to-python">Introduction to Python</a>
+            </li>
+            </ul>
+          </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main id="main" class="content">
         <header class="page-header">
           <h1 class="page-title">Workshops</h1>
         </header>
@@ -131,7 +105,7 @@
           <ul class="entries">
             <!-- Records live in src/data/workshops.json; tag order and colour come
                  from MODELS in tools/build.py. Never hand-write entries here. -->
-                <li class="entry">
+                <li class="entry" id="ws-introduction-to-cs-fundamentals-hardware">
               <p class="entry__title">Introduction to CS Fundamentals (Hardware)</p>
               <p class="entry__period"><time datetime="2026">2026</time></p>
               <ul class="tag-list" aria-label="Workshop details">
@@ -139,7 +113,7 @@
                 <li class="tag tag--mode">Online</li>
                 <li class="tag tag--duration">2h</li>
                 <li class="tag tag--audience">Engineers &amp; Executives</li>
-                <li class="tag tag--scale">30 participants</li>
+                <li class="tag tag--scale"><b>30</b> participants</li>
                 <li class="tag tag--host">OLIVESOFT</li>
                 <li><a class="tag tag--critical link-external" href="https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fyoussefboutaleb.github.io%2Fdata%2FIntroduction_to_CS_Fundamentals_Hardware_Workshop.pptx" target="_blank" rel="noopener" title="View slides in PowerPoint Online"><img class="icon icon--xs" src="images/icons/powerpoint.svg" alt="" width="12" height="12">Slides (.pptx)</a></li>
               </ul>
@@ -150,7 +124,7 @@
                 <li><b>Part 2: Circuit-level computation:</b> data storage and arithmetic built up from SR/D latches to 4-bit registers, adders, and an arithmetic logic unit.</li>
               </ul>
             </li>
-            <li class="entry">
+            <li class="entry" id="ws-assembly-programming-workshop">
               <p class="entry__title">Assembly Programming Workshop
                 <a class="icon-link" href="https://github.com/youssefboutaleb/Assembly_workshop" target="_blank" rel="noopener" title="Workshop materials on GitHub"><img class="icon icon--sm" src="images/icons/github.svg" alt="Workshop materials on GitHub" width="15" height="15"></a>
               </p>
@@ -160,7 +134,7 @@
                 <li class="tag tag--mode">On-site</li>
                 <li class="tag tag--duration">4h</li>
                 <li class="tag tag--audience">Engineering Students</li>
-                <li class="tag tag--scale">60 participants</li>
+                <li class="tag tag--scale"><b>60</b> participants</li>
                 <li class="tag tag--host">Securinets ENIS</li>
               </ul>
               <p class="entry__summary">A hands-on lab on hardware execution and low-level data handling, demonstrating the performance gap between high-level Python and bare-metal assembly.</p>
@@ -171,7 +145,7 @@
                 <li><b>Bare-metal game build:</b> extension Breakout game implemented in x86 assembly, C, and C++ to compare manual memory control and execution speed.</li>
               </ul>
             </li>
-            <li class="entry">
+            <li class="entry" id="ws-introduction-to-competitive-programming">
               <p class="entry__title">Introduction to Competitive Programming</p>
               <p class="entry__period"><time datetime="2023">2023</time></p>
               <ul class="tag-list" aria-label="Workshop details">
@@ -179,7 +153,7 @@
                 <li class="tag tag--mode">On-site</li>
                 <li class="tag tag--duration">4h</li>
                 <li class="tag tag--audience">Engineering Students</li>
-                <li class="tag tag--scale">40 participants</li>
+                <li class="tag tag--scale"><b>40</b> participants</li>
                 <li class="tag tag--host">IEEE Student Branch ENIS</li>
               </ul>
               <p class="entry__summary">A live-coding session guiding participants from brute-force thinking to optimized, pattern-based problem solving.</p>
@@ -189,7 +163,7 @@
                 <li><b>Practice roadmap:</b> provided a self-study path through NeetCode, Codeforces, HackerRank, <i>Competitive Programming 4</i>, CLRS, and Sedgewick's Coursera algorithms course.</li>
               </ul>
             </li>
-            <li class="entry">
+            <li class="entry" id="ws-introduction-to-python">
               <p class="entry__title">Introduction to Python</p>
               <p class="entry__period"><time datetime="2022">2022</time></p>
               <ul class="tag-list" aria-label="Workshop details">
@@ -197,7 +171,7 @@
                 <li class="tag tag--mode">Online</li>
                 <li class="tag tag--duration">2h</li>
                 <li class="tag tag--audience">Engineering Students</li>
-                <li class="tag tag--scale">12 participants</li>
+                <li class="tag tag--scale"><b>12</b> participants</li>
                 <li class="tag tag--host">IEEE Student Branch ENIS</li>
               </ul>
               <p class="entry__summary">A foundational session that took students from Python syntax to parsing real datasets and visualizing them as charts.</p>
@@ -212,6 +186,10 @@
       </main>
     </div>
 
+    <footer class="site-footer">
+      <p>Last update: August 2026 &middot; Hosted on GitHub Pages &middot; Youssef Boutaleb</p>
+    </footer>
+
   </div>
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-71KWCMXZ0P"></script>
@@ -220,27 +198,6 @@
     function gtag(){ dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-71KWCMXZ0P');
-    (function() {
-      var toggleBtn = document.getElementById('sidebar-toggle');
-      var toggleText = document.getElementById('sidebar-toggle-text');
-      var layout = document.querySelector('.layout');
-      if (!toggleBtn || !layout) return;
-
-      if (localStorage.getItem('sidebar_collapsed') === 'true') {
-        layout.classList.add('layout--sidebar-collapsed');
-        toggleBtn.setAttribute('aria-expanded', 'false');
-        if (toggleText) toggleText.textContent = 'Show Profile';
-      }
-
-      toggleBtn.addEventListener('click', function() {
-        var isCollapsed = layout.classList.toggle('layout--sidebar-collapsed');
-        localStorage.setItem('sidebar_collapsed', isCollapsed ? 'true' : 'false');
-        toggleBtn.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
-        if (toggleText) {
-          toggleText.textContent = isCollapsed ? 'Show Profile' : 'Hide Profile';
-        }
-      });
-    })();
   </script>
 </body>
 

@@ -13,15 +13,23 @@ standing is computed from what those links are, never typed, never chosen.
 
 ## The shape of a skill
 
+Two columns. The left is fixed and says what the capability **is**; the right
+flows and holds the **proof**.
+
 ```
-Data pipeline engineering                       Production-proven   ← derived
-Talend · MuleSoft · Apache Airflow                                  ← tools
-[ETL across Salesforce, ORLI & Azure] [API-led integration at OLIVESOFT]
-[Talend Data Integration] [MuleSoft Developer L1] [Astronomer ×2]
-[Data Engineering 1 & 2]                                            ← citations
+[Run in production] [Certified] [Taught] [Published] [Applied]   ← the key, once
+
+Data pipeline engineering   (Talend) (MuleSoft) (Apache Airflow)     ← tools
+Production-proven ← derived [Azure Data Factory & Fabric at JACQUEMUS]
+                            [API-led integration at OLIVESOFT]
+                            [Talend Data Integration] [MuleSoft L1]
+                            [Astronomer ×2] [Data Engineering 1 & 2] ← citations
+────────────────────────────────────────────────────────────────────
+Distributed processing      (Apache Spark)
+Verified: not yet in prod.  [Processing at Volume]
 ```
 
-Three parts, and each answers a different question:
+Four parts, and each answers a different question:
 
 | Part | Answers | Source |
 |---|---|---|
@@ -29,6 +37,63 @@ Three parts, and each answers a different question:
 | **Tools** | What do you do it with? | `tools` |
 | **Evidence** | How would I know? | `evidence`, keyed by kind |
 | **Standing** | How strongly is it proven? | *derived*, see below |
+
+### Why two columns
+
+The block used to be one run per skill: capability, tools and its citations all
+flowing from the same left edge. With ten capabilities and forty chips that read
+as a wall, and it hid the one thing the block computes for itself. **The order
+is an argument** (standing first, then thread, then how much evidence), and
+nothing lined up well enough for that order to be visible. A fixed label column
+gives the eye something to run down. It is the same device `.contact-list` uses
+for a channel and its address.
+
+Three forms were on the table and two were rejected on evidence:
+
+- **A true evidence matrix**, rows by the five proof kinds, is what this
+  document has always called the block. It does not fit. The widest citation is
+  45 characters and five columns of that need roughly 1500px against a content
+  column of about 1050px, so the chips would have to shrink to about fifteen
+  characters, which breaks rule 3 below: the specificity **is** the reason to
+  click. And 23 of the 50 cells are empty, which reads as honest variation in a
+  list and as a page of blanks in a table.
+- **A card grid**, matching Certifications, was rejected twice over. A grid
+  reads left to right and down, so the first row stops looking like the first
+  row and the computed ranking is thrown away. And [`DESIGN.md`](DESIGN.md) §9
+  says entries are never boxed.
+
+### The tools line is the `stack` treatment, and it never leads
+
+Tools render as outlined chips, one per tool, exactly as Career and Projects
+render a `stack`: one vocabulary for *a thing this was built with*, everywhere
+on the site.
+
+**They sit on their own list above the evidence and are never merged into it.**
+The colour-run reading argued below is a claim about the colour of a row's
+*first* chip, and an outlined tool chip in front of the run would destroy the
+one thing giving up positional reading bought. Outlined against filled is also
+the distinction [`projects.md`](projects.md) already draws: a filled chip is a
+dimension of the record, an outlined one is an item inside a dimension.
+
+### The key
+
+Five specimen chips above the block, naming what each colour means.
+
+The code was documented here and shown to nobody: a visitor worked out that
+green meant production somewhere around the fourth row, if at all. Chips rather
+than a worded legend, because the thing being explained is a chip and a
+sentence would make the reader hold a translation in their head.
+
+It is the only tag list on the site whose chips cite nothing, which is why they
+are `<li>` and not links: a key is a specimen, and giving five specimens an
+`href` would put five destinations on the page that prove nothing. It is also
+the only tag list that does not print, because the print stylesheet forces every
+colour it explains to black.
+
+Admissible under [`CLAUDE.md`](CLAUDE.md) §7's test, the one written for the
+depth dial: it is a **reading aid, not a control**. No state, no navigation, no
+content that exists in one mode and not another. It makes a code the page was
+already using legible on the first row instead of the fourth.
 
 ### A tool is not a skill
 
@@ -67,7 +132,7 @@ device layered on top: it falls out of the ordering.
 
 Green is the site's *verified/shipped* hue and keeps that meaning here
 ([`DESIGN.md`](DESIGN.md) §7.2). Grey is the quiet terminal slot every model on
-this site ends on (`scale`, `host`, `publisher`, `platform`, `stack`) and
+this site ends on (`scale`, `host`, `publisher`, `platform`) and
 `applied` joins it because a side project is real evidence and the weakest kind
 of it.
 
@@ -77,12 +142,21 @@ of it.
 
 ### 1. A category may hold more than one value
 
-Every other model on the site holds one value per category, and
+Almost every category on the site holds one value, and
 [`teaching.md`](teaching.md) is emphatic about it: a `stack` category that
-rendered one chip per tool was removed, because *a run whose length changes per
-record destroys the positional reading the fixed order exists to give.*
+rendered one chip per tool was removed there, because *a run whose length
+changes per record destroys the positional reading the fixed order exists to
+give.*
 
-**Here the varying length is the information.** The other models tag a record
+There is now one other category that repeats, and the two exceptions are
+unalike in a way worth keeping straight. `stack` renders a chip per tool on
+Projects and Career because it is the **terminal** category in those models, so
+a run of varying length shifts no earlier position and the fixed order survives
+untouched ([`projects.md`](projects.md)). It gives up nothing. Skills gives up
+positional reading altogether, and the paragraphs below are the argument for
+why that trade is worth making here and nowhere else.
+
+**Here the varying length is itself the information.** The other models tag a record
 with its *dimensions*: an award has one scope, one placement, one scale, and a
 second value in any of them would be a contradiction. This model does not tag
 dimensions. It lists **citations**, and citations accumulate: three Datadog
@@ -134,10 +208,33 @@ twice" is a pair of facts with links on them.** Percentages, five-star ratings
 and progress bars are all the same claim wearing a chart, and this site does
 not make it.
 
-The block **orders itself** by standing, then by how much evidence a skill
-carries: `skill_sort_key` in the same file. Hand-ordering would drift the
-moment a certification is added, and the one thing this block must never do is
-rank a skill above the evidence it now has.
+The block **orders itself** by standing, then by `thread`, then by how much
+evidence a skill carries: `skill_sort_key` in the same file. Hand-ordering would
+drift the moment a certification is added, and the one thing this block must
+never do is rank a skill above the evidence it now has.
+
+### `thread`: the one hand-set field, and it is not a level
+
+`thread` is `"trunk"` or `"branch"`, and it answers **which claim a capability
+serves**, never how good anyone is at it:
+
+- `trunk`: supports the Data Engineering claim directly.
+- `branch`: real, proven, and supporting evidence for the trunk rather than the
+  claim itself. [`CLAUDE.md`](CLAUDE.md) §3's metaphor, in the data.
+
+It exists because the sort had only two keys and four skills tied at
+*Production-proven*, so citation count decided the front page and put computer
+vision second on a site whose whole argument is that Data Engineering is the
+role. It **cannot reorder anything across a standing boundary**: a branch skill
+still outranks every trunk skill proven less well than it is, which is what
+keeps it from becoming the ranking this model refuses.
+
+Machine learning and computer vision is the only `branch` today. It carries six
+citations and the top standing the model awards, and it renders seventh. The
+field did not demote it; it filed it. Writing `"thread": "branch"` on a skill to
+push it down the page, rather than because it genuinely serves the trunk, is the
+one way to misuse this field, and it is the reason it is documented here rather
+than left to look obvious.
 
 ### Standing carries no colour
 
@@ -198,6 +295,7 @@ not because anyone re-ranked it.
 ```json
 {
   "name": "Workflow orchestration",
+  "thread": "trunk",
   "tools": ["Apache Airflow 3"],
   "evidence": {
     "certification": [
@@ -213,6 +311,8 @@ not because anyone re-ranked it.
 
 1. **The capability is a thing you do**, not a thing you use. Tools go in
    `tools`.
+1. **`thread` is required**, and it is a positioning call, not a rating. If the
+   capability is part of doing data engineering, it is `trunk`.
 2. **Every evidence entry needs an `href` to a record already on this site.**
    If the proof is not on the site, add the record first: a citation to
    nothing is the one thing this block cannot survive.

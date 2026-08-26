@@ -1,11 +1,36 @@
 <!--
 title: Career
-description: Data Integration and Operations Engineer at JACQUEMUS. Experience, education and certifications in Talend, MuleSoft, Azure, Datadog and Apache Airflow.
+description: Three years of data engineering across luxury retail platforms at JACQUEMUS and in the LVMH ecosystem, and industrial sensor processing before it. Roles, education and certifications.
 nav: career
 -->
 <header class="page-header">
   <h1 class="page-title">Career</h1>
 </header>
+
+<!-- The one block on this page that is not a record, and now the page's only
+     opening. A `page-lede` used to sit above it, saying in 28 words what the
+     first paragraph below then said in 66: two blocks competing to introduce
+     one career, which is the surface that produced Home's duplicated opening
+     before it was merged. One block, one paragraph, and the lede is gone;
+     Career was the only page of eight carrying one. See
+     career-experience-options.md.
+
+     It names no company, because the four records below carry the company and
+     what was owned inside it (career.md section 5). It carries no capability
+     list and no figures: a capability claim belongs in Home's Skills &
+     Evidence, which cites the record that proves it, and a figure belongs on
+     the record that earned it, as a `scale` tag or a bullet. -->
+<section class="block" aria-labelledby="summary">
+  <h3 class="block__title" id="summary">Summary</h3>
+  <div class="prose">
+    <p>
+      Data Engineer, three years in: I build enterprise data pipelines and I run them.
+      Industrial sensor data taught me what a pipeline has to survive; a luxury retail
+      platform is where it runs now. Error handling, alerting, recovery plans and written
+      architecture documentation are part of the deliverable, not follow-up.
+    </p>
+  </div>
+</section>
 
 <section class="block" aria-labelledby="experience">
   <h3 class="block__title" id="experience">Experience</h3>
@@ -34,5 +59,17 @@ nav: career
   <p class="block__intro">Continuous learning to master computing fundamentals and emerging technologies, understanding how new tools interface into modern data architectures.</p>
   <ul class="entries entries--grid">
 {{ build.online_courses }}
+  </ul>
+</section>
+
+<!-- Moved here from Home, where it closed the front page: it is a dated record
+     among dated records, and it was putting the least Data Engineering thing on
+     the site in the last position a recruiter reads. Records:
+     src/data/volunteering.json. See home.md. -->
+<section class="block" aria-labelledby="volunteering">
+  <h3 class="block__title" id="volunteering">Volunteering</h3>
+  <p class="block__intro">Crisis response, before any of the rest of this.</p>
+  <ul class="entries">
+{{ build.volunteering }}
   </ul>
 </section>

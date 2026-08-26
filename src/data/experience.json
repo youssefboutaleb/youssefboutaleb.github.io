@@ -2,29 +2,55 @@
   {
     "company": "JACQUEMUS",
     "url": "https://www.linkedin.com/company/jacquemus/posts/?feedView=all",
-    "role": "Data Integration Engineer &amp; Operations Engineer",
+    "role": "Data Engineer",
     "start": "2024-08",
-    "domain": "E-commerce &amp; Retail",
-    "stack": ["Talend", "Azure", "Datadog", "Salesforce"],
+    "location": "Paris, France",
+    "domain": "Luxury E-commerce &amp; Retail",
+    "engagement": "Permanent",
+    "mode": "Remote",
+    "scale": {
+      "count": 150,
+      "unit": "pipelines",
+      "minimum": true
+    },
+    "stack": [
+      "Azure Data Factory",
+      "Azure Fabric",
+      "Apache Spark",
+      "Datadog"
+    ],
+    "summary": "JACQUEMUS is a French luxury fashion house selling ready-to-wear, leather goods, and accessories through its own e-commerce, its boutiques, and wholesale partners, on order flows that peak at around 5,000 orders per hour at sale events and a data platform ingesting roughly 800,000 events and records a day across hundreds of gigabytes. I work in the Data Platform team, handling the internal order, customer, product, and pricing data through ETL and data modeling, integrating the external systems around it (exchange rates, transactional emailing, shipping, and refunds), and landing all of it in a medallion lakehouse architecture.",
+  "home_summary": "Order, customer, product and pricing data into a medallion lakehouse, on flows carrying roughly 800,000 events and records a day and order peaks near 5,000 an hour at sale events.",
     "groups": [
       {
-        "title": "Data Integration",
+        "title": "Data Engineering",
         "points": [
-          "Designed and implemented end-to-end <b>Talend ETL pipelines</b> and <b>RESTful APIs</b> enabling seamless data integration across multiple enterprise systems such as <b>Salesforce</b> (e-commerce), <b>ORLI</b> (warehouse management), and the <b>Azure</b> data platform.",
-          "Partnered with stakeholders to translate <b>functional requirements into scalable data transformation logic</b>, and authored <b>comprehensive technical documentation</b>, including system architecture, data flows, and deployment/recovery plans."
+          {
+            "point": "Built and maintained <b>20+ of a 150+ pipeline estate</b> across Salesforce, ORLI/WMS, PostgreSQL, APIs, file shares, Azure Data Lake, and Azure SQL.",
+            "impact": "The analytics, logistics, e-commerce reporting, and inventory-management teams work from these flows, so a stalled pipeline delays morning commercial reporting and inventory synchronization."
+          },
+          "Ran the retail order path on refresh schedules from <b>10 minutes</b> to daily and weekly, with ingestion payloads reaching <b>150 MB</b> per run.",
+          "Integrated live <b>Quarkus web services</b> alongside the scheduled jobs, so data that cannot wait for a refresh window moves over an API rather than a batch table."
         ]
       },
       {
-        "title": "Cloud &amp; Security Operations",
+        "title": "Cloud &amp; FinOps",
         "points": [
-          "Managed and secured <b>Azure resources</b> by implementing IAM policies, SSL, and IP restrictions to maintain an organised and secure cloud environment.",
-          "<b>Optimised Azure resource utilisation</b> through automated scheduling scripts, saving <b>&euro;1,400 per month</b> while maintaining system reliability."
+          {
+            "id": "jq-finops",
+     "point": "Reduced <b>Azure infrastructure spend by &euro;1,400 per month</b> by automating development-environment shutdowns, matching compute size to each environment, and redesigning shared Spark pools.",
+            "impact": "A recurring monthly saving on the platform budget, taken with no SLA impact on the morning reporting pipelines."
+          }
         ]
       },
       {
-        "title": "Observability",
+        "title": "Monitoring &amp; Observability",
         "points": [
-          "Deployed a real-time <b>Datadog monitoring solution</b> with custom dashboards and alerts, significantly reducing the <b>Mean Time to Detection (MTTD)</b> and enhancing observability and reliability across ETL pipelines."
+          {
+            "id": "jq-observability",
+     "point": "Instrumented ingestion workloads with <b>Datadog APM and custom monitoring dashboards</b> across Azure Data Factory, Fabric, and Spark pools.",
+            "impact": "Alert coverage across the <b>150+ job estate</b>, so a silent job or API failure surfaces before the business-hours reporting window rather than through a user report."
+          }
         ]
       }
     ]
@@ -32,27 +58,120 @@
   {
     "company": "OLIVESOFT",
     "url": "https://www.linkedin.com/company/olivesoft/posts/?feedView=all",
-    "role": "Data Integration Engineer",
+    "role": "Data Engineer",
     "start": "2024-02",
-    "end": "2024-05",
-    "domain": "Customer Service",
-    "stack": ["MuleSoft", "Salesforce"],
+    "end": "2024-07",
+    "location": "Sfax, Tunisia",
+    "domain": "Luxury E-commerce &amp; Retail",
+    "engagement": "End-of-studies Internship",
+    "mode": "Remote delivery",
+    "stack": [
+      "MuleSoft",
+      "Salesforce Service Cloud",
+      "RAML",
+      "Diduenjoy"
+    ],
+    "summary": "OLIVESOFT is a data and Salesforce consultancy headquartered in Paris, delivering data engineering, integration, and BI services to more than 20 clients, mostly in luxury retail, including the day-to-day run and monitoring of the platforms it builds. I worked on the Kenzo Paris / LVMH account, building the production customer-feedback data flow between the service desk and the feedback platform.",
     "points": [
-      "Implemented a fault-tolerant asynchronous integration using <b>MuleSoft API-led architecture</b> to connect <b>Salesforce Service Cloud</b> and the <b>Diduenjoy</b> feedback platform, ensuring reliable data delivery through robust error handling.",
-      "Chose an asynchronous design so a slow or unavailable downstream platform could never block the service desk, with explicit error handling to guarantee eventual delivery."
+      {
+        "point": "Built an <b>asynchronous MuleSoft API-led integration</b> connecting Salesforce Service Cloud to Diduenjoy from scratch for the Kenzo Paris / LVMH account.",
+        "impact": "Decoupled service-desk agent workflows from downstream API latency, eliminating agent stalls when the external feedback platform was slow or offline."
+      },
+      {
+        "id": "olivesoft-dlq",
+     "point": "Implemented <b>RAML REST contracts, automated retry policies, and dead-letter queues (DLQ)</b> to handle transient endpoint failures.",
+        "impact": "Guaranteed zero feedback data loss during downstream outages and established reliable customer-satisfaction tracking for the account."
+      }
+    ]
+  },
+  {
+    "company": "REGIM Lab",
+    "url": "https://www.linkedin.com/company/regim-lab-research-groups-on-intelligent-machines-lr11es48/posts/?feedView=all",
+    "role": "Machine Learning Engineer",
+    "start": "2023-06",
+    "end": "2023-08",
+    "location": "Sfax, Tunisia",
+    "domain": "Time-Series Sensor Data (Energy Research)",
+    "engagement": "Summer Internship",
+    "mode": "On-site",
+    "scale": {
+      "count": 300,
+      "unit": "households"
+    },
+    "stack": [
+      "Regression Models",
+      "Ausgrid Dataset",
+      "Web3",
+      "Ethereum"
+    ],
+    "summary": "REGIM Lab (REsearch Groups in Intelligent Machines) is the applied-research laboratory of the National Engineering School of Sfax. I worked on a research prototype and case study on secure, transparent energy management using the public Ausgrid smart-meter dataset; it was not a production deployment.",
+    "points": [
+      "Ingested <b>30-minute interval telemetry</b> across the 300-household Ausgrid smart-meter dataset into a monitoring web application and admin review dashboard.",
+      "Developed a <b>regression-based anomaly-detection pipeline</b> to investigate noisy smart-meter readings, and stored cryptographic reading hashes through <b>Ethereum smart contracts</b> to create a tamper-evident audit trail."
     ]
   },
   {
     "company": "OEM ENGINEERING S.A.R.L",
     "url": "https://www.linkedin.com/company/oem-engineering-s-a-r-l/posts/?feedView=all",
-    "role": "Data Analysis &amp; Signal Processing Engineer",
     "start": "2022-06",
     "end": "2023-05",
-    "domain": "Industrial Instrumentation",
-    "stack": ["C++"],
-    "points": [
-      "Implemented a real-time C++ signal processing <b>Savitzky-Golay filter</b> to reduce infrared data noise, achieving a <b>100&times; speedup</b> in preprocessing for metal classification.",
-      "Developed and trained a <b>Random Forest classifier</b> for accurate metal classification, enabling near-instantaneous analysis."
+    "location": "Sfax, Tunisia",
+    "domain": "Time-Series Sensor Data (Industrial Sorting)",
+    "mode": "On-site",
+    "summary": "OEM ENGINEERING is a Canadian industrial engineering company headquartered in Sherbrooke, Quebec, with its engineering site in Sfax, Tunisia, building high-speed material-sorting systems that identify metal alloys inline from visible near-infrared (VNIR) camera signals. I worked on the signal-processing and classification stack behind the sorting decision, across two roles.",
+    "roles": [
+      {
+        "role": "Machine Learning &amp; Statistical Engineer",
+        "start": "2022-09",
+        "end": "2023-05",
+        "engagement": "Part-time",
+        "scale": {
+          "count": 2000,
+          "unit": "frames/second",
+          "approx": true
+        },
+        "stack": [
+          "C++",
+          "XGBoost",
+          "scikit-learn",
+          "VNIR Spectroscopy"
+        ],
+        "groups": [
+          {
+            "title": "Real-Time Classification",
+            "points": [
+              {
+                "point": "Integrated the deployed <b>C++ Savitzky-Golay filtering path</b> into inline metal-alloy classification, sustaining approximately <b>2,000 frames per second</b> for real-time sorting decisions.",
+                "impact": "Alloy identification runs at full conveyor speed, which is the constraint the sorting system has to meet to work inline at all."
+              }
+            ]
+          },
+          {
+            "title": "Model R&amp;D",
+            "points": [
+              "Built an offline <b>XGBoost validation model</b> that reached <b>94.7% accuracy</b> on spectral datasets; kept it separate from production because its slower execution did not meet the real-time system constraint."
+            ]
+          }
+        ]
+      },
+      {
+        "role": "Signal Processing Engineer",
+        "start": "2022-06",
+        "end": "2022-08",
+        "engagement": "Summer Internship",
+        "stack": [
+          "C++",
+          "Savitzky-Golay Filtering",
+          "VNIR Spectroscopy"
+        ],
+        "points": [
+          {
+            "id": "oem-speedup",
+            "point": "Delivered a <b>100&times; signal-preprocessing speedup</b> by replacing a C# Savitzky-Golay implementation with optimized C++ filtering using fixed in-memory parameters and GCC optimization, while retaining the same filter behavior for inline sorting.",
+          "impact": "Preprocessing stopped being the bottleneck, and this is the path that went inline the following autumn, where the filter has to keep pace with the camera rather than catch up behind it."
+          }
+        ]
+      }
     ]
   }
 ]

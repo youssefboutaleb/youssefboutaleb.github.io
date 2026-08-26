@@ -204,7 +204,7 @@ design and there is exactly one thing worth saying in them.
    bullet. It carries the score context, total problems, time constraint, and team size.
 2. **A hackathon is the exception, and says what was built.** There is no
    problem count to state, so the bullets carry the artefact, architecture ownership,
-   and model details (*Team of 2 — built an MVP in 48h...*), which is the substance a
+   and model details (*Team of 2, built an MVP in 48h...*), which is the substance a
    placement leaves unexplained.
 3. **Never restate a tag.** The field size, the scope and the rank are already
    on screen. A bullet reading "competed against 86 teams nationally" is a

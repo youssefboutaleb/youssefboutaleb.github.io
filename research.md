@@ -110,7 +110,7 @@ work; the authors are the line beneath it.
 3. **Each author links to their Google Scholar profile where one exists**, from
    `authors[].scholar`. An author with no profile renders as plain text rather
    than as a dead or invented link: rule 5, applied to a person.
-4. **The journal is italic, and follows an em dash.** It is set in
+4. **The journal is italic, and follows a `&middot;`.** It is set in
    `.entry__meta` with the authors because it is part of the citation, not a
    dimension of the record.
 

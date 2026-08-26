@@ -1,0 +1,21 @@
+[
+  {
+    "name": "Arabic",
+    "level": "Native"
+  },
+  {
+    "name": "French",
+    "level": "Full professional proficiency",
+    "evidence": [
+      { "text": "Taught in French", "href": "teaching.html#courses-taught" }
+    ]
+  },
+  {
+    "name": "English",
+    "level": "Full professional proficiency",
+    "evidence": [
+      { "text": "Taught in English", "href": "teaching.html#courses-taught" },
+      { "text": "Published in English", "href": "research.html#journal-articles" }
+    ]
+  }
+]

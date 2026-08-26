@@ -16,9 +16,12 @@ models built on it). This document owns how any of that looks. The two meet at o
 
 Classic, restrained, academic. This site descends from the orderedlist
 **Minimal** theme by way of [elyesmanai.github.io](https://elyesmanai.github.io/),
-and that lineage is the design: a sticky identity rail on the left, a plain
-document on the right, one typeface, one blue for links, hairlines for
-structure.
+and that lineage is the design: a plain document, one typeface, one blue for
+links, hairlines for structure.
+
+The theme's sticky identity rail is the one piece of the lineage that has been
+dropped. It is recorded in §4, with the reason, because a reader of this
+document will otherwise keep finding rail-shaped holes in the CSS.
 
 **What this system changes is discipline, not style.** The original look was
 hand-tuned page by page, which is why it had drifted: three different contact
@@ -72,19 +75,25 @@ of register: a serif for titles reads as *magazine*, not as *academic page*.
 |---|---|---|
 | `--text-xs` | 12px | Tags |
 | `--text-sm` | 13px | Dates, "last update", footer |
-| `--text-md` | 14px | Sidebar, contact |
-| `--text-base` | 16px | Body copy |
-| `--text-lg` | 17px | Navigation, page lede, entry titles, sidebar headings |
+| `--text-md` | 14px | Contact rows, tag-adjacent meta |
+| `--text-base` | 16px | Body copy, navigation |
+| `--text-lg` | 17px | Page lede, entry titles |
 | `--text-xl` | 19px | Section headings (`h3`) |
-| `--text-2xl` | 25px | Page title (`h1`) |
-| `--text-3xl` | 29px | The name in the sidebar |
+| `--text-2xl` | 25px | Page title (`h1`), the name in the brand bar |
 
 These are the original theme's proportions with **one change: body copy moved
 from 14px to 15px.** That step is the whole accessibility argument and costs
 nothing visually.
 
 Line height: 1.2 for headings, 1.45 for short-measure text, 1.6 for prose.
-Prose is capped at `--measure` (74ch).
+
+**Prose is capped at `--measure` (74ch), and that cap is load-bearing.** The
+column is 1100px wide; at 15px, an uncapped line runs to roughly 110 characters,
+which is past the width a reader tracks without losing the return sweep. The cap
+is on the text and never on the column, so tag rows, spec strips and runs of
+records still use the full width. Every prose container carries it: `.prose`,
+`.page-lede`, `.block__intro`, `.block__note`, `.entry__summary`,
+`.entry__meta`, `.points` and `.hero-facts`.
 
 ### Heading ramp
 
@@ -136,22 +145,44 @@ so the vertical texture of the original page survives:
 
 ## 4. Layout & containers
 
-`--container-max` 1600px at `--container-fluid` 98%, holding a fixed
-`--sidebar-width` 280px rail and a fluid content column, `--column-gap` apart.
+**One centred column, `1100px` at most, `--gutter` of padding either side.**
+Above it sits `.site-header`: the name, the role, the CV link, and the
+horizontal `.nav`. Below it, `.site-footer`.
 
-The rail is sticky and scrolls independently, so identity, credentials, the CV
-link and contact details stay reachable from anywhere in a long document:
-the most useful thing a portfolio can do for someone reading it in order to
-get in touch.
+### The rail, and why it is gone
+
+The theme this site forked from put identity in a sticky 280px rail on the
+left: portrait, name, credentials, CV link, contact details and social icons,
+scrolling independently of the document. This site shipped that for a year.
+
+It was replaced by a brand bar and a top navigation, and contact moved to its
+own page. Three things drove it:
+
+- **The rail answered one question twice.** Identity was in the rail *and* in
+  Home's page title, and the two had to be kept in agreement by hand.
+- **It cost a quarter of the viewport on every page**, including the pages
+  whose records are widest: Career's tag rows, Teaching's spec strip.
+- **It put contact details on eight pages** to make them reachable from one. A
+  nav item does that for the price of one line.
+
+What the rail was actually good at, keeping the CV link reachable from anywhere
+in a long document, is now `.site-header__cv`, at the top of every page, and it
+prints.
+
+`--container-max`, `--container-fluid`, `--sidebar-width` and `--column-gap`
+were the rail's tokens. They are deleted rather than orphaned: a token nothing
+reads is how a stylesheet starts describing a site that no longer exists.
 
 ## 5. Borders, radius & elevation
 
-`--radius-sm` 3px (tags), `--radius-md` 5px (code blocks), `--radius-full`
-(portrait only).
+`--radius-sm` 3px (tags), `--radius-md` 5px (code blocks and the portrait),
+`--radius-full` (the award medals, which are drawn in CSS).
 
-**The system is flat.** There is exactly one shadow token,
-`--shadow-portrait`, applied to exactly one element. Content is never lifted.
-Separation is a 1px hairline.
+**The system is flat, and now completely.** There is no shadow token. There
+was exactly one, `--shadow-portrait`, on exactly one element, and it went when
+the portrait stopped being a 130px round badge and became a 180 x 220
+photograph bounded by the same 1px hairline as everything else the system
+gives an edge to. Content is never lifted. Separation is a hairline.
 
 ## 6. Iconography
 
@@ -241,7 +272,7 @@ There is one model per record type. The nine in use today:
 |---|---|
 | `.tag--upstream` | Amber, and carries a link to the pull request |
 | `.tag--kind` | Blue |
-| `.tag--stack` | Grey, regular weight |
+| `.tag--stack` | Outlined, regular weight, one chip per tool |
 
 **Skills**: declared in [`skills.md`](skills.md)
 
@@ -261,19 +292,55 @@ There is one model per record type. The nine in use today:
 > in production and a row that starts blue did not.
 > [`skills.md`](skills.md) argues it in full. This is an exception with a
 > written case, not a precedent: a second one needs its own.
+>
+> **There is now a second, and it made its case on different ground.** `stack`
+> renders one chip per tool because it is the *terminal* category in every
+> model that declares it, so a run of varying length shifts no earlier
+> position, and because a joined value did not fit a phone. Skills gave up
+> positional reading in exchange for colour-run reading; `stack` gives up
+> nothing, which is why the two exceptions do not generalise into a third.
+> [`projects.md`](projects.md) carries it.
 
 **Experience**: declared in [`career.md`](career.md)
 
 | Variant | Colour |
 |---|---|
 | `.tag--domain` | Blue |
-| `.tag--stack` | Grey, regular weight: *the same rule as Projects* |
+| `.tag--engagement` | Amber: *the standing of the record, as `placement` is on an award* |
+| `.tag--mode` | Violet: *the same variant Workshops uses, for the same question* |
+| `.tag--scale` | Grey, regular weight, figure in bold: *the same rule as Awards and Teaching* |
+| `.tag--stack` | Outlined, one chip per tool: *the same rule as Projects* |
 
 **Education**: declared in [`career.md`](career.md)
 
 | Variant | Colour |
 |---|---|
+| `.tag--programme` | Amber: *the standing slot, as `engagement` is on a job* |
+| `.tag--focus` | Blue: *the substance slot, as `domain` is on a job* |
 | `.tag--accreditation` | Grey, regular weight, and carries a link to the accrediting body |
+
+**Selected Impact had a model here and no longer has one.** It declared
+`result` (amber), `figure` (grey, value in bold) and `source` (grey, linked,
+the one linked tag that stayed inside the site). All three are deleted with the
+block's move to `.result` (§9.3): a figure that leads at 17px does not need a
+chip to carry it, and a provenance line says what the `source` chip said
+without repeating the word *Career* in four rows out of five.
+
+It is worth keeping as the worked example of the rule below. The category was
+`result` and not `kind` because Projects already spends `kind`
+on what sort of artefact a project is, and the rule allows a shared name
+only where two models mean the same thing by it. *Kanboard Plugin* and
+*Recurring saving* are not the same kind of answer, so they do not share a name.
+
+**Whether a linked tag opens away from the page is derived from its address**,
+never declared beside it: `render_meta` marks a tag `.link-external` and gives
+it `target="_blank"` when the URL has a scheme, and leaves an internal citation
+bare. Marking an internal link would tell the reader it leaves the site.
+
+Education is the one model where **no record renders every category**, by rule
+rather than by accident: a category renders only where its answer is not
+already in the record's own title. Two records, two tags then one.
+[`career.md`](career.md) §2 works it through.
 
 `status` is the sharpest illustration of the rule above. *Published* and *In
 Progress* take the **same** amber, because the treatment says *this tag is a
@@ -282,9 +349,12 @@ the Research page gave *Published* a green and *In Progress* an amber, which
 read as a verdict on the record rather than as a category, and would have made
 the tag unreadable positionally the moment a third status appeared.
 
-`scale` is borrowed rather than added: it means the size of the group a record
-involved wherever it appears (`86 teams`, `12 students`) so it keeps one
-name, one meaning and one rule across the models that use it. A shared name
+`scale` is borrowed rather than added: it means the size of the thing a record
+involved wherever it appears (`86 teams`, `12 students`, `150+ pipelines`) so
+it keeps one name, one meaning and one rule across the models that use it. What
+is being counted changes with the page and the unit says which; the question
+the category answers does not change, which is what makes it one category and
+not three. A shared name
 that meant two different things would be the defect; a shared name that means
 one thing is the system working. `format` is borrowed on the same terms: on
 Workshops and on Writing alike it names the shape the deliverable takes (a
@@ -315,7 +385,7 @@ means adding one row here and one rule in `main.css`, never a colour decision
 inside a page.
 
 `.tag--scale`, `.tag--duration`, `.tag--track`, `.tag--host`, `.tag--publisher`,
-`.tag--platform`, `.tag--stack` and `.tag--accreditation` are the metadata tags at
+`.tag--platform` and `.tag--accreditation` are the metadata tags at
 regular weight: a field size, an event duration, a hackathon track, a cohort size,
 the organisation that ran the room, the house that published the paper, the site
 that hosts the article, the tools a project is built from, the body that accredits
@@ -350,7 +420,23 @@ broke it twice in one tag list: three to five loose technology chips per job,
 with the headline tool given `.tag--accent` and the rest `.tag--neutral`. The
 varying length meant no column existed to read down, and the accent graded a
 *value* (*Talend is the important one*), which is the thing rule 4 forbids.
-Both are gone; the tools render as one `stack` tag, in the order they mattered.
+
+**`stack` is the one declared exception, and it is an exception about
+position.** It renders one chip per tool, because it is the terminal category
+in every model that declares it and a run whose length varies at the *end*
+shifts nothing before it: every earlier category still lands where the reader
+expects. It is also the only way the value fits a narrow viewport, since a
+`.tag` is `white-space: nowrap` and a joined stack ran to 58 characters. The
+two defects above are unaffected and still forbidden: the chips render *after*
+the fixed categories rather than instead of them, and no tool is graded above
+another. [`projects.md`](projects.md) carries the full argument, and the
+boundary is that `stack` stops being splittable the day it stops being last.
+
+To keep the two readings apart, tool chips are **outlined rather than
+filled**: a filled chip is a dimension of the record, an outlined one is an
+item inside a dimension. That is the third exception on the site to one
+treatment per category, after Skills and the medal disc, and like them it earns
+its place by drawing a distinction the reader would otherwise have to infer.
 
 **Medals.** First, second and third place carry a small struck-metal disc
 (`.medal--gold` / `--silver` / `--bronze`) before the label. It exists so the
@@ -408,11 +494,38 @@ item**, exactly as the original CV pages were written by hand:
 
 ```
 • Title · Role                    .entry__title / .entry__role
-  Aug 2024 - Present              .entry__period   (italic, muted)
-  [tags]                          .tag-list        (§7, fixed order)
+  Aug 2024 - Present (2 years)    .entry__period   (smaller, muted, upright)
+  [tags] [tags] [tags]            .tag-list        (§7, fixed order)
+  One or two framing sentences.   .entry__summary  (optional)
   - point                         .points
   - point
 ```
+
+**That order is fixed for every record on the site**, and it is the order the
+three readers arrive in (§2 of [`CLAUDE.md`](CLAUDE.md)): what and when, then
+the scan line, then the framing, then the evidence. A recruiter reading for
+seconds gets the first three lines and stops; the summary and the bullets are
+there for whoever keeps going.
+
+Experience was the one renderer that broke it, printing a sixty-word company
+summary between the dateline and the tags, which put the page's densest
+paragraph in front of its fastest layer on the page a recruiter opens first.
+Six renderers against one settled it and Experience moved.
+
+The only sanctioned insertion is Research's citation line
+(`.entry__meta`), which sits between the period and the tags because a paper's
+authors and venue are part of identifying it rather than commentary on it:
+[`research.md`](research.md) argues it.
+
+The period line is **never italic**. A smaller size and the muted ink already
+say *secondary*, and a third de-emphasis signal on top of those buries a fact
+the recruiter reader scans for first. Career's records carry the location on
+this line too (`Paris, France &middot; Aug 2024 - Present`), because a city is
+the same kind of fact as a date and belongs beside it, not inside the title.
+
+A title line separates its parts with `&middot;`, the site's one peer
+separator. There is no second separator glyph: a run of pipes flattens facts of
+different rank into one rank, which is how a header stops being scannable.
 
 The tags carry the record's *metadata*; the bullets carry its *substance*. A
 fact stated by a tag is not repeated in a bullet: "1st Place" and "86 teams"
@@ -437,8 +550,8 @@ credential is its only dimension a reader needs, and that is already the
 `.issuer` heading the group sits under, so a tag would restate the heading on
 every row. [`career.md`](career.md) §3 has the reasoning. Volunteering is a
 single record and still comes from data, because one hand-written `.entry` is
-how the second one gets hand-written too. §10 draws the matching line for
-`.deflist` content, which does *not* all become data.
+how the second one gets hand-written too. §10 carries the matching rule for
+the "label: values" content that is *not* records.
 
 Optional `.entry__group` subdivides a long record (Data Integration / Cloud &
 Security / Observability) and is emitted by one helper, `render_group`, shared
@@ -455,13 +568,35 @@ job held, a paper published, a contest entered. A skill is a **claim about
 capability**, which is the one assertion a portfolio cannot be trusted on, so
 the component is built so the claim cannot appear without its proof:
 
+**It is the one two-column record on the site.** A fixed 15rem label column
+holds what the capability *is*; the right column flows and holds the proof:
+
 ```
-Data pipeline engineering            Production-proven   .skill__name / __standing
-Talend · MuleSoft · Apache Airflow                       .skill__tools
-[production] [certification ×3] [taught]                 .tag-list  (§7.1, fixed order)
+.skill__head (15rem)        .skill__proof (flows)
+──────────────────────────────────────────────────────────────────────
+Data pipeline engineering   (Talend) (MuleSoft) (Apache Airflow)
+Production-proven           [Azure Data Factory & Fabric at JACQUEMUS]
+   .skill__name             [API-led integration at OLIVESOFT]
+   .skill__standing         [Talend Data Integration] [MuleSoft L1]
+                            [Astronomer ×2] [Data Engineering 1 & 2]
+                               .skill__tools then .tag-list (§7, fixed order)
 ```
 
-Three things make it work, all argued in [`skills.md`](skills.md):
+The split exists because the block could not be read without it. Capability,
+tools and forty citations all ran from one left edge, so the ranking the block
+computes for itself was invisible: nothing lined up well enough to look ordered.
+A fixed label column is the same device `.contact-list` uses (§11), for the same
+reason. It collapses to one column at ≤720px, where 15rem beside a chip run
+would leave the chips about nine characters wide.
+
+**It is not boxed and it is not a table.** §9 above: a CV is a document, not a
+feed of cards. And a true five-column proof matrix (production / certification /
+taught / published / applied) would need every citation cut to roughly fifteen
+characters to fit the column, which is exactly the specificity that makes a chip
+worth clicking, and would leave 23 of 50 cells empty. The hairline between rows
+does what a card border would, at none of the cost.
+
+Five things make it work, all argued in [`skills.md`](skills.md):
 
 1. **Every chip is a link to a record elsewhere on this site**, so `check.py`
    fails the build on a citation that points nowhere.
@@ -469,65 +604,176 @@ Three things make it work, all argued in [`skills.md`](skills.md):
    typed, never chosen, and the block sorts itself by it.
 3. **The standing carries no colour.** It is a *value*, and §7.1 forbids
    styling a value. The gradient is carried by the chips, whose fixed category
-   order makes the leading colour of a row meaningful on its own.
+   order makes the leading colour of a row meaningful on its own. It stays a
+   caption rather than becoming a sub-heading that groups the rows: the block
+   already sorts on standing first, so the grouping is visible without a second
+   heading level inside a block.
+4. **Tools take the site-wide `stack` treatment**: outlined, one chip per tool,
+   regular weight, exactly as Career and Projects render them, so "a thing this
+   was built with" looks the same everywhere. They render on their **own list
+   above** the evidence and are never merged into it. The colour-run reading in
+   point 3 is a claim about the colour of a row's *first* chip, and an outlined
+   tool chip in front of the run would destroy it.
+5. **A key (`.tag-list--key`) names the five colours once, above the block.**
+   Five specimen chips rather than a worded legend, because the thing being
+   explained is a chip. It is the only tag list on the site whose chips cite
+   nothing, and the only one that does not print: the print stylesheet forces
+   every colour it explains to black.
 
 No percentages, no ratings, no bars. A self-assessed level is an opinion; "run
 in production and certified twice" is a pair of facts with links on them.
 
-## 10. Definition lists
+### 9.2 `.point__impact`: the second register inside a bullet
 
-`.deflist` handles all "category: values" content: skills, languages, impact.
-The original wrote these as `<li><b>Label:</b> values</li>`: correct on screen,
-but the pairing lived only in the punctuation.
+A bullet on Career does two different jobs. It states **what was built**, which
+is what the engineer reader is scanning for, and it states **what changed
+because it shipped**, which is what the hiring manager is scanning for. Written
+as one sentence, the second half arrives after a semicolon or inside a trailing
+participle (*"...; preserved morning reporting SLAs"*), where neither reader
+finds it.
 
-`.deflist` renders **identically** (bullet, bold label, colon, values, all on
-one line) while being a real `<dl>`. The `.deflist__item` wrapper `<div>` is
-valid inside a `<dl>` and is what lets a `dt`/`dd` pair share one list marker.
+`.point__impact` is a block-level `<span>` at the end of the `<li>`, opened by a
+bold `Impact:` label:
 
-### When a list is data and when it is markup
+```
+- Reduced Azure infrastructure spend by €1,400 per month by automating
+  development-environment shutdowns, matching compute size to each
+  environment, and redesigning shared Spark pools.
+      Impact: a recurring saving, taken with no SLA impact on the morning
+      reporting pipelines.
+```
 
-§9 settles it for `.entry`: those are records and always come from `src/data/`.
-A `.deflist` is the case that needed a rule of its own, because Skills,
-Languages and Selected Impact are the same component doing two different jobs.
+Three decisions:
+
+- **The label keeps the heading ink, the sentence does not.** The sentence is
+  muted and one step down in size, so the bullet still reads as the primary
+  statement; the label stays dark because it is the anchor a recruiter scans a
+  column of bullets for. The inverted weighting `.specs` uses (§10.1), applied
+  to prose.
+- **It is a span, not a nested list.** A second `<ul>` inside the `<li>` would
+  say *these are sub-points*, and there is only ever one. Printed, the line
+  stays with its bullet.
+- **It is not on every bullet, and that is enforced editorially, not
+  visually.** The rule for which bullets earn one is in
+  [`career.md`](career.md) §6. A page where every bullet carries an impact line
+  teaches the reader to skip the line by shape.
+
+The label text lives in `IMPACT_LABEL` in `tools/build.py`, never in the data:
+[`awards.md`](awards.md) rule 7.
+
+### 9.3 `.result`: the figure-led record
+
+Home's Selected Impact. Three parts, in this order and this rank:
+
+```
+€1,400 per month   A recurring monthly saving on the platform budget,   result__consequence
+                   taken with no SLA impact on the morning reporting
+result__figure     pipelines.
+                   JACQUEMUS · Career                                   result__source
+```
+
+The figure sits in a fixed 13rem column at `--text-lg` in heading ink, which is
+**the slot and the size `.entry__title` had**. The consequence flows beside it
+at body size, capped to the measure. The provenance line closes it at
+`--text-sm` in muted ink.
+
+**Why this is not an `.entry`.** It was one. `.entry` is the component for a
+dated record living on its own page: a job, a project, an award, each with a
+title, a period and a body of its own. A Selected Impact record has none of
+those. It is a pointer to a result, and forcing it into `.entry` required
+inventing all three:
+
+| `.entry` required | The block invented | The cost |
+|---|---|---|
+| A title | A topic label (*Azure cost control*) | 17px bold for a category |
+| Metadata tags | A `figure` chip | 12px grey for the number the block exists to show |
+| A period | A company dateline | *Aug 2024 - Present* rendered three times on one page |
+| A uniform shape | A bare `2026` | The one non-job record looking broken |
+| Nothing that links | A `source` chip | An identical grey *Career* in four rows of five |
+
+A reader scanning the block got categories, not outcomes. §10.1 had already
+stated the correct principle for the spec strip (*the reader is scanning the
+figures, so the label recedes and the value carries the weight*) and it is far
+more true here.
+
+**This is the fourth user of the label-column idiom** (`.contact-list__row`,
+`.skill`, `.hero-facts`, `.result`). That is now the site's answer to "a short
+fixed thing and a long flowing thing side by side", and a fifth case should use
+it rather than invent a sixth shape.
+
+**Entries are still never boxed**, and neither is this.
+
+## 10. The rule that emptied a component
+
+`.deflist` handled "category: values" content: a real `<dl>` rendering as a
+bullet, a bold label, a colon and the values, all on one line. **It is gone.**
+Not deprecated: deleted, along with its section of the stylesheet, because the
+rule below took its last user.
+
+That rule is the one worth keeping:
 
 > **A list stays in its page fragment when that page is the only place its
 > facts live. It becomes data when it restates facts held elsewhere on the
 > site.**
 
-Languages is the sole source of truth for what it says, so it stays in the
-fragment: nothing else on the site claims a proficiency, and moving three
-`dt`/`dd` pairs into JSON would buy a build step and no guarantee. Domains is
-the same case.
+§9 settles it for `.entry`: those are records and always come from
+`src/data/`. `.deflist` was the case that needed a rule of its own, because
+Skills, Languages, Domains and Selected Impact once looked like one component
+doing four different jobs. Applying the rule to each in turn is what emptied
+it, one user at a time, and each departure is the rule working rather than a
+component falling out of favour.
 
-**Skills used to be that example, and stopped being it.** The moment the block
-began citing the records that prove each capability, it started restating facts
-held elsewhere, which is the second half of the rule, and it moved to
-`src/data/skills.json` on its own component (`.skills`, §9.1). The migration
-was not a change of mind about the rule; it is the rule working. See
-[`skills.md`](skills.md).
+**Domains** was one row listing five industries. §10.1 already says that shape
+should be a sentence, and it was the one capability-shaped claim on Home that
+Skills & Evidence did not govern: no citation, no record, nothing to check. It
+is deleted. Career's `domain` tags say the same thing with a dated record under
+each one, which is the difference between a keyword and a claim.
 
-Selected Impact is the opposite and the reason the rule exists. Every line in
-it is a second telling of a record on another page (a saving from a job, a
-placement from a contest, a pull request from a project) so it is the one
-block that can quietly contradict the site it sits on. It did: the front page
-read *2 plugins accepted upstream, both listed in the official directory* while
-`projects.json` had both pull requests still `open`, and the promotional
-version was the one a visitor read first. The records now live in
-`src/data/impact.json` beside what they summarise, each with a mandatory
-`source` page whose link text is read from the navigation in `site.json`, so a
-citation cannot name one page and point at another.
+**Skills** began citing the records that prove each capability, which is the
+second half of the rule, and moved to `src/data/skills.json` on its own
+component (`.skills`, §9.1). See [`skills.md`](skills.md).
 
-The figure itself is still written by hand, and deliberately: deriving
+**Selected Impact** went further than the rule asked. Every line in it is a
+second telling of a record on another page, so it is the one block that can
+quietly contradict the site it sits on. It did, twice, in both directions: the
+front page read *2 plugins accepted upstream, both listed in the official
+directory* while `projects.json` had both pull requests `open`, and later read
+*submitted upstream, both open* after they had merged.
+
+Moving it into `src/data/impact.json` fixed the link and left the sentence
+alone, which was the half that had drifted. So the block stopped being a
+`.deflist` and stopped writing sentences: it is now `.entry` records on the
+`.result` component (§9.3), and each one **quotes** the bullet it cites through an
+id. The sentence, the period line and the anchor all come out of that id.
+[`home.md`](home.md) carries the mechanism.
+
+The figure is the one claim still written by hand, and deliberately: deriving
 "€1,400 per month" would mean parsing a prose bullet, and a parser that guesses
-is a worse liar than a person who checks. That half is an editorial rule, and
-it is stated in the fragment directly above the block.
+is a worse liar than a person who checks. It is linted rather than parsed, by
+asserting the value appears verbatim in the text the record cites, which catches
+the failure that actually happens without pretending to understand prose.
+
+**Languages** was the last user, and it left for the other reason: not because
+it restated anything, but because a block heading, a pitch line and a `<dl>`
+were more format than three proficiency ratings can fill. It is one
+row of `.hero-facts` in Home's opening now (§10.2), beside Availability and
+Certified, which are the other two facts a recruiter filters on. A filter
+reached last on the page is a filter applied by guessing. It is also data now,
+`src/data/languages.json`, because two of its three rows cite Teaching: the
+first half of the rule above, applied to the block that the second half had
+just moved.
+
+**Nothing should bring `.deflist` back.** A new "label: values" list is either
+data (so it is `.entry` records, §9) or it is one line of prose, and the
+component existed to sit between those two answers.
 
 ### 10.1 `.specs`: the spec strip
 
-The variant `.deflist` could not absorb. A `.deflist` is one label and its
-values on **one line**; the Teaching appointment needed three *groups* of
-several rows each, aligned as columns, and a `<dd>` holding another list stops
-being the pairing `.deflist` exists to render.
+The variant the retired `.deflist` could not absorb, and the reason it
+outlived it. A `.deflist` was one label and its values on **one line**; the
+Teaching appointment needed three *groups* of several rows each, aligned as
+columns, and a `<dd>` holding another list stopped being the pairing that
+component existed to render.
 
 ```
 Workload              Language & Tooling     Assessment
@@ -551,9 +797,10 @@ Three decisions worth keeping:
   row and column position. `auto-fit` is what lets them collapse to one column
   on a narrow screen with no breakpoint of their own, and what keeps Principle
   1 intact: printed, it is still three headed lists.
-- **The weighting is inverted from `.deflist`.** There the bold label is what
-  you scan for; here the reader is scanning **figures**, so the label recedes
-  to regular weight and the value takes the heading ink and the right edge.
+- **The weighting is inverted from the old `.deflist`.** There the bold label
+  was what you scanned for; here the reader is scanning **figures**, so the
+  label recedes to regular weight and the value takes the heading ink and the
+  right edge.
   Hours and percentages stack into a readable column instead of hiding
   mid-sentence.
 - **It is the one intro-level component with no `--measure` cap.** The cap
@@ -561,8 +808,50 @@ Three decisions worth keeping:
   above the strip keeps its cap; the strip uses the full content column.
 
 Reach for it only when a block has **several constants of different kinds** to
-state at once. Two labelled facts are a `.deflist`; one is a sentence.
+state at once. One or two labelled facts are a sentence, or a `.hero-facts`
+row if the page is Home (§10.2).
 
+
+### 10.2 `.hero-facts`: the fact strip
+
+Home's opening carries the three things a recruiter filters on before reading
+anything else: **mobility, credentials, languages.** They sit under the pitch
+as a label column.
+
+```
+Availability   EU residence permit holder. Open to relocation within the EU
+               and to fully remote roles.
+Certified      Microsoft ×3 · Astronomer ×2 · MuleSoft · Talend · Datadog ×3
+Languages      Arabic     Native
+               French     Full professional proficiency
+                          Taught in French
+               English    Full professional proficiency
+                          Taught in English · Published in English
+```
+
+**Why a grid and not three sentences with a bold label.** The first two rows
+work either way. Languages does not: it is three pairs, so an inline run needs
+one separator to divide the languages and another to bind each name to its
+level, and a middot cannot do both jobs at once. What that collapses into,
+and what shipped for one revision, was:
+
+> Languages: Arabic (native) · English and French (full professional proficiency)
+
+Two languages merged because printing the level twice was too long, and the
+reader has to work out whether the middot is separating languages or
+qualifying one. The grid separates by alignment and needs no punctuation.
+
+**The middot survives on one row, correctly.** Five issuers are short peers
+with no internal structure, which is precisely the case §6 of
+[`CLAUDE.md`](CLAUDE.md) gives it.
+
+**Rows are heterogeneous by design**: a sentence, a link run, and a nested pair
+list. That is why the hairline between them is the one `.skill` uses, and why
+`dt` recedes to `--color-muted` while the values carry the ink.
+
+**What may go in it.** Only a fact the first reader filters on. Anything else
+is a record, and records go in blocks with a citation. The strip is not a
+place to park things that failed to earn a block.
 
 ## 11. Page structure
 
@@ -571,13 +860,13 @@ Every page is the same stack:
 ```
 page-header   h1 + optional lede
 block         h3 (underlined) + optional intro
-              + entries, deflist or skills
+              + entries or skills          
               + optional note                                        ← repeated
 ```
 
-Each page has exactly one `<h1>`: its own title. The site name in the rail is
-a link styled to the old `h1`'s size, not a heading, so every page gets a
-unique document outline. Enforced by `tools/check.py`.
+Each page has exactly one `<h1>`: its own title. The site name in the brand bar
+is a link styled to the `h1`'s size, not a heading, so every page gets a unique
+document outline. Enforced by `tools/check.py`.
 
 ### 11.1 Section intros: one line, and it is the pitch
 
@@ -656,14 +945,28 @@ tables inherited its styling and **no page could show which one you were on**.
 `.nav` keeps the look (evenly distributed links over a hairline) as a list,
 with `aria-current="page"` rendered as bold ink.
 
+### 12.1 Book shortcuts sidebar navigation
+
+`.book-toc` is a hierarchical outline navigation tree (book shortcuts table of contents) positioned in the left margin area on desktop viewports.
+It is generated dynamically at build time by parsing sections (`h2`, `h3` inside `section[aria-labelledby]`) and subsections (record entries, companies, publications, projects, etc.).
+On desktop (`>1024px`), it occupies the left margin column as a sticky outline tree (`.sidebar-context`). On narrower screens (`≤1024px`), it renders as a clean bordered outline card above the page content.
+
 ## 13. Responsive behaviour
+
+The layout is one column at every width, so there is no column count to
+collapse. What the breakpoints do is release the container, tighten space, and
+keep the navigation usable once eight items stop fitting.
 
 | Breakpoint | Change |
 |---|---|
-| >960px | Two columns, sticky rail |
-| ≤960px | One column; the rail becomes a centred band above the document (the theme's own breakpoint) |
+| >960px | The column is centred and capped at 1100px |
+| ≤960px | The cap is released and the column takes the viewport; footer centres |
 | ≤720px | Padding tightens; nav items shrink-wrap |
-| ≤480px | Navigation scrolls horizontally, bleeding to the viewport edges so the affordance is visible; type steps down |
+| ≤600px | Home's hero stacks: portrait above the bio, centred; the brand bar stacks |
+| ≤480px | Navigation scrolls horizontally, bleeding to the viewport edges so the affordance is visible; the portrait steps to 140 x 170; type steps down |
+
+Prose stays readable at every one of these without a rule of its own, because
+`--measure` is in `ch` and therefore already relative to the type size (§1).
 
 ## 14. Motion
 
@@ -673,7 +976,8 @@ under `prefers-reduced-motion: reduce`.
 ## 15. Accessibility
 
 - Skip link to `<main>`.
-- Landmarks: rail `<header>`, `<nav aria-label="Primary">`, `<main>`.
+- Landmarks: `<header class="site-header">`, `<nav aria-label="Primary">`,
+  `<main id="main">`, `<footer class="site-footer">`.
 - One `<h1>` per page; every block labelled with `aria-labelledby`.
 - `:focus-visible` outline on every interactive element.
 - Every `<img>` has an `alt` (empty when decorative).
@@ -690,8 +994,10 @@ The site answers hiring questions in order:
 
 | Question | Where |
 |---|---|
-| Who is this engineer? | Rail identity + Home page title |
-| How do they work? | Home → Profile |
+| Who is this engineer? | Brand bar + Home hero |
+| What are they doing right now? | Home → Currently |
+| What have they built with, and for how long? | Home → the opening, then Currently |
+| How do they work? | Career → Summary |
 | What can they actually do, and how would I know? | Home → Skills & Evidence |
 | What impact did they create? | Home → Selected Impact |
 | What problems have they solved? | Career → Experience |
@@ -699,12 +1005,12 @@ The site answers hiring questions in order:
 | How technically deep are they? | Research, Workshops, Teaching |
 | Can I trust their engineering practices? | Career → Certifications (all verifiable) |
 | Where can I verify their work? | Every entry links to source, badge or DOI |
-| How do I reach them? | The rail, on every page |
+| How do I reach them? | Contact, and the CV link in the brand bar |
 
 ## 17. Extending the system
 
-1. Reach for an existing component first. `.entry` and `.deflist` cover almost
-   everything on the site.
+1. Reach for an existing component first. `.entry` alone covers almost
+   everything on the site, and `.tag` covers most of the rest.
 2. If a new component is genuinely needed, build it from tokens only. A literal
    in a component rule is a bug.
 3. Check it against **Explicitly out of scope** at the top of this document.

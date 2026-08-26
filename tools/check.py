@@ -7,7 +7,8 @@ There is no test framework here because there is no application code: the
 things that actually break on a static portfolio are dead links, a class name
 that exists in the markup but not the stylesheet, a stray inline style, and an
 image with no alt text. This checks exactly those, plus that the committed
-pages match their sources.
+pages match their sources, plus CLAUDE.md's dash ban across the whole
+repository rather than only the built pages.
 """
 
 from __future__ import annotations
@@ -23,6 +24,20 @@ ROOT = Path(__file__).resolve().parent.parent
 CSS = ROOT / "assets" / "css" / "main.css"
 VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link",
         "meta", "param", "source", "track", "wbr"}
+
+# CLAUDE.md's dash ban. The glyphs are written as escapes and the entities are
+# assembled from a fragment so that this file does not trip the audit it
+# defines: the same trap that made the rule's own paragraph in CLAUDE.md the
+# one permanent false positive of a repository-wide search.
+DASH_MARKS = {
+    "\u2014": "em dash",
+    "\u2013": "en dash",
+    "&" + "mdash;": "em dash entity",
+    "&" + "ndash;": "en dash entity",
+}
+# The ban covers every file, so this walks sources rather than built pages.
+DASH_SUFFIXES = {".html", ".css", ".json", ".md", ".py", ".txt", ".yml", ".yaml"}
+DASH_SKIP_DIRS = {".git", "__pycache__", "node_modules"}
 
 failures: list[str] = []
 notes: list[str] = []
@@ -119,6 +134,26 @@ def css_variable_audit() -> None:
         notes.append(f"tokens defined but not consumed by any rule: {', '.join(unused)}")
 
 
+def dash_audit() -> None:
+    """Fail on an em dash or en dash anywhere in the repository's sources.
+
+    CLAUDE.md bans both because the em dash is the loudest tell that a passage
+    was machine-written, and the site's whole argument is that a person wrote
+    it. The rule was enforced by hand until it was not: one survivor in a
+    paragraph undoes the rest, and nothing was looking.
+    """
+    for path in sorted(ROOT.rglob("*")):
+        if path.suffix not in DASH_SUFFIXES or not path.is_file():
+            continue
+        if DASH_SKIP_DIRS & set(path.relative_to(ROOT).parts):
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        for number, line in enumerate(text.splitlines(), 1):
+            hit = next((n for m, n in DASH_MARKS.items() if m in line), None)
+            if hit:
+                fail(str(path.relative_to(ROOT)), f"line {number}: {hit}")
+
+
 def main() -> int:
     pages = sorted(p for p in ROOT.glob("*.html"))
     if not pages:
@@ -127,6 +162,7 @@ def main() -> int:
 
     known_classes = css_selectors()
     css_variable_audit()
+    dash_audit()
     used_classes: set[str] = set()
 
     for page in pages:

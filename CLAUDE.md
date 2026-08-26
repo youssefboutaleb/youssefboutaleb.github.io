@@ -27,8 +27,8 @@ per visit, without asking anyone for a different file.
   two-page version had to cut.
 - Nothing is "extra content". If it is on the site it is CV material and must
   survive the same scrutiny as a line on the PDF.
-- The PDF CV in the rail and this site are two renderings of one career. They
-  must never contradict each other on a date, a title or a number.
+- The PDF CV in the brand bar and this site are two renderings of one career.
+  They must never contradict each other on a date, a title or a number.
 
 ## 2. Who reads it, and what success is
 
@@ -85,10 +85,15 @@ Written for **France / EU**, **remote international**, and the **Gulf / MENA**.
   the contest or the school. The scope and scale tags already do this work,
   see [`awards.md`](awards.md). Do not add explanatory asides about local
   institutions; link them and let the numbers carry it.
-- **Mobility is stated, not left to be guessed.** The rail carries an
-  *Availability* block on every page: *EU residence permit holder. Open to
-  relocation within the EU and to fully remote roles.* A recruiter who has to
-  wonder filters silently, and the candidate never finds out it happened.
+- **Mobility is stated, not left to be guessed.** *EU residence permit holder.
+  Open to relocation within the EU and to fully remote roles.* A recruiter who
+  has to wonder filters silently, and the candidate never finds out it happened.
+
+  **The sentence has one owner: `availability` in [`src/site.json`](src/site.json).**
+  It renders in Home's hero and on Contact, from that one string, and it is
+  never typed into a fragment. This is not tidiness. When the three places that
+  carried it each held their own copy, all three said something slightly
+  different, which is exactly the drift the next paragraph forbids.
 
   **The wording is deliberately bounded and must not be strengthened.** It says
   the EU residence question is already solved, which is the fact that matters,
@@ -112,7 +117,15 @@ damaged the site. Any proposal to reverse one goes to the author first.
 | Keep it to one or two pages | Holds the long version, in full | That is the entire point of §1. Brevity is served by the depth dial, not by deletion. |
 | No photo, no personal detail | Keeps the portrait and a first-person voice | A hiring manager hires a person. The warmth is bounded, see §6. |
 | Stuff keywords for the ATS | Writes for humans, accepts some filter loss | This site is read by people who chose to open it. Keyword padding would corrupt the prose for readers who matter, to satisfy a machine that was going to be bypassed anyway. |
-| Show only the wins | Shows unmerged PRs, in-progress papers, honest placements (643rd of 7,094) | An engineer trusts a page that admits what has not landed yet. Selective reporting is the fastest way to lose the third reader. |
+| Show only the wins | Shows in-progress papers, honest placements (643rd of 7,094), and capabilities with no production record at all | An engineer trusts a page that admits what has not landed yet. Selective reporting is the fastest way to lose the third reader. |
+
+The clearest current example is Home's Skills & Evidence. Two rows carry no
+production citation: Airflow is certified twice and taught, and Spark is taught
+only, and both say so. Leaving them out would make the block shorter and
+stronger-looking and would destroy it, because a matrix where everything is
+maximally proven is a matrix nobody believes. The Kanboard pull requests used to
+be the example here; they were shown while open, and they have since merged,
+which is the ordinary way this rule pays off.
 
 ## 6. Voice
 
@@ -120,9 +133,14 @@ damaged the site. Any proposal to reverse one goes to the author first.
 
 **Warmth in the curiosity half; clinical precision in the credential half.**
 
-| Warm (first person, personal, allowed to show delight | Clinical) factual, dated, checkable |
+| Warm: first person, personal, allowed to show delight | Clinical: factual, dated, checkable |
 |---|---|
 | Projects · Workshops · Writing · Teaching | Career · Education · Certifications · Research (journal) |
+
+**Home sits on the line, deliberately, and that is why it is the hardest page
+to write.** The hero and the Profile paragraph are first person and warm; the
+Currently block, Skills & Evidence and Selected Impact are records and read
+clinically. The pitch lines carry the warmth so the records do not have to.
 
 The contrast is itself the argument: *this person can be human and rigorous, and
 knows which situation calls for which.* A site that is warm everywhere reads
@@ -139,10 +157,17 @@ system exists to avoid looking like a template; the prose must not undo it.
 
 ### No dashes, anywhere in the repository
 
-**The em dash (`—`, `&mdash;`) and the en dash (`–`, `&ndash;`) are banned.**
-Not discouraged: banned. This holds for every file, not only the prose a
-visitor reads: page fragments, `src/data/*.json`, the model documents, this
-file, CSS comments and the docstrings in `tools/`.
+**The em dash and the en dash are banned.** Not discouraged: banned. That
+covers the characters themselves (U+2014 and U+2013) and their HTML entities.
+It holds for every file, not only the prose a visitor reads: page fragments,
+`src/data/*.json`, the model documents, this file, CSS comments and the
+docstrings in `tools/`.
+
+**Neither character is printed in this paragraph, deliberately.**
+`tools/check.py` fails the build on all four forms, and until it did, the rule
+was enforced by searching the repository. A rule that spelled out the thing it
+forbids was then the one hit that search always returned, which is the whole
+reason it names them by codepoint now.
 
 The em dash is the single loudest tell that a passage was machine-written, and
 this site's whole argument is that a person wrote it. One survivor in a
@@ -162,8 +187,14 @@ A colon is the default and is right most of the time. It is wrong before a
 conjunction: *"stated once: so a tag would restate it"* is not English, and
 that case takes a comma.
 
-`&middot;` is the site's established peer separator, already used by the tag
-renderer and `.skill__tools`. Do not invent a third one.
+`&middot;` is the site's established peer separator, used by the tag renderer,
+by every `.entry__title` that joins a role to a company, and by the dateline
+that joins a location to a period. Do not invent a third one.
+
+It is *not* how a list of tools is written any more. Tools render as outlined
+`.tag--stack` chips on Career, Projects and Home alike, which is one vocabulary
+for *a thing this was built with*: [`skills.md`](skills.md) and
+[`projects.md`](projects.md).
 
 ### The one prose rule
 
@@ -184,8 +215,16 @@ Reference examples, from Awards:
 | **Pitch** | Why this work exists, what it shows about the person | `block__intro`: one line per block |
 | **Capability** | What I can do, and the records that prove it | `.skill` rows, from `src/data/skills.json` |
 | **Evidence** | What was built, where, when, with what result | `.entry` records, from `src/data/` |
+| **Consequence** | What changed for the business because it shipped | `.point__impact`, one line under the bullet that earned it |
 | **Provenance** | Where a hand-copied figure came from, and when | `block__note`, beneath the records |
 | **Mechanics** | How a block works, what a tag means, why | The model documents, never the page |
+
+**Consequence is written once and may be read twice.** Home's Selected Impact
+does not summarise a bullet, it quotes the bullet's own `impact` line through an
+id, so the two pages share a sentence rather than keeping two in agreement. If a
+sentence would be true on Home and on Career, that is the signal it belongs on
+the record and is cited from Home, never that it should be written in both
+places. [`home.md`](home.md).
 
 ## 7. The depth dial (planned)
 
@@ -205,6 +244,15 @@ out of sync with the first.
 
 **Full is the default and the canonical version.** Brief is a lens on it.
 
+**The mechanism is no longer theoretical.** Home already renders two blocks as
+projections of records held elsewhere: *Currently* prints `experience[0]`'s
+title, dateline and tags with no content of its own, and *Selected Impact*
+quotes a bullet's `impact` line through an id. Both prove the thing M2 depends
+on, which is that a shorter rendering can be a *view* of the data rather than a
+second body of prose. What they do not prove is the hard part: a global control,
+and a Brief projection for every record type on the site rather than two.
+[`home.md`](home.md) carries what was learned.
+
 **On Principle 1.** [`DESIGN.md`](DESIGN.md) opens with *"a document, not an
 interface"*, and a control is an interface element. The dial is admissible as
 the single exception because it is a **reading aid, not a feature**: it changes
@@ -219,10 +267,11 @@ merely *not done yet* versus what was *decided against*.
 
 | # | Milestone | Notes |
 |---|---|---|
-| **M1a** | ~~Skills & Evidence block~~ **done** | Home's Skills list became a skill → evidence matrix: capabilities with tools beneath, citations linked to the records that prove them, standing derived from what those citations are. Model in [`skills.md`](skills.md). |
-| **M1** | **Prove data engineering ability, harder** | The author's first concern, and the site's biggest gap. Content to be written by hand: deeper job bullets naming systems, volumes and failure modes; pipeline case studies (problem → architecture → trade-offs → what broke → what changed); at least one real architecture diagram; possibly a *How I work* page from the operating doctrine already on Home. **Author-led: do not auto-generate this content.** |
-| **M2** | **The Brief / Full depth dial** | Spec in §7. Build after M1, so there is something worth reading in Full. |
-| **M3** | ~~Mobility line~~ **done** | *Availability* block in the rail: EU residence permit, open to EU relocation and remote. Text in `src/site.json`. |
+| **M1a** | ~~Skills & Evidence block~~ **done** | Home's Skills list became a capability → evidence block: a fixed label column carrying the capability and its derived standing, and a flowing column carrying its tools and every record on the site that proves them. A true five-column matrix was considered and rejected on measurements; the argument is in [`skills.md`](skills.md). |
+| **M1** | **Prove data engineering ability, harder** | The author's first concern, and the site's biggest gap. **Partly landed.** Done: job bullets naming systems, volumes and failure modes, each with its consequence on a `.point__impact` line; Home's *Currently* block, which puts the current platform and its scale on the front page as a projection; Selected Impact rebuilt to quote those bullets rather than paraphrase them. Still open, and **author-led**: pipeline case studies (problem → architecture → trade-offs → what broke → what changed), at least one real architecture diagram, and possibly a *How I work* page from the doctrine now in Career's Summary. **Do not auto-generate this content.** |
+| **M1b** | ~~Home rebuilt~~ **done** | Home became the page it claims to be: one rule (restate only by projection, citation or quotation), a *Currently* projection, Selected Impact quoting the bullets it cites, Volunteering moved to Career, Domains deleted, and a model document that did not exist before. [`home.md`](home.md). |
+| **M2** | **The Brief / Full depth dial** | Spec in §7. Build after M1, so there is something worth reading in Full. Two blocks on Home are already projections, which proves the mechanism but not the control. |
+| **M3** | ~~Mobility line~~ **done** | EU residence permit, open to EU relocation and remote. One string, `availability` in `src/site.json`, rendered in Home's hero and on Contact. |
 | **M4** | **French version** | After the English site is stable. Must not fork the content model: one source, two renderings, or it is not worth doing. |
 | **M5** | **Refresh cloud & integration framing** | Author intends to revisit how this is presented so it sharpens rather than dilutes the Data Engineering claim (§3). |
 
@@ -237,10 +286,23 @@ The site's honesty rules already exist and are enough:
   *as of* date move in one change, or neither does.
 
 **Do not add another layer of prohibitions on top of these.** They are already
-enforced by the data model (records come from `src/data/`, figures render from
-stored values, external markers are derived from URLs), which is stronger than a
-list of things not to do. Judgement covers the rest, and a borderline claim goes
-to the author rather than to a rule.
+enforced by the data model, which is stronger than a list of things not to do.
+What the build refuses to produce, today:
+
+| The build fails on | So this cannot happen |
+|---|---|
+| A citation pointing at a page or anchor that does not exist | A skill or an impact line citing proof the site does not carry |
+| A Selected Impact figure absent from the bullet it cites | A bullet edited and its figure on Home left behind |
+| An impact record with both `cite` and `evidence`, or neither | Two hand-written copies of one sentence, drifting apart |
+| Two bullets sharing an id | A citation landing on the wrong evidence |
+| A `result` written beside `upstream_prs` | Home calling a pull request *submitted* while Projects calls it *accepted* |
+| A built page that has drifted from its source | A hand-edit to a generated file surviving a rebuild |
+
+Every one of those was added *after* the failure it prevents actually shipped.
+That is the pattern to follow: when a claim goes wrong, the fix is a guard in
+`tools/` or a shape in the data, not another sentence in this file. Judgement
+covers the rest, and a borderline claim goes to the author rather than to a
+rule.
 
 What the pitch layer gets is one line per block to be persuasive in (§6). It
 does not get to claim what the records below it cannot support, not because a
@@ -268,6 +330,13 @@ it:
    (discuss architecture → clarify/fill missing facts → apply changes → rebuild & verify)
    and close it cleanly before starting the next.
 
+**The runnable form of this is [`.claude/skills/rework/SKILL.md`](.claude/skills/rework/SKILL.md).**
+This section says what the method is; that file says how to run it, phase by
+phase, and carries the lessons each pass has taught. Invoke it with `/rework`,
+or just follow it. When a pass teaches something worth not relearning, it goes
+in that file's **Lessons** section, not here: this document stays the argument,
+the skill stays the procedure.
+
 Two things are unchanged by this:
 
 - **Positioning, claims, numbers, legal status**: always the author's call,
@@ -293,6 +362,21 @@ Two things are unchanged by this:
   `main.css`, an inline style, a missing `alt`, a duplicate `id`, and on a built
   page that has drifted from its source.
 
+  **`build.py` fails first, and on different things.** It raises on an unknown
+  template key, a citation naming an id nothing carries, two bullets sharing an
+  id, an impact figure absent from the text it cites, and the contradictory
+  record shapes in the table in §9. A build that completes has already passed
+  those; `check.py` then checks what the markup says.
+
+- **Every page has a model document, and it owns the rules for that page.**
+  Read it before changing the page: [`home.md`](home.md),
+  [`career.md`](career.md), [`projects.md`](projects.md),
+  [`research.md`](research.md), [`writing.md`](writing.md),
+  [`teaching.md`](teaching.md), [`workshops.md`](workshops.md),
+  [`awards.md`](awards.md), [`skills.md`](skills.md). Contact is the one page
+  with no model document yet, which is why it is also the one page carrying
+  components [`DESIGN.md`](DESIGN.md) does not know about.
+
 ## 12. Where the reasoning lives
 
 | Document | Owns |
@@ -302,6 +386,13 @@ Two things are unchanged by this:
 | [`awards.md`](awards.md) | The entry metadata convention every page follows |
 | [`README.md`](README.md) | How to add each kind of record |
 | [`skills.md`](skills.md) | The Skills & Evidence block: the proof model, and the rule it breaks |
+| [`home.md`](home.md) | Home: the page that restates, and the three mechanisms that keep it honest |
 | `career.md` · `projects.md` · `research.md` · `writing.md` · `teaching.md` · `workshops.md` | The model for one page each |
+
+**Contact has no model document.** It is the newest page, it hand-writes contact
+details `src/site.json` already holds, and it carries eight component classes
+[`DESIGN.md`](DESIGN.md) has never heard of. Those three facts are one fact: the
+page with no owner is the page that drifted. Writing `contact.md` is the first
+step of fixing it, not the last.
 
 If a rule is worth following twice, write it into the document that owns it.

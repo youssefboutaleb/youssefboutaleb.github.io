@@ -5,14 +5,14 @@ served directly by GitHub Pages.
 
 ## Architecture
 
-The seven published pages share an identical head, sidebar, navigation and
+The eight published pages share an identical head, brand bar, navigation and
 footer. Those are written **once** and rendered into the pages by a build step,
 so the site cannot drift out of sync with itself again.
 
 ```
 src/
-  site.json          identity, contact details, social profiles, navigation
-  layout.html        the page shell: head, sidebar, nav, footer
+  site.json          identity, availability, contact details, socials, navigation
+  layout.html        the page shell: head, brand bar, nav, footer
   partials/          item templates for the repeated lists in the shell
   pages/*.html       page content only, one file per page
   data/*.json        records rendered from structured fields (see below)
@@ -159,10 +159,12 @@ address from the stored repo and number, and the tag *is* the link, keeping its
 category's amber. That amber is deliberate: `state` is stored raw and
 `UPSTREAM_STATES` turns `open` into `Submitted upstream` and `merged` into
 `Accepted upstream`, both in the same colour, because the treatment says *this
-is an upstream status* and never *this one is the good one*. `stack` is a list
-rendered as a **single** tag, capped at four names: `teaching.md` deleted an
-earlier `stack` category that rendered a chip per tool, because a run whose
-length varies per record destroys positional reading. Full rationale in
+is an upstream status* and never *this one is the good one*. `stack` is a list rendered as
+**one outlined chip per tool**, capped at four names. It is the site's one
+category that renders a chip per value, and it is admissible because `stack` is
+always the *last* category in its model, so a run whose length varies shifts
+nothing before it and every earlier category still reads down its column. Full
+rationale, including what the old hand-written chip runs actually got wrong, in
 [projects.md](projects.md).
 
 ### Adding a publication
@@ -239,59 +241,113 @@ here and rendered once on Research.
 
 ### Adding a job
 
-`src/data/experience.json`, rendering `domain → stack`:
+`src/data/experience.json`, rendering
+`domain → engagement → mode → scale → stack`:
 
 ```json
 {
   "company": "JACQUEMUS",
   "url": "https://www.linkedin.com/company/jacquemus/posts/?feedView=all",
-  "role": "Data Integration Engineer &amp; Operations Engineer",
+  "role": "Data Engineer",
   "start": "2024-08",
-  "domain": "E-commerce &amp; Retail",
-  "stack": ["Talend", "Azure", "Datadog", "Salesforce"],
+  "location": "Paris, France",
+  "domain": "Luxury E-commerce &amp; Retail",
+  "engagement": "Permanent",
+  "mode": "Remote",
+  "scale": { "count": 150, "unit": "pipelines", "minimum": true },
+  "stack": ["Azure Data Factory", "Azure Fabric", "Apache Spark", "Datadog"],
+  "summary": "JACQUEMUS is a French luxury fashion house selling …",
+  "home_summary": "Order, customer, product and pricing data into a medallion lakehouse …",
   "groups": [
-    { "title": "Observability", "points": ["Deployed a real-time Datadog monitoring solution …"] }
+    { "title": "Monitoring &amp; Observability", "points": [
+      { "point": "Instrumented ingestion workloads with Datadog APM …",
+        "impact": "Alert coverage across the 150+ job estate, so a silent failure …" }
+    ] }
   ]
 }
 ```
 
-Two categories, because two is what the records honestly support. The
-hand-written page carried three to five loose technology chips per job, with
-the headline tool in `.tag--accent` and the rest in `.tag--neutral`: a run whose
-length changed per record, so no column existed to read down, and an accent that
-graded a *value* rather than naming a category. They are now one `stack` tag,
-the same category `projects.json` declares, capped at four names. `domain` is
-the blue substance slot: it answers what the *data* was about, which the job
-title does not: two of the three roles here are titled Data Integration
-Engineer, and one moved e-commerce orders while the other moved service-desk
-tickets. There is deliberately **no** `engagement` category (permanent /
-contract / internship): the fact is not recorded anywhere, and rule 5 says a
-gap beats an invented placeholder.
+**A bullet gains an `id` only when Home's Selected Impact cites it.** The id
+becomes the anchor the citation lands on, and `check.py` validates it. Four
+bullets carry one today. See *Adding a Selected Impact line* below.
+
+**`home_summary` exists for the newest record only, and only Home reads it.**
+Home's *Currently* block is a projection of `experience[0]` after
+`tenure_sort_key`: it prints the same title, dateline and tags Career prints,
+then this one sentence instead of Career's eighty-word `summary` and its groups
+of bullets. A record without a `home_summary` renders no sentence there rather
+than falling back to `summary`, because a company description is not a Home
+sentence and a silent fallback is how it would become one. Write it on the
+record it summarises, never on Home. [home.md](home.md) has the rule.
+
+Five categories, one per question the three readers actually arrive with.
+`domain` is the blue substance slot: what the *data* was about, which the job
+title does not say. **Values are chosen to pair**, not to be unique: JACQUEMUS
+and OLIVESOFT both read `Luxury E-commerce &amp; Retail`, and REGIM and OEM
+share the `Time-Series Sensor Data` stem with their setting in parentheses, so
+the blue column reads as two sectors of two rather than four unrelated jobs. A
+title states the role and never the contract, because `engagement` states the
+contract one line below it. `engagement` is amber and is the recruiter's first
+question, the one the page used to leave to be inferred from a title, which
+fails on OEM because its company record has no title at all. `mode` is reused
+from `workshops.json` unchanged, because *where was this delivered from* is the
+same question on both pages, and it is on a CV written for remote hiring.
+`scale` is reused from Awards and Teaching: the size of the thing that was run,
+which used to sit mid-paragraph in the company summary where nobody scanning
+reached it. `stack` is reused from `projects.json`, capped at four names and
+rendered as one outlined chip per tool: the one category on the site that does,
+because it is always last, so a varying length shifts nothing before it. What
+the hand-written page did wrong was grading the headline tool with
+`.tag--accent` and rendering chips instead of categories, and neither of those
+is back.
+
+`scale` stores one figure and an optional shape: `"minimum": true` renders
+`150+ pipelines`, `"approx": true` renders `~2,000 frames/second`, and neither
+renders the bare number. The two are different claims and are not
+interchangeable.
+
+**`engagement`, `mode` and `scale` come from the author, never from
+inference.** A date range does not tell you a contract type, a location line
+does not tell you a work arrangement, and rule 5 still holds: a record with no
+figure to give renders one tag fewer, which is why the OLIVESOFT entry carries
+no `scale`. Where an employer nests roles, a category sits on the company
+record only if it is true of both: OEM states `domain` and `mode` once, and
+each role states its own `engagement`, `scale` and `stack`.
 
 Dates are stored raw as `"YYYY-MM"` and labelled by `month_year`, so `Aug 2024`
 and `August 2024` cannot both appear. Omitting `end` renders `Present`: the
 word lives in the renderer, because *Present* is not a date and a record that
-stores one keeps claiming the job after it ends. `tenure_sort_key` sorts
+stores one keeps claiming the job after it ends. The dateline then closes with
+the length of the role in parentheses, `Feb 2024 - Jul 2024 (6 months)`,
+computed by `tenure` from those same two dates so it cannot contradict them.
+Never store a duration, and never add one as a tag: [career.md](career.md) §4
+has both reasons. `tenure_sort_key` sorts
 newest-first on `start`, not `end`, so the one record without an end date needs
 no sentinel to stay on top. A role that did several separable things carries
 `groups`; a short one carries a flat `points`. Full rationale in
 [career.md](career.md).
 
+A point is **either a string or a `{point, impact}` pair**. The pair renders
+the consequence of the work on its own muted line beneath the bullet, labelled
+`Impact:`, so what was built and what changed because it shipped are not
+crammed into one sentence. Not every bullet gets one: the consequence has to be
+owned by the work, name who it affects, and be answerable in an interview.
+[career.md](career.md) §6 has the three tests and the worked cases where a
+bullet deliberately renders bare.
+
 ### Adding a qualification
 
-`src/data/education.json`, rendering `accreditation`: a **one-category
-model**, and the clearest illustration that categories are chosen for the
-reader rather than for symmetry:
+`src/data/education.json`, rendering `programme → focus → accreditation`:
 
 ```json
 {
   "degree": "Computer Science Engineer&rsquo;s Degree",
-  "institution": "ENIS",
-  "institution_full": "National Engineering School of Sfax",
+  "institution": "National Engineering School of Sfax",
   "url": "https://enis.rnu.tn/",
-  "location": "Sfax",
+  "location": "Sfax, Tunisia",
   "start": 2021,
   "end": 2024,
+  "focus": "Data Engineering &amp; Distributed Systems",
   "accreditation": {
     "name": "EUR-ACE&reg; Accredited",
     "url": "https://www.enaee.eu/eur-ace-system/"
@@ -299,15 +355,22 @@ reader rather than for symmetry:
 }
 ```
 
-The degree is the title, the institution trails it, the years are the period
-line: a `field` or `level` category would restate one of the three. What is
-left is the single thing the title cannot say: who accredits the programme. The
-second record omits `accreditation` and renders zero tags.
+Three categories, and **no record renders more than two**, because the model's
+rule is that *a category renders only where its answer is not already in the
+record's own title*. The degree renders `focus` and `accreditation`, and omits
+`programme` because *Engineering Degree* is the title. The preparatory
+programme renders `programme` alone, because *(Mathematics and Physics)* is
+already its title and it holds no accreditation this site can point at. A
+record showing one tag is the model working, not a gap to fill.
+
+That rule is also why `field` and `level` are not categories: both would
+restate the title on both records. The dateline carries location, years and
+the length of the programme in parentheses, in the same shape a job uses.
 
 `accreditation` is the site's second linked metadata tag after `upstream`, and
 it is **grey**, not the success-green the hand-written page gave it. It answers
-the same question `publisher`, `host`, `platform` and `stack` answer (who
-stands behind this) so it takes their treatment; the green was grading the
+the same question `publisher`, `host` and `platform` answer (who stands behind
+this) so it takes their treatment; the green was grading the
 value rather than naming the category, and green is a *utility* meaning
 ([DESIGN.md §7](DESIGN.md)).
 
@@ -332,17 +395,22 @@ needs, and that is already the group heading with the issuer's brand mark on
 it: a tag would restate the heading on every row. `icon` is a bare filename;
 the renderer builds `images/icons/<icon>`.
 
+**A new certification also updates Home**, with no second edit. The
+`Certified` row of Home's fact strip is `render_credential_row`, generated
+from this same file: one link per issuer, in the order the file writes them,
+with `&times;N` where an issuer granted more than one. That line used to be
+four hand-written strings in `src/site.json` summarising these records, which
+agreed with them only for as long as somebody remembered.
+
 The two files key their groups differently, on `issuer` and on `platform`, and
 one renderer takes the field name as an argument. An issuer examined the holder;
 a platform hosted the lessons. One noun for both would let a Udemy course borrow
 a MuleSoft certification's authority: the same distinction `publisher` and
 `platform` make on Research.
 
-Whether a link is marked external is **derived from its URL**, never declared: a
-Credly badge is the issuer's own record and gets `.link-external`, while
-`data/DP-300.png` is a scan this site serves and renders as a plain link, so the
-external marker keeps meaning *checkable at the source*. The rule for adding a
-row is that the link must be the issuer's record of the credential: a
+Every credential row gets `.link-external`, so the arrow means *this opens away
+from the page*: true of a Credly badge and of `data/DP-300.png` alike, since
+both share one `target="_blank"`. The rule for adding a row is that the link must be the issuer's record of the credential: a
 course's catalogue page is not evidence anyone completed it. Full rationale in
 [career.md](career.md).
 
@@ -354,6 +422,7 @@ records on this site that prove it:
 ```json
 {
   "name": "Workflow orchestration",
+  "thread": "trunk",
   "tools": ["Apache Airflow 3"],
   "evidence": {
     "certification": [
@@ -371,43 +440,120 @@ Evidence kinds, rendered in this fixed order: `production` (green) →
 `certification` (blue) → `taught` (violet) → `published` (amber) → `applied`
 (grey). **Every entry needs an `href` to a record that already exists on the
 site**: `check.py` fails the build on a citation pointing at a missing page or
-anchor.
+anchor. The five colours are named once by the key above the block, rendered
+from `PROOF_KEY` in `tools/build.py`; adding a kind means adding a row there
+too, or the key stops describing the block.
+
+The record renders in two columns: capability and standing on the left, tools
+then evidence on the right. `tools` take the outlined `stack` treatment Career
+and Projects use, on their own line **above** the evidence: putting them in the
+same run would leave every row starting on an outlined chip and destroy the
+colour-run reading. [DESIGN.md §9.1](DESIGN.md) has the layout.
+
+`thread` is the one field set by hand, and it is a **positioning** call rather
+than a rating: `"trunk"` if the capability supports the Data Engineering claim
+directly, `"branch"` if it is real, proven, and supporting evidence for the
+trunk rather than the claim itself. It cannot move a skill across a standing
+boundary, so it never ranks a capability above the evidence it has.
 
 Do not write a standing or a position. Both are derived: `standing()` reads
-which kinds of evidence exist, and `skill_sort_key` orders the block by that
-and then by how much evidence each skill carries. Adding a certification is the
-only way to move a row up. Full rationale, including why this is the one model
-whose categories may repeat, in [skills.md](skills.md).
+which kinds of evidence exist, and `skill_sort_key` orders the block by
+standing, then `thread`, then how much evidence each skill carries. Adding a
+certification is the only way to move a row up. Full rationale, including why
+this is the one model whose categories may repeat and how `thread` stays out of
+self-assessment, in [skills.md](skills.md).
 
 ### Adding a Selected Impact line
 
 `src/data/impact.json`. This is the only block on the site that restates facts
-held on other pages, so it is the only one that can contradict them:
+held on other pages, so it is the only one that can contradict them. **It no
+longer writes the sentence; it quotes it.** The model and the rules are in
+[home.md](home.md):
 
 ```json
 {
-  "figure": "&euro;1,400 per month saved",
-  "evidence": "Azure spend removed through automated resource-scheduling scripts, with no loss of availability.",
-  "source": "career.html"
+  "title": "Azure cost control",
+  "cite": "jq-finops",
+  "result": "Recurring saving",
+  "figure": { "value": "&euro;1,400", "unit": "per month" },
+  "home": true
 }
 ```
 
-`source` is required and names a real page; the link text (*Career*) is read
-from `site.json`'s navigation rather than typed, so a citation cannot say
-*Projects* and point at Awards, and `check.py` fails the build if the page does
-not exist. The figure itself stays hand-written (deriving it would mean parsing
-a prose bullet), which makes it an **editorial** rule: every figure here is
-evidenced on the page it links to, and the figure and that record move in the
-same change or neither does.
+`cite` names a bullet in `experience.json` that carries a matching `id`:
 
-This block is why the rule exists. The front page read *2 plugins accepted
-upstream / both listed in the official Kanboard plugin directory* while
-`projects.json` had both pull requests still `open`: two pages of one site
-disagreeing, with the overstated version on the page a visitor reads first. It
-now reads *2 plugins authored and submitted upstream*, in the same vocabulary
-`UPSTREAM_STATES` uses on Projects. A second line had drifted the same way: a
-regional contest was described as *national*, where `awards.json` says
+```json
+{
+  "id": "jq-finops",
+  "point":  "Reduced <b>Azure infrastructure spend by &euro;1,400 per month</b> by …",
+  "impact": "A recurring monthly saving on the platform budget, taken with …"
+}
+```
+
+Three things are derived from that one id and **must not be typed**: the
+sentence (the bullet's `impact` line, or its `point` text if it has none), the
+period line (company and dates from the record the bullet lives on), and the
+citation link (`career.html#jq-finops`, landing on the bullet rather than the
+top of the page). Add an `id` to a bullet **only** when Home cites it: an anchor
+nothing points at is a URL promise nobody meant to make.
+
+**Home is the only page that renders this file**, as `.result` rows: the figure
+leads, the quoted sentence follows, and a provenance line closes it.
+`"home": true` is therefore required: a record without it renders nowhere.
+
+`title` is required and **does not render**. It is the record's handle: what a
+build error names, and what tells you which row you are editing.
+
+`figure` is a pair, not a string. The value carries the bold and the unit stays
+regular, the same treatment `scale` gets on four other models, and storing it
+split is what stops anything having to guess where the number ends:
+`&euro;1,400` and `100&times;` both defeat a leading-digit parser.
+
+**`figure` is the only claim still typed on Home, and it is linted.**
+`check_figure` fails the build unless the value string appears verbatim
+(case-insensitively) in the bullet the record cites. That is a lint, not a
+parser: deriving *100x faster* from prose means guessing, while asserting that
+`100&times;` appears in the cited bullet costs nothing and catches the failure
+that actually happens, which is a bullet edited without its figure.
+
+**One exception, for a claim that aggregates.** The open-source line stands for
+two pull requests across two project records, so no single bullet's words can
+describe it. It declares `upstream_prs`, keeps a hand-written `evidence` and a
+`source`, and its `result` comes from `projects.json` through the same
+`UPSTREAM_STATES` table Projects renders from. The weakest state wins: a pair is
+only *Accepted upstream* when both are merged.
+
+```json
+{
+  "title": "Open source",
+  "figure": { "value": "2", "unit": "Kanboard plugins" },
+  "upstream_prs": [586, 585],
+  "evidence": "Draw.io embedding and a file-attachment rework: 2 plugins now in …",
+  "source": "projects.html",
+  "home": true
+}
+```
+
+Five things are build errors, all of them the shapes that let two copies of one
+fact drift apart: a record with both `cite` and `evidence`, a record with
+neither, a `cite` naming an id nothing carries, two bullets sharing an id, and a
+`figure` whose value does not appear in the text it cites.
+
+This block is why all of that exists, and it has failed in both directions. The
+front page once read *2 plugins accepted upstream / both listed in the official
+Kanboard plugin directory* while `projects.json` had both pull requests `open`.
+After they merged, it read *submitted upstream, both open* while Projects
+rendered *Accepted upstream*, so the same block spent a release
+**understating** work the site could prove. A third line had drifted the same
+way: a regional contest was described as *national*, where `awards.json` says
 `"scope": "Regional"`.
+
+Career used to render every record whose `source` was `career.html` as a
+*Verified impact* `.specs` strip above Experience. It was deleted once the
+experience model gained a `scale` tag: the tag lifts the same figure to the
+same reader while sitting on the record that earned it, which left the strip
+printing numbers that were already a tag and a bullet on the screen below.
+[career.md](career.md) §7 has the full argument.
 
 ### Adding a volunteering record
 
@@ -416,12 +562,18 @@ regional contest was described as *national*, where `awards.json` says
 lines do not say) but it is an `.entry`, and every `.entry` on the site comes
 from data. One hand-written record is how the second one gets hand-written too.
 
-**Skills and Languages stay as markup in `src/pages/index.html`**, and that is
-the rule rather than an omission: a list stays in its page fragment when that
-page is the only place its facts live, and becomes data when it restates facts
-held elsewhere. Nothing else on the site states a proficiency level, so moving
-those `dt`/`dd` pairs into JSON would buy a build step and no guarantee.
-[DESIGN.md §10](DESIGN.md) has the full boundary.
+It renders as the **last block on Career**, not on Home. It closed the front
+page for a while, which put the least Data Engineering thing on the site in the
+last position a recruiter reads; on Career it is a dated record among dated
+records. [home.md](home.md) carries the move.
+
+**Languages stays as markup in `src/pages/index.html`**, and that is the rule
+rather than an omission: a list stays in its page fragment when that page is
+the only place its facts live, and becomes data when it restates facts held
+elsewhere. Nothing else on the site states a proficiency, so moving those
+`dt`/`dd` pairs into JSON would buy a build step and no guarantee. Skills used
+to be the other example and stopped being one the moment it began citing
+records on other pages. [DESIGN.md §10](DESIGN.md) has the full boundary.
 
 ### What `check.py` verifies
 
@@ -442,14 +594,15 @@ package manager.
 ## Design system
 
 A classic academic stylesheet in the lineage of the orderedlist **Minimal**
-theme this site was forked from: a sticky identity rail, a plain document, one
-typeface, one blue for links, hairlines for structure.
+theme this site was forked from: a plain document, one typeface, one blue for
+links, hairlines for structure. The theme's sticky identity rail was dropped for
+a brand bar and a top navigation; [DESIGN.md](DESIGN.md) §4 records why.
 
 Typography, colour, spacing, components, responsive behaviour and accessibility
 rules (plus an explicit list of what is *out of scope*) are documented in
 **[DESIGN.md](DESIGN.md)**. Read it before adding a component; almost
-everything on the site is already expressible with `.block`, `.entry`,
-`.deflist` and `.tag`.
+everything on the site is already expressible with `.block`, `.entry` and
+`.tag`.
 
 It also owns the site's one editorial rule about prose: **a `block__intro` is a
 single punchy line, and it is a pitch** ([DESIGN.md](DESIGN.md) §11.1). How a

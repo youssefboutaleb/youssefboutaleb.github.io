@@ -1,44 +1,55 @@
 [
   {
     "degree": "Computer Science Engineer&rsquo;s Degree",
-    "institution": "ENIS",
-    "institution_full": "National Engineering School of Sfax",
+    "institution": "National Engineering School of Sfax",
     "url": "https://enis.rnu.tn/",
-    "location": "Sfax",
+    "location": "Sfax, Tunisia",
     "start": 2021,
     "end": 2024,
+    "focus": "Data Engineering &amp; Distributed Systems",
     "accreditation": {
       "name": "EUR-ACE&reg; Accredited",
       "url": "https://www.enaee.eu/eur-ace-system/"
     },
-    "summary": "3-year computer science engineering program specializing in Data Engineering, Distributed Systems, Cloud Architectures, and Applied AI.",
+    "summary": "Computer science engineering program specializing in Data Engineering, Distributed Systems, Cloud Architectures, and Applied AI.",
     "groups": [
       {
-        "title": "Graduation Thesis (PFE at OLIVESOFT)",
+        "title": "Graduation Thesis",
         "points": [
-          "<b>Fault-tolerant API integration:</b> designed and deployed an asynchronous MuleSoft API-led architecture connecting Salesforce Service Cloud to the Diduenjoy customer feedback platform.",
-          "<b>Decoupled reliability:</b> implemented asynchronous message queues and explicit error-handling strategies, ensuring downstream system outages never block active service desk workflows."
+          "<b>Subject:</b> fault-tolerant integration between a Salesforce service desk and an external customer-feedback platform, studied over a six-month final-year placement at OLIVESOFT.",
+          "<b>The argument:</b> queued, asynchronous exchange keeps the service desk working when the downstream platform is slow or unavailable. The report set out the architecture, the failure cases it covers, and the trade-offs it accepts.",
+          "<b>Outcome:</b> a written thesis and a running production integration, defended for the degree in 2024."
         ]
       },
       {
         "title": "Data &amp; Systems Specialization",
         "points": [
-          "<b>Data engineering &amp; cloud:</b> advanced coursework in Big Data processing, Database Management Systems (SGBD), Business Intelligence, Parallel &amp; Distributed Computing, and Cloud Architectures.",
-          "<b>AI &amp; software craftsmanship:</b> Machine Learning, Computer Vision, DevOps, Microservices, Industrial Blockchain, and Clean Coding principles."
+          "<b>Data engineering &amp; cloud:</b> big data processing, database management systems (SGBD), business intelligence, parallel &amp; distributed computing, and cloud architectures.",
+          "<b>Applied AI:</b> machine learning and computer vision.",
+          "<b>Software craft &amp; systems:</b> DevOps, microservices, industrial blockchain, and clean coding."
+        ]
+      },
+      {
+        "title": "Student Clubs &amp; Training",
+        "points": [
+          "<b>Training Lead, Securinets ENIS:</b> ran the club's technical training track, 6 sessions a year (3 per semester), from x86 assembly through hands-on reverse-engineering labs to web exploitation and SQL injection, open to club members and to any ENIS student who turned up.",
+          "<b>Finding the people to teach it:</b> brought in senior students and working engineers for the topics the club could not cover itself, and built the term's schedule around who was available.",
+          "<b>Member, IEEE Student Branch ENIS:</b> part of the group running the introductory programming series (CS fundamentals, Python, C++ for competitive programming) ."
         ]
       }
     ]
   },
   {
     "degree": "Bachelor of Engineering (Mathematics and Physics)",
-    "institution": "ISSAT Mahdia",
-    "institution_full": "Higher Institute of Applied Sciences and Technology of Mahdia",
+    "institution": "Higher Institute of Applied Sciences and Technology of Mahdia",
     "url": "https://issatmh.rnu.tn/",
+    "location": "Mahdia, Tunisia",
     "start": 2019,
     "end": 2021,
-    "summary": "Intensive 2-year National Engineering Preparatory Program (MP Track: Mathematics and Physics), ranking for admission to the National Engineering School of Sfax (ENIS).",
+    "programme": "National Preparatory Programme",
+    "summary": "The Tunisian national engineering preparatory program, MP track: intensive mathematics and physics, with admission to the National Engineering School of Sfax (ENIS) decided by competitive national ranking.",
     "points": [
-      "<b>Advanced mathematics:</b> rigorous foundation in real and complex analysis, linear algebra, matrix theory, differential equations, numerical methods, and probability theory.",
+      "<b>Advanced mathematics:</b> real and complex analysis, linear algebra, matrix theory, differential equations, numerical methods, and probability theory.",
       "<b>Physics &amp; computational foundations:</b> classical mechanics, electromagnetism, thermodynamics, wave physics, and algorithmic problem solving."
     ]
   }

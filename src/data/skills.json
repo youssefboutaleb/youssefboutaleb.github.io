@@ -1,10 +1,11 @@
 [
   {
     "name": "Data pipeline engineering",
+    "thread": "trunk",
     "tools": ["Talend", "MuleSoft", "Apache Airflow"],
     "evidence": {
       "production": [
-        { "text": "ETL across Salesforce, ORLI &amp; Azure", "href": "career.html#experience" },
+        { "text": "Azure Data Factory &amp; Fabric at JACQUEMUS", "href": "career.html#experience" },
         { "text": "API-led integration at OLIVESOFT", "href": "career.html#experience" }
       ],
       "certification": [
@@ -19,10 +20,11 @@
   },
   {
     "name": "Observability &amp; incident response",
+    "thread": "trunk",
     "tools": ["Datadog", "APM &amp; distributed tracing", "log management"],
     "evidence": {
       "production": [
-        { "text": "Cut MTTD at JACQUEMUS", "href": "career.html#experience" }
+        { "text": "Datadog monitoring &amp; logging at JACQUEMUS", "href": "career.html#experience" }
       ],
       "certification": [
         { "text": "Datadog &times;3", "href": "career.html#certifications" }
@@ -37,6 +39,7 @@
   },
   {
     "name": "Systems integration &amp; APIs",
+    "thread": "trunk",
     "tools": ["MuleSoft API-led", "REST", "ActiveMQ", "SFTP"],
     "evidence": {
       "production": [
@@ -53,11 +56,12 @@
   },
   {
     "name": "Cloud platform operations",
+    "thread": "trunk",
     "tools": ["Azure", "IAM", "Automation Accounts", "Application Gateway", "Microsoft Fabric"],
     "evidence": {
       "production": [
         { "text": "&euro;1,400/month saved", "href": "career.html#experience" },
-        { "text": "IAM, SSL &amp; IP restrictions", "href": "career.html#experience" }
+        { "text": "Azure Data Lake &amp; SQL integration", "href": "career.html#experience" }
       ],
       "certification": [
         { "text": "Azure DB Administrator (DP-300)", "href": "career.html#certifications" },
@@ -67,6 +71,7 @@
   },
   {
     "name": "Data warehousing &amp; analytics",
+    "thread": "trunk",
     "tools": ["Azure SQL", "SQL Server", "PostgreSQL", "Microsoft Fabric"],
     "evidence": {
       "production": [
@@ -84,6 +89,7 @@
   },
   {
     "name": "Machine learning &amp; computer vision",
+    "thread": "branch",
     "tools": ["Python", "YOLOv8", "TensorFlow", "Keras", "scikit-learn"],
     "evidence": {
       "production": [
@@ -104,6 +110,7 @@
   },
   {
     "name": "Programming &amp; scripting",
+    "thread": "trunk",
     "tools": ["Python", "Java", "SQL", "PowerShell", "C++", "PHP"],
     "evidence": {
       "production": [
@@ -121,6 +128,7 @@
   },
   {
     "name": "Delivery &amp; collaboration",
+    "thread": "trunk",
     "tools": ["Git", "GitHub Actions", "Postman", "Agile/Scrum", "Jira", "Confluence"],
     "evidence": {
       "production": [
@@ -133,6 +141,7 @@
   },
   {
     "name": "Workflow orchestration",
+    "thread": "trunk",
     "tools": ["Apache Airflow 3"],
     "evidence": {
       "certification": [
@@ -146,6 +155,7 @@
   },
   {
     "name": "Distributed processing",
+    "thread": "trunk",
     "tools": ["Apache Spark"],
     "evidence": {
       "taught": [

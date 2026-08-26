@@ -68,7 +68,7 @@ never disagree with them.
 ## When is not a tag
 
 A course carries two facts about time (the semester and the academic year)
-and neither is a category. Both live in `.entry__period`, the italic line that
+and neither is a category. Both live in `.entry__period`, the muted line that
 already answers *when* on every record on the site:
 
 ```
@@ -104,6 +104,17 @@ line. It was removed, and the rule it broke is worth keeping:
 > record to record destroys the positional reading that the fixed order exists
 > to provide. Two records with a different number of tags in the same category
 > can no longer be compared down the column.
+
+**That rule has since been scoped, and this removal survives the scoping.**
+`stack` does render a chip per tool on Projects and Career, because it is the
+*terminal* category in those two models: a run of varying length at the end of
+a list shifts nothing before it ([`projects.md`](projects.md)). So the
+positional argument alone would no longer settle the question here.
+
+It does not need to, because the reason below was always the stronger half and
+is untouched: a tool name means more beside the thing it was used for than it
+does in a row of chips. Projects and Career have no syllabus to put it beside;
+Teaching does.
 
 Tools are now named **inside the syllabus module that teaches them**:
 *"Monitoring, dashboards and alerting in Datadog"* rather than a `Datadog` chip.

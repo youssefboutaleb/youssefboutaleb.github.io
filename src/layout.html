@@ -33,65 +33,34 @@
 
   <div class="layout">
 
-    <!-- Identity, credentials and contact: present on every page. -->
-    <header class="sidebar">
-      <p class="sidebar__updated"><small>Last update: {{ site.last_updated }}</small></p>
-      <a class="sidebar__name" href="index.html">{{ site.name }}</a>
-
-      <img class="sidebar__portrait" src="{{ site.portrait }}" alt="{{ site.portrait_alt }}" width="150" height="150">
-
-      <p class="sidebar__role">{{ site.role }}</p>
-      <ul class="credentials">
-{{ build.credentials }}
-      </ul>
-
-      <div class="sidebar__section">
-        <h2 class="sidebar__heading">Availability</h2>
-        <p>{{ site.availability }}</p>
-      </div>
-
-      <div class="sidebar__section">
-        <h2 class="sidebar__heading">Downloadables</h2>
-        <p><a href="{{ site.resume }}" target="_blank" rel="noopener">Resume / CV</a></p>
-      </div>
-
-      <div class="sidebar__section">
-        <h2 class="sidebar__heading">Contact</h2>
-        <p>{{ site.contact_invitation }}</p>
-        <ul class="contact">
-{{ build.contact }}
-        </ul>
-      </div>
-
-      <div class="sidebar__section">
-        <ul class="social">
-{{ build.socials }}
-        </ul>
-      </div>
-
-      <div class="site-footer">
-        <p>Hosted on GitHub Pages: theme lineage <a href="https://github.com/orderedlist" target="_blank" rel="noopener">orderedlist</a>.</p>
-        <p>Forked from <a href="https://github.com/elyesmanai/elyesmanai.github.io" target="_blank" rel="noopener">elyesmanai/elyesmanai.github.io</a>.</p>
-      </div>
-    </header>
-
-    <div class="content">
-      <div class="top-bar">
-        <button id="sidebar-toggle" class="sidebar-toggle" type="button" aria-expanded="true">
-          <img class="icon icon--xs" src="images/icons/icon.svg" alt="" width="12" height="12">
-          <span id="sidebar-toggle-text">Hide Profile</span>
-        </button>
+    <header class="site-header">
+      <div class="site-header__brand">
+        <a class="site-header__name" href="index.html">{{ site.name }}</a>
+        <div class="site-header__details">
+          <span class="site-header__role">{{ site.role }}</span>
+          <a class="site-header__cv" href="{{ site.resume }}" target="_blank" rel="noopener">CV (PDF)</a>
+        </div>
       </div>
       <nav class="nav" aria-label="Primary">
         <ul class="nav__list">
 {{ build.nav }}
         </ul>
       </nav>
+    </header>
 
-      <main id="main">
+    <div class="page-body">
+      <aside class="sidebar-context" aria-label="Page shortcuts">
+{{ build.page_context }}
+      </aside>
+
+      <main id="main" class="content">
 {{ page.content }}
       </main>
     </div>
+
+    <footer class="site-footer">
+      <p>Last update: {{ site.last_updated }} &middot; Hosted on GitHub Pages &middot; Youssef Boutaleb</p>
+    </footer>
 
   </div>
 
@@ -101,27 +70,6 @@
     function gtag(){ dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', '{{ site.analytics_id }}');
-    (function() {
-      var toggleBtn = document.getElementById('sidebar-toggle');
-      var toggleText = document.getElementById('sidebar-toggle-text');
-      var layout = document.querySelector('.layout');
-      if (!toggleBtn || !layout) return;
-
-      if (localStorage.getItem('sidebar_collapsed') === 'true') {
-        layout.classList.add('layout--sidebar-collapsed');
-        toggleBtn.setAttribute('aria-expanded', 'false');
-        if (toggleText) toggleText.textContent = 'Show Profile';
-      }
-
-      toggleBtn.addEventListener('click', function() {
-        var isCollapsed = layout.classList.toggle('layout--sidebar-collapsed');
-        localStorage.setItem('sidebar_collapsed', isCollapsed ? 'true' : 'false');
-        toggleBtn.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
-        if (toggleText) {
-          toggleText.textContent = isCollapsed ? 'Show Profile' : 'Hide Profile';
-        }
-      });
-    })();
   </script>
 </body>
 

@@ -2,10 +2,16 @@
    YOUSSEF BOUTALEB: PORTFOLIO DESIGN SYSTEM
    -----------------------------------------------------------------------------
    A classic academic stylesheet in the lineage of the orderedlist "Minimal"
-   theme this site was forked from: sticky identity rail on the left, a plain
-   document on the right, Noto Sans throughout, one blue for links, hairlines
-   for structure. Nothing decorative, nothing animated, nothing that will look
-   dated in five years, because it did not look current in the first place.
+   theme this site was forked from: Noto Sans throughout, one blue for links,
+   hairlines for structure. Nothing decorative, nothing animated, nothing that
+   will look dated in five years, because it did not look current in the first
+   place.
+
+   The theme's sticky identity rail is gone. The layout is one centred column
+   under a brand bar and a horizontal nav, and contact moved out of the rail
+   onto its own page. What the rail was actually for (identity and the CV link
+   reachable from anywhere in a long document) is now the job of .site-header,
+   which sits at the top of every page.
 
    What this rewrite adds to the original is discipline, not style: every value
    is a token, every repeated pattern is a named component, and the classic
@@ -17,23 +23,28 @@
      03. Reset & base elements
      04. Typography primitives
      05. Layout
-     06. Component: sidebar
-     07. Component: navigation
-     08. Component: page header
-     09. Component: block (section)
-     10. Component: entry (the universal content record)
-     11. Component: definition list
-     12. Component: tag & medal
-     13. Component: icon
-     14. Component: site footer
-     15. Responsive
-     16. Motion & accessibility preferences
-     17. Print
+     06. Component: site header & top navigation
+     07. Component: page context
+     08. Component: hero header (Home only)
+     09. Component: page header
+     10. Component: block (section)
+     11. Component: entry (the universal content record)
+     12. Component: contact channels
+     13. Component: spec strip
+     14. Component: result (Home's Selected Impact)
+     15. Component: skill
+     16. Component: tag & medal
+     17. Component: icon
+     18. Component: site footer
+     19. Responsive
+     20. Motion & accessibility preferences
+     21. Print
 
    Rules of the system
      - Every value comes from a token. No literals in component rules.
-     - Structure is headings, hairlines and whitespace. No cards, no shadows
-       (one exception: the portrait), no gradients, no fills.
+     - Structure is headings, hairlines and whitespace. No cards, no shadows,
+       no gradients, no fills. The portrait was the one exception and is not
+       any more: it is bounded by a hairline, like every other edge here.
      - One typeface, two weights (400 / 700): the family ships no others.
      - Naming is BEM-ish: .block, .block__element, .block--modifier.
      - Presentation lives here. Content lives in src/pages/. Never inline styles.
@@ -103,12 +114,11 @@
      step is the whole accessibility argument, and it costs nothing visually. */
   --text-xs:   0.75rem;     /* 12px: tags */
   --text-sm:   0.8125rem;   /* 13px: dates, footnotes, "last update" */
-  --text-md:   0.875rem;    /* 14px: sidebar meta, contact */
+  --text-md:   0.875rem;    /* 14px: contact rows, tag-adjacent meta */
   --text-base: 1rem;        /* 16px: body copy */
   --text-lg:   1.0625rem;   /* 17px: navigation, page lede, entry titles */
   --text-xl:   1.1875rem;   /* 19px: section headings (h3) */
   --text-2xl:  1.5625rem;   /* 25px: page title (h1) */
-  --text-3xl:  1.8125rem;   /* 29px: the name in the sidebar */
 
   --leading-tight: 1.2;
   --leading-snug:  1.45;
@@ -159,6 +169,11 @@
   --status-neutral-fg:  #4b5563;
   --status-neutral-br:  #e4e4e7;
 
+  /* An unfilled chip is shaped by its border alone, so it needs a stronger
+     one than a filled chip whose background already draws it. One step down
+     the same zinc ramp as the two values above. */
+  --status-outline-br:  #d4d4d8;
+
   --status-accent-bg:   #f0f4f9;
   --status-accent-fg:   #1a56db;
   --status-accent-br:   #dbe4f0;
@@ -207,21 +222,18 @@
   --space-8: 3.75rem;   /* 60 */
 
   /* --- Layout ------------------------------------------------------------ */
-  --container-max: 1600px;
-  --container-fluid: 98%;
-  --sidebar-width: 280px;
-  --column-gap: var(--space-5);
   --gutter: var(--space-2);
-  --measure: 100%;
+  /* The reading measure, applied to every prose container and to nothing else.
+     A 1100px column at 15px runs to roughly 110 characters a line, which is
+     past the range a reader tracks without losing the return sweep. The cap is
+     on the text, never on the column: tag rows, spec strips and the tables of
+     records still use the full width. DESIGN.md section 1. */
+  --measure: 74ch;
 
   /* --- Border radius ----------------------------------------------------- */
   --radius-sm:   3px;   /* tags */
   --radius-md:   5px;   /* code blocks, images */
   --radius-full: 9999px;
-
-  /* --- Elevation --------------------------------------------------------- */
-  /* One shadow, on one element: the portrait. Content is never lifted. */
-  --shadow-portrait: 0 2px 8px rgba(0, 0, 0, 0.1);
 
   /* --- Motion ------------------------------------------------------------ */
   --duration: 150ms;
@@ -231,7 +243,6 @@
   --icon-xs: 12px;
   --icon-sm: 15px;
   --icon-md: 18px;
-  --icon-lg: 32px;
 
   /* --- Breakpoints (reference only; CSS cannot use vars in media queries) --
      --bp-lg: 960px   two columns collapse to one   (the theme's own breakpoint)
@@ -397,20 +408,15 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
   text-decoration: none;
 }
 
-/* The theme's two-column shape: fixed identity rail, fluid document. */
+/* The single-column centered document layout (Andrew Ng style) */
 .layout {
-  width: var(--container-max);
-  max-width: var(--container-fluid);
+  width: 100%;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 0 var(--gutter);
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--column-gap);
+  padding: 0 var(--space-4);
 }
 
 .content {
-  flex: 1;
   min-width: 0;
   padding-bottom: var(--space-8);
 }
@@ -419,174 +425,370 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 .content [id] { scroll-margin-top: var(--space-5); }
 
 
-/* 06. COMPONENT: SIDEBAR =================================================== */
+/* 06. COMPONENT: SITE HEADER & TOP NAVIGATION ============================== */
 
-/* Identity, credentials, CV and contact details, sticky on every page. Keeping
-   this reachable from anywhere in a long document is the most useful thing a
-   portfolio can do for someone reading it in order to contact you. */
-.sidebar {
-  width: var(--sidebar-width);
-  flex-shrink: 0;
-  position: sticky;
-  top: var(--space-5);
-  max-height: calc(100vh - var(--space-7));
-  overflow-y: auto;
-  overscroll-behavior: contain;
+.site-header {
   padding-top: var(--space-5);
-  font-size: var(--text-md);
-  scrollbar-width: thin;
-  -webkit-font-smoothing: subpixel-antialiased;
-}
-
-.sidebar__updated {
-  margin: 0;
-  color: var(--color-muted);
-  font-size: var(--text-sm);
-  line-height: var(--leading-snug);
-}
-
-.sidebar__name {
-  display: block;
   margin-bottom: var(--space-5);
+}
+
+.site-header__brand {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.site-header__name {
   color: var(--color-heading);
-  font-size: var(--text-3xl);
+  font-size: var(--text-2xl);
   font-weight: var(--weight-bold);
   line-height: var(--leading-tight);
 }
-.sidebar__name:hover { color: var(--color-link); text-decoration: none; }
-
-.sidebar__portrait {
-  width: 150px;
-  height: 150px;
-  border-radius: var(--radius-full);
-  object-fit: cover;
-  margin: 0 auto var(--space-5);
-  box-shadow: var(--shadow-portrait);
+.site-header__name:hover {
+  color: var(--color-link);
+  text-decoration: none;
 }
 
-.sidebar__role {
-  margin: 0 0 var(--space-1);
-  color: var(--color-heading);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-snug);
+.site-header__role {
+  color: var(--color-muted);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
 }
 
-/* The certification lines under the role. Rendered as plain lines, as the
-   theme's tagline block was, but as a list so the grouping is in the markup. */
-.credentials {
-  margin: 0 0 var(--space-5);
-  padding: 0;
-  list-style: none;
+.site-header__details {
+  display: grid;
+  gap: var(--space-1);
+  padding-top: var(--space-1);
+}
+
+.site-header__cv {
   color: var(--color-secondary);
+  font-size: var(--text-sm);
   line-height: var(--leading-snug);
 }
+.site-header__cv:hover { color: var(--color-link-hover); }
 
-.sidebar__section { margin-bottom: var(--space-5); }
-
-.sidebar__heading {
-  margin: 0 0 var(--space-2);
-  color: var(--color-heading-3);
-  font-size: var(--text-lg);
-  font-weight: var(--weight-bold);
-}
-
-/* "Personal: address" on one line, as the theme had it. */
-.contact { margin: 0; padding: 0; list-style: none; }
-.contact > li { margin-bottom: var(--space-1); line-height: var(--leading-snug); }
-.contact__label { color: var(--color-secondary); }
-.contact__value { word-break: break-word; }
-
-/* Social marks in a row. Fixed square boxes so brand logos of any aspect
-   ratio line up; the theme sized them in percentages, which did not. */
-.social {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-4);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.social__link {
-  display: inline-flex;
-  padding: var(--space-1);
-  border-radius: var(--radius-sm);
-  opacity: 0.85;
-  transition: opacity var(--duration) var(--ease);
-}
-.social__link:hover { opacity: 1; }
-
-
-/* 07. COMPONENT: NAVIGATION ================================================ */
-
-/* The theme rendered this as a <table> row, which meant the site's real tables
-   inherited its styling and no page could show which one you were on. Same
-   look, as a list, with an active state. */
-/* Top bar container holding the sidebar toggle control */
-.top-bar {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-bottom: var(--space-2);
-}
-
-.sidebar-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-1) var(--space-3);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  color: var(--color-heading-3);
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-bold);
-  cursor: pointer;
-  transition: background var(--duration) var(--ease), color var(--duration) var(--ease);
-}
-.sidebar-toggle:hover {
-  background: var(--color-border);
-  color: var(--color-heading);
-}
-
-.layout--sidebar-collapsed .sidebar {
-  display: none;
-}
-.layout--sidebar-collapsed .content {
-  width: 100%;
-  max-width: 100%;
-}
-
-.nav { margin-bottom: var(--space-5); }
+.nav { margin-bottom: 0; }
 
 .nav__list {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
   margin: 0;
   padding: 0;
   list-style: none;
   border-bottom: 1px solid var(--color-border);
 }
 
-.nav__item { flex: 1 1 auto; }
+.nav__item { flex: 0 0 auto; }
 
 .nav__link {
   display: block;
-  padding: var(--space-2) var(--space-4) var(--space-2);
-  font-size: var(--text-lg);
+  padding: var(--space-2) var(--space-2);
+  font-size: var(--text-base);
   font-weight: var(--weight-bold);
 }
 .nav__item:first-child .nav__link { padding-left: 0; }
+.nav__item:last-child .nav__link { padding-right: 0; }
 
 .nav__link[aria-current='page'] {
   color: var(--color-heading);
-  font-weight: var(--weight-bold);
+  border-bottom: 2px solid var(--color-heading);
 }
 .nav__link[aria-current='page']:hover { color: var(--color-heading); }
 
+/* 07. COMPONENT: BOOK SHORTCUTS SIDEBAR ==================================== */
 
-/* 08. COMPONENT: PAGE HEADER =============================================== */
+/* Book shortcuts table of contents for page sections and subsections.
+   Placed in the left margin area on desktop viewports and rendered as a sticky
+   hierarchical outline tree. */
+
+.page-body {
+  display: block;
+}
+
+.sidebar-context {
+  margin-bottom: var(--space-6);
+}
+
+.book-toc {
+  background-color: var(--paper-soft);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  font-size: var(--text-sm);
+}
+
+.book-toc__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-heading);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.book-toc__icon {
+  color: var(--color-link);
+  flex-shrink: 0;
+}
+
+.book-toc__title {
+  color: var(--color-heading);
+}
+
+.book-toc__list,
+.book-toc__sublist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.book-toc__item {
+  margin-bottom: var(--space-2);
+}
+.book-toc__item:last-child {
+  margin-bottom: 0;
+}
+
+.book-toc__item--level-1,
+.book-toc__item--level-2,
+.book-toc__item--level-3,
+.book-toc__item--level-4 {
+  margin-bottom: var(--space-1);
+}
+
+.book-toc__link {
+  display: block;
+  color: var(--color-heading);
+  font-weight: var(--weight-bold);
+  line-height: 1.4;
+  padding: 2px 0;
+  text-decoration: none;
+  transition: color var(--duration) var(--ease);
+}
+
+.book-toc__link:hover,
+.book-toc__link:focus,
+.book-toc__link.is-active {
+  color: var(--color-link);
+}
+
+.book-toc__sublist {
+  margin-top: var(--space-1);
+  margin-left: var(--space-2);
+  padding-left: var(--space-3);
+  border-left: 1.5px solid var(--color-border);
+}
+
+.book-toc__sublist--level-1,
+.book-toc__sublist--level-2 {
+  margin-top: var(--space-1);
+  margin-left: var(--space-2);
+  padding-left: var(--space-3);
+  border-left: 1.5px solid var(--color-border);
+}
+
+.book-toc__sublist--level-3 {
+  margin-top: var(--space-1);
+  margin-left: var(--space-2);
+  padding-left: var(--space-2);
+  border-left: 1px dashed var(--color-border);
+}
+
+.book-toc__subitem {
+  margin-bottom: var(--space-1);
+}
+.book-toc__subitem:last-child {
+  margin-bottom: 0;
+}
+
+.book-toc__sublink {
+  display: block;
+  color: var(--color-secondary);
+  font-weight: var(--weight-regular);
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  padding: 2px 0;
+  text-decoration: none;
+  transition: color var(--duration) var(--ease);
+}
+
+.book-toc__sublink:hover,
+.book-toc__sublink:focus,
+.book-toc__sublink.is-active {
+  color: var(--color-link);
+}
+
+/* --- Desktop Layout (>1024px): Left margin book shortcuts ------------------ */
+@media (min-width: 1024px) {
+  .layout {
+    max-width: 1240px;
+  }
+
+  .page-body {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: var(--space-8);
+    align-items: start;
+  }
+
+  .sidebar-context {
+    position: sticky;
+    top: var(--space-6);
+    max-height: calc(100vh - var(--space-8));
+    overflow-y: auto;
+    margin-bottom: 0;
+  }
+
+  .book-toc {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+  }
+}
+
+
+/* 08. COMPONENT: HERO HEADER (HOME ONLY) =================================== */
+
+/* Home is the one page that leads with a face. Every other page opens on a
+   .page-header, which is a title and nothing else since Career's lede was
+   merged into its Summary block. The portrait is here and
+   nowhere else because CLAUDE.md section 5 keeps it deliberately (a hiring
+   manager hires a person) and because repeating it on eight pages would turn
+   a considered exception into decoration. */
+
+.hero-header {
+  margin-bottom: var(--space-5);
+}
+
+.hero-header__content {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-5);
+  margin-bottom: var(--space-4);
+}
+
+/* The source is a square 800 x 800 studio headshot, and it stays square,
+   because og:image and the JSON-LD `image` both point at that file and both
+   want a square. The 4:5 framing is done here instead, so there is one asset
+   and the crop is a presentation decision.
+
+   `object-position` is 60% and not centre because the subject sits right of
+   centre in the source: a centred crop puts the near hand on the frame edge. */
+.hero-header__portrait {
+  width: 180px;
+  height: 220px;
+  flex-shrink: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  object-position: 60% center;
+}
+
+.hero-header__bio { flex: 1; }
+
+/* The facts a recruiter filters on: mobility, credentials, languages. Set as
+   a label column rather than three sentences with a bold word at the front,
+   for a reason Languages forced.
+
+   Languages is three pairs. As an inline run it needed one separator to
+   divide the three languages and another to bind each name to its level, and
+   a middot cannot do both jobs at once: "Arabic (native) . English and French
+   (full professional proficiency)" is what that collapses into. A grid
+   separates by alignment and needs no punctuation at all.
+
+   The hairlines are the ones .skill uses between its rows, which is the
+   closest analogue on the site: a label column of heterogeneous rows that
+   have to read as one table. */
+.hero-facts {
+  max-width: var(--measure);
+  margin: var(--space-4) 0 0;
+}
+
+.hero-facts__row {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: var(--space-1) var(--space-4);
+  align-items: baseline;
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--color-border-soft);
+}
+.hero-facts__row:first-child { border-top: 0; }
+
+.hero-facts__row > dt {
+  color: var(--color-muted);
+  font-size: var(--text-md);
+}
+
+.hero-facts__row > dd {
+  margin: 0;
+  color: var(--color-secondary);
+  font-size: var(--text-md);
+  line-height: var(--leading-snug);
+}
+
+/* The nested pair list. Its own column, narrower, because a language name is
+   short and the level beside it is not. */
+.hero-facts__langs { margin: 0; }
+
+.hero-facts__lang {
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  gap: 0 var(--space-3);
+  align-items: baseline;
+  margin-bottom: var(--space-2);
+}
+.hero-facts__lang:last-child { margin-bottom: 0; }
+
+.hero-facts__lang > dt {
+  color: var(--color-heading);
+  font-weight: var(--weight-bold);
+}
+
+.hero-facts__lang > dd { margin: 0; }
+
+/* Where a language cites the record that proves it. Dropped to its own line
+   under the level rather than trailing it, so the levels stay a readable
+   column. Arabic has none, deliberately: a native language saying so is
+   better than a citation invented for symmetry. */
+.hero-facts__proof {
+  display: block;
+  margin-top: var(--space-1);
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+}
+
+@media (max-width: 600px) {
+  .hero-header__content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  /* The label columns collapse: at this width 7.5rem of label leaves the
+     value nothing, and the hero is centred here anyway. */
+  .hero-facts { text-align: left; }
+  .hero-facts__row,
+  .hero-facts__lang { grid-template-columns: 1fr; }
+  .hero-facts__row > dt { font-weight: var(--weight-bold); }
+  .site-header__brand {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+}
+
+
+/* 09. COMPONENT: PAGE HEADER =============================================== */
 
 .page-header { margin-bottom: var(--space-5); }
 
@@ -600,7 +802,7 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 }
 
 
-/* 09. COMPONENT: BLOCK ===================================================== */
+/* 10. COMPONENT: BLOCK ===================================================== */
 
 /* A block is one section of the document, introduced by an h3 with the light
    underline the original used on its Projects page: applied everywhere now,
@@ -631,7 +833,7 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 }
 
 
-/* 10. COMPONENT: ENTRY ===================================================== */
+/* 11. COMPONENT: ENTRY ===================================================== */
 
 /* The universal content record: a job, a project, a paper, a course, a
    workshop, an award. A bulleted list item, exactly as the original CV pages
@@ -672,17 +874,29 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 }
 .entry__title a { color: var(--color-link); }
 
-/* The role or venue, trailing the title on the same line at normal weight. */
 .entry__role {
+  color: var(--color-heading);
+  font-weight: var(--weight-bold);
+}
+
+.entry__company {
+  color: var(--color-heading);
+  font-weight: var(--weight-bold);
+}
+
+.entry__location {
   color: var(--color-heading-3);
   font-weight: var(--weight-regular);
 }
 
+/* The date line, and on Career the location that shares it. Upright, not
+   italic: muted colour and a smaller size already say "secondary", and a third
+   signal on top of those buries a fact the recruiter reader scans for first. */
 .entry__period {
   margin: 0;
   color: var(--color-muted);
   font-size: var(--text-sm);
-  font-style: italic;
+  font-weight: var(--weight-regular);
 }
 
 .entry__meta {
@@ -698,10 +912,58 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 
 .entry__group { margin-top: var(--space-3); }
 
+.entry__group--capstone {
+  margin-top: var(--space-5);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--rule-soft);
+}
+
+.entry__group--homework {
+  margin-top: var(--space-2);
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--rule-soft);
+}
+
+/* A company with several positions states the shared company context once and
+   ties the progression to it with one unbroken vertical connector: the same
+   left rule .entry__group--homework uses for a course's assignments. The
+   direction of the rule is the argument. A left rule says "these belong to the
+   record above"; a horizontal rule says "a division starts here", which is the
+   opposite of what a promotion inside one company is, and two of them stacked
+   would begin assembling the card DESIGN.md section 9 forbids. */
+.entry__roles {
+  margin-top: var(--space-4);
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--rule-soft);
+}
+
+.entry__group--role { margin-top: var(--space-4); }
+.entry__group--role:first-child { margin-top: 0; }
+
+.entry__subrole { color: var(--color-heading); }
+
 .entry__group-title {
   margin: 0;
   color: var(--color-heading-3);
   font-weight: var(--weight-bold);
+}
+
+.point--lab {
+  margin-top: var(--space-1);
+  padding-left: var(--space-2);
+  border-left: 2px solid var(--rule-soft);
+  list-style: none;
+}
+
+/* The consequence of a bullet, kept out of its sentence. It recedes because
+   the technical line is what an engineer scans for; the bold label is what a
+   recruiter scans for, so the label keeps the heading ink and the sentence
+   does not. See career.md section 6 for which bullets earn one. */
+.point__impact {
+  display: block;
+  margin-top: var(--space-1);
+  color: var(--color-muted);
+  font-size: var(--text-md);
 }
 
 /* An issuer heading with its brand mark, used to group certifications. */
@@ -716,45 +978,81 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 }
 
 
-/* 11. COMPONENT: DEFINITION LIST =========================================== */
+/* 12. COMPONENT: CONTACT CHANNELS ========================================== */
 
-/* Skills, languages and other "category: values" content. The original wrote
-   these as <li><b>Label:</b> values</li>: correct on screen, but the pairing
-   lived only in the punctuation. This renders identically while being a real
-   definition list: the bullet, the bold label, the colon and the values all sit
-   on one line. The wrapper div is valid inside <dl> and is what lets a dt/dd
-   pair share a single list marker. */
-.deflist { margin: 0; padding-left: 1.4em; }
-
-.deflist__item {
-  display: list-item;
-  list-style: disc;
-  margin-bottom: var(--space-2);
-  max-width: var(--measure);
+/* Contact details are choices, not a definition list: a quiet label identifies
+   the channel while the right edge carries its actionable address or handle. */
+.contact-section {
+  max-width: 100%;
+  margin-bottom: var(--space-6);
 }
-.deflist__item:last-child { margin-bottom: 0; }
+.contact-section:last-child { margin-bottom: 0; }
 
-.deflist__item > dt {
-  display: inline;
-  color: var(--color-heading);
+.contact-section__title {
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-1);
+  border-bottom: 1px solid var(--color-border-soft);
+  color: var(--color-heading-3);
+  font-size: var(--text-xl);
   font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
 }
-.deflist__item > dt::after { content: ':'; }
 
-.deflist__item > dd { display: inline; margin: 0; }
+.contact-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 
-/* Metric-led records: the figure leads, the evidence link closes. */
-.impact__source { white-space: nowrap; }
+.contact-list__item { border-bottom: 1px solid var(--color-border); }
+
+.contact-list__link,
+.contact-list__row {
+  display: grid;
+  grid-template-columns: 10rem 1fr;
+  gap: var(--space-4);
+  align-items: baseline;
+  padding: var(--space-4) 0;
+}
+
+.contact-list__link { text-decoration: none; }
+
+.contact-list__label {
+  color: var(--color-muted);
+  font-size: var(--text-md);
+}
+
+.contact-list__value {
+  color: var(--color-heading);
+  font-size: var(--text-md);
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.contact-list__link:hover .contact-list__value {
+  color: var(--color-link-hover);
+}
+
+@media (max-width: 480px) {
+  .contact-list__link,
+  .contact-list__row {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+
+  .contact-list__value { text-align: left; }
+}
 
 
-/* 12. COMPONENT: SPEC STRIP =============================================== */
+/* 13. COMPONENT: SPEC STRIP ================================================ */
 
 /* Constants of an appointment, set side by side instead of stacked: the three
    things a reader wants from a teaching page (how much of it, in what
    language, graded how) each answered in a fixed place.
 
-   It is a run of definition lists, like §11, and it exists because §11 cannot
-   do this job: a .deflist is one label and its values on one line, and these
+   It is a run of definition lists, like §12, and it exists because §12 cannot
+   do this job: a definition list is one label and its values on one line,
+   and these
    are three groups of several rows that have to align as columns. The figures
    sit right, so hours and percentages stack into a readable edge rather than
    hiding mid-sentence.
@@ -811,7 +1109,8 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 }
 .spec__row:last-child { margin-bottom: 0; }
 
-/* The weighting is inverted from .deflist on purpose. There the label is the
+/* The weighting is inverted from the retired .deflist on purpose. There the
+   label was the
    bold thing you scan for; here the reader is scanning the figures, so the
    label recedes and the value carries the weight. */
 .spec__row > dt {
@@ -838,51 +1137,140 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 }
 
 
-/* 13. COMPONENT: SKILL ===================================================== */
+/* 13. COMPONENT: RESULT ==================================================== */
 
-/* A capability, the tools it is exercised with, and links to every record on
-   the site that proves it. The one block whose tag list is a run of citations
-   rather than a fixed set of dimensions: skills.md argues why that is worth
-   giving up positional reading for. */
-.skills { margin: 0; padding: 0; list-style: none; }
+/* Home's Selected Impact: what changed because the work shipped. The figure
+   leads, its consequence sits beside it, and the record it came from closes
+   the row.
 
-.skill { margin-bottom: var(--space-5); }
-.skill:last-child { margin-bottom: 0; }
+   This was an `.entry` until it was not, and the swap is the point. `.entry`
+   is the component for a dated record living on its own page, so it required
+   a title, a period line and a metadata row. A pointer to a result has none of
+   those, and inventing them cost the block everything it was for: a topic
+   ("Azure cost control") took the 17px bold title slot, the figure was demoted
+   to a 12px chip, the company dateline repeated what Currently already
+   projects, and four of five rows ended in an identical grey tag reading
+   "Career". A reader scanning the block got categories, not outcomes.
 
-/* Name and standing share a baseline: the standing is a caption on the name,
-   not a second line of content. */
-.skill__head {
-  margin-bottom: var(--space-1);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--space-1) var(--space-3);
+   `.result` gives the figure the slot and the size the title had. Nothing else
+   changed rank: the sentence is still the quoted `impact` line, and the source
+   is still a link. DESIGN.md section 9.3. */
+.results {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.skill__name {
+.result {
+  display: grid;
+  grid-template-columns: 13rem 1fr;
+  gap: var(--space-2) var(--space-5);
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--color-border);
+}
+.result:first-child { padding-top: var(--space-3); border-top: 0; }
+
+/* Spanning both rows so it stays baseline-aligned with the first line of the
+   consequence rather than centring itself against the whole cell. */
+.result__figure {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  margin: 0;
   color: var(--color-heading);
-  font-weight: var(--weight-bold);
   font-size: var(--text-lg);
+  line-height: var(--leading-snug);
 }
 
-/* Deliberately uncoloured. Standing is a *value* ("production-proven" versus
-   "applied & studied") and §7.1 forbids styling a value, for the reason
-   projects.md gives: colour that grades a value asserts what the record has
-   not earned. The gradient is carried by the evidence chips instead, which is
-   why the leading chip's colour is worth reading. */
-.skill__standing {
+.result__consequence {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+  max-width: var(--measure);
+  line-height: var(--leading-normal);
+}
+
+/* Where the sentence came from: the company (or, for the aggregate record, its
+   derived upstream state) and the page that carries the bullet. A line rather
+   than a chip, because "Career" said nothing as a chip and said it four times
+   in five rows. */
+.result__source {
+  grid-column: 2;
+  grid-row: 2;
+  margin: 0;
   color: var(--color-muted);
   font-size: var(--text-sm);
 }
 
-.skill__tools {
-  margin-bottom: var(--space-2);
-  color: var(--color-secondary);
-  font-size: var(--text-md);
+
+/* 14. COMPONENT: SKILL ===================================================== */
+
+/* A capability, the tools it is exercised with, and links to every record on
+   the site that proves it. The one block whose tag list is a run of citations
+   rather than a fixed set of dimensions: skills.md argues why that is worth
+   giving up positional reading for.
+
+   Two columns, and the split is the layout's whole argument. The left column
+   is fixed and says what the capability *is*; the right flows and holds the
+   proof. Before this, capability, tools and forty citations all ran from the
+   same left edge, which meant the ranking skill_sort_key computes could not be
+   seen: nothing lined up well enough to look ordered, and the block read as a
+   wall of chips. A fixed label column is the same device .contact-list uses
+   (section 11), for the same reason.
+
+   Not boxed, and not a table. Section 9 of DESIGN.md: a CV is a document, not
+   a feed of cards, and a true five-column proof matrix would need the citation
+   text cut to about fifteen characters, which is the specificity that makes a
+   chip worth clicking. The hairline between rows does the work a card border
+   would, at none of the cost. */
+.skills { margin: 0; padding: 0; list-style: none; }
+
+.skill {
+  display: grid;
+  grid-template-columns: 15rem 1fr;
+  gap: var(--space-2) var(--space-5);
+  align-items: baseline;
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--color-border);
+}
+.skill:first-child { padding-top: var(--space-3); border-top: 0; }
+.skill:last-child { padding-bottom: 0; }
+
+.skill__head { min-width: 0; }
+
+.skill__name {
+  margin: 0;
+  color: var(--color-heading);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-lg);
+  line-height: var(--leading-snug);
 }
 
+/* Deliberately uncoloured. Standing is a *value* ("production-proven" versus
+   "applied & studied") and section 7.1 forbids styling a value, for the reason
+   projects.md gives: colour that grades a value asserts what the record has
+   not earned. The gradient is carried by the evidence chips instead, which is
+   why the leading chip's colour is worth reading.
 
-/* 14. COMPONENT: TAG ======================================================= */
+   It stays a caption rather than becoming a sub-heading that groups the rows.
+   The block already sorts on standing first, so the grouping is there to be
+   seen without a second heading level inside a block. */
+.skill__standing {
+  margin: var(--space-1) 0 0;
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+}
+
+.skill__proof { min-width: 0; }
+
+/* Tools take the site-wide `stack` treatment (outlined, one chip per tool)
+   so Home, Career and Projects say "a thing this was built with" the same way.
+   They sit on their own list above the evidence and are never merged into it:
+   skills.md's colour-run reading is a claim about the colour of a row's FIRST
+   chip, and an outlined chip in front of the run would destroy it. The tighter
+   gap beneath is what says the two lists belong to one another. */
+.skill__tools { margin-bottom: var(--space-2); }
+
+/* 15. COMPONENT: TAG ======================================================= */
 
 /* Tags classify; they never decorate. There are two families and no third.
 
@@ -932,15 +1320,21 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
      .tag--stack: Python · YOLOv8 · FastAPI · Gradio       (grey)
 
      experience
-     .tag--domain    (E-commerce & Retail                      (blue)
-     .tag--stack) Talend · Azure · Datadog · Salesforce    (grey, reused)
+     .tag--domain     (Luxury E-commerce & Retail              (blue)
+     .tag--engagement) Permanent, End-of-studies Internship    (amber)
+     .tag--mode       On-site, Hybrid, Remote                  (violet, reused)
+     .tag--scale      150+ pipelines, 300 households           (grey, reused)
+     .tag--stack: Azure Data Factory · Apache Spark   (grey, reused)
 
      education
+     .tag--programme  (National Preparatory Programme          (amber)
+     .tag--focus)      Data Engineering & Distributed Systems  (blue)
      .tag--accreditation: EUR-ACE® Accredited        (grey, reused, linked)
 
-   `scale` is shared rather than duplicated: it means the size of the group a
-   record involved on both pages that use it (86 teams, 12 students) so it
-   keeps one name, one meaning and one rule. `format` is shared on the same
+
+   `scale` is shared rather than duplicated: it means the size of the thing a
+   record involved on every page that uses it (86 teams, 12 students, 150+
+   pipelines) so it keeps one name, one meaning and one rule. `format` is shared on the same
    terms: on Workshops and on Writing alike it names the shape the deliverable
    takes (a Hands-on Lab, a Configuration Guide) and so keeps one rule too.
 
@@ -975,6 +1369,24 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
   list-style: none;
 }
 .tag-list > li { display: flex; }
+
+/* The key above Skills & Evidence: five specimen chips naming what each colour
+   means. It is the only tag list on the site whose chips cite nothing, which
+   is why it is a modifier and not just another list: it sits under the intro
+   rather than under a record, and it carries the extra space that says it
+   belongs to the block rather than to the first row of it.
+
+   Chips rather than a sentence, because the thing being explained is a chip: a
+   worded legend makes the reader hold a translation, five samples let them
+   match by shape. The code was documented in skills.md and shown to nobody,
+   so a visitor worked out that green meant production somewhere around the
+   fourth row, if at all. Admissible under CLAUDE.md section 7 on the same
+   ground as the depth dial: a reading aid, not a control. */
+.tag-list--key {
+  margin: 0 0 var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border-soft);
+}
 
 .tag {
   display: inline-flex;
@@ -1030,6 +1442,45 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
    infrared sensor readings in the other. */
 .tag--domain     { background: var(--status-accent-bg); color: var(--status-accent-fg);  border-color: var(--status-accent-br); }
 
+/* `engagement` is amber because it is the standing of the record, the slot
+   `placement` holds on an award and `level` holds on a course: permanent,
+   fixed-term, part-time, internship. It is the fact a recruiter reads first
+   and the one a job title only implies, and it is stated rather than graded:
+   an internship gets the same treatment a permanent contract does, for the
+   reason awards.md rule 4 gives.
+
+   `mode` is reused from Workshops unchanged. The question is identical on
+   both pages (where was this delivered from) so DESIGN.md's rule is to reuse
+   the treatment and the name rather than coin a synonym for it. */
+.tag--engagement { background: var(--status-honor-bg);  color: var(--status-honor-fg);  border-color: var(--status-honor-br); }
+
+/* Education. `programme` is amber because it is the standing of the record,
+   the slot `placement` holds on an award and `engagement` holds on a job: a
+   national preparatory programme is a competitive-entry institution, not a
+   subject. `focus` is blue because it is the substance, the slot `domain`
+   holds on a job and `kind` holds on a project.
+
+   Neither ever renders beside the other, because the model's rule is that a
+   category renders only where its answer is not already in the record's own
+   title. They still take separate hues: two categories of one model sharing a
+   colour is what would stop the list being read positionally the day a record
+   carried both. career.md section 2. */
+.tag--programme  { background: var(--status-honor-bg);  color: var(--status-honor-fg);  border-color: var(--status-honor-br); }
+.tag--focus      { background: var(--status-accent-bg); color: var(--status-accent-fg); border-color: var(--status-accent-br); }
+
+/* Selected Impact: declared in home.md. `result` takes the amber standing slot
+   that `placement` holds on an award, `engagement` on a job and `programme` on
+   a degree: it says what sort of result this is, never that the result is a
+   good one. The category is named `result` and not `kind` because Projects
+   already spends `kind` on what sort of artefact a project is, and DESIGN.md
+   section 7.1 allows two models to share a category name only where they mean
+   the same thing by it. They do not.
+
+   `figure` joins the regular-weight run below rather than taking a hue of its
+   own: it is the same treatment `scale` gets on four other models, for the same
+   reason (the number is the information and it is already bold). `source`
+   joins it too, and is the one linked tag on the site that stays inside it. */
+
 /* Skills: declared in skills.md. Green leads because production leads: the
    colour of a row's first chip is how its standing reads at a glance. */
 .tag--production    { background: var(--status-success-bg); color: var(--status-success-fg); border-color: var(--status-success-br); }
@@ -1055,12 +1506,34 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 .tag--host,
 .tag--publisher,
 .tag--platform,
-.tag--stack,
 .tag--applied,
 .tag--accreditation {
   background: var(--status-neutral-bg);
   color: var(--status-neutral-fg);
   border-color: var(--status-neutral-br);
+  font-weight: var(--weight-regular);
+}
+
+/* `stack` is the one category that renders a chip per value rather than one
+   chip holding all of them, and the only one drawn as an outline rather than
+   a fill. The two decisions are one decision.
+
+   A filled chip means *a category of this record*: what the data was about,
+   what the contract was, how big the thing was. A tool is not a dimension of
+   the record, it is an item inside one, and an outline says so without
+   spending a hue, which the one-colour-per-category rule above has none left
+   to spend anyway. The reader sees two kinds of thing rather than eight
+   things of unequal importance.
+
+   The split is also what makes the value fit a phone. Joined, the longest
+   stack ran to 58 characters in a chip that is `white-space: nowrap`, roughly
+   393px inside a content column of about 308px at a 360px viewport. Separate
+   chips wrap; one long chip cannot. career.md section 1 carries the argument
+   for why a variable-length run is admissible in this one position. */
+.tag--stack {
+  background: transparent;
+  color: var(--color-secondary);
+  border-color: var(--status-outline-br);
   font-weight: var(--weight-regular);
 }
 
@@ -1093,7 +1566,7 @@ a.tag.link-external::after { margin-left: 0; }
 .medal--bronze { background: var(--medal-bronze); border-color: var(--medal-bronze-ring); }
 
 
-/* 15. COMPONENT: ICON ====================================================== */
+/* 16. COMPONENT: ICON ====================================================== */
 
 /* Brand logos arrive in wildly different aspect ratios: square, 2500x1184
    wordmarks, 412x800 portraits. Every icon therefore renders inside a fixed
@@ -1112,7 +1585,6 @@ a.tag.link-external::after { margin-left: 0; }
 .icon--xs { width: var(--icon-xs); height: var(--icon-xs); }
 .icon--sm { width: var(--icon-sm); height: var(--icon-sm); }
 .icon--md { width: var(--icon-md); height: var(--icon-md); }
-.icon--lg { width: var(--icon-lg); height: var(--icon-lg); }
 
 /* An icon-only link (repository, slides) sitting inside a heading. */
 .icon-link {
@@ -1126,7 +1598,7 @@ a.tag.link-external::after { margin-left: 0; }
 .icon-link:hover { opacity: 1; }
 
 
-/* 16. COMPONENT: SITE FOOTER =============================================== */
+/* 17. COMPONENT: SITE FOOTER =============================================== */
 
 /* Provenance, at the foot of the identity rail, where the theme put it. */
 .site-footer {
@@ -1142,30 +1614,16 @@ a.tag.link-external::after { margin-left: 0; }
 .site-footer a { color: var(--color-secondary); }
 
 
-/* 17. RESPONSIVE =========================================================== */
+/* 18. RESPONSIVE =========================================================== */
 
-/* --- ≤960px: two columns become one (the theme's own breakpoint) ---------- */
+/* --- ≤960px: the column stops being centred and takes the viewport ------- */
+/* There is no second column to collapse any more. What this breakpoint does
+   now is give the document the full width once the 1100px cap stops being the
+   thing that limits it, and tighten the trailing space. The measure cap on
+   prose (section 02) is what keeps the lines readable, not the container. */
 @media (max-width: 960px) {
-  .layout {
-    display: block;
-    width: auto;
-    max-width: none;
-  }
+  .layout { width: auto; max-width: none; }
 
-  .sidebar {
-    position: static;
-    width: auto;
-    max-height: none;
-    overflow: visible;
-    text-align: center;
-    padding-bottom: var(--space-5);
-    margin-bottom: var(--space-5);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  /* Contact details and profiles read better left-aligned in a wide band. */
-  .sidebar__section { text-align: left; max-width: 32rem; margin-inline: auto; }
-  .social { justify-content: center; }
   .site-footer { text-align: center; }
 
   .content { padding-bottom: var(--space-7); }
@@ -1174,6 +1632,14 @@ a.tag.link-external::after { margin-left: 0; }
 /* --- ≤720px: padding tightens ------------------------------------------- */
 @media (max-width: 720px) {
   :root { --gutter: var(--space-4); }
+
+  /* The skill's label column stops earning its width: a 15rem column beside a
+     flowing chip run leaves the chips about nine characters wide. It stacks,
+     and the hairline between rows keeps the records separable without it. */
+  .skill {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
 
   body { padding: 0; word-wrap: break-word; }
 
@@ -1186,10 +1652,11 @@ a.tag.link-external::after { margin-left: 0; }
 
 /* --- ≤480px: navigation scrolls ----------------------------------------- */
 @media (max-width: 480px) {
-  :root { --text-2xl: 1.375rem; --text-3xl: 1.5rem; }
+  :root { --text-2xl: 1.375rem; }
 
   .nav__list {
     flex-wrap: nowrap;
+    justify-content: flex-start;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
@@ -1200,13 +1667,17 @@ a.tag.link-external::after { margin-left: 0; }
   .nav__list::-webkit-scrollbar { display: none; }
   .nav__link { white-space: nowrap; }
 
-  .sidebar__portrait { width: 120px; height: 120px; }
+  .hero-header__portrait { width: 140px; height: 170px; }
 
-  .entries, .points, .deflist { padding-left: 1.1em; }
+  .entries, .points { padding-left: 1.1em; }
+  .result { grid-template-columns: 1fr; gap: var(--space-1); }
+  .result__figure,
+  .result__consequence,
+  .result__source { grid-column: 1; grid-row: auto; }
 }
 
 
-/* 18. MOTION & ACCESSIBILITY PREFERENCES =================================== */
+/* 19. MOTION & ACCESSIBILITY PREFERENCES =================================== */
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -1227,7 +1698,7 @@ a.tag.link-external::after { margin-left: 0; }
 }
 
 
-/* 19. PRINT ================================================================ */
+/* 20. PRINT ================================================================ */
 
 /* The portfolio doubles as a printable CV. */
 @media print {
@@ -1243,23 +1714,29 @@ a.tag.link-external::after { margin-left: 0; }
 
   .layout { display: block; width: auto; max-width: none; padding: 0; }
 
-  .nav, .skip-link, .social, .site-footer { display: none !important; }
+  .nav, .skip-link, .site-footer { display: none !important; }
 
-  .sidebar {
-    position: static;
-    width: auto;
-    max-height: none;
-    overflow: visible;
+  /* The brand bar prints, because a printed page has to say whose CV it is,
+     but it prints as a rule-under heading rather than as navigation. */
+  .site-header {
     padding: 0 0 1em;
     margin-bottom: 1.5em;
     border-bottom: 1pt solid #000;
   }
-  .sidebar__portrait { display: none; }
+
+  /* The portrait is a screen decision (CLAUDE.md section 5) and costs a third
+     of a page in toner. */
+  .hero-header__portrait { display: none; }
 
   a { text-decoration: none; }
   .entry, .block, .skill { page-break-inside: avoid; }
   .block__title, .page-title { page-break-after: avoid; }
   .tag { border-color: #999; }
+
+  /* The evidence key explains a colour code, and this stylesheet has just
+     removed every colour it explains. It prints as five identical grey chips
+     saying nothing, so it does not print. */
+  .tag-list--key { display: none !important; }
 
   /* The metals are the one place on the site where colour carries meaning that
      greyscale would lose, so they are forced through to the printer. */

@@ -19,7 +19,7 @@ Order:  upstream → kind → stack
 
   upstream  whether anyone else took it   "Submitted upstream · PR #586"
   kind      what the deliverable is       "Kanboard Plugin", "Notebook"
-  stack     what it is built with         "Python · YOLOv8 · FastAPI · Gradio"
+  stack     what it is built with         "Python" "YOLOv8" "FastAPI" "Gradio"
 ```
 
 The order is defined once, in `MODELS["projects"]` in `tools/build.py`.
@@ -43,11 +43,12 @@ the other end of the repository link, which the title usually does not. *Model
 something that runs when you open it: the single most useful fact about an
 applied ML project, and invisible from a title.
 
-**`stack` last, and quiet.** Regular-weight grey and the terminal position,
-exactly as `scale` on Awards, `host` on Workshops, `publisher` on Research and
-`platform` on Writing. A stack is context for the record, not a claim it makes:
-*PHP · JavaScript* tells you what you would be reading, and takes the treatment
-that says so.
+**`stack` last, and quiet.** Terminal in the order, exactly as `scale` on
+Awards, `host` on Workshops, `publisher` on Research and `platform` on Writing.
+A stack is context for the record, not a claim it makes: *PHP*, *JavaScript*
+tells you what you would be reading, and takes the treatment that says so. It
+is the one of them drawn as an outline rather than a fill, and the one that
+renders a chip per value; both are argued below.
 
 ### Vocabulary
 
@@ -55,7 +56,7 @@ that says so.
 |---|---|
 | `upstream` | `{ "repo": "kanboard/website", "pr": 586, "state": "open" }`: label and URL both derived |
 | `kind` | `Kanboard Plugin` · `Model &amp; Service` · `Notebook` |
-| `stack` | A list of at most four tool names, rendered as one tag |
+| `stack` | A list of at most four tool names, one outlined chip each |
 
 `kind` names the deliverable, not the field. *Computer Vision* is a discipline
 and belongs in the summary; *Notebook* is what the repository actually contains.
@@ -116,29 +117,75 @@ not a different kind of tag.
 
 ---
 
-## Why `stack` is one tag and not four
+## Why `stack` is one chip per tool
+
+It was one joined tag until it was not, and both versions were right about
+something. The argument is worth keeping in full, because the rule it appears
+to break is a real rule.
+
+### What the joined tag got right
 
 [`teaching.md`](teaching.md) removed a `stack` category that rendered one chip
-per tool, and the rule it broke governs here too:
+per tool, and the rule it invoked governs here too:
 
 > **A category holds one value.** A run of tags whose length changes from
 > record to record destroys the positional reading that the fixed order exists
 > to provide.
 
-The hand-written version of this page had it both ways and neither well: the
-plugins carried a category tag and a PR link, while the ML projects carried
-four loose `.tag--neutral` technology chips. Two records could not be compared
-down a column because no column existed.
+That rule is sound and nothing below repeals it. The hand-written version of
+this page broke it badly: the plugins carried a category tag and a PR link
+while the ML projects carried four loose `.tag--neutral` technology chips, so
+no two records could be compared down a column because no column existed.
 
-Projects nonetheless *needs* the category ([`awards.md`](awards.md) rule 3
-names `stack` among the things a reader may genuinely need) so it is kept and
-rendered as **one tag**, joined by `·`, the way `workload` renders a total with
-its breakdown and `reach` renders a pair. One value, one position, one colour.
+### What it got wrong
 
-**Four tools is the cap.** A `.tag` is `white-space: nowrap`, so a long value
-cannot wrap and will push past a narrow viewport. A stack that will not fit in
-four names is a sign the record should name the rest in its summary, which is
-what the YOLOv8 entry does with Docker and Vercel.
+**The rule does not reach the last position.** `stack` is the terminal
+category in every model that declares it. A run whose length varies at the
+*end* of a list shifts nothing before it: positions one through four render in
+their fixed places on every record, and a reader comparing `kind` down a column
+finds it exactly where it was. The positional reading the rule protects is
+never at risk here. It would be at risk the moment `stack` stopped being last,
+which is the boundary and the reason this is a rule about *position* rather
+than a licence to split any category.
+
+**And the joined tag did not fit.** The version of this document that argued
+for one tag already saw the failure coming, and capped the stack at four names
+because *a `.tag` is `white-space: nowrap`, so a long value cannot wrap and
+will push past a narrow viewport.* The cap was not enough. Four names is still
+58 characters on the longest Career record, about 393px of unbreakable chip in
+a content column of roughly 308px at a 360px viewport. Separate chips wrap
+because `.tag-list` is a flex container; one long chip cannot wrap at all.
+
+So the choice was never *one value per category* against *several*. It was a
+correct positional rule applied one position too far, against a value that
+overflowed the page.
+
+### What was actually wrong with the old chips
+
+Not their number. Two other things, and both still hold:
+
+| The old run | Why it failed | Still forbidden |
+|---|---|---|
+| `.tag--accent` on the headline tool, `.tag--neutral` on the rest | Graded a value: *Talend is the important one* | Yes: [`awards.md`](awards.md) rule 4 |
+| Loose chips **instead of** categories | Nothing to read positionally, because nothing held a position | Yes: the five categories render first, in fixed order |
+
+Today's run is neither. Five fixed categories render first and in their
+declared order; the tools follow, all in one treatment, none ranked above
+another.
+
+### The outline is what keeps them separable
+
+Tool chips are drawn as an outline, not a fill. A filled chip means *a
+dimension of this record*; a tool is an item inside one, not a dimension of it.
+The reader is meant to see two kinds of thing rather than eight things of
+unequal weight, and the distinction is drawn without spending a hue, which the
+one-colour-per-category rule has none left to spend anyway.
+
+**Four tools is still the cap**, for the reason it always was, minus the
+wrapping half: a stack that needs more than four names should name the rest in
+the record's summary, which is what the YOLOv8 entry does with Docker and
+Vercel. The cap now governs how much a reader is asked to hold, not how much
+fits on a line.
 
 ---
 

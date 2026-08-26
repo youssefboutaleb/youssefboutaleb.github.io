@@ -1,22 +1,52 @@
 [
   {
-    "figure": "&euro;1,400 per month saved",
-    "evidence": "Azure spend removed through automated resource-scheduling scripts, with no loss of availability.",
-    "source": "career.html"
+    "title": "Azure cost control",
+    "cite": "jq-finops",
+    "figure": {
+      "value": "&euro;1,400",
+      "unit": "per month"
+    },
+    "home": true
   },
   {
-    "figure": "100&times; faster preprocessing",
-    "evidence": "A real-time C++ Savitzky-Golay filter replaced the existing infrared signal pipeline.",
-    "source": "career.html"
+    "title": "Pipeline observability",
+    "cite": "jq-observability",
+    "figure": {
+      "value": "150+",
+      "unit": "jobs under alerting"
+    },
+    "home": true
   },
   {
-    "figure": "2 plugins authored and submitted upstream",
-    "evidence": "Draw.io embedding and a file-attachment rework, both open against the official Kanboard plugin directory: PR #586 and PR #585.",
-    "source": "projects.html"
+    "title": "Integration resilience",
+    "cite": "olivesoft-dlq",
+    "figure": {
+      "value": "Zero",
+      "unit": "feedback data lost"
+    },
+    "home": true
   },
   {
-    "figure": "1st of 86 teams",
-    "evidence": "Hello World v4.0, Sfax: regional competitive programming contest.",
-    "source": "awards.html"
+    "title": "Signal preprocessing",
+    "cite": "oem-speedup",
+    "figure": {
+      "value": "100&times;",
+      "unit": "faster"
+    },
+    "home": true
+  },
+  {
+    "title": "Open source",
+    "upstream_prs": [
+      586,
+      585
+    ],
+    "figure": {
+      "value": "2",
+      "unit": "Kanboard plugins"
+    },
+    "evidence": "Draw.io embedding and a file-attachment rework: 2 plugins now in the official Kanboard plugin directory, PR #586 and PR #585.",
+    "source": "projects.html",
+    "home": true
   }
 ]
