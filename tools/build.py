@@ -22,6 +22,7 @@ import fnmatch
 import hashlib
 import json
 import re
+import struct
 import sys
 import unicodedata
 from datetime import date
@@ -2458,6 +2459,36 @@ def render_contact_socials(site: dict) -> str:
     return "\n".join(rows)
 
 
+def image_size(path: Path) -> tuple[int, int]:
+    """The intrinsic pixel size of a JPEG or PNG, read from the file itself.
+
+    For `og:image:width` and `og:image:height`. A crawler that is given them
+    can lay the card out on its first pass instead of deferring until it has
+    fetched and decoded the image, and several never come back for the second
+    pass. Without them the portrait card renders inconsistently across LinkedIn,
+    Slack and X.
+
+    Measured rather than declared. Two integers typed into `site.json` would be
+    a hand-copied fact about a file sitting next to the file, which is the
+    drift surface this build removes everywhere else: crop the portrait and the
+    numbers would quietly start lying, with nothing to catch it.
+    """
+    data = path.read_bytes()
+    if data[:8] == b"\x89PNG\r\n\x1a\n":
+        return struct.unpack(">II", data[16:24])
+    if data[:2] == b"\xff\xd8":
+        index = 2
+        while index < len(data) - 9:
+            if data[index] != 0xFF:
+                break
+            marker = data[index + 1]
+            if marker in (0xC0, 0xC1, 0xC2, 0xC3):
+                height, width = struct.unpack(">HH", data[index + 5:index + 9])
+                return width, height
+            index += 2 + struct.unpack(">H", data[index + 2:index + 4])[0]
+    raise ValueError(f"{path}: could not read intrinsic size")
+
+
 def json_ld(site: dict, meta: dict, canonical: str) -> str:
     person = {
         "@context": "https://schema.org",
@@ -3007,8 +3038,11 @@ def build(check_only: bool = False, sync: bool = False) -> int:
                     "aria_current": ' aria-current="page"' if item["id"] == nav_entry["id"] else "",
                 })
 
+            portrait_w, portrait_h = image_size(ROOT / site["portrait"])
             context = {
                 **body["locale_context"],
+                "site.portrait_width": portrait_w,
+                "site.portrait_height": portrait_h,
                 "page.title_tag": title_tag,
                 "page.description": tr(f"page.{nav_entry['id']}.description", meta["description"]),
                 "page.canonical": canonical,
