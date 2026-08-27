@@ -2391,37 +2391,55 @@ def render_contact_channels(site: dict) -> str:
             "  </a>\n"
             "</li>"
         )
-    # Two rows, and the availability leads.
-    #
-    # They were two rows before, in the other order: `Location: Sfax, Tunisia`
-    # above the availability sentence, which handed a recruiter the
-    # disqualifying half first and left them to reconcile two adjacent facts
-    # themselves. They were merged into one row to remove the surface, and the
-    # author has since asked for the sentence on a line of its own, which is
-    # the right call: it is the longest and most consequential string on the
-    # page and it was reading as a tail on a location.
-    #
-    # So: separated, but ordered. The favourable and decisive fact is first and
-    # the location follows it as context, which is the reverse of the version
-    # that caused the problem. CLAUDE.md section 4: a recruiter who has to
-    # wonder filters silently.
-    #
-    # `availability` renders verbatim in both. Section 4 forbids paraphrasing a
-    # residence status, and the reason the site once carried three different
-    # wordings is that three places each held their own copy.
-    for label_key, label, value in (
+    return "\n".join(rows)
+
+
+def render_contact_facts(site: dict) -> str:
+    """Availability and location, in Contact's page header.
+
+    **They are page-level facts and they were sitting in a channel list.**
+    `Contact Details` answers *how do I reach you*, and neither of these is a
+    way of reaching anyone: one is a residence status and the other is a city.
+    A reader scanning a list of addresses met a sentence about EU work
+    authorisation in the middle of it.
+
+    They have now been three arrangements, and the history is the argument for
+    this one. First two rows with `Location` above `Availability`, which handed
+    a recruiter the disqualifying half first: the silent filter CLAUDE.md
+    section 4 exists to prevent, produced by the page meant to prevent it. Then
+    one merged row, which fixed the ordering and cost the sentence its own
+    line, where it read as a tail on a city. Then two rows again, reordered,
+    which fixed both and left them in the wrong section.
+
+    The header is where a fact about the page rather than about a row belongs.
+    DESIGN.md section 9 already permits a `.page-header` to carry a title and a
+    summary grid, which is the slot Awards fills, and this is the same idea one
+    component along.
+
+    `.hero-facts` is reused rather than reinvented. It is the label column Home
+    renders this exact sentence in, so a reader who saw it there meets the same
+    shape here, and DESIGN.md section 11 asks a fifth label-column case to use
+    the idiom rather than invent a sixth. Nothing in its stylesheet was ever
+    coupled to the hero: only the section header claimed so, and that comment
+    is corrected.
+
+    Both strings render verbatim from `src/site.json`. Section 4 forbids
+    paraphrasing a residence status, and the reason the site once carried three
+    wordings is that three places each held a copy.
+    """
+    rows = []
+    for key, label, value in (
         ("contact.availability", "Availability", site["availability"]),
         ("contact.based-in", "Based in", site["location"]),
     ):
         rows.append(
-            '<li class="contact-list__item">\n'
-            '  <div class="contact-list__row">\n'
-            f'    <span class="contact-list__label">{tr(label_key, label)}</span>\n'
-            f'    <span class="contact-list__value">{value}</span>\n'
-            "  </div>\n"
-            "</li>"
+            '<div class="hero-facts__row">\n'
+            f'  <dt>{tr(key, label)}</dt>\n'
+            f'  <dd>{value}</dd>\n'
+            "</div>"
         )
-    return "\n".join(rows)
+    body = "\n".join(indent(row, 2) for row in rows)
+    return '<dl class="hero-facts">\n' + body + '\n</dl>' 
 
 
 def render_contact_socials(site: dict) -> str:
@@ -2803,6 +2821,7 @@ def page_blocks(site: dict) -> dict:
         "build.articles": indent("\n".join(render_article(a) for a in articles), 4),
         "build.reach_note": indent(reach_note(articles), 2),
         "build.contact_channels": indent(render_contact_channels(site), 4),
+        "build.contact_facts": indent(render_contact_facts(site), 2),
         "build.contact_socials": indent(render_contact_socials(site), 4),
         "build.open_source": indent(
             "\n".join(render_project(p, articles_by_id) for p in open_source), 4),

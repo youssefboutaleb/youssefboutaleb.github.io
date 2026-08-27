@@ -760,15 +760,26 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 }
 
 
-/* 08. COMPONENT: HERO HEADER & FACT STRIP (HOME ONLY) ====================== */
+/* 08. COMPONENT: HERO HEADER (HOME ONLY) & FACT STRIP ====================== */
 
-/* Home is the one page that leads with a face. Every other page opens on a
-   .page-header: a title, optionally a lede, and optionally a summary grid,
-   which is what Awards puts there (DESIGN.md section 9.4). The portrait is
-   here and
-   nowhere else because CLAUDE.md section 5 keeps it deliberately (a hiring
-   manager hires a person) and because repeating it on eight pages would turn
-   a considered exception into decoration. */
+/* Two components, and only the first is Home's.
+
+   `.hero-header` is: Home is the one page that leads with a face. Every other
+   page opens on a plain .page-header, a title plus optionally a lede or a
+   summary grid, which is what Awards puts there (DESIGN.md section 9.4). The
+   portrait is here and nowhere else because CLAUDE.md section 5 keeps it
+   deliberately (a hiring manager hires a person) and because repeating it on
+   eight pages would turn a considered exception into decoration.
+
+   `.hero-facts` is not. It is a label column, the third of the four users of
+   that idiom (DESIGN.md section 11), and nothing in its rules below was ever
+   coupled to the hero: no selector nests it under .hero-header. Contact's page
+   header carries it too, holding the same availability sentence Home does,
+   because that is a fact about the person rather than a row in the channel
+   list it used to sit in. The name is kept: renaming a component to widen its
+   scope costs every reference in five documents and buys a word.
+
+   This header said HOME ONLY of both for as long as it was true of one. */
 
 .hero-header {
   margin-bottom: var(--space-5);

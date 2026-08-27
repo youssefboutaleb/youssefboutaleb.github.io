@@ -4,8 +4,22 @@ description: Contact Youssef Boutaleb for Data Engineering roles, enterprise int
 nav: contact
 schema_type: ContactPage
 -->
+<!-- Availability and Based in live here, not in Contact Details. They are
+     facts about the person, and a channel list answers how to reach one: a
+     reader scanning addresses was meeting a sentence about EU work
+     authorisation in the middle of them.
+
+     DESIGN.md 9 already lets a page-header carry a title and a summary grid,
+     which is the slot Awards fills. `.hero-facts` is the label column Home
+     renders the same availability sentence in, so the shape is one a reader
+     has already seen, and DESIGN.md 11 asks a fifth label-column case to reuse
+     the idiom rather than invent a sixth.
+
+     Both strings come from src/site.json and neither is edited here.
+     CLAUDE.md 4: never paraphrase a residence status. -->
 <header class="page-header">
   <h1 class="page-title">Contact</h1>
+{{ build.contact_facts }}
 </header>
 
 <!-- This page ran its own component vocabulary and its own heading level until

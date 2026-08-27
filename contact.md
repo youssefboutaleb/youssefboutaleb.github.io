@@ -43,9 +43,9 @@ choices a reader acts on rather than terms being defined.
 
 | Row | Source |
 |---|---|
+| Availability, Based in, in the page header | `availability` and `location` in `src/site.json`, via `render_contact_facts` |
 | The invitation, as `block__intro` | `contact_invitation` in [`src/site.json`](src/site.json) |
 | Primary email, Academic email, Phone / WhatsApp | `contact[]` in `src/site.json`, via `render_contact_channels` |
-| Based in | `location` and `availability` in `src/site.json`, joined |
 | LinkedIn, GitHub, Medium | `socials[]` in `src/site.json`, via `render_contact_socials` |
 | Opportunities & Services | Written in the fragment. See §5 |
 
@@ -108,24 +108,41 @@ one word, the hero lede leads with the role, and Skills & Evidence is ordered
 `trunk` before `branch`. The claim is made there. This block states what work
 is being accepted, which is a different question from what the role is.
 
-## 6. Based in, and Availability, are two rows
+## 6. Availability and Based in are page facts, and live in the page header
 
-The availability sentence has its own row and it comes **first**:
+```
+Contact
+  Availability   EU residence permit holder. Open to relocation
+                 within the EU and to fully remote roles.
+  Based in       Sfax, Tunisia
+```
 
-> **Availability** EU residence permit holder. Open to relocation within the
-> EU and to fully remote roles.
-> **Based in** Sfax, Tunisia
+**They are not contact channels and they spent three arrangements inside a
+list of them.** `Contact Details` answers *how do I reach you*; a residence
+status and a city answer neither. A reader scanning addresses met a sentence
+about EU work authorisation in the middle of them.
 
-They were two rows originally, in the other order, and §4 above is why that
-failed. They were then merged into one row to remove the surface entirely, and
-the author asked for the sentence back on a line of its own, which is right:
-it is the longest and most consequential string on the page and as a tail on a
-location it read like a footnote to Tunisia.
+The four arrangements, because the sequence is the argument:
 
-**Separated, but ordered.** The decisive fact leads and the location follows it
-as context, which is the reverse of the arrangement that caused the problem.
-Both strings come from [`src/site.json`](src/site.json) and neither is edited
-here.
+| | Why it failed |
+|---|---|
+| Two rows, `Location` above `Availability` | Handed a recruiter the disqualifying half first: the silent filter §4 exists to prevent, produced by the page meant to prevent it |
+| One merged row, `Based in` | Fixed the ordering, cost the sentence its own line, where it read as a tail on a city |
+| Two rows, availability first | Fixed both, and left them in a section that answers a different question |
+| **Page header** | A fact about the page, in the page's own header |
+
+**`.hero-facts`, reused rather than reinvented.** It is the label column Home
+renders this exact sentence in, so a reader who saw it on the front page meets
+the same shape where the decision gets made, and [`DESIGN.md`](DESIGN.md) §11
+asks a fifth label-column case to use the idiom rather than invent a sixth.
+Nothing in its stylesheet was coupled to the hero; only the section header
+claimed so, and that comment is corrected.
+
+**Both strings render verbatim from [`src/site.json`](src/site.json).** §4
+forbids paraphrasing a residence status, and the reason the site once carried
+three wordings is that three places each held a copy. Do not join them, shorten
+them, or move either into the `block__intro`: an intro is one line and a pitch
+([`DESIGN.md`](DESIGN.md) §11.1), and this is neither.
 
 ## 7. What is still open
 

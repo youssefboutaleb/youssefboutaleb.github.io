@@ -876,6 +876,13 @@ more true here.
 fixed thing and a long flowing thing side by side", and a fifth case should use
 it rather than invent a sixth shape.
 
+**`.hero-facts` is the one that travels.** It renders in Home's hero and in
+Contact's page header, carrying the same `availability` sentence in both, which
+is the point: a reader who met the shape on the front page meets it again where
+the decision gets made. Its stylesheet section is headed `(HOME ONLY)` for
+`.hero-header`, which is true, and said the same of `.hero-facts`, which was
+never enforced by a single selector.
+
 **A record in a reading list is never boxed**, and neither is this. That
 sentence used to read *entries are never boxed*, flatly, and it was never
 true: `.entries--grid` has boxed the credential cards on Career since long

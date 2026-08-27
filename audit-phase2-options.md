@@ -172,14 +172,19 @@ the row on §3's authority: the argument has been made and answered, and making
 it again would be an agent overruling a positioning call that §10 reserves
 absolutely.
 
-`Availability` and `Based in` are two rows again, and the availability sentence
-leads. Phase 1 merged them into one row because the original two put `Location:
-Sfax, Tunisia` above the availability line, handing a recruiter the
-disqualifying half first. The merge fixed the ordering and cost the sentence
-its own line, where it read as a tail on a location rather than as the most
-consequential string on the page. Separated and reordered keeps both: the
-decisive fact first, the location after it as context. Neither string is
-edited; both come from `src/site.json`.
+`Availability` and `Based in` moved out of the channel list entirely and into
+Contact's page header, which is the fourth arrangement and the one that names
+what they are. `Contact Details` answers *how do I reach you*, and a residence
+status and a city answer neither: a reader scanning addresses was meeting a
+sentence about EU work authorisation in the middle of them. They render as
+`.hero-facts`, the label column Home already puts the same sentence in, in the
+`.page-header` slot DESIGN.md §9 permits and Awards fills.
+
+The three arrangements before it, in order: two rows with `Location` on top, which handed a recruiter the disqualifying
+half first; one merged row, which fixed the ordering and cost the sentence its
+own line; two rows with availability leading, which fixed both and left them in
+the wrong section. Neither string was edited at any point, and both still come
+from `src/site.json`. `contact.md` §6 carries the table.
 
 **Two audit findings, two author reversals, and both were right.** Worth
 recording plainly: an audit can be correct that something is a tension and
