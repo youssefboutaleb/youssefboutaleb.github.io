@@ -146,6 +146,15 @@ python3 -m http.server 8000
 `tools/build.py --check` exits non-zero if the committed pages are stale, which
 makes it usable as a pre-commit or CI gate.
 
+### Adding an architecture diagram
+
+Diagrams are data too. Write the layers and edges into
+[`src/data/diagrams.json`](src/data/diagrams.json) and place it in a fragment
+with `{{ build.diagram.<id> }}`; the build draws it as inline SVG with no
+JavaScript. The file is empty on purpose: `CLAUDE.md` M1 reserves the content
+to the author. [`diagrams.md`](diagrams.md) carries the record shape and the
+rules, including why `desc` is required.
+
 `tools/check.py` also fails on a skipped heading level, on the same word spelled
 two ways across the built pages, and on a CSS class no markup uses unless it is
 declared in `STAGED_CSS` with the reason it is waiting. It notes, without

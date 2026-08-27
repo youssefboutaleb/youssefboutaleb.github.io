@@ -125,6 +125,23 @@ set to exactly what those components already rendered. **A component that has
 to override its own element's default is the warning sign**, and
 `.contact-section__title` was it.
 
+### 1.1 The one drawn element
+
+`.diagram` is inline SVG generated at build time, and it is the only element on
+the site whose content is a shape rather than type. It is admissible under
+Principle 1 on the strictest reading of it: **a reader can print the page and
+lose nothing**, because the diagram prints. Colour comes from `currentColor`
+and one surface token, so it takes the page's ink in light, dark and print with
+no second palette.
+
+Mermaid was the alternative and was rejected for the reasons
+[`diagrams.md`](diagrams.md) §2 states: about 100KB of JavaScript per page
+carrying one, nothing where scripts are blocked, an empty box in print. An
+element that disappears on paper fails Principle 1 on its own terms.
+
+`src/data/diagrams.json` is empty and its classes sit in `STAGED_CSS`. That is
+the correct state: [`CLAUDE.md`](CLAUDE.md) M1 reserves the content.
+
 ## 2. Colour
 
 One grey ramp and one blue. Nothing else may be introduced.

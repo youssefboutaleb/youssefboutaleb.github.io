@@ -158,6 +158,12 @@ def css_variable_audit() -> None:
 # tax, and five rules rotted here long enough for one of them, .block__note, to
 # be cited by CLAUDE.md as an implemented mechanism while rendering nowhere.
 STAGED_CSS = {
+    # The architecture diagram component. render_diagram and its stylesheet are
+    # built and verified; src/data/diagrams.json is empty because CLAUDE.md M1
+    # says do not auto-generate this content, so the first diagram is the
+    # author's to write. See diagrams.md.
+    "diagram", "diagram__svg", "diagram__node", "diagram__edge",
+    "diagram__lane", "diagram__caption",
     # MEDALS in build.py emits medal--bronze for any third place. The rule is
     # reachable; the data has no third place yet.
     "medal--bronze",

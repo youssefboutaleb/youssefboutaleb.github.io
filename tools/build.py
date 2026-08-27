@@ -2531,6 +2531,128 @@ def image_size(path: Path) -> tuple[int, int]:
     raise ValueError(f"{path}: could not read intrinsic size")
 
 
+# --- architecture diagrams ---------------------------------------------------
+
+# One layered diagram, drawn at build time as inline SVG.
+#
+# CLAUDE.md M1 asks for at least one real architecture diagram and says, in
+# those words, do not auto-generate this content. So this is the container and
+# never the content: the author writes nodes and edges as facts, and the build
+# does arithmetic. Nothing here infers what connects to what.
+#
+# Inline SVG rather than a library, for the reasons DESIGN.md Principle 1 gives.
+# Mermaid would need roughly 100KB of JavaScript on every page carrying a
+# diagram, would render nothing where scripts are blocked, and would print as an
+# empty box, on a site whose whole argument is that the page is a document. The
+# cost of drawing it here is one layout function.
+#
+# Every measurement is in user units and the whole thing scales through the
+# viewBox, so there is one geometry and no breakpoints.
+NODE_W, NODE_H = 148, 52       # a box
+GAP_X, GAP_Y = 64, 22          # between columns, between boxes in a column
+PAD = 12                       # around the drawing
+LANE_H = 22                    # the layer label strip above the boxes
+CHAR_W = 6.6                   # 11px Noto Sans, measured on the widest lowercase
+LINE_H = 13
+
+
+def wrap_label(text: str, width: int) -> list[str]:
+    """Break a node label into lines that fit NODE_W.
+
+    SVG text does not wrap, so a label either fits or runs out of its box. The
+    break is on words and never mid-word: a diagram that hyphenates a service
+    name has made the name harder to recognise than the overflow would have.
+    """
+    words, lines, line = text.split(), [], ""
+    for word in words:
+        candidate = f"{line} {word}".strip()
+        if len(candidate) * CHAR_W <= width - 16 or not line:
+            line = candidate
+        else:
+            lines.append(line)
+            line = word
+    if line:
+        lines.append(line)
+    return lines[:3]
+
+
+def render_diagram(spec: dict) -> str:
+    """One architecture diagram as inline, script-free, theme-aware SVG.
+
+    Layered left to right: every layer is a column, every node a box in it,
+    every edge a line from one box's right edge to another's left. The author
+    declares the layers and the edges; the positions are computed here.
+
+    **Theme-aware without a second palette.** Strokes and text use
+    `currentColor`, so the diagram inherits whatever the page's colour is in
+    light, dark and print alike. There is no fill on a node except the surface
+    token, and the print stylesheet turns the ink black the same way it does
+    for everything else. A diagram that needed its own dark palette would be a
+    second design system.
+
+    **Readable without seeing it.** `role="img"` with a `<title>` and a `<desc>`
+    the author writes, so a screen reader gets the architecture as a sentence
+    rather than as a list of disconnected box labels. The `<desc>` is required:
+    a diagram nobody can read is decoration, and DESIGN.md Principle 1 does not
+    admit decoration.
+    """
+    layers = spec["layers"]
+    rows = max(len(layer["nodes"]) for layer in layers)
+    width = PAD * 2 + len(layers) * NODE_W + (len(layers) - 1) * GAP_X
+    height = PAD * 2 + LANE_H + rows * NODE_H + (rows - 1) * GAP_Y
+
+    place, boxes, labels = {}, [], []
+    for column, layer in enumerate(layers):
+        x = PAD + column * (NODE_W + GAP_X)
+        labels.append(
+            f'<text class="diagram__lane" x="{x + NODE_W / 2:.0f}" y="{PAD + 10}"'
+            f' text-anchor="middle">{layer["label"]}</text>')
+        # A short column is centred against the tallest, so a three-box lane
+        # beside a one-box lane reads as one flow rather than as a ragged edge.
+        offset = (rows - len(layer["nodes"])) * (NODE_H + GAP_Y) / 2
+        for row, node in enumerate(layer["nodes"]):
+            y = PAD + LANE_H + offset + row * (NODE_H + GAP_Y)
+            place[node["id"]] = (x, y)
+            lines = wrap_label(node["label"], NODE_W)
+            start = y + NODE_H / 2 - (len(lines) - 1) * LINE_H / 2 + 4
+            spans = "".join(
+                f'<tspan x="{x + NODE_W / 2:.0f}" y="{start + i * LINE_H:.0f}">{line}</tspan>'
+                for i, line in enumerate(lines))
+            boxes.append(
+                f'<g class="diagram__node">'
+                f'<rect x="{x}" y="{y:.0f}" width="{NODE_W}" height="{NODE_H}" rx="4"/>'
+                f'<text text-anchor="middle">{spans}</text></g>')
+
+    edges = []
+    for source, target in spec["edges"]:
+        if source not in place or target not in place:
+            raise ValueError(
+                f'{spec["id"]}: edge {source} -> {target} names a node the '
+                "diagram does not declare.")
+        x1, y1 = place[source]
+        x2, y2 = place[target]
+        sx, sy = x1 + NODE_W, y1 + NODE_H / 2
+        tx, ty = x2, y2 + NODE_H / 2
+        mid = (sx + tx) / 2
+        edges.append(
+            f'<path class="diagram__edge" d="M{sx:.0f} {sy:.0f} '
+            f'C{mid:.0f} {sy:.0f} {mid:.0f} {ty:.0f} {tx:.0f} {ty:.0f}"/>')
+
+    title_id, desc_id = f'{spec["id"]}-title', f'{spec["id"]}-desc'
+    body = "\n".join(
+        indent(part, 4) for part in
+        [f'<title id="{title_id}">{spec["title"]}</title>',
+         f'<desc id="{desc_id}">{spec["desc"]}</desc>'] + labels + edges + boxes)
+    return (
+        f'<figure class="diagram" id="{spec["id"]}">\n'
+        f'  <svg class="diagram__svg" viewBox="0 0 {width} {height:.0f}"'
+        f' role="img" aria-labelledby="{title_id} {desc_id}">\n'
+        f'{body}\n'
+        "  </svg>\n"
+        f'  <figcaption class="diagram__caption">{spec["caption"]}</figcaption>\n'
+        "</figure>")
+
+
 def json_ld(site: dict, meta: dict, canonical: str) -> str:
     person = {
         "@context": "https://schema.org",
@@ -2853,6 +2975,8 @@ def page_blocks(site: dict) -> dict:
         key=lambda record: record["start"],
         reverse=True,
     )
+    # Author-written architecture. CLAUDE.md M1: do not auto-generate this.
+    diagrams = json.loads((DATA / "diagrams.json").read_text(encoding="utf-8"))
     certifications = with_ids(json.loads((DATA / "certifications.json").read_text(encoding="utf-8")), "cert")
     languages = with_ids(json.loads((DATA / "languages.json").read_text(encoding="utf-8")), "lang")
     online_courses = with_ids(json.loads((DATA / "courses.json").read_text(encoding="utf-8")), "learn")
@@ -2896,6 +3020,11 @@ def page_blocks(site: dict) -> dict:
         "build.contact_channels": indent(render_contact_channels(site), 4),
         "build.contact_facts": indent(render_contact_facts(site), 2),
         "build.contact_socials": indent(render_contact_socials(site), 4),
+        # One key per diagram, so a fragment places it by name where it belongs
+        # rather than the build guessing which page a diagram is about. The id
+        # uses underscores because PLACEHOLDER does not admit a dash.
+        **{f'build.diagram.{spec["id"]}': indent(render_diagram(spec), 2)
+           for spec in diagrams},
         "build.open_source": indent(
             "\n".join(render_project(p, articles_by_id) for p in open_source), 4),
         "build.ml_projects": indent(
@@ -2961,8 +3090,13 @@ def build(check_only: bool = False, sync: bool = False) -> int:
         # Re-rendered per locale rather than substituted into finished markup:
         # ordinals, months, durations and tags are all generated, and each is
         # generated differently per language.
-        blocks = page_blocks(site)
+        # The locale's own site values, before the blocks are rendered. Passing
+        # the raw `site` here meant every renderer reading it directly
+        # (render_contact_facts, render_contact_channels) emitted English on a
+        # French page: `availability` and `location` are overlaid on `site`, not
+        # on a record, so `t()` never saw them.
         locale_site = {**site, **locale.overrides}
+        blocks = page_blocks(locale_site)
         locale_context = {f"site.{k}": v for k, v in locale_site.items()
                           if isinstance(v, (str, int))}
         # <html lang> and og:locale are the locale's own, not the site's.

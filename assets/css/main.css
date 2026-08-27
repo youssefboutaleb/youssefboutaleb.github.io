@@ -1702,6 +1702,71 @@ a.tag.link-external::after { margin-left: 0; }
 .medal--bronze { background: var(--medal-bronze); border-color: var(--medal-bronze-ring); }
 
 
+/* COMPONENT: ARCHITECTURE DIAGRAM ========================================== */
+
+/* Inline SVG, drawn at build time by render_diagram from src/data/diagrams.json.
+
+   Colour comes from `currentColor` and one surface token, and that is the whole
+   theme story: the diagram inherits the page's ink in light, in dark and in
+   print, so there is no second palette to keep in agreement and nothing to
+   forget when a token changes. A diagram that needed its own dark mode would be
+   a second design system wearing the first one's clothes.
+
+   Wide diagrams scroll inside the figure rather than shrinking the page: a
+   four-layer flow is about 900 user units, and a phone that scaled it to fit
+   would render 11px labels at about 4px. The audit rule is that wide content
+   scrolls in its own container and the body never scrolls sideways. */
+.diagram {
+  margin: var(--space-5) 0;
+  overflow-x: auto;
+}
+
+.diagram__svg {
+  display: block;
+  min-width: 32rem;
+  max-width: 100%;
+  height: auto;
+  color: var(--color-secondary);
+  font-size: 11px;
+}
+
+/* A box is the .entry treatment at diagram scale: a hairline and the page
+   surface, never a fill that would make one node look more important than
+   another. awards.md rule 4, applied to a shape instead of a chip. */
+.diagram__node rect {
+  fill: var(--color-surface);
+  stroke: currentColor;
+  stroke-width: 1;
+}
+
+.diagram__node text {
+  fill: var(--color-heading);
+  font-weight: var(--weight-bold);
+}
+
+.diagram__edge {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.25;
+}
+
+/* The layer strip: what a column *is*, in the treatment this site gives
+   furniture everywhere else. */
+.diagram__lane {
+  fill: var(--color-muted);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.diagram__caption {
+  margin-top: var(--space-2);
+  max-width: var(--measure);
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+}
+
+
 /* 17. COMPONENT: ICON ====================================================== */
 
 /* Brand logos arrive in wildly different aspect ratios: square, 2500x1184
@@ -1929,6 +1994,12 @@ a.tag.link-external::after { margin-left: 0; }
      removed every colour it explains. It prints as five identical grey chips
      saying nothing, so it does not print. */
   .tag-list--key { display: none !important; }
+
+  /* A diagram prints. It is the one element whose whole content is its shape,
+     and currentColor has already turned it black by the time we get here, so
+     it needs nothing except room and a promise not to break across a page. */
+  .diagram { overflow-x: visible; page-break-inside: avoid; }
+  .diagram__svg { min-width: 0; }
 
   /* The metals are the one place on the site where colour carries meaning that
      greyscale would lose, so they are forced through to the printer. */
