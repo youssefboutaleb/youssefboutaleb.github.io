@@ -199,9 +199,6 @@
   --status-honor-fg:    light-dark(#8f5800, #e0b366);
   --status-honor-br:    light-dark(#fae4be, #40331d);
 
-  --status-critical-bg: light-dark(#fcf0f2, #2e181c);
-  --status-critical-fg: light-dark(#86182a, #f0a0ab);
-  --status-critical-br: light-dark(#f5d0d6, #45262c);
 
   /* Geographic scope. The one hue added for the metadata system: it has to be
      unmistakable next to the accent blue a record's type carries, and it must
@@ -312,7 +309,26 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* The theme's stepped heading ramp: each level one notch lighter. */
+/* The theme's stepped heading ramp, and it is now a ramp of four real levels.
+   It used to describe a document that did not exist: h2 was defined at 25px
+   and used on one page, and every other page ran h1 straight to h3, so seven
+   of eight documents had no second level and every record title on the site
+   was a paragraph in a bold class. The tags now match the structure the rail
+   has always parsed out of it:
+
+     h1  page title        25px   .page-title
+     h2  section heading   19px   .block__title
+     h3  record title      17px   .entry__title, .issuer, .skill__name
+     h4  group title       16px   .entry__group-title
+
+   The sizes and colours below are set to exactly what those components already
+   rendered, so retagging changed the outline and not one pixel. That is the
+   whole intent: a component that has to override its own element's defaults is
+   how .contact-section__title came to be an h2 pretending to be an h3.
+
+   Body text is darker than h2 and h4. That is not a mistake; DESIGN.md
+   section 6 carries the argument, and it is why the ramp is stated by role
+   here rather than assumed to descend. */
 h1, h2, h3, h4, h5, h6 {
   margin: 0 0 var(--space-5);
   color: var(--color-heading);
@@ -320,13 +336,12 @@ h1, h2, h3, h4, h5, h6 {
   line-height: var(--leading-tight);
 }
 
-h2 { color: var(--color-heading-2); }
-h3, h4, h5, h6 { color: var(--color-heading-3); }
+h2, h4, h5, h6 { color: var(--color-heading-3); }
 
 h1 { font-size: var(--text-2xl); }
-h2 { font-size: var(--text-2xl); }
-h3 { font-size: var(--text-xl); }
-h4 { font-size: var(--text-lg); }
+h2 { font-size: var(--text-xl); }
+h3 { font-size: var(--text-lg); }
+h4 { font-size: var(--text-base); }
 
 p, ul, ol, dl, table, pre, blockquote { margin: 0 0 var(--space-5); }
 p:last-child, ul:last-child, ol:last-child, dl:last-child { margin-bottom: 0; }
@@ -647,8 +662,10 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
   margin-bottom: var(--space-6);
 }
 
-/* Closed on a phone, where the full tree was putting up to 668px of links in
-   front of the first word of Teaching. Forced open above 1024px, below. */
+/* A list of links. It was a <details>, and the disclosure is gone with it:
+   see the comment in render_page_context for why a control that reports
+   itself collapsed while painting its contents could not stay. Capping the
+   tree at records is what made the fold unnecessary. */
 .book-toc {
   font-size: var(--text-sm);
 }
@@ -657,27 +674,14 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
    one .entry__period and the two switch separators carry. It was ink and bold
    at --text-xs, which put the label a step *below* the 13px bold links beneath
    it while matching them in weight, so it read as a broken first item rather
-   than as the title of the list.
-
-   No display declaration. A summary is display: list-item, and the flex box
-   that used to lay the icon out beside the word replaced it, which silently
-   took the disclosure marker away: below 1024px the control opened with
-   nothing to say so except the decorative glyph, and the two rules further
-   down that hide the marker on the desktop rail had never had a marker to
-   hide. Leaving the display alone gives the reader the browser's own
-   disclosure triangle where the details is a control, and the rules below
-   take it back where it is not. */
+   than as the title of the list. */
 .book-toc__header {
+  margin: 0 0 var(--space-3);
   padding-bottom: var(--space-2);
   border-bottom: 1px solid var(--color-border-soft);
   color: var(--color-muted);
   font-size: var(--text-xs);
   font-weight: var(--weight-regular);
-  cursor: pointer;
-}
-
-.book-toc__nav {
-  margin-top: var(--space-3);
 }
 
 .book-toc__list,
@@ -753,26 +757,6 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
     overflow-y: auto;
     margin-bottom: 0;
   }
-
-  /* The disclosure is a small-screen affordance. On the desktop rail the tree
-     is always shown, so the marker goes and the summary stops being a button
-     in every way a reader can tell. These two rules do real work now: the
-     header was display: flex until the icon they were laying out was deleted,
-     and flex had been suppressing the marker at every width, here and on the
-     phone where it was the only thing saying the control opens.
-
-     Two declarations force it open because browsers hide the contents two
-     different ways: older engines put display: none on the children, newer
-     ones set content-visibility: hidden on ::details-content. Overriding one
-     without the other leaves the rail collapsed on half the web. */
-  .book-toc > *:not(summary) { display: block; }
-  .book-toc::details-content { content-visibility: visible; }
-
-  .book-toc__header {
-    cursor: default;
-    list-style: none;
-  }
-  .book-toc__header::-webkit-details-marker { display: none; }
 }
 
 
@@ -815,15 +799,6 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 }
 
 .hero-header__bio { flex: 1; }
-
-.hero-header__headline {
-  margin-top: calc(-1 * var(--space-2));
-  margin-bottom: var(--space-3);
-  font-size: var(--text-md);
-  font-weight: var(--weight-bold);
-  color: var(--color-heading-3);
-  line-height: var(--leading-snug);
-}
 
 /* The facts a recruiter filters on: mobility, credentials, languages. Set as
    a label column rather than three sentences with a bold word at the front,
@@ -1033,6 +1008,18 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
   max-width: var(--measure);
 }
 
+/* What this employer is, as against what was done there. Muted and small: the
+   treatment this site gives furniture, so the eye crosses it and lands on the
+   ownership clause below. Both used to be one paragraph, and the company half
+   came first and ran up to 61 words. */
+.entry__context {
+  margin: var(--space-2) 0 0;
+  max-width: var(--measure);
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
 .entry__summary {
   margin: var(--space-2) 0 0;
   max-width: var(--measure);
@@ -1109,23 +1096,17 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 /* 12. COMPONENT: CONTACT CHANNELS ========================================== */
 
 /* Contact details are choices, not a definition list: a quiet label identifies
-   the channel while the right edge carries its actionable address or handle. */
-.contact-section {
-  max-width: 100%;
-  margin-bottom: var(--space-6);
-}
-.contact-section:last-child { margin-bottom: 0; }
+   the channel while the right edge carries its actionable address or handle.
 
-.contact-section__title {
-  margin-bottom: var(--space-4);
-  padding-bottom: var(--space-1);
-  border-bottom: 1px solid var(--color-border-soft);
-  color: var(--color-heading-3);
-  font-size: var(--text-xl);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-tight);
-}
+   `.contact-section` and `.contact-section__title` used to open this file's
+   section and are gone. They were `section.block` and `h2.block__title` under
+   different names, and the title hardcoded `--text-xl` so that an h2 would
+   render at the size the rest of the site gets from an h3. Contact is the one
+   page with no model document, and this is what that produced: a private
+   vocabulary for a component that already existed, and a heading level nothing
+   could see was wrong because the CSS was correcting it.
 
+   What is left is the part that is genuinely its own: a channel list. */
 .contact-list {
   margin: 0;
   padding: 0;
@@ -1428,9 +1409,8 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
      .tag--host)     OLIVESOFT, Securinets ENIS              (grey)
 
      teaching
-     .tag--level     (Master's Year 1, Master's Year 2        (amber)
-     .tag--workload) 32 h · 20 lecture + 8 lab + 4 project   (blue)
-     .tag--scale: 12 students                             (grey, reused)
+     .tag--level     Master's Year 1, Master's Year 2        (amber)
+     .tag--scale:    12 students                             (grey, reused)
 
      research
      .tag--status     (Published, In Progress                 (amber)
@@ -1481,13 +1461,24 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
    a verdict on the record rather than as a category.
 
    UTILITY tags mark a single fact about a record that is not one of those
-   dimensions, and are written by hand where they apply:
+   dimensions, and are emitted where the record carries the field:
 
-     .tag--neutral  (factual context (technology, cohort, institution)
-     .tag--accent) role or category
-     .tag--success  (verified / published / shipped
-     .tag--honor) distinction or pending status
-     .tag--critical: downloadable artefact */
+     .tag--demo      a running deployment the reader can open
+     .tag--article   a write-up of this record, on a publishing platform
+     .tag--artifact  a file to download or view: slides, a deck, a dataset
+
+   **This family used to be named for how it looked and it stopped meaning
+   anything.** There were five (neutral, accent, success, honor, critical),
+   named after colours rather than facts, and semantics were assigned per call
+   site. So `.tag--critical` rendered a `.pptx` link in crimson, the colour
+   every reader on earth reads as danger, because "critical" was the name left
+   over. `.tag--upstream` carried both an accepted pull request and a hosted
+   Hugging Face demo, two unrelated claims sharing one amber chip in the same
+   slot on the same record. And three of the five (neutral, accent, honor)
+   had no user at all in any markup on the site.
+
+   A name here says what the fact is. What colour that earns is decided once,
+   below, and can be changed without renaming anything. */
 .tag-list {
   display: flex;
   flex-wrap: wrap;
@@ -1544,7 +1535,6 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 .tag--audience  { background: var(--status-honor-bg);   color: var(--status-honor-fg);   border-color: var(--status-honor-br); }
 
 .tag--level     { background: var(--status-honor-bg);   color: var(--status-honor-fg);   border-color: var(--status-honor-br); }
-.tag--workload  { background: var(--status-accent-bg);  color: var(--status-accent-fg);  border-color: var(--status-accent-br); }
 
 .tag--status     { background: var(--status-honor-bg);  color: var(--status-honor-fg);   border-color: var(--status-honor-br); }
 .tag--authorship { background: var(--status-accent-bg); color: var(--status-accent-fg);  border-color: var(--status-accent-br); }
@@ -1666,12 +1656,18 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
   font-weight: var(--weight-regular);
 }
 
-/* Utility family. */
-.tag--neutral  { background: var(--status-neutral-bg);  color: var(--status-neutral-fg);  border-color: var(--status-neutral-br); }
-.tag--accent   { background: var(--status-accent-bg);   color: var(--status-accent-fg);   border-color: var(--status-accent-br); }
-.tag--success  { background: var(--status-success-bg);  color: var(--status-success-fg);  border-color: var(--status-success-br); }
-.tag--honor    { background: var(--status-honor-bg);    color: var(--status-honor-fg);    border-color: var(--status-honor-br); }
-.tag--critical { background: var(--status-critical-bg); color: var(--status-critical-fg); border-color: var(--status-critical-br); }
+/* Utility family. Three names, three facts, and no colour named after itself.
+
+   A demo is something running, which is the site's green: the same claim
+   .tag--production makes in Skills & Evidence. An article is a publication,
+   which is the grey .tag--platform already gives Medium on Research. An
+   artifact is a file, which is furniture and takes the neutral grey.
+
+   .tag--critical is gone rather than repurposed. Crimson is the one colour
+   this palette should keep in reserve, and nothing on a CV has yet needed it. */
+.tag--demo     { background: var(--status-success-bg);  color: var(--status-success-fg);  border-color: var(--status-success-br); }
+.tag--article  { background: var(--status-neutral-bg);  color: var(--status-neutral-fg);  border-color: var(--status-neutral-br); }
+.tag--artifact { background: var(--status-neutral-bg);  color: var(--status-neutral-fg);  border-color: var(--status-neutral-br); }
 
 a.tag:hover { text-decoration: underline; opacity: 0.85; }
 a.tag.link-external::after { margin-left: 0; }

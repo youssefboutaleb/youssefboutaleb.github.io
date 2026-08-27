@@ -4,14 +4,17 @@
     "icon": "microsoft-fabric.svg",
     "credentials": [
       {
+        "id": "dp-300",
         "name": "Microsoft Certified: Azure Database Administrator Associate (DP-300)",
         "url": "data/DP-300.png"
       },
       {
+        "id": "dp-700",
         "name": "Microsoft Certified: Fabric Data Engineer Associate (DP-700)",
         "url": "data/DP-700.png"
       },
       {
+        "id": "dp-600",
         "name": "Microsoft Certified: Fabric Analytics Engineer Associate (DP-600)",
         "url": "data/DP-600.jpeg"
       }
@@ -22,10 +25,12 @@
     "icon": "astronomer.svg",
     "credentials": [
       {
+        "id": "airflow-dag-authoring",
         "name": "Astronomer Certification DAG Authoring for Apache Airflow 3",
         "url": "https://www.credly.com/badges/6832d6fb-edd6-42a3-916e-cdf05fd7362c"
       },
       {
+        "id": "airflow-fundamentals",
         "name": "Astronomer Certification for Apache Airflow 3 Fundamentals",
         "url": "https://www.credly.com/badges/a6e1a62e-1d47-4255-b05d-911ab28f49ed"
       }
@@ -36,6 +41,7 @@
     "icon": "mulesoft.svg",
     "credentials": [
       {
+        "id": "mulesoft-dev-l1",
         "name": "MuleSoft Certified Developer Level 1",
         "url": "https://www.salesforce.com/trailblazer/youssef-boutaleb"
       }
@@ -46,6 +52,7 @@
     "icon": "talend.svg",
     "credentials": [
       {
+        "id": "talend-di",
         "name": "Talend Data Integration Certified Developer",
         "url": "https://www.credly.com/badges/962e4c98-8bcb-41bd-b53b-491e53937cb6/public_url"
       }
@@ -56,14 +63,17 @@
     "icon": "datadog.svg",
     "credentials": [
       {
+        "id": "datadog-fundamentals",
         "name": "Datadog Certified: Fundamentals",
         "url": "https://www.credly.com/badges/285964f8-bc63-43b8-a4f4-90d78f7d5070/linked_in_profile"
       },
       {
+        "id": "datadog-apm",
         "name": "Datadog Certified: APM &amp; Distributed Tracing Fundamentals",
         "url": "https://www.credly.com/badges/7c78f4af-ec6b-4458-84bf-a68d2b370056/linked_in_profile"
       },
       {
+        "id": "datadog-logs",
         "name": "Datadog Certified: Log Management Fundamentals",
         "url": "https://www.credly.com/badges/93dfa86d-da63-4354-87cb-c089f3690aa7/public_url"
       }

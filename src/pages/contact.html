@@ -8,44 +8,34 @@ schema_type: ContactPage
   <h1 class="page-title">Contact</h1>
 </header>
 
-<section class="contact-section" aria-labelledby="direct-contact">
-  <h2 class="contact-section__title" id="direct-contact">Contact Details</h2>
+<!-- This page ran its own component vocabulary and its own heading level until
+     now: `.contact-section` and `.contact-section__title`, an `h2` on a site
+     whose other seven pages open their sections with an `h3`, and a
+     `font-size` hardcoded to match the `block__title` it was not. One visual
+     rank spelled two ways, with CSS covering the difference so nothing could
+     see it. It is `section.block` and `h2.block__title` now, like everywhere
+     else, and the two orphan classes are deleted.
+
+     `.contact-list` survives and is the right component: a quiet label
+     identifying a channel, its actionable address on the right edge. It is the
+     label-column idiom DESIGN.md 11 names, and three other blocks use it.
+
+     Addresses and handles are generated from src/site.json, which already held
+     them for the JSON-LD. Do not type one in here. contact.md carries the
+     model. -->
+<section class="block" aria-labelledby="direct-contact">
+  <h2 class="block__title" id="direct-contact">Contact Details</h2>
+  <!-- The one sentence on this site that asks the reader to do something. It
+       sat unused in src/site.json since the day it was written, on the page
+       whose whole job it is. -->
+  <p class="block__intro">{{ site.contact_invitation }}</p>
   <ul class="contact-list">
-    <li class="contact-list__item">
-      <a class="contact-list__link" href="mailto:youssefboutaleb.info@gmail.com">
-        <span class="contact-list__label">Primary email</span>
-        <span class="contact-list__value">youssefboutaleb.info@gmail.com</span>
-      </a>
-    </li>
-    <li class="contact-list__item">
-      <a class="contact-list__link" href="mailto:youssef.boutaleb@enis.tn">
-        <span class="contact-list__label">Academic email</span>
-        <span class="contact-list__value">youssef.boutaleb@enis.tn</span>
-      </a>
-    </li>
-    <li class="contact-list__item">
-      <a class="contact-list__link" href="tel:+21653035448">
-        <span class="contact-list__label">Phone / WhatsApp</span>
-        <span class="contact-list__value">+216 53 035 448</span>
-      </a>
-    </li>
-    <li class="contact-list__item">
-      <div class="contact-list__row">
-        <span class="contact-list__label">Location</span>
-        <span class="contact-list__value">Sfax, Tunisia</span>
-      </div>
-    </li>
-    <li class="contact-list__item">
-      <div class="contact-list__row">
-        <span class="contact-list__label">Availability</span>
-        <span class="contact-list__value">{{ site.availability }}</span>
-      </div>
-    </li>
+{{ build.contact_channels }}
   </ul>
 </section>
 
-<section class="contact-section" aria-labelledby="opportunities-services">
-  <h2 class="contact-section__title" id="opportunities-services">Opportunities &amp; Services</h2>
+<section class="block" aria-labelledby="opportunities-services">
+  <h2 class="block__title" id="opportunities-services">Opportunities &amp; Roles</h2>
   <ul class="contact-list">
     <li class="contact-list__item">
       <div class="contact-list__row">
@@ -53,35 +43,12 @@ schema_type: ContactPage
         <span class="contact-list__value">Full-time, part-time, and founding engineering positions</span>
       </div>
     </li>
-    <li class="contact-list__item">
-      <div class="contact-list__row">
-        <span class="contact-list__label">Consulting &amp; services</span>
-        <span class="contact-list__value">Cloud data platforms, reliable ETL/ELT pipelines, warehousing, and data quality</span>
-      </div>
-    </li>
   </ul>
 </section>
 
-<section class="contact-section" aria-labelledby="connect">
-  <h2 class="contact-section__title" id="connect">Connect</h2>
+<section class="block" aria-labelledby="connect">
+  <h2 class="block__title" id="connect">Connect</h2>
   <ul class="contact-list">
-    <li class="contact-list__item">
-      <a class="contact-list__link" href="https://www.linkedin.com/in/youssef-boutaleb/" target="_blank" rel="noopener">
-        <span class="contact-list__label">LinkedIn</span>
-        <span class="contact-list__value">youssef-boutaleb</span>
-      </a>
-    </li>
-    <li class="contact-list__item">
-      <a class="contact-list__link" href="https://github.com/youssefboutaleb" target="_blank" rel="noopener">
-        <span class="contact-list__label">GitHub</span>
-        <span class="contact-list__value">youssefboutaleb</span>
-      </a>
-    </li>
-    <li class="contact-list__item">
-      <a class="contact-list__link" href="https://medium.com/@youssefboutaleb.info" target="_blank" rel="noopener">
-        <span class="contact-list__label">Medium</span>
-        <span class="contact-list__value">@youssefboutaleb.info</span>
-      </a>
-    </li>
+{{ build.contact_socials }}
   </ul>
 </section>

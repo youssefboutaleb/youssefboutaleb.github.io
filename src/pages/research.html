@@ -4,11 +4,11 @@ description: Peer-reviewed research on blockchain-based energy management with m
 nav: research
 -->
 <header class="page-header">
-  <h1 class="page-title">Research &amp; Writing</h1>
+  <h1 class="page-title">Research</h1>
 </header>
 
 <section class="block" aria-labelledby="journal-articles">
-  <h3 class="block__title" id="journal-articles">Peer-Reviewed Publications</h3>
+  <h2 class="block__title" id="journal-articles">Peer-Reviewed Publications</h2>
   <p class="block__intro">
     Applied machine learning and anomaly detection systems taken from raw data pipelines to peer-reviewed publication.
   </p>
@@ -21,7 +21,7 @@ nav: research
 </section>
 
 <section class="block" aria-labelledby="technical-articles">
-  <h3 class="block__title" id="technical-articles">Technical Articles</h3>
+  <h2 class="block__title" id="technical-articles">Technical Articles</h2>
   <p class="block__intro">
     Hands-on technical guides covering model serving pipelines, log stream aggregation, and production observability.
   </p>
@@ -30,4 +30,11 @@ nav: research
          writing.md for why these do not share the paper model above. -->
 {{ build.articles }}
   </ul>
+  <!-- The provenance line writing.md has always required and the site has
+       never rendered: the reach figures are hand-copied from Medium and
+       nothing keeps them current, so they say when they were read. Generated
+       from `as_of` on the records, which the build now refuses to go without.
+       It sits under the records because provenance is a footnote, where a
+       block__intro is one line and a pitch (DESIGN.md 11.1). -->
+{{ build.reach_note }}
 </section>

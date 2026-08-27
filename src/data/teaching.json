@@ -51,7 +51,7 @@
       {
         "title": "Packaging &amp; Delivery",
         "points": [
-          "<b>Environment containerisation:</b> packaging Python data pipelines into reproducible <b>Docker</b> images.",
+          "<b>Environment containerization:</b> packaging Python data pipelines into reproducible <b>Docker</b> images.",
           "<b>Data &amp; artifact versioning:</b> tracking datasets and intermediate models using <b>DVC</b>.",
           "<b>CI/CD automation:</b> building automated workflows with <b>GitHub Actions</b> to push images into the <b>GitHub Container Registry</b>.",
           "<b>Lab:</b> a pipeline packaged into a <b>Docker</b> image with <b>DVC</b> data tracking and a <b>GitHub Actions</b> workflow that builds, tests, and publishes containers on main-branch commits."
@@ -62,7 +62,7 @@
       "title": "Fault-Tolerant Ingestion Pipeline",
       "points": [
         "<b>Technical Architecture &amp; Data Flow:</b> end-to-end ingestion pipeline carrying data from a <b>PostgreSQL</b> operational source through a <b>Spark</b> transformation into an analytical target, scheduled as an <b>Airflow</b> DAG with retries and a working backfill path.",
-        "<b>Operability, Containerisation &amp; Monitoring:</b> structured <b>Loguru</b> logging surfaced on a <b>Datadog</b> dashboard, the complete pipeline containerised with <b>Docker</b>, and the input dataset versioned under <b>DVC</b>.",
+        "<b>Operability, Containerization &amp; Monitoring:</b> structured <b>Loguru</b> logging surfaced on a <b>Datadog</b> dashboard, the complete pipeline containerized with <b>Docker</b>, and the input dataset versioned under <b>DVC</b>.",
         "<b>Written Report &amp; Oral Defense:</b> single-command execution repository accompanied by an architecture diagram and oral defense of retry, timeout, and alert threshold choices."
       ]
     }
@@ -169,7 +169,7 @@
         }
       },
       {
-        "title": "Gradient Descent &amp; Optimisation (From Scratch)",
+        "title": "Gradient Descent &amp; Optimization (From Scratch)",
         "points": [
           "<b>First-principles optimization:</b> learning gradient descent as the underlying mechanism of model fitting rather than a library call.",
           "<b>Convergence parameters:</b> analyzing learning rates, loss surfaces, and parameter update steps.",

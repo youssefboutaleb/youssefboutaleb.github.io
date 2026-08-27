@@ -29,6 +29,13 @@ tools/
 Deployment stays build-free: the generated `*.html` files are committed and
 GitHub Pages serves them as-is. `.nojekyll` disables Jekyll processing.
 
+**Comment `src/` freely; none of it ships.** `strip_comments` drops every HTML
+comment on the way out, so a fragment can carry the argument for why a block is
+shaped the way it is without spending it on the reader. Only the generated-file
+banner survives, because it is the one comment addressed to somebody reading
+the built file. `index.html` was 14.8% comment bytes before this, and one of
+them opened *"INTERIM, awaiting the author's sentence"*.
+
 **There is a little JavaScript, and it is all in `src/layout.html`.** Two short
 inline blocks run the theme switch: one in the head that reads the stored
 preference before first paint, and one at the end of the body that records a
@@ -138,6 +145,21 @@ python3 -m http.server 8000
 
 `tools/build.py --check` exits non-zero if the committed pages are stale, which
 makes it usable as a pre-commit or CI gate.
+
+`tools/check.py` also fails on a skipped heading level, on the same word spelled
+two ways across the built pages, and on a CSS class no markup uses unless it is
+declared in `STAGED_CSS` with the reason it is waiting. It notes, without
+failing, any group of more than three differently-labelled links that all land
+on one destination: honest when several capabilities cite one record, and the
+symptom when a block of citations has nowhere precise to point.
+
+Every run prints two lists for each non-English locale: the strings still
+untranslated, and the **pages being withheld** because they are under
+`MIN_TRANSLATED` different from their English source, with the percentage each
+one currently measures. A withheld page is not written, is deleted if a
+previous build left a copy, and is named by no `hreflang`, no language switch
+and no navigation link: its nav entry points at the English URL instead. This
+is what stops `/fr/career.html` shipping English prose under `lang="fr"`.
 
 ### Adding an award
 
@@ -415,6 +437,19 @@ is back.
 `150+ pipelines`, `"approx": true` renders `~2,000 frames/second`, and neither
 renders the bare number. The two are different claims and are not
 interchangeable.
+
+Add `"of"` when the figure is a share of something larger, and the chip states
+both: `{"count": 20, "of": 150, "unit": "pipelines", "minimum": true}` renders
+`20+ of 150+ pipelines`. The shape applies to both numbers. Use it whenever the
+scope owned sits inside a system whose size is the context, because a bare
+`150+ pipelines` on a record where 20+ were owned is read as the scope.
+
+A job record carries **`context` and `summary`, not one paragraph.** `context`
+is what the employer is; `summary` is what was owned inside it. They render as
+`.entry__context` (muted, small) and `.entry__summary` (body copy) in that
+order, so a reader scanning for the work crosses the company description rather
+than reading it. Put the company in `context` and keep `summary` in the first
+person.
 
 **`engagement`, `mode` and `scale` come from the author, never from
 inference.** A date range does not tell you a contract type, a location line

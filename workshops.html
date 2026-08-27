@@ -17,12 +17,10 @@
   <meta name="google-site-verification" content="_EoRy_lTXm3RCqZdWpUgQ9bWDF7KCrEdSZBocueWMUk">
 
   <link rel="canonical" href="https://youssefboutaleb.github.io/workshops.html">
-  <link rel="alternate" hreflang="en" href="https://youssefboutaleb.github.io/workshops.html">
-  <link rel="alternate" hreflang="fr" href="https://youssefboutaleb.github.io/fr/workshops.html">
-  <link rel="alternate" hreflang="x-default" href="https://youssefboutaleb.github.io/workshops.html">
+
   <link rel="icon" type="image/svg+xml" href="images/icons/icon.svg">
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Noto-Sans-regular/Noto-Sans-regular.woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=3a302cd2f43b">
+  <link rel="stylesheet" href="assets/css/main.css?v=e75008ddc307">
 
   <script>
     // Before first paint, or the pinned theme flashes the other one on every
@@ -74,10 +72,7 @@
             <span class="theme-switch__sep" aria-hidden="true">&middot;</span>
             <button class="theme-switch__option" type="button" data-theme-value="dark">Dark</button>
           </div>
-          <div class="lang-switch">
-            <span class="lang-switch__label">Language:</span>
-            <span class="lang-switch__current" aria-current="true">English</span> <span class="lang-switch__sep" aria-hidden="true">&middot;</span> <a class="lang-switch__option" href="fr/workshops.html" lang="fr" hreflang="fr">Français</a>
-          </div>
+
         </div>
       </div>
       <nav class="nav" aria-label="Primary">
@@ -96,10 +91,9 @@
 
     <div class="page-body">
       <aside class="sidebar-context">
-        <details class="book-toc">
-          <summary class="book-toc__header" id="page-context-label">Contents</summary>
-          <nav class="book-toc__nav" aria-labelledby="page-context-label">
-            <ul class="book-toc__list">
+        <nav class="book-toc" aria-labelledby="page-context-label">
+          <p class="book-toc__header" id="page-context-label">Contents</p>
+          <ul class="book-toc__list">
               <li class="book-toc__item">
                 <a class="book-toc__link" href="#workshops-delivered">Workshops Delivered</a>
                 <ul class="book-toc__sublist">
@@ -117,9 +111,8 @@
                 </li>
                 </ul>
               </li>
-            </ul>
-          </nav>
-        </details>
+          </ul>
+        </nav>
       </aside>
 
       <main id="main" class="content">
@@ -128,15 +121,13 @@
         </header>
 
         <section class="block" aria-labelledby="workshops-delivered">
-          <h3 class="block__title" id="workshops-delivered">Workshops Delivered</h3>
+          <h2 class="block__title" id="workshops-delivered">Workshops Delivered</h2>
           <p class="block__intro">
             Teaching how data moves through hardware: from memory hierarchies and CPU pipelines to efficient data structures and algorithms.
           </p>
           <ul class="entries">
-            <!-- Records live in src/data/workshops.json; tag order and colour come
-                 from MODELS in tools/build.py. Never hand-write entries here. -->
                 <li class="entry" id="ws-introduction-to-cs-fundamentals-hardware">
-              <p class="entry__title">Introduction to CS Fundamentals (Hardware)</p>
+              <h3 class="entry__title">Introduction to CS Fundamentals (Hardware)</h3>
               <p class="entry__period"><time datetime="2026">2026</time></p>
               <ul class="tag-list" aria-label="Workshop details">
                 <li class="tag tag--format">Workshop Series</li>
@@ -145,7 +136,7 @@
                 <li class="tag tag--audience">Engineers &amp; Executives</li>
                 <li class="tag tag--scale"><b>30</b> participants</li>
                 <li class="tag tag--host">OLIVESOFT</li>
-                <li><a class="tag tag--critical link-external" href="https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fyoussefboutaleb.github.io%2Fdata%2FIntroduction_to_CS_Fundamentals_Hardware_Workshop.pptx" target="_blank" rel="noopener" title="View slides in PowerPoint Online"><img class="icon icon--xs" src="images/icons/powerpoint.svg" alt="" width="12" height="12">Slides (.pptx)</a></li>
+                <li><a class="tag tag--artifact link-external" href="https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fyoussefboutaleb.github.io%2Fdata%2FIntroduction_to_CS_Fundamentals_Hardware_Workshop.pptx" target="_blank" rel="noopener" title="View slides in PowerPoint Online"><img class="icon icon--xs" src="images/icons/powerpoint.svg" alt="" width="12" height="12">Slides (.pptx)</a></li>
               </ul>
               <p class="entry__summary">Two-part workshop series delivered for <b><a href="https://www.linkedin.com/company/olivesoft/posts/?feedView=all" target="_blank" rel="noopener">OLIVE-LEARN</a></b> (OLIVESOFT's internal workshop training programme), tracing data movement from parallel hardware architectures down to logic gates.</p>
               <ul class="points">
@@ -155,9 +146,9 @@
               </ul>
             </li>
             <li class="entry" id="ws-assembly-programming-workshop">
-              <p class="entry__title">Assembly Programming Workshop
+              <h3 class="entry__title">Assembly Programming Workshop
                 <a class="icon-link" href="https://github.com/youssefboutaleb/Assembly_workshop" target="_blank" rel="noopener" title="Workshop materials on GitHub"><img class="icon icon--sm icon--mono" src="images/icons/github.svg" alt="Workshop materials on GitHub" width="15" height="15"></a>
-              </p>
+              </h3>
               <p class="entry__period"><time datetime="2023">2023</time></p>
               <ul class="tag-list" aria-label="Workshop details">
                 <li class="tag tag--format">Hands-on Lab</li>
@@ -176,7 +167,7 @@
               </ul>
             </li>
             <li class="entry" id="ws-introduction-to-competitive-programming">
-              <p class="entry__title">Introduction to Competitive Programming</p>
+              <h3 class="entry__title">Introduction to Competitive Programming</h3>
               <p class="entry__period"><time datetime="2023">2023</time></p>
               <ul class="tag-list" aria-label="Workshop details">
                 <li class="tag tag--format">Workshop</li>
@@ -194,7 +185,7 @@
               </ul>
             </li>
             <li class="entry" id="ws-introduction-to-python">
-              <p class="entry__title">Introduction to Python</p>
+              <h3 class="entry__title">Introduction to Python</h3>
               <p class="entry__period"><time datetime="2022">2022</time></p>
               <ul class="tag-list" aria-label="Workshop details">
                 <li class="tag tag--format">Workshop</li>

@@ -17,6 +17,7 @@ Deployment stays build-free: GitHub Pages serves the generated files directly.
 from __future__ import annotations
 
 import argparse
+import difflib
 import fnmatch
 import hashlib
 import json
@@ -32,6 +33,10 @@ from pathlib import Path
 # 7 094. The character is U+202F, and it must not break across a line.
 THIN_SPACE = "\u202f"
 
+# The site's peer separator, per CLAUDE.md section 6. Named so a renderer
+# joining two peers cannot quietly reach for a different glyph.
+SEPARATOR = "&middot;"
+
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "src"
 PAGES = SRC / "pages"
@@ -45,6 +50,33 @@ BANNER = (
     "     Rebuild: python3 tools/build.py\n"
     "-->\n"
 )
+
+# Everything between these is a comment, and every comment in src/ is a note to
+# whoever edits src/ next.
+COMMENT = re.compile(r"[ \t]*<!--.*?-->[ \t]*\n?", re.DOTALL)
+BLANK_RUN = re.compile(r"\n[ \t]*\n[ \t]*\n+")
+
+
+def strip_comments(markup: str) -> str:
+    """Drop authoring comments on the way out of the build.
+
+    The fragments and the layout are where this repository argues with itself:
+    why the hero is one block and not two, which option document carried the
+    finding, what a rule in CLAUDE.md was protecting. That reasoning is the
+    point of `src/`, and none of it is addressed to a visitor.
+
+    It was reaching them anyway. `index.html` was 14.8% comment bytes, and one
+    of them opened *"INTERIM, awaiting the author's sentence"*, which is a note
+    to the author sitting in the page source of the front page. The third
+    reader in CLAUDE.md section 2 is the one who opens the source, so the
+    audience for the draft notes was precisely the audience they were never
+    written for.
+
+    The BANNER survives, because it is the one comment written *to* a reader of
+    the built file: it says the file is generated and names what to edit
+    instead. It is added after this runs.
+    """
+    return BLANK_RUN.sub("\n\n", COMMENT.sub("", markup))
 
 # How a brand logo survives the dark rendering. The SVGs ship as <img>, so the
 # stylesheet cannot recolour their interiors; the modifier tells it what the
@@ -351,6 +383,18 @@ class BookTocParser(HTMLParser):
         # in awards.json silently stopped the replacement applying.
         toc_title = a.get("data-toc-title")
 
+        # An id is an address, and not every address is a place worth listing.
+        # The credential groups exist so Home's evidence chips can name one
+        # issuer instead of the whole Certifications block; indexing them would
+        # push eleven issuer and platform names into a Career rail that already
+        # runs to fifteen entries, to say what the block heading says. The rail
+        # is a contents page, not an index of every anchor on the page.
+        # Membership, not a truth test: HTMLParser gives a valueless attribute
+        # the value None, so `data-toc-skip` and `data-toc-skip=""` both read
+        # as absent under `.get(...)`.
+        if "data-toc-skip" in a:
+            return
+
         if tag == "section" and aria_lbl:
             self._sec_node = TocNode(aria_lbl, "", level=1)
             self.root.children.append(self._sec_node)
@@ -374,7 +418,7 @@ class BookTocParser(HTMLParser):
                 self._sec_node.children.append(self._entry_node)
                 self._group_node = None
 
-            elif tag == "p" and "entry__title" in cls and self._entry_node:
+            elif tag in {"p", "h3"} and "entry__title" in cls and self._entry_node:
                 self._target_node = self._entry_node
                 self._target_tag = tag
                 self._text_buf = []
@@ -384,7 +428,7 @@ class BookTocParser(HTMLParser):
                 self._group_node = TocNode(tag_id, toc_title or "", level=3)
                 parent.children.append(self._group_node)
 
-            elif tag == "p" and "entry__group-title" in cls and self._group_node:
+            elif tag in {"p", "h4"} and "entry__group-title" in cls and self._group_node:
                 self._target_node = self._group_node
                 self._target_tag = tag
                 self._text_buf = []
@@ -428,6 +472,20 @@ class BookTocParser(HTMLParser):
             self._text_buf = []
 
 
+# Sections and the records inside them. Not the parts of a record.
+#
+# The rail indexed three levels because Teaching's data model puts an id on
+# every module and every lab, which it does so Home's citations can reach them.
+# The rail inherited that granularity and printed it: one top-level link over
+# twenty-two module names, on a page whose h1 is one word. Density ran 22 to 1
+# across the site for no reason a reader could act on.
+#
+# An id is an address and the rail is a contents page, not an index of every
+# anchor: the two jobs came apart here and in `data-toc-skip`. Modules stay
+# addressable and stop being listed.
+TOC_DEPTH = 2
+
+
 def render_toc_node(node: TocNode) -> str:
     """Recursively render a TocNode and its children as HTML list items."""
     if not node.title:
@@ -446,7 +504,7 @@ def render_toc_node(node: TocNode) -> str:
     # (one left hairline, one indent), so a per-level class carried nothing and
     # simply guaranteed that main.css kept rules for depths the parser had
     # stopped producing. The nesting is in the markup; the indent says the rest.
-    if not node.children:
+    if not node.children or node.level >= TOC_DEPTH:
         return f'<li class="book-toc__item">\n  {link_html}\n</li>'
 
     children_html = "\n".join(indent(render_toc_node(child), 2) for child in node.children)
@@ -484,32 +542,61 @@ def render_page_context(content: str, source: Path) -> str:
     if not parser.root.children:
         return ""
 
+    # Two records with the same title are two identical links. Career listed
+    # "Jeunes Ingenieurs de Djerba (JID)" twice, one 2023 and one 2022, and a
+    # rail that cannot tell them apart is a rail that makes the reader click to
+    # find out. Disambiguated here rather than in the data because it is a
+    # property of the *pair*, not of either record: neither is ambiguous alone,
+    # and hand-writing a data-toc-title on both means editing two records when
+    # a third arrives.
+    disambiguate(parser.root)
+
     body = "\n".join(indent(render_toc_node(child), 6) for child in parser.root.children)
-    # <details> is what makes this affordable on a phone. Closed, it is one
-    # line; open, it is the same tree the desktop rail shows. Below 1024px the
-    # rail sat above the content at full length, which put roughly 668px of
-    # navigation in front of Teaching's first word. Above 1024px CSS forces it
-    # open and hides the marker, so the desktop rail is unchanged.
+    # A list of links, and nothing else that a reader could operate.
     #
-    # The <nav> is labelled by the <summary> rather than carrying its own
-    # aria-label. The aside, the nav and the visible heading previously gave a
-    # screen reader three names for one region.
+    # This was a <details>, forced open above 1024px by two CSS declarations
+    # while the element itself stayed closed. So the desktop rail painted its
+    # whole tree while telling assistive technology the region was collapsed,
+    # and left a focusable <summary> that did nothing visible when activated.
+    # CLAUDE.md section 7 admits the rail on the ground that deleting it costs
+    # the reader nothing but convenience; a control that lies about its own
+    # state is not covered by that argument and was never argued for.
     #
-    # The summary is one word and nothing else. It used to open with an inline
-    # SVG of a book, which was the only <svg> on any page of this site: every
-    # other icon is an <img> of a real brand mark, sized by a token, saying
-    # something a word could not. That one was aria-hidden and drew a picture
-    # of the three words beside it. DESIGN.md section 12.2.
+    # It became affordable to delete once the tree stopped going three levels
+    # deep. Teaching's rail was 1 link over 22 sublinks, roughly 668px of
+    # navigation in front of the page's first word on a phone, which is what
+    # the disclosure existed to fold away. Capped at records, it is four lines.
+    #
+    # The <nav> is labelled by the visible heading rather than carrying its own
+    # aria-label. The aside, the nav and the heading previously gave a screen
+    # reader three names for one region.
     return (
-        '<details class="book-toc">\n'
-        f'  <summary class="book-toc__header" id="page-context-label">{tr("chrome.contents", "Contents")}</summary>\n'
-        '  <nav class="book-toc__nav" aria-labelledby="page-context-label">\n'
-        '    <ul class="book-toc__list">\n'
+        '<nav class="book-toc" aria-labelledby="page-context-label">\n'
+        f'  <p class="book-toc__header" id="page-context-label">{tr("chrome.contents", "Contents")}</p>\n'
+        '  <ul class="book-toc__list">\n'
         f'{body}\n'
-        '    </ul>\n'
-        '  </nav>\n'
-        '</details>'
+        '  </ul>\n'
+        '</nav>'
     )
+
+
+def disambiguate(node: TocNode) -> None:
+    """Give siblings that share a title something to tell them apart by."""
+    for child in node.children:
+        disambiguate(child)
+    seen: dict[str, list[TocNode]] = {}
+    for child in node.children:
+        seen.setdefault(child.title, []).append(child)
+    for title, group in seen.items():
+        if len(group) < 2:
+            continue
+        for child in group:
+            # The id already carries whatever distinguishes them, because
+            # with_ids slugifies a field the records do not share. The trailing
+            # year is the useful half of it.
+            tail = child.id.rsplit("-", 1)[-1]
+            if tail.isdigit():
+                child.title = f"{title} {tail}"
 
 
 # --- record metadata --------------------------------------------------------
@@ -539,7 +626,13 @@ def render_page_context(content: str, source: Path) -> str:
 MODELS = {
     "awards": ("placement", "distinction", "type", "scope", "scale", "duration", "track"),
     "workshops": ("format", "mode", "duration", "audience", "scale", "host"),
-    "teaching": ("level", "workload", "scale"),
+    # `workload` was here and is not any more. The specs panel at the top of
+    # Teaching states "32 h per course" and breaks it into 20 lecture, 8 lab
+    # and 4 project, because the figure is a constant of the appointment. Every
+    # course record then carried a chip repeating that same breakdown, so one
+    # page stated one fact four times. The panel owns it. A course that ever
+    # differs from the panel is the case that earns the chip back.
+    "teaching": ("level", "scale"),
     "research": ("status", "authorship", "publisher"),
     "writing": ("format", "reach", "platform"),
     "projects": ("upstream", "kind", "stack"),
@@ -719,18 +812,34 @@ def meta_label(field: str, value) -> tuple[str, str]:
         # checkable in both directions. Rendering one as the other overstates
         # or understates a figure the bullets below state exactly, so the
         # record declares which it holds and neither is the default.
-        count = ACTIVE.number(value["count"])
-        if value.get("minimum"):
-            count = f"{count}+"
-        elif value.get("approx"):
-            count = f"~{count}"
+        def figure(number: int) -> str:
+            text = ACTIVE.number(number)
+            if value.get("minimum"):
+                return f"{text}+"
+            if value.get("approx"):
+                return f"~{text}"
+            return text
+
+        count = figure(value["count"])
+        # `of` is scope against system size, and a record carrying both is
+        # saying two different things with one chip. JACQUEMUS read "150+
+        # pipelines" while the first bullet underneath said "20+ of a 150+
+        # pipeline estate": a reader who scans chips and stops, which is
+        # reader one in CLAUDE.md section 2, took the estate for the scope and
+        # nothing on the page corrected them until the bullet. The chip now
+        # carries the correction rather than depending on it.
+        unit_name = value["unit"]
+        unit_text = tr(f"unit.{unit_name}", unit_name)
+        if value.get("of"):
+            whole = figure(value["of"])
+            joiner = tr("scale.of", "of")
+            return "", f"<b>{count}</b> {joiner} <b>{whole}</b> {unit_text}"
         # The figure is bold inside an otherwise regular-weight chip, the same
         # emphasis every bullet on the site gives its numbers. It is a
         # treatment of the same part of every scale value, never of one value
         # over another, so awards.md rule 4 holds: 86 teams and 643rd of 7,094
         # are emphasised identically.
-        unit = value["unit"]
-        return "", f"<b>{count}</b> {tr(f'unit.{unit}', unit)}"
+        return "", f"<b>{count}</b> {unit_text}"
     if field == "upstream":
         return "", f"{UPSTREAM_STATES[value['state']]} &middot; PR #{value['pr']}"
     if field == "accreditation":
@@ -871,7 +980,7 @@ def render_group(title: str, points: list, modifier: str = "", group_id: str = "
     attr_id = f' id="{group_id}"' if group_id else ""
     return (
         f'<div class="{group_class}"{attr_id}>\n'
-        f'  <p class="entry__group-title">{title}</p>\n'
+        f'  <h4 class="entry__group-title">{title}</h4>\n'
         f'{indent(render_points(points, lab_prefix=group_id), 2)}\n'
         "</div>"
     )
@@ -953,7 +1062,7 @@ def render_award(record: dict) -> str:
         dateline.append(f'<time datetime="{year}">{year}</time>')
 
     parts = [
-        f'<p class="entry__title">{title}</p>',
+        f'<h3 class="entry__title">{title}</h3>',
         f'<p class="entry__period">{" &middot; ".join(dateline)}</p>',
         render_meta(record, "awards"),
     ]
@@ -1006,12 +1115,33 @@ def render_awards_summary(awards: list[dict]) -> str:
     records the card lists. It is also what keeps the International card
     honest at *643rd Place*, per CLAUDE.md section 5.
 
-    **The card is a certifications card, structurally.** `.entries--grid` with
-    an `.entry` per cell, a heading, and a `.points` list of what the cell
-    contains. Certifications put the issuer in `.issuer` and its certificates
-    in the list; this puts the scope in `.entry__title` and the records that
-    reached it in the list, with the result itself as the record's own tag
-    chips in between. Nothing here is styled: DESIGN.md section 10.2.
+    **The card leads with the result, and holds nothing the record repeats.**
+    It was a certifications card: a scope in the title slot, the winning
+    record's own tag chips beneath it, and a `.points` list of the records. So
+    the Regional card printed a gold disc, `1st Place` and `86 teams`, and the
+    record 300px below printed a gold disc, `1st Place`, `Competitive
+    Programming`, `Regional` and `86 teams`. Three of the card's four facts,
+    in the same chips, in the same colours, inside one screen. A projection
+    that is styled identically to its source does not read as a summary, it
+    reads as the page saying everything twice.
+
+    The fix is the one DESIGN.md section 9.3 made for Impact in Numbers, for
+    the same reason: **put the figure in the slot the title had.** The scope
+    was never the interesting half of a scope card, because the reader can see
+    four cards and knows they are scopes; the result is. So the result leads at
+    title weight, the scope and the records that earned it fall to the
+    provenance line, and the chips go entirely.
+
+    `.result__figure` and `.result__source` are borrowed, not reinvented. They
+    are element classes meaning *the figure* and *where this came from*, which
+    is exactly what these two lines are, and they already carry the right
+    weights. Only `.result`'s two-column grid is Home's, and a grid property on
+    a child of `.entries--grid > .entry` is inert, so nothing of that comes
+    with them.
+
+    **The medal disc is deliberately not here** and stays on the record. It
+    exists to be recognised before the label is read (awards.md rule 4), which
+    is worth a disc once and is a double-take twice.
     """
     cards = []
     for scope in SCOPE_ORDER:
@@ -1025,25 +1155,27 @@ def render_awards_summary(awards: list[dict]) -> str:
             label = tr(f"tag.distinction.{distinction}", distinction)
             if len(cited) > 1:
                 label = f"{len(cited)}&times; {label}"
-            chips = [f'<li class="tag tag--distinction">{label}</li>']
+            figure = f"<b>{label}</b>"
         else:
             cited = [best]
-            badge, label = meta_label("placement", best["placement"])
-            chips = [f'<li class="tag tag--placement">{badge}{label}</li>']
+            # meta_label, not a format string: lesson 9 of the rework skill is
+            # that a summary written through its own formatting is a summary
+            # that drifts from the records it summarises, and this function is
+            # where that was learned. The badge is discarded, nothing else is.
+            _, label = meta_label("placement", best["placement"])
+            figure = f"<b>{label}</b>"
             if best.get("scale"):
                 _, size = meta_label("scale", best["scale"])
-                chips.append(f'<li class="tag tag--scale">{size}</li>')
-        records = "\n".join(
-            f'  <li><a href="#{record["id"]}">'
-            f'{t(record, "short") or t(record, "title")}</a></li>'
+                figure += f' {tr("scale.of", "of")} {size}'
+        records = f' {SEPARATOR} '.join(
+            f'<a href="#{record["id"]}">'
+            f'{t(record, "short") or t(record, "title")}</a>'
             for record in cited
         )
+        scope_label = tr(f"tag.scope.{scope}", scope)
         parts = [
-            f'<p class="entry__title">{tr(f"tag.scope.{scope}", scope)}</p>',
-            f'<ul class="tag-list" aria-label="{MODEL_LABELS["awards"]}">\n'
-            + "\n".join("  " + chip for chip in chips)
-            + "\n</ul>",
-            f'<ul class="points">\n{records}\n</ul>',
+            f'<p class="result__figure">{figure}</p>',
+            f'<p class="result__source">{scope_label} {SEPARATOR} {records}</p>',
         ]
         cards.append(
             '<li class="entry">\n'
@@ -1077,7 +1209,7 @@ def render_workshop(record: dict) -> str:
     slides_icon = asset("images/icons/powerpoint.svg")
     if record.get("slides"):
         extra = (
-            f'<li><a class="tag tag--critical link-external" href="{record["slides"]}"'
+            f'<li><a class="tag tag--artifact link-external" href="{record["slides"]}"'
             f' target="_blank" rel="noopener" title="View slides in PowerPoint Online">'
             f'<img class="icon icon--xs" src="{slides_icon}" alt=""'
             f' width="12" height="12">Slides (.pptx)</a></li>',
@@ -1085,7 +1217,7 @@ def render_workshop(record: dict) -> str:
 
     year = record["year"]
     parts = [
-        f'<p class="entry__title">{title}</p>',
+        f'<h3 class="entry__title">{title}</h3>',
         f'<p class="entry__period"><time datetime="{year}">{year}</time></p>',
         render_meta(record, "workshops", extra),
     ]
@@ -1151,7 +1283,7 @@ def render_authors(authors: list[dict]) -> str:
     return ", ".join(names[:-1]) + f", and {names[-1]}"
 
 
-def render_publication(record: dict) -> str:
+def render_publication(record: dict, site: dict = None) -> str:
     """One paper as the site-wide .entry record.
 
     The paper's title is the `entry__title`, not the author list, because the
@@ -1175,13 +1307,14 @@ def render_publication(record: dict) -> str:
             f' rel="noopener">{title}</a>'
         )
 
-    parts = [f'<p class="entry__title">{title}</p>']
+    parts = [f'<h3 class="entry__title">{title}</h3>']
 
-    # A paper that is not out yet has no publication year. Per awards.md rule 5
-    # the line is dropped rather than filled with the year it was started.
     if record.get("year"):
         year = record["year"]
         parts.append(f'<p class="entry__period"><time datetime="{year}">{year}</time></p>')
+    else:
+        as_of = site.get("last_updated", "August 2026") if site else "August 2026"
+        parts.append(f'<p class="entry__period">{tr("research.in_progress", f"In progress (as of {as_of})")}</p>')
 
     citation = render_authors(record["authors"])
     if record.get("venue"):
@@ -1228,9 +1361,10 @@ def render_article(record: dict) -> str:
             f' rel="noopener">{title}</a>'
         )
 
+    check_reach(record)
     year = record["year"]
     parts = [
-        f'<p class="entry__title">{title}</p>',
+        f'<h3 class="entry__title">{title}</h3>',
         f'<p class="entry__period"><time datetime="{year}">{year}</time></p>',
         render_meta(record, "writing"),
     ]
@@ -1242,6 +1376,49 @@ def render_article(record: dict) -> str:
     body = "\n".join(indent(part, 2) for part in parts if part)
     art_id = record["id"]
     return entry_li(record, art_id, body)
+
+
+def reach_note(articles: list[dict]) -> str:
+    """The provenance line under Technical Articles: when the figures were read.
+
+    [`writing.md`](writing.md) has always carried this rule: the reach figures
+    are copied by hand from Medium's stats page, nothing keeps them current,
+    and **the figures and their date move together or neither moves**. A stale
+    number that says when it was read stays honest as it ages; a stale number
+    that says nothing starts lying the moment it drifts.
+
+    The rule was written, the `.block__note` component was designed and styled
+    for it, and neither was ever built. Two hand-copied figures shipped undated
+    for as long as the page has existed, one of them quoted on Home as a skill
+    citation, on a site whose third reader checks. The rule is now a build
+    error rather than a paragraph: `check_reach` refuses a `reach` with no
+    `as_of`, so a figure cannot be refreshed without its date, or dated without
+    being refreshed, because both live in the same object.
+
+    One note for the block, not one date per record. The date belongs to the
+    reading, and the records were read in one sitting; per-record dates would
+    invite exactly the drift of a fresh date over a stale number that the rule
+    forbids. Where the records disagree, the note says the oldest, because that
+    is the date the whole block can be trusted to.
+    """
+    stamps = sorted({a["reach"]["as_of"] for a in articles if a.get("reach")})
+    if not stamps:
+        return ""
+    when = month_year(stamps[0])
+    pattern = tr("writing.reach_note", "Reach figures read from Medium, {when}.")
+    return f'<p class="block__note">{pattern.replace("{when}", when)}</p>'
+
+
+def check_reach(record: dict) -> None:
+    """A hand-copied figure says when it was copied, or it is not shown."""
+    reach = record.get("reach")
+    if reach and not reach.get("as_of"):
+        raise ValueError(
+            f'{record["id"]}: `reach` needs an `as_of` (YYYY-MM). A figure read '
+            "by hand from a stats page and shown undated starts lying the "
+            "moment it drifts, and nothing here refreshes it. writing.md, "
+            "Refreshing the figures."
+        )
 
 
 def project_sort_key(record: dict) -> int:
@@ -1287,24 +1464,24 @@ def render_project(record: dict, articles: dict) -> str:
         demo_url = demo["url"] if isinstance(demo, dict) else demo
         demo_label = demo.get("label", "Live Demo on Hugging Face") if isinstance(demo, dict) else "Live Demo on Hugging Face"
         extra_head.append(
-            f'<li><a class="tag tag--upstream link-external" href="{demo_url}"'
+            f'<li><a class="tag tag--demo link-external" href="{demo_url}"'
             f' target="_blank" rel="noopener">{demo_label}</a></li>'
         )
     if record.get("slides"):
         extra_tail.append(
-            f'<li><a class="tag tag--critical link-external" href="{record["slides"]}"'
+            f'<li><a class="tag tag--artifact link-external" href="{record["slides"]}"'
             f' target="_blank" rel="noopener" title="View slides in PowerPoint Online">Slides (.pptx)</a></li>'
         )
     if record.get("article"):
         article = articles[record["article"]]
         extra_tail.append(
-            f'<li><a class="tag tag--success link-external" href="{article["url"]}"'
+            f'<li><a class="tag tag--article link-external" href="{article["url"]}"'
             f' target="_blank" rel="noopener">Article on {article["platform"]}</a></li>'
         )
 
     year = record["year"]
     parts = [
-        f'<p class="entry__title">{title}</p>',
+        f'<h3 class="entry__title">{title}</h3>',
         f'<p class="entry__period"><time datetime="{year}">{year}</time></p>',
         render_meta(record, "projects", extra=tuple(extra_tail), extra_head=tuple(extra_head)),
     ]
@@ -1331,7 +1508,7 @@ def render_course(record: dict) -> str:
     period = f"{term} {year}-{year + 1}"
 
     parts = [
-        f'<p class="entry__title">{record["title"]}</p>',
+        f'<h3 class="entry__title">{record["title"]}</h3>',
         f'<p class="entry__period">{period}</p>',
         render_meta(record, "teaching"),
     ]
@@ -1459,9 +1636,9 @@ def render_experience_role(role: dict) -> str:
     dateline.append(period)
 
     parts = [
-        (f'<p class="entry__group-title">\n'
+        (f'<h4 class="entry__group-title">\n'
          f'  <span class="entry__subrole">{role["role"]}</span>\n'
-         '</p>'),
+         '</h4>'),
         f'<p class="entry__period">{" &middot; ".join(dateline)}</p>',
         render_meta(role, "experience"),
     ]
@@ -1503,12 +1680,22 @@ def render_experience(record: dict) -> str:
     dateline.append(period)
 
     parts = [
-        f'<p class="entry__title">\n  {" &middot; ".join(title_parts)}\n</p>',
+        f'<h3 class="entry__title">\n  {" &middot; ".join(title_parts)}\n</h3>',
         f'<p class="entry__period">{" &middot; ".join(dateline)}</p>',
     ]
     meta = render_meta(record, "experience")
     if meta:
         parts.append(meta)
+    # Two facts with two different jobs, and they used to share one paragraph.
+    # `context` says what this place is, `summary` says what was owned inside
+    # it, and the company half ran 44 to 61 words in front of the first-person
+    # clause on every record: a recruiter scanning "what did *you* do" read
+    # employer boilerplate three times, in the highest-value scan positions of
+    # the site's most important page. Splitting the field lets typography sort
+    # them, so the context is furniture and the ownership is body copy. The
+    # order is unchanged: a reader who wants the company still meets it first.
+    if record.get("context"):
+        parts.append(f'<p class="entry__context">{record["context"]}</p>')
     if record.get("summary"):
         parts.append(f'<p class="entry__summary">{record["summary"]}</p>')
     if record.get("points"):
@@ -1562,8 +1749,8 @@ def render_education(record: dict) -> str:
     dateline.append(f'{record["start"]}-{record["end"]} ({length})')
 
     parts = [
-        f'<p class="entry__title">\n  {record["degree"]}\n'
-        f'  <span class="entry__role">&middot; {institution}</span>\n</p>',
+        f'<h3 class="entry__title">\n  {record["degree"]}\n'
+        f'  <span class="entry__role">&middot; {institution}</span>\n</h3>',
         f'<p class="entry__period">{" &middot; ".join(dateline)}</p>',
         render_meta(record, "education"),
     ]
@@ -1579,7 +1766,7 @@ def render_education(record: dict) -> str:
     return entry_li(record, edu_id, body)
 
 
-def render_credentials(record: dict, field: str) -> str:
+def render_credentials(record: dict, field: str, prefix: str) -> str:
     """One issuer's or platform's credentials, as an `.issuer`-headed group.
 
     Credentials carry no metadata model. The grouping *is* the metadata: who
@@ -1598,26 +1785,41 @@ def render_credentials(record: dict, field: str) -> str:
     of a certificate this site serves. An earlier version derived the marker
     from the URL scheme so that the hosted scans rendered bare, which left the
     two Microsoft rows looking like the only unclickable names in the block.
+
+    **Both levels carry an anchor, and that is what Home's evidence chips
+    needed.** The block was the only thing addressable here, so eleven chips
+    on Home saying `Talend Data Integration`, `MuleSoft Developer L1`,
+    `Datadog &times;3` and so on all landed on the same heading and left the
+    reader to find which row they meant. The group id serves a chip that
+    counts (`Datadog &times;3` wants the Datadog group); the credential id
+    serves a chip that names one certificate. A chip that cannot be checked in
+    one move is a chip taken on trust, which is the one thing skills.md builds
+    this block to avoid.
     """
     icon = asset(f'images/icons/{record["icon"]}')
+    group_id = f'{prefix}-{slugify(record[field])}'
     heading = (
-        '<p class="issuer">\n'
+        '<h3 class="issuer">\n'
         f'  <img class="{icon_classes(record["icon"], "md")}"'
         f' src="{icon}" alt="" width="18" height="18">\n'
         f'  {record[field]}\n'
-        "</p>"
+        "</h3>"
     )
 
     items = []
     for credential in record["credentials"]:
+        # Online courses are not cited from anywhere, so they carry the group
+        # anchor and no row of their own. Certifications are cited by name.
+        row_id = f' id="{prefix}-{credential["id"]}"' if credential.get("id") else ""
         items.append(
-            f'  <li><a class="link-external" href="{asset(credential["url"])}"'
+            f'  <li{row_id}><a class="link-external" href="{asset(credential["url"])}"'
             f' target="_blank" rel="noopener">{credential["name"]}</a></li>'
         )
     body = "\n".join(items)
 
     parts = [heading, f'<ul class="points">\n{body}\n</ul>']
-    return '<li class="entry">\n' + "\n".join(indent(p, 2) for p in parts) + "\n</li>"
+    return (f'<li class="entry" id="{group_id}" data-toc-skip>\n'
+            + "\n".join(indent(p, 2) for p in parts) + "\n</li>")
 
 
 # --- home -------------------------------------------------------------------
@@ -1651,8 +1853,13 @@ def render_credential_row(certifications: list) -> str:
     for record in certifications:
         count = len(record["credentials"])
         suffix = f" &times;{count}" if count > 1 else ""
+        # Each issuer to its own group, not all five to the block heading.
+        # Five links whose text differs and whose destination does not is a
+        # promise of precision the page then fails to keep, and it was the
+        # first screen of the site making it.
+        anchor = f'cert-{slugify(record["issuer"])}'
         links.append(
-            f'<a href="career.html#certifications">{record["issuer"]}{suffix}</a>'
+            f'<a href="career.html#{anchor}">{record["issuer"]}{suffix}</a>'
         )
     return (
         '<div class="hero-facts__row">\n'
@@ -1754,7 +1961,7 @@ def render_current_role(record: dict) -> str:
     dateline.append(period)
 
     parts = [
-        f'<p class="entry__title">\n  {" &middot; ".join(title_parts)}\n</p>',
+        f'<h3 class="entry__title">\n  {" &middot; ".join(title_parts)}\n</h3>',
         f'<p class="entry__period">{" &middot; ".join(dateline)}</p>',
         render_meta(record, "experience"),
     ]
@@ -1765,7 +1972,7 @@ def render_current_role(record: dict) -> str:
     return f'<li class="entry">\n{body}\n</li>'
 
 
-def cite_index(experience: list[dict]) -> dict[str, dict]:
+def cite_index(sources: dict[str, list[dict]]) -> dict[str, dict]:
     """Every bullet that carries an `id`, with the record and page it lives on.
 
     Built so Home's Selected Impact can *cite* a bullet rather than paraphrase
@@ -1777,6 +1984,16 @@ def cite_index(experience: list[dict]) -> dict[str, dict]:
     An id is added to a bullet only when Home cites it, so the index is a
     handful of entries rather than every bullet on the site: an anchor nothing
     points at is a URL promise the author did not mean to make.
+
+    **`sources` maps a page to the records on it, and this used to be the
+    single argument `experience`.** The docstring above says "the page it lives
+    on" and there was only ever one: the index walked `experience.json` alone
+    and `render_impact` hardcoded `career.html`. A bullet on Projects, Teaching
+    or Research could not be cited at all, which is why the open-source result
+    needed a second code path (`upstream_prs`) with a hand-written `evidence`
+    string, and why it renders a status where its four neighbours render a
+    company. One page's worth of citation machinery produced an exception that
+    looked like a design decision.
     """
     index: dict[str, dict] = {}
 
@@ -1793,12 +2010,13 @@ def cite_index(experience: list[dict]) -> dict[str, dict]:
         for group in record.get("groups", []):
             walk(group["points"], owner)
 
-    for record in experience:
-        scan(record, record)
-        for role in record.get("roles", []):
-            # A sub-role inherits its company from the record above it, and
-            # keeps its own dates: OEM's two roles ran in different summers.
-            scan(role, {**record, **role})
+    for page, records in sources.items():
+        for record in records:
+            scan(record, {**record, "page": page})
+            for role in record.get("roles", []):
+                # A sub-role inherits its company from the record above it, and
+                # keeps its own dates: OEM's two roles ran in different summers.
+                scan(role, {**record, **role, "page": page})
     return index
 
 
@@ -1924,9 +2142,13 @@ def render_impact(record: dict, page_labels: dict, projects: list[dict],
         point, owner = citation["point"], citation["owner"]
         sentence = point.get("impact") or point["point"]
         check_figure(record, point["point"], point.get("impact", ""))
-        context = owner["company"]
-        href = f'career.html#{record["cite"]}'
-        label = page_labels["career.html"]
+        # The page comes from wherever cite_index found the id, never from a
+        # constant here. It was `career.html`, hardcoded twice, which is what
+        # confined the whole mechanism to one page.
+        page = owner["page"]
+        context = owner.get("company") or owner.get("host") or owner["title"]
+        href = f'{page}#{record["cite"]}'
+        label = page_labels[page]
     else:
         if not record.get("upstream_prs"):
             raise ValueError(
@@ -2014,7 +2236,7 @@ def render_volunteering(record: dict) -> str:
         year = record["year"]
         dateline.append(f'<time datetime="{year}">{year}</time>')
 
-    parts = [f'<p class="entry__title">{title}</p>']
+    parts = [f'<h3 class="entry__title">{title}</h3>']
     if dateline:
         parts.append(f'<p class="entry__period">{" &middot; ".join(dateline)}</p>')
     if record.get("summary"):
@@ -2082,7 +2304,7 @@ def render_skill(record: dict) -> str:
 
     head = (
         '<div class="skill__head">\n'
-        f'  <p class="skill__name">{record["name"]}</p>\n'
+        f'  <h3 class="skill__name">{record["name"]}</h3>\n'
         f'  <p class="skill__standing">{standing(evidence)}</p>\n'
         "</div>"
     )
@@ -2125,6 +2347,60 @@ def skill_sort_key(record: dict) -> tuple[int, int]:
 def indent(text: str, spaces: int) -> str:
     pad = " " * spaces
     return "\n".join(pad + line if line.strip() else line for line in text.splitlines())
+
+
+def render_contact_channels(site: dict) -> str:
+    """The addresses, and where the author is, from src/site.json.
+
+    Typed into the fragment until now, while `site.json` held its own copies
+    for the JSON-LD. Two sources, no guard, and they had already drifted: the
+    data said `Email` / `University` / `Phone` and the page said `Primary
+    email` / `Academic email` / `Phone / WhatsApp`. The structured data a search
+    engine reads and the text a person reads came from different places, which
+    is the shape of every other bug this build has guards for, sitting on the
+    one page with no model document.
+
+    The `Based in` row joins two owned strings and edits neither.
+    [`CLAUDE.md`](CLAUDE.md) §4 forbids paraphrasing a residence status, so the
+    joining is punctuation: `location`, a full stop, `availability` verbatim,
+    exactly as Home's hero renders it.
+    """
+    rows = []
+    for entry in site["contact"]:
+        label = tr(f"contact.{slugify(entry['label'])}", entry["label"])
+        rows.append(
+            '<li class="contact-list__item">\n'
+            f'  <a class="contact-list__link" href="{entry["href"]}">\n'
+            f'    <span class="contact-list__label">{label}</span>\n'
+            f'    <span class="contact-list__value">{entry["text"]}</span>\n'
+            "  </a>\n"
+            "</li>"
+        )
+    rows.append(
+        '<li class="contact-list__item">\n'
+        '  <div class="contact-list__row">\n'
+        f'    <span class="contact-list__label">{tr("contact.based-in", "Based in")}</span>\n'
+        f'    <span class="contact-list__value">{site["location"]}. {site["availability"]}</span>\n'
+        "  </div>\n"
+        "</li>"
+    )
+    return "\n".join(rows)
+
+
+def render_contact_socials(site: dict) -> str:
+    """The same list the JSON-LD `sameAs` is built from, rendered for a human."""
+    rows = []
+    for entry in site["socials"]:
+        rows.append(
+            '<li class="contact-list__item">\n'
+            f'  <a class="contact-list__link" href="{entry["href"]}"'
+            ' target="_blank" rel="noopener">\n'
+            f'    <span class="contact-list__label">{entry["name"]}</span>\n'
+            f'    <span class="contact-list__value">{entry["handle"]}</span>\n'
+            "  </a>\n"
+            "</li>"
+        )
+    return "\n".join(rows)
 
 
 def json_ld(site: dict, meta: dict, canonical: str) -> str:
@@ -2193,6 +2469,55 @@ def check_fragment_parity(locale: Locale, name: str) -> list[str]:
     return problems
 
 
+# How much of a page has to be in the locale's own language before the site
+# will publish it there.
+#
+# Below this, the page is built, measured and thrown away, and neither the
+# hreflang cluster nor the language switch mentions it. That sounds harsh for a
+# translation in progress and it is the lenient option: the alternative, which
+# is what shipped, was eight URLs announcing `lang="fr"` over English prose.
+#
+# Everything downstream of that attribute then acts on it. A screen reader
+# pronounces English words with French phonemes. A search engine is told these
+# are the same page in two languages and finds two copies of one. A French
+# recruiter, the first market CLAUDE.md section 4 names, clicks `Francais` and
+# lands on English, which is worse than finding no French at all because it
+# spends trust rather than merely lacking it.
+#
+# CLAUDE.md section 10 already holds the principle: a stale translation is
+# worse than a missing one, because a missing string falls back and is
+# reported while a stale one reads fluent, confident and wrong. An untranslated
+# *page* is that failure at page scale, and the fallback that makes a missing
+# string survivable is exactly what makes the page unsurvivable. The gap was
+# that the rule was enforced on strings and not on what they added up to.
+#
+# 0.50 is set where it is because a real translation still shares proper nouns,
+# tool names, companies and certificate titles with its source, so demanding
+# near-total divergence would fail pages that are genuinely done. Half is well
+# above what an untranslated page can reach by accident and well below what a
+# finished one scores. Awards, the pilot, measures 0.62.
+MIN_TRANSLATED = 0.50
+
+
+def translated_fraction(source: str, target: str) -> float:
+    """How much of a rendered page differs from the English it was built from.
+
+    Compared on the visible words of the page body rather than on the markup,
+    which is identical by construction and would report every page as fully
+    translated.
+    """
+    def words(markup: str) -> list[str]:
+        body = re.sub(r"<!--.*?-->", " ", markup, flags=re.DOTALL)
+        return re.sub(r"<[^>]+>", " ", body).split()
+
+    english, other = words(source), words(target)
+    if not other:
+        return 0.0
+    shared = sum(block.size for block in
+                 difflib.SequenceMatcher(None, english, other).get_matching_blocks())
+    return 1.0 - min(shared, len(other)) / len(other)
+
+
 def render_alternates(site: dict, locales: list[Locale], output_name: str) -> str:
     """hreflang for every rendering of this page, including x-default.
 
@@ -2200,6 +2525,10 @@ def render_alternates(site: dict, locales: list[Locale], output_name: str) -> st
     rather than two pages competing for the same words, and a reader arriving
     from a French search should land on the French one.
     """
+    # One rendering is not a cluster. A lone self-referential hreflang tells a
+    # crawler nothing it did not have from the canonical tag.
+    if len(locales) < 2:
+        return ""
     leaf = "" if output_name == "index.html" else output_name
     lines = []
     for other in locales:
@@ -2320,6 +2649,51 @@ def report_missing(locales: list[Locale]) -> None:
         print(f"  {locale.code}: {len(keys)} untranslated: {head}{more}")
 
 
+def report_undated(publications: list[dict]) -> None:
+    """Name every record shipping with no date on it.
+
+    Every record on this site carries a dateline except one: the in-progress
+    paper has no `year`, so it renders with no `entry__period` at all and a
+    reader cannot tell whether "In Progress" means last month or 2021. On a
+    page whose neighbouring record is dated 2025, an undated one reads as
+    older, not newer.
+
+    This reports rather than fails, and the distinction is deliberate.
+    `check_reach` is fatal because the data to satisfy it already exists: the
+    figures were read on some date and that date is known. A submission date is
+    a fact only the author has, and a guard that fails the build over data
+    nobody can supply is a guard that gets deleted. So it is listed on every
+    run, next to the untranslated strings and the withheld pages, until the
+    author fills it in.
+    """
+    undated = [r for r in publications if not r.get("year") and r.get("status") != "In Progress"]
+    if not undated:
+        return
+    print(f"  {len(undated)} record(s) shipping with no date:")
+    for record in undated:
+        # Raw records, read before with_ids has stamped anything, so the
+        # title is the only handle they have.
+        print(f"      {record['title'][:60]}  ({record.get('status', 'no status')})")
+
+
+def report_withheld(withheld: list[tuple[str, str, float]]) -> None:
+    """Name every page a locale is not publishing, and how far off it is.
+
+    Withholding has to be louder than shipping, or it becomes a quiet way to
+    have no French at all. Each line is the page, the language, what it
+    measures and what it needs, so the next translation pass has a worklist
+    rather than a verdict.
+    """
+    if not withheld:
+        return
+    for code in sorted({c for c, _, _ in withheld}):
+        rows = [(name, share) for c, name, share in withheld if c == code]
+        print(f"  {code}: {len(rows)} page(s) withheld, under "
+              f"{MIN_TRANSLATED:.0%} translated:")
+        for name, share in sorted(rows, key=lambda row: -row[1]):
+            print(f"      {name:16} {share:.0%}")
+
+
 def page_blocks(site: dict) -> dict:
     """Every data-driven region of every page, rendered for ACTIVE.
 
@@ -2391,7 +2765,15 @@ def page_blocks(site: dict) -> dict:
         key=volunteering_sort_key,
         reverse=True,
     )
-    citations = cite_index(experience)
+    # Every page that carries citable bullets. Adding one here is all it takes
+    # for a bullet on that page to become citable from Home.
+    citations = cite_index({
+        "career.html": experience,
+        "projects.html": projects,
+        "research.html": publications,
+        "teaching.html": courses,
+        "workshops.html": workshops,
+    })
     skills = sorted(
         json.loads((DATA / "skills.json").read_text(encoding="utf-8")),
         key=skill_sort_key,
@@ -2407,8 +2789,11 @@ def page_blocks(site: dict) -> dict:
         "build.hackathons": indent("\n".join(render_award(a) for a in hackathons), 4),
         "build.workshops": indent("\n".join(render_workshop(w) for w in workshops), 4),
         "build.courses": indent("\n".join(render_course(c) for c in courses), 4),
-        "build.publications": indent("\n".join(render_publication(p) for p in publications), 4),
+        "build.publications": indent("\n".join(render_publication(p, site) for p in publications), 4),
         "build.articles": indent("\n".join(render_article(a) for a in articles), 4),
+        "build.reach_note": indent(reach_note(articles), 2),
+        "build.contact_channels": indent(render_contact_channels(site), 4),
+        "build.contact_socials": indent(render_contact_socials(site), 4),
         "build.open_source": indent(
             "\n".join(render_project(p, articles_by_id) for p in open_source), 4),
         "build.ml_projects": indent(
@@ -2418,9 +2803,9 @@ def page_blocks(site: dict) -> dict:
         "build.education": indent(
             "\n".join(render_education(e) for e in education), 4),
         "build.certifications": indent(
-            "\n".join(render_credentials(c, "issuer") for c in certifications), 4),
+            "\n".join(render_credentials(c, "issuer", "cert") for c in certifications), 4),
         "build.online_courses": indent(
-            "\n".join(render_credentials(c, "platform") for c in online_courses), 4),
+            "\n".join(render_credentials(c, "platform", "learn") for c in online_courses), 4),
         # Home's Currently block is experience[0] after tenure_sort_key, never a
         # record named in the fragment and never one carrying a "featured" flag.
         # When a new job starts, the block follows, because the sort follows.
@@ -2457,6 +2842,16 @@ def build(check_only: bool = False, sync: bool = False) -> int:
     problems: list[str] = []
     stale: list[str] = []
     written: list[str] = []
+    removed: list[str] = []
+    withheld: list[tuple[str, str, float]] = []
+
+    # --- pass 1: render every page body in every locale, and measure it -----
+    #
+    # Two passes, because a page cannot be assembled until it is known which
+    # languages publish it: the hreflang cluster and the language switch both
+    # name the other renderings, and naming one that is being withheld is the
+    # same broken promise in a different element.
+    bodies: dict[tuple[str, str], dict] = {}
 
     for locale in locales:
         ACTIVE = locale
@@ -2482,44 +2877,133 @@ def build(check_only: bool = False, sync: bool = False) -> int:
             meta, content = parse_front_matter(source.read_text(encoding="utf-8"))
             content = render(content.strip(),
                              {**locale_context, **blocks, "page.root": locale.up})
-            page_context = render_page_context(content, source)
+            bodies[(locale.code, nav_entry["href"])] = {
+                "source": source,
+                "meta": meta,
+                "content": content,
+                "locale_site": locale_site,
+                "locale_context": locale_context,
+            }
 
+    # --- which locales publish which page -----------------------------------
+    source_locale = locales[0]
+    publishes: dict[str, list[Locale]] = {}
+    for nav_entry in site["nav"]:
+        name = nav_entry["href"]
+        english = bodies[(source_locale.code, name)]["content"]
+        allowed = []
+        for locale in locales:
+            if locale.code == source_locale.code:
+                allowed.append(locale)
+                continue
+            share = translated_fraction(english, bodies[(locale.code, name)]["content"])
+            if share >= MIN_TRANSLATED:
+                allowed.append(locale)
+            else:
+                withheld.append((locale.code, name, share))
+        publishes[name] = allowed
+
+    # --- validate before anything is written or deleted ---------------------
+    #
+    # This ran after pass 2 and cost a file. A stale-translation failure
+    # returned 1 with seven withheld pages already unlinked from disk, so a
+    # build that reported doing nothing had in fact deleted seven pages. Every
+    # check that can fail the build now runs while the tree is untouched.
+    ACTIVE = source_locale
+    problems += check_translations(locales, sync)
+    if problems:
+        for problem in sorted(set(problems)):
+            print(f"translation: {problem}", file=sys.stderr)
+        return 1
+
+    # --- pass 2: assemble and write -----------------------------------------
+    for locale in locales:
+        ACTIVE = locale
+        for nav_entry in site["nav"]:
             output_name = nav_entry["href"]
             path = f"{locale.dir}{'' if output_name == 'index.html' else output_name}"
+            target = ROOT / path if path.endswith(".html") else ROOT / locale.dir / "index.html"
+            allowed = publishes[output_name]
+
+            if locale not in allowed:
+                # Withheld. Any copy left from a previous build is deleted
+                # rather than left to rot: a stale file on disk is still served
+                # by GitHub Pages, and the whole point of withholding it is
+                # that nobody should reach it.
+                if target.exists():
+                    if check_only:
+                        stale.append(str(target.relative_to(ROOT)))
+                    else:
+                        target.unlink()
+                        removed.append(str(target.relative_to(ROOT)))
+                continue
+
+            body = bodies[(locale.code, output_name)]
+            source, meta = body["source"], body["meta"]
+            content, locale_site = body["content"], body["locale_site"]
+            page_context = render_page_context(content, source)
+
             canonical = f"{site['base_url']}/{path}"
             page_title = tr(f"page.{nav_entry['id']}.title", meta["title"])
             title_tag = (page_title if meta.get("nav") == "home"
                          else f"{page_title} &middot; {locale_site['name']}")
 
-            nav_items = [
-                {
+            # A page withheld in this locale is still reachable, in the
+            # source language, at the source language's URL.
+            #
+            # This is the fallback `t` has always used for a missing string,
+            # applied to a missing page, and it is not the failure the
+            # threshold exists to stop. That failure was a French URL
+            # declaring `lang="fr"` over English prose: the declaration was
+            # the lie, never the English. Sending a reader to /career.html,
+            # which says it is English and is, tells the truth. The link
+            # carries `lang` and `hreflang` so a screen reader switches voice
+            # and a crawler knows it has left the locale.
+            nav_items = []
+            for item in site["nav"]:
+                target_locales = publishes[item["href"]]
+                here = locale in target_locales
+                destination = locale if here else source_locale
+                leaf = "" if item["href"] == "index.html" else item["href"]
+                # A sibling in this locale is addressed by its bare name. Only
+                # a page being served from the other locale needs climbing out
+                # of this directory first.
+                href = (leaf or "index.html") if here else f"{locale.up}{destination.dir}{leaf}"
+                nav_items.append({
                     **item,
+                    "href": href,
                     "label": tr(f"nav.{item['id']}", item["label"]),
+                    "lang": "" if here else
+                            f' lang="{source_locale.lang}" hreflang="{source_locale.lang}"',
                     "aria_current": ' aria-current="page"' if item["id"] == nav_entry["id"] else "",
-                }
-                for item in site["nav"]
-            ]
+                })
 
             context = {
-                **locale_context,
+                **body["locale_context"],
                 "page.title_tag": title_tag,
                 "page.description": tr(f"page.{nav_entry['id']}.description", meta["description"]),
                 "page.canonical": canonical,
                 "page.og_type": "profile" if meta.get("nav") == "home" else "article",
                 "page.content": indent(content, 8),
                 "page.root": locale.up,
+                # The brand bar goes home, and home is this locale's home only
+                # where this locale publishes one. It was the literal string
+                # "index.html", which resolved inside /fr/ to a page that the
+                # translation threshold may be withholding.
+                "page.home": next(item["href"] for item in nav_items
+                                  if item["id"] == "home"),
                 "build.page_context": indent(page_context, 8),
                 "build.asset_version": asset_version,
                 "build.json_ld": json_ld(locale_site, meta, canonical),
                 "build.nav": render_items("nav-item.html", nav_items),
-                "build.alternates": indent(render_alternates(site, locales, output_name), 2),
-                "build.lang_switch": indent(render_lang_switch(locales, locale, output_name), 10),
+                "build.alternates": indent(render_alternates(site, allowed, output_name), 2),
+                "build.lang_switch": indent(render_lang_switch(allowed, locale, output_name), 10),
                 "build.chrome": "",
                 **chrome_context(),
             }
 
-            page_html = BANNER.format(source=source.name) + render(layout, context)
-            target = ROOT / path if path.endswith(".html") else ROOT / locale.dir / "index.html"
+            page_html = (BANNER.format(source=source.name)
+                         + strip_comments(render(layout, context)))
 
             if check_only:
                 current = target.read_text(encoding="utf-8") if target.exists() else ""
@@ -2530,20 +3014,20 @@ def build(check_only: bool = False, sync: bool = False) -> int:
                 target.write_text(page_html, encoding="utf-8")
                 written.append(str(target.relative_to(ROOT)))
 
-    ACTIVE = locales[0]
-    problems += check_translations(locales, sync)
-    if problems:
-        for problem in sorted(set(problems)):
-            print(f"translation: {problem}", file=sys.stderr)
-        return 1
+    ACTIVE = source_locale
     report_missing(locales)
+    report_withheld(withheld)
+    report_undated(json.loads((DATA / "research.json").read_text(encoding="utf-8")))
 
     if check_only:
         if stale:
             print("stale (run: python3 tools/build.py): " + ", ".join(stale), file=sys.stderr)
             return 1
-        print(f"up to date: {len(site['nav'])} pages")
+        print("up to date")
         return 0
+
+    if removed:
+        print("withdrawn (below the translation threshold): " + ", ".join(removed))
 
     if sync:
         print("translation locks re-stamped")

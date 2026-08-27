@@ -100,15 +100,30 @@ records still use the full width. Every prose container carries it: `.prose`,
 The theme's signature is a *stepped* grey ramp: each heading level one notch
 lighter than the one above:
 
-| Level | Colour | Role |
-|---|---|---|
-| `h1` / the name / `strong` | `#222222` | Strongest |
-| `h2` / page title | `#393939` | Page-level |
-| `h3` / section headings | `#494949` | Section-level |
-| Body | `#373737` | - |
+| Level | Element | Size | Colour | Role |
+|---|---|---|---|---|
+| Page title | `h1` `.page-title` | 25px | `#393939` | One per page |
+| Section | `h2` `.block__title` | 19px | `#494949` | Underlined |
+| Record | `h3` `.entry__title`, `.issuer`, `.skill__name` | 17px | `#222222` | One per record |
+| Group | `h4` `.entry__group-title` | 16px | `#494949` | A part of a record |
+| Body / `strong` | | 16px | `#373737` / `#222222` | |
 
-Note that body text is *darker* than `h3`. That is not a mistake; it is the
-original ramp and it is why the page reads calm rather than shouty.
+Note that body text and a record title are *darker* than the section heading
+above them. That is not a mistake; it is the original ramp and it is why the
+page reads calm rather than shouty. It is also why the ramp is stated by role
+here rather than assumed to descend with the tag number.
+
+**The tags used to say something different from the page.** `h2` was defined
+at 25px and used on exactly one page, every other page ran `h1` straight to
+`h3`, and every record title on the site was a `<p>` in a bold class, so seven
+of eight documents had no second level and none had a record in its outline.
+Contact meanwhile used the one `h2` for the same visual rank the others got
+from an `h3`, with a hardcoded `font-size` covering the difference.
+
+Retagging changed the outline and not one pixel: the element defaults above are
+set to exactly what those components already rendered. **A component that has
+to override its own element's default is the warning sign**, and
+`.contact-section__title` was it.
 
 ## 2. Colour
 
@@ -1084,7 +1099,7 @@ Every page is the same stack:
 
 ```
 page-header   h1 + optional lede + optional summary grid (§9.4)
-block         h3 (underlined) + optional intro
+block         h2 (underlined) + optional intro
               + entries or skills          
               + optional note                                        ← repeated
 ```
@@ -1194,23 +1209,35 @@ This section is the reference for what it renders.
 | | |
 |---|---|
 | Slot | `.sidebar-context`, the `aside` |
-| Component | `.book-toc`, a `details` inside it |
+| Component | `.book-toc`, a `nav` inside it |
 | Built by | `render_page_context` in `tools/build.py` |
-| Source | the page's own markup: `h2` and `h3` inside `section[aria-labelledby]`, then `li.entry` inside each, then `div.entry__group` inside those |
-| Depth | three levels, where the records have them (a course, then its modules) |
-| Labels | the record's own heading, unless it carries `data-toc-title` |
+| Source | the page's own markup: `h2` inside `section[aria-labelledby]`, then `li.entry` inside each |
+| Depth | two levels: sections, and the records in them. `TOC_DEPTH` |
+| Skipped | anything carrying `data-toc-skip`, which is an address rather than a place |
+| Labels | the record's own heading, unless it carries `data-toc-title`. Siblings sharing a label are disambiguated by the year in their id |
 
-**Above `1024px`** it is the sticky left track of `.page-body`, and CSS forces
-the `details` open and takes the marker away, so it reads as a rail and not as
-a control. Forcing it open takes two declarations, because browsers hide the
-contents two different ways: older engines set `display: none` on the children,
-newer ones set `content-visibility: hidden` on `::details-content`. Override
-one and not the other and the rail is collapsed on half the web.
+**It is a `nav` holding a list of links, and nothing a reader can operate.**
 
-**At or below `1024px`** `.page-body` stacks and the `details` is closed: one
-line reading *Contents*, which the reader opens if they want it. It was
-previously a bordered card holding the whole tree, which put roughly **668px**
-of links in front of Teaching's first word on a phone. It does not print (§21).
+It was a `details`, forced open above `1024px` by two declarations while the
+element itself stayed closed, because browsers hide the contents two different
+ways. So the desktop rail painted its whole tree while telling assistive
+technology the region was collapsed, and left a focusable `summary` that did
+nothing visible when activated. [`CLAUDE.md`](CLAUDE.md) §7 admits the rail on
+the ground that deleting it costs the reader nothing but convenience; **a
+control that lies about its own state is not covered by that argument** and
+was never argued for separately.
+
+The disclosure became deletable once the tree stopped going three levels deep.
+It existed to fold away Teaching's rail, which ran one top-level link over
+twenty-two module names, roughly 668px of navigation in front of the page's
+first word on a phone. Capped at records, that rail is four lines and the
+longest on the site is Career at fifteen.
+
+**Above `1024px`** it is the sticky left track of `.page-body`.
+
+**At or below `1024px`** `.page-body` stacks and the rail sits above the
+content, at full length, which is affordable now that full length means
+sections and their records. It does not print (§21).
 
 **It is built from type and whitespace**, like the rest of the site. It had
 been written in a different vocabulary: an uppercase letterspaced heading and a

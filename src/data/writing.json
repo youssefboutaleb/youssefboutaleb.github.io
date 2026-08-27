@@ -6,7 +6,8 @@
     "format": "Walkthrough",
     "reach": {
       "views": 3000,
-      "reads": 1500
+      "reads": 1500,
+      "as_of": "2026-08"
     },
     "platform": "Medium",
     "url": "https://medium.com/@youssefboutaleb.info/developingyolov8-custom-object-detection-with-fastapi-and-gradio-e9314fad0782",
@@ -19,7 +20,8 @@
     "format": "Configuration Guide",
     "reach": {
       "views": 723,
-      "reads": 424
+      "reads": 424,
+      "as_of": "2026-08"
     },
     "platform": "Medium",
     "url": "https://medium.com/@youssefboutaleb.info/simplify-your-log-management-configuring-datadog-integration-with-log4j2-in-mulesoft-44e83b56e0c4",

@@ -143,6 +143,21 @@ person is, above Currently, is this block.
 | Languages | `build.language_row`, from [`src/data/languages.json`](src/data/languages.json) |
 | Title, lede | Written in [`src/pages/index.html`](src/pages/index.html) |
 
+**There is no third line, and there was.** A `hero-header__headline` sat
+between the `h1` and the lede reading *Data Engineer &middot; University
+Instructor at IHEC &middot; Competitive Programmer &middot; Open Source
+Contributor*. The lede below it re-verbed three of those four, IHEC was named
+twice in consecutive lines, and *Data Engineer* appeared three times in the
+first forty words once the `h1` and the brand bar are counted.
+
+The table above is why it went rather than the lede: **this document listed
+"Title, lede" and had never heard of the headline.** It is the element that
+arrived without the document, and the one restating. The lede survives because
+it carries Azure, which the headline did not, and because the cloud qualifier
+lives in its first clause (below). Do not add a third line here: this section
+already says the fix for two blocks with the same job is to remove one, and
+that applies inside a block as much as between two.
+
 **The availability sentence is never typed into a fragment.**
 [`CLAUDE.md`](CLAUDE.md) §4 forbids paraphrasing a residence status, and the
 way three different paraphrases appeared was that three places each held their

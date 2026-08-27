@@ -299,11 +299,11 @@ not because anyone re-ranked it.
   "tools": ["Apache Airflow 3"],
   "evidence": {
     "certification": [
-      { "text": "Airflow 3 Fundamentals", "href": "career.html#certifications" },
-      { "text": "DAG Authoring", "href": "career.html#certifications" }
+      { "text": "Airflow 3 Fundamentals", "href": "career.html#cert-airflow-fundamentals" },
+      { "text": "DAG Authoring", "href": "career.html#cert-airflow-dag-authoring" }
     ],
     "taught": [
-      { "text": "Packaging & Delivery module", "href": "teaching.html#courses-taught" }
+      { "text": "Packaging & Delivery module", "href": "teaching.html#data-engineering-2-m5" }
     ]
   }
 }
@@ -316,6 +316,22 @@ not because anyone re-ranked it.
 2. **Every evidence entry needs an `href` to a record already on this site.**
    If the proof is not on the site, add the record first: a citation to
    nothing is the one thing this block cannot survive.
+
+   **The `href` names the record, not the block it sits in.** A chip saying
+   *Talend Data Integration* and a chip saying *MuleSoft Developer L1* both
+   pointing at `#certifications` land the reader on a heading and leave them to
+   find which row was meant, which is a click plus a visual search: exactly the
+   cost this block exists to remove. Every record type now carries an anchor
+   for the purpose (`#cert-talend-di`, `#exp-jacquemus`, `#jq-finops`,
+   `#course-machine-learning`, `#data-engineering-2-m4`,
+   `#ws-introduction-to-python`, `#proj-...`), so a block anchor means the chip
+   is an **aggregate**: *8 contest results* and *2 upstream pull requests* have
+   no single record and correctly point at `#competitions` and `#open-source`.
+
+   A chip that is not an aggregate and cannot find a record is not a chip whose
+   `href` needs relaxing, it is a claim with no evidence, and the answer is a
+   record or a deletion. *PowerShell automation* is the current one: it renders
+   green for production and no bullet in `experience.json` mentions PowerShell.
 3. **Chip text says what the evidence *is*,** specifically: *€1,400/month
    saved*, not *Azure work*. The chip is the reason to click.
 4. **Do not set a standing or a position.** Both are computed. Adding a

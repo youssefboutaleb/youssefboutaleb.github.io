@@ -17,12 +17,10 @@
   <meta name="google-site-verification" content="_EoRy_lTXm3RCqZdWpUgQ9bWDF7KCrEdSZBocueWMUk">
 
   <link rel="canonical" href="https://youssefboutaleb.github.io/">
-  <link rel="alternate" hreflang="en" href="https://youssefboutaleb.github.io/">
-  <link rel="alternate" hreflang="fr" href="https://youssefboutaleb.github.io/fr/">
-  <link rel="alternate" hreflang="x-default" href="https://youssefboutaleb.github.io/">
+
   <link rel="icon" type="image/svg+xml" href="images/icons/icon.svg">
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Noto-Sans-regular/Noto-Sans-regular.woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=3a302cd2f43b">
+  <link rel="stylesheet" href="assets/css/main.css?v=e75008ddc307">
 
   <script>
     // Before first paint, or the pinned theme flashes the other one on every
@@ -74,10 +72,7 @@
             <span class="theme-switch__sep" aria-hidden="true">&middot;</span>
             <button class="theme-switch__option" type="button" data-theme-value="dark">Dark</button>
           </div>
-          <div class="lang-switch">
-            <span class="lang-switch__label">Language:</span>
-            <span class="lang-switch__current" aria-current="true">English</span> <span class="lang-switch__sep" aria-hidden="true">&middot;</span> <a class="lang-switch__option" href="fr/" lang="fr" hreflang="fr">Français</a>
-          </div>
+
         </div>
       </div>
       <nav class="nav" aria-label="Primary">
@@ -96,10 +91,9 @@
 
     <div class="page-body">
       <aside class="sidebar-context">
-        <details class="book-toc">
-          <summary class="book-toc__header" id="page-context-label">Contents</summary>
-          <nav class="book-toc__nav" aria-labelledby="page-context-label">
-            <ul class="book-toc__list">
+        <nav class="book-toc" aria-labelledby="page-context-label">
+          <p class="book-toc__header" id="page-context-label">Contents</p>
+          <ul class="book-toc__list">
               <li class="book-toc__item">
                 <a class="book-toc__link" href="#currently">Currently</a>
               </li>
@@ -109,56 +103,19 @@
               <li class="book-toc__item">
                 <a class="book-toc__link" href="#skills">Skills &amp; Evidence</a>
               </li>
-            </ul>
-          </nav>
-        </details>
+          </ul>
+        </nav>
       </aside>
 
       <main id="main" class="content">
-        <!-- The page's one opening. It used to be two: a hero (portrait, role, lede,
-             availability) and a Profile block (intro, prose, credentials), stacked,
-             both introducing the same person. That is what produced the duplication,
-             because two blocks with the same job will always find the same things to
-             say: the lede and the Profile paragraph both named Azure, ETL/ELT,
-             integration and observability, about 45 words spent twice before the
-             reader reached a single piece of evidence.
-
-             home.md's rule is that Home may restate a fact only by projection,
-             citation or quotation. Those two paragraphs were the one restatement on
-             the page that was hand-written on both sides, so nothing could catch them
-             drifting. Merging is the fix that removes the surface rather than
-             patching it. home-opening-options.md carries the full finding. -->
         <header class="page-header hero-header">
           <div class="hero-header__content">
             <img class="hero-header__portrait" src="images/me.jpg" alt="Portrait of Youssef Boutaleb" width="180" height="220">
             <div class="hero-header__bio">
-              <!-- One word, deliberately. The h1 read "Data Engineer | Cloud &
-                   Integration": a pipe, which is not a separator this repository owns,
-                   joining two things as peers. CLAUDE.md section 3 makes cloud and
-                   integration a qualifier of the role and not a second one, and the
-                   h1 is where that is tested. The qualifier is the first clause of
-                   the lede below, and rows 3 and 4 of Skills & Evidence. -->
               <h1 class="page-title">Data Engineer</h1>
-              <p class="hero-header__headline">
-                Data Engineer &middot; University Instructor at IHEC &middot; Competitive Programmer &middot; Open Source Contributor
-              </p>
               <p class="page-lede">
                 Building enterprise Azure data platforms, lecturing computer science &amp; distributed systems at IHEC Sfax, and competing in national algorithmic contests.
               </p>
-              <!-- The facts a recruiter filters on, in the first screen, because a
-                   filter reached late is a filter applied by guessing.
-
-                   A label column, not three sentences with a bold word at the front.
-                   Languages is three pairs of its own, and an inline run would need
-                   one separator to divide the languages and another to bind each to
-                   its level: the grid does that with alignment instead of
-                   punctuation. DESIGN.md section 10.2.
-
-                   CLAUDE.md section 4: the availability sentence has one owner,
-                   src/site.json, and is never typed into a fragment or paraphrased.
-                   The way three wordings appeared was that three places each held
-                   their own copy. The other two rows are generated, from
-                   src/data/certifications.json and src/data/languages.json. -->
               <dl class="hero-facts">
                 <div class="hero-facts__row">
                   <dt>Availability</dt>
@@ -166,7 +123,7 @@
                 </div>
                 <div class="hero-facts__row">
                   <dt>Certified</dt>
-                  <dd><a href="career.html#certifications">Microsoft &times;3</a> &middot; <a href="career.html#certifications">Astronomer &times;2</a> &middot; <a href="career.html#certifications">MuleSoft</a> &middot; <a href="career.html#certifications">Talend</a> &middot; <a href="career.html#certifications">Datadog &times;3</a></dd>
+                  <dd><a href="career.html#cert-microsoft">Microsoft &times;3</a> &middot; <a href="career.html#cert-astronomer">Astronomer &times;2</a> &middot; <a href="career.html#cert-mulesoft">MuleSoft</a> &middot; <a href="career.html#cert-talend">Talend</a> &middot; <a href="career.html#cert-datadog">Datadog &times;3</a></dd>
                 </div>
                 <div class="hero-facts__row">
                   <dt>Languages</dt>
@@ -194,25 +151,20 @@
           </div>
         </header>
 
-        <!-- A projection, not a summary: every string here is read from the same
-             record Career renders, so the two pages cannot disagree about the job
-             being done now. It is experience[0] after tenure_sort_key, so it follows
-             a job change on its own. Never give this block content of its own; the
-             one sentence is `home_summary`, on the record. See home.md. -->
         <section class="block" aria-labelledby="currently">
-          <h3 class="block__title" id="currently">Currently</h3>
+          <h2 class="block__title" id="currently">Currently</h2>
           <p class="block__intro">Running the data platform behind a luxury fashion house.</p>
           <ul class="entries">
             <li class="entry">
-              <p class="entry__title">
+              <h3 class="entry__title">
                 <span class="entry__role">Data Engineer</span> &middot; <span class="entry__company"><a href="https://www.linkedin.com/company/jacquemus/posts/?feedView=all" target="_blank" rel="noopener">JACQUEMUS</a></span>
-              </p>
+              </h3>
               <p class="entry__period"><span class="entry__location">Paris, France</span> &middot; Aug 2024 - Present (2 years)</p>
               <ul class="tag-list" aria-label="Role details">
                 <li class="tag tag--domain">Luxury E-commerce &amp; Retail</li>
                 <li class="tag tag--engagement">Permanent</li>
                 <li class="tag tag--mode">Remote</li>
-                <li class="tag tag--scale"><b>150+</b> pipelines</li>
+                <li class="tag tag--scale"><b>20+</b> of <b>150+</b> pipelines</li>
                 <li class="tag tag--stack">Azure Data Factory</li>
                 <li class="tag tag--stack">Azure Fabric</li>
                 <li class="tag tag--stack">Apache Spark</li>
@@ -223,26 +175,8 @@
           </ul>
         </section>
 
-        <!-- The one block on the site that restates facts held on other pages, so the
-             one block where a claim can drift away from its record. It has, twice, in
-             both directions: home.md opens on both. The sentence is quoted from the
-             bullet a record cites, the provenance line and the link are derived from
-             the same lookup, and the upstream state comes from projects.json. The
-             figure is the one hand-written claim on this page, and it moves in the
-             same commit as the record it summarises or neither does.
-
-             It sits above Skills & Evidence because a hiring manager who reads three
-             blocks and leaves should have read what changed. Skills & Evidence is the
-             longest block on the page and it is aimed at the reader who has already
-             decided to keep going. Records: src/data/impact.json. -->
         <section class="block" aria-labelledby="impact">
-          <h3 class="block__title" id="impact">Impact in Numbers</h3>
-          <!-- INTERIM, awaiting the author's sentence. The line it replaced read
-               "Five results, each one quoting the record that earned it.": a count
-               typed in a fragment while the records are `home: true` flags in data,
-               so a sixth record made it silently wrong, followed by a description of
-               the mechanism, which CLAUDE.md section 6 keeps off the page entirely.
-               A block__intro is one line and it is a pitch. -->
+          <h2 class="block__title" id="impact">Impact in Numbers</h2>
           <p class="block__intro">What changed because the work shipped.</p>
           <ul class="results">
             <li class="result">
@@ -273,13 +207,8 @@
           </ul>
         </section>
 
-        <!-- The block that answers "can this person actually do the job". Every chip
-             is a link to the record that proves the capability, so a claim here can
-             be checked in one click rather than taken on trust. Records live in
-             src/data/skills.json; the proof order and the derived standing come from
-             PROOF and standing() in tools/build.py. Never hand-write entries here. -->
         <section class="block" aria-labelledby="skills">
-          <h3 class="block__title" id="skills">Skills &amp; Evidence</h3>
+          <h2 class="block__title" id="skills">Skills &amp; Evidence</h2>
           <p class="block__intro">What I can do, and what proves it.</p>
           <ul class="tag-list tag-list--key" aria-label="What the evidence colours mean">
             <li class="tag tag--production">Run in production</li>
@@ -291,7 +220,7 @@
           <ul class="skills">
             <li class="skill">
               <div class="skill__head">
-                <p class="skill__name">Data pipeline engineering</p>
+                <h3 class="skill__name">Data pipeline engineering</h3>
                 <p class="skill__standing">Production-proven</p>
               </div>
               <div class="skill__proof">
@@ -301,18 +230,19 @@
                   <li class="tag tag--stack">Apache Airflow</li>
                 </ul>
                 <ul class="tag-list" aria-label="Evidence">
-                  <li><a class="tag tag--production" href="career.html#experience">Azure Data Factory &amp; Fabric at JACQUEMUS</a></li>
-                  <li><a class="tag tag--production" href="career.html#experience">API-led integration at OLIVESOFT</a></li>
-                  <li><a class="tag tag--certification" href="career.html#certifications">Talend Data Integration</a></li>
-                  <li><a class="tag tag--certification" href="career.html#certifications">MuleSoft Developer L1</a></li>
-                  <li><a class="tag tag--certification" href="career.html#certifications">Astronomer &times;2</a></li>
-                  <li><a class="tag tag--taught" href="teaching.html#courses-taught">Data Engineering 1 &amp; 2</a></li>
+                  <li><a class="tag tag--production" href="career.html#exp-jacquemus">Azure Data Factory &amp; Fabric at JACQUEMUS</a></li>
+                  <li><a class="tag tag--production" href="career.html#exp-olivesoft">API-led integration at OLIVESOFT</a></li>
+                  <li><a class="tag tag--certification" href="career.html#cert-talend-di">Talend Data Integration</a></li>
+                  <li><a class="tag tag--certification" href="career.html#cert-mulesoft-dev-l1">MuleSoft Developer L1</a></li>
+                  <li><a class="tag tag--certification" href="career.html#cert-astronomer">Astronomer &times;2</a></li>
+                  <li><a class="tag tag--taught" href="teaching.html#course-data-engineering-1">Data Engineering 1</a></li>
+                  <li><a class="tag tag--taught" href="teaching.html#course-data-engineering-2">Data Engineering 2</a></li>
                 </ul>
               </div>
             </li>
             <li class="skill">
               <div class="skill__head">
-                <p class="skill__name">Data warehousing &amp; analytics</p>
+                <h3 class="skill__name">Data warehousing &amp; analytics</h3>
                 <p class="skill__standing">Production-proven</p>
               </div>
               <div class="skill__proof">
@@ -323,17 +253,17 @@
                   <li class="tag tag--stack">Microsoft Fabric</li>
                 </ul>
                 <ul class="tag-list" aria-label="Evidence">
-                  <li><a class="tag tag--production" href="career.html#experience">Azure data platform</a></li>
-                  <li><a class="tag tag--certification" href="career.html#certifications">Azure DB Administrator (DP-300)</a></li>
-                  <li><a class="tag tag--certification" href="career.html#certifications">Fabric Data Engineer (DP-700)</a></li>
-                  <li><a class="tag tag--taught" href="teaching.html#courses-taught">Data Warehousing</a></li>
-                  <li><a class="tag tag--taught" href="teaching.html#courses-taught">Analytics &amp; Reporting</a></li>
+                  <li><a class="tag tag--production" href="career.html#exp-jacquemus">Azure data platform</a></li>
+                  <li><a class="tag tag--certification" href="career.html#cert-dp-300">Azure DB Administrator (DP-300)</a></li>
+                  <li><a class="tag tag--certification" href="career.html#cert-dp-700">Fabric Data Engineer (DP-700)</a></li>
+                  <li><a class="tag tag--taught" href="teaching.html#data-engineering-1-m2">Data Warehousing</a></li>
+                  <li><a class="tag tag--taught" href="teaching.html#data-engineering-1-m5">Analytics &amp; Reporting</a></li>
                 </ul>
               </div>
             </li>
             <li class="skill">
               <div class="skill__head">
-                <p class="skill__name">Programming &amp; scripting</p>
+                <h3 class="skill__name">Programming &amp; scripting</h3>
                 <p class="skill__standing">Production-proven</p>
               </div>
               <div class="skill__proof">
@@ -346,9 +276,9 @@
                   <li class="tag tag--stack">PHP</li>
                 </ul>
                 <ul class="tag-list" aria-label="Evidence">
-                  <li><a class="tag tag--production" href="career.html#experience">C++ filter, 100&times; speedup</a></li>
+                  <li><a class="tag tag--production" href="career.html#oem-speedup">C++ filter, 100&times; speedup</a></li>
                   <li><a class="tag tag--production" href="career.html#experience">PowerShell automation</a></li>
-                  <li><a class="tag tag--taught" href="workshops.html#workshops-delivered">Introduction to Python</a></li>
+                  <li><a class="tag tag--taught" href="workshops.html#ws-introduction-to-python">Introduction to Python</a></li>
                   <li><a class="tag tag--applied" href="projects.html#open-source">2 Kanboard plugins</a></li>
                   <li><a class="tag tag--applied" href="awards.html#competitions">8 contest results</a></li>
                 </ul>
@@ -356,7 +286,7 @@
             </li>
             <li class="skill">
               <div class="skill__head">
-                <p class="skill__name">Observability &amp; incident response</p>
+                <h3 class="skill__name">Observability &amp; incident response</h3>
                 <p class="skill__standing">Production-proven</p>
               </div>
               <div class="skill__proof">
@@ -366,16 +296,16 @@
                   <li class="tag tag--stack">log management</li>
                 </ul>
                 <ul class="tag-list" aria-label="Evidence">
-                  <li><a class="tag tag--production" href="career.html#experience">Datadog monitoring &amp; logging at JACQUEMUS</a></li>
-                  <li><a class="tag tag--certification" href="career.html#certifications">Datadog &times;3</a></li>
-                  <li><a class="tag tag--taught" href="teaching.html#courses-taught">Logging &amp; Monitoring module</a></li>
-                  <li><a class="tag tag--published" href="research.html#technical-articles">Datadog + Log4j2 write-up</a></li>
+                  <li><a class="tag tag--production" href="career.html#jq-observability">Datadog monitoring &amp; logging at JACQUEMUS</a></li>
+                  <li><a class="tag tag--certification" href="career.html#cert-datadog">Datadog &times;3</a></li>
+                  <li><a class="tag tag--taught" href="teaching.html#data-engineering-2-m4">Logging &amp; Monitoring module</a></li>
+                  <li><a class="tag tag--published" href="research.html#datadog-log4j2-mulesoft">Datadog + Log4j2 write-up</a></li>
                 </ul>
               </div>
             </li>
             <li class="skill">
               <div class="skill__head">
-                <p class="skill__name">Systems integration &amp; APIs</p>
+                <h3 class="skill__name">Systems integration &amp; APIs</h3>
                 <p class="skill__standing">Production-proven</p>
               </div>
               <div class="skill__proof">
@@ -386,16 +316,16 @@
                   <li class="tag tag--stack">SFTP</li>
                 </ul>
                 <ul class="tag-list" aria-label="Evidence">
-                  <li><a class="tag tag--production" href="career.html#experience">Fault-tolerant async integration</a></li>
-                  <li><a class="tag tag--production" href="career.html#experience">Enterprise systems at JACQUEMUS</a></li>
-                  <li><a class="tag tag--certification" href="career.html#certifications">MuleSoft Developer L1</a></li>
-                  <li><a class="tag tag--taught" href="teaching.html#courses-taught">Sync &amp; Async Data Flows</a></li>
+                  <li><a class="tag tag--production" href="career.html#olivesoft-dlq">Fault-tolerant async integration</a></li>
+                  <li><a class="tag tag--production" href="career.html#exp-jacquemus">Enterprise systems at JACQUEMUS</a></li>
+                  <li><a class="tag tag--certification" href="career.html#cert-mulesoft-dev-l1">MuleSoft Developer L1</a></li>
+                  <li><a class="tag tag--taught" href="teaching.html#data-engineering-2-m1">Sync &amp; Async Data Flows</a></li>
                 </ul>
               </div>
             </li>
             <li class="skill">
               <div class="skill__head">
-                <p class="skill__name">Cloud platform operations</p>
+                <h3 class="skill__name">Cloud platform operations</h3>
                 <p class="skill__standing">Production-proven</p>
               </div>
               <div class="skill__proof">
@@ -407,16 +337,16 @@
                   <li class="tag tag--stack">Microsoft Fabric</li>
                 </ul>
                 <ul class="tag-list" aria-label="Evidence">
-                  <li><a class="tag tag--production" href="career.html#experience">&euro;1,400/month saved</a></li>
-                  <li><a class="tag tag--production" href="career.html#experience">Azure Data Lake &amp; SQL integration</a></li>
-                  <li><a class="tag tag--certification" href="career.html#certifications">Azure DB Administrator (DP-300)</a></li>
-                  <li><a class="tag tag--certification" href="career.html#certifications">Fabric Data Engineer (DP-700)</a></li>
+                  <li><a class="tag tag--production" href="career.html#jq-finops">&euro;1,400/month saved</a></li>
+                  <li><a class="tag tag--production" href="career.html#exp-jacquemus">Azure Data Lake &amp; SQL integration</a></li>
+                  <li><a class="tag tag--certification" href="career.html#cert-dp-300">Azure DB Administrator (DP-300)</a></li>
+                  <li><a class="tag tag--certification" href="career.html#cert-dp-700">Fabric Data Engineer (DP-700)</a></li>
                 </ul>
               </div>
             </li>
             <li class="skill">
               <div class="skill__head">
-                <p class="skill__name">Machine learning &amp; computer vision</p>
+                <h3 class="skill__name">Machine learning &amp; computer vision</h3>
                 <p class="skill__standing">Production-proven</p>
               </div>
               <div class="skill__proof">
@@ -428,18 +358,18 @@
                   <li class="tag tag--stack">scikit-learn</li>
                 </ul>
                 <ul class="tag-list" aria-label="Evidence">
-                  <li><a class="tag tag--production" href="career.html#experience">Metal classifier at OEM</a></li>
-                  <li><a class="tag tag--taught" href="teaching.html#courses-taught">Machine Learning course</a></li>
-                  <li><a class="tag tag--published" href="research.html#journal-articles">Peer-reviewed, Elsevier</a></li>
-                  <li><a class="tag tag--published" href="research.html#technical-articles">YOLOv8 write-up, 3K views</a></li>
-                  <li><a class="tag tag--applied" href="projects.html#applied-ml">YOLOv8 meter detection</a></li>
-                  <li><a class="tag tag--applied" href="projects.html#applied-ml">Image colorisation</a></li>
+                  <li><a class="tag tag--production" href="career.html#exp-oem-engineering-sarl">Metal classifier at OEM</a></li>
+                  <li><a class="tag tag--taught" href="teaching.html#course-machine-learning">Machine Learning course</a></li>
+                  <li><a class="tag tag--published" href="research.html#pub-secure-and-transparent-energy-management-using-blockchain-and-machine-learning-anomaly-detection-a-case-study-of-the-ausgrid-dataset">Peer-reviewed, Elsevier</a></li>
+                  <li><a class="tag tag--published" href="research.html#yolov8-fastapi-gradio">YOLOv8 write-up, 3K views</a></li>
+                  <li><a class="tag tag--applied" href="projects.html#proj-custom-yolov8-model-for-number-detection-on-meters">YOLOv8 meter detection</a></li>
+                  <li><a class="tag tag--applied" href="projects.html#proj-image-colorization-with-deep-learning">Image colorization</a></li>
                 </ul>
               </div>
             </li>
             <li class="skill">
               <div class="skill__head">
-                <p class="skill__name">Delivery &amp; collaboration</p>
+                <h3 class="skill__name">Delivery &amp; collaboration</h3>
                 <p class="skill__standing">Run in production</p>
               </div>
               <div class="skill__proof">
@@ -452,14 +382,14 @@
                   <li class="tag tag--stack">Confluence</li>
                 </ul>
                 <ul class="tag-list" aria-label="Evidence">
-                  <li><a class="tag tag--production" href="career.html#experience">Architecture &amp; recovery docs</a></li>
+                  <li><a class="tag tag--production" href="career.html#summary">Architecture &amp; recovery docs</a></li>
                   <li><a class="tag tag--applied" href="projects.html#open-source">2 upstream pull requests</a></li>
                 </ul>
               </div>
             </li>
             <li class="skill">
               <div class="skill__head">
-                <p class="skill__name">Workflow orchestration</p>
+                <h3 class="skill__name">Workflow orchestration</h3>
                 <p class="skill__standing">Verified: not yet in production</p>
               </div>
               <div class="skill__proof">
@@ -467,15 +397,15 @@
                   <li class="tag tag--stack">Apache Airflow 3</li>
                 </ul>
                 <ul class="tag-list" aria-label="Evidence">
-                  <li><a class="tag tag--certification" href="career.html#certifications">Airflow 3 Fundamentals</a></li>
-                  <li><a class="tag tag--certification" href="career.html#certifications">DAG Authoring</a></li>
-                  <li><a class="tag tag--taught" href="teaching.html#courses-taught">Packaging &amp; Delivery module</a></li>
+                  <li><a class="tag tag--certification" href="career.html#cert-airflow-fundamentals">Airflow 3 Fundamentals</a></li>
+                  <li><a class="tag tag--certification" href="career.html#cert-airflow-dag-authoring">DAG Authoring</a></li>
+                  <li><a class="tag tag--taught" href="teaching.html#data-engineering-2-m5">Packaging &amp; Delivery module</a></li>
                 </ul>
               </div>
             </li>
             <li class="skill">
               <div class="skill__head">
-                <p class="skill__name">Distributed processing</p>
+                <h3 class="skill__name">Distributed processing</h3>
                 <p class="skill__standing">Verified: not yet in production</p>
               </div>
               <div class="skill__proof">
@@ -483,7 +413,7 @@
                   <li class="tag tag--stack">Apache Spark</li>
                 </ul>
                 <ul class="tag-list" aria-label="Evidence">
-                  <li><a class="tag tag--taught" href="teaching.html#courses-taught">Processing at Volume</a></li>
+                  <li><a class="tag tag--taught" href="teaching.html#data-engineering-2-m3">Processing at Volume</a></li>
                 </ul>
               </div>
             </li>

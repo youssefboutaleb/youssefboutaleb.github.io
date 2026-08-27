@@ -9,7 +9,8 @@
     "engagement": "Permanent",
     "mode": "Remote",
     "scale": {
-      "count": 150,
+      "count": 20,
+      "of": 150,
       "unit": "pipelines",
       "minimum": true
     },
@@ -19,8 +20,9 @@
       "Apache Spark",
       "Datadog"
     ],
-    "summary": "JACQUEMUS is a French luxury fashion house selling ready-to-wear, leather goods, and accessories through its own e-commerce, its boutiques, and wholesale partners, on order flows that peak at around 5,000 orders per hour at sale events and a data platform ingesting roughly 800,000 events and records a day across hundreds of gigabytes. I work in the Data Platform team, handling the internal order, customer, product, and pricing data through ETL and data modeling, integrating the external systems around it (exchange rates, transactional emailing, shipping, and refunds), and landing all of it in a medallion lakehouse architecture.",
-  "home_summary": "Order, customer, product and pricing data into a medallion lakehouse, on flows carrying roughly 800,000 events and records a day and order peaks near 5,000 an hour at sale events.",
+    "context": "JACQUEMUS is a French luxury fashion house selling ready-to-wear, leather goods, and accessories through its own e-commerce, its boutiques, and wholesale partners, on order flows that peak at around 5,000 orders per hour at sale events and a data platform ingesting roughly 800,000 events and records a day across hundreds of gigabytes.",
+    "summary": "I work in the Data Platform team, handling the internal order, customer, product, and pricing data through ETL and data modeling, integrating the external systems around it (exchange rates, transactional emailing, shipping, and refunds), and landing all of it in a medallion lakehouse architecture.",
+    "home_summary": "Order, customer, product and pricing data into a medallion lakehouse, on flows carrying roughly 800,000 events and records a day and order peaks near 5,000 an hour at sale events.",
     "groups": [
       {
         "title": "Data Engineering",
@@ -38,7 +40,7 @@
         "points": [
           {
             "id": "jq-finops",
-     "point": "Reduced <b>Azure infrastructure spend by &euro;1,400 per month</b> by automating development-environment shutdowns, matching compute size to each environment, and redesigning shared Spark pools.",
+            "point": "Reduced <b>Azure infrastructure spend by &euro;1,400 per month</b> by automating development-environment shutdowns, matching compute size to each environment, and redesigning shared Spark pools.",
             "impact": "A recurring monthly saving on the platform budget, taken with no SLA impact on the morning reporting pipelines."
           }
         ]
@@ -48,7 +50,7 @@
         "points": [
           {
             "id": "jq-observability",
-     "point": "Instrumented ingestion workloads with <b>Datadog APM and custom monitoring dashboards</b> across Azure Data Factory, Fabric, and Spark pools.",
+            "point": "Instrumented ingestion workloads with <b>Datadog APM and custom monitoring dashboards</b> across Azure Data Factory, Fabric, and Spark pools.",
             "impact": "Alert coverage across the <b>150+ job estate</b>, so a silent job or API failure surfaces before the business-hours reporting window rather than through a user report."
           }
         ]
@@ -71,7 +73,8 @@
       "RAML",
       "Diduenjoy"
     ],
-    "summary": "OLIVESOFT is a data and Salesforce consultancy headquartered in Paris, delivering data engineering, integration, and BI services to more than 20 clients, mostly in luxury retail, including the day-to-day run and monitoring of the platforms it builds. I worked on the Kenzo Paris / LVMH account, building the production customer-feedback data flow between the service desk and the feedback platform.",
+    "context": "OLIVESOFT is a data and Salesforce consultancy headquartered in Paris, delivering data engineering, integration, and BI services to more than 20 clients, mostly in luxury retail, including the day-to-day run and monitoring of the platforms it builds.",
+    "summary": "I worked on the Kenzo Paris / LVMH account, building the production customer-feedback data flow between the service desk and the feedback platform.",
     "points": [
       {
         "point": "Built an <b>asynchronous MuleSoft API-led integration</b> connecting Salesforce Service Cloud to Diduenjoy from scratch for the Kenzo Paris / LVMH account.",
@@ -79,7 +82,7 @@
       },
       {
         "id": "olivesoft-dlq",
-     "point": "Implemented <b>RAML REST contracts, automated retry policies, and dead-letter queues (DLQ)</b> to handle transient endpoint failures.",
+        "point": "Implemented <b>RAML REST contracts, automated retry policies, and dead-letter queues (DLQ)</b> to handle transient endpoint failures.",
         "impact": "Guaranteed zero feedback data loss during downstream outages and established reliable customer-satisfaction tracking for the account."
       }
     ]
@@ -104,7 +107,8 @@
       "Web3",
       "Ethereum"
     ],
-    "summary": "REGIM Lab (REsearch Groups in Intelligent Machines) is the applied-research laboratory of the National Engineering School of Sfax. I worked on a research prototype and case study on secure, transparent energy management using the public Ausgrid smart-meter dataset; it was not a production deployment.",
+    "context": "REGIM Lab (REsearch Groups in Intelligent Machines) is the applied-research laboratory of the National Engineering School of Sfax.",
+    "summary": "I worked on a research prototype and case study on secure, transparent energy management using the public Ausgrid smart-meter dataset; it was not a production deployment.",
     "points": [
       "Ingested <b>30-minute interval telemetry</b> across the 300-household Ausgrid smart-meter dataset into a monitoring web application and admin review dashboard.",
       "Developed a <b>regression-based anomaly-detection pipeline</b> to investigate noisy smart-meter readings, and stored cryptographic reading hashes through <b>Ethereum smart contracts</b> to create a tamper-evident audit trail."
@@ -118,7 +122,8 @@
     "location": "Sfax, Tunisia",
     "domain": "Time-Series Sensor Data (Industrial Sorting)",
     "mode": "On-site",
-    "summary": "OEM ENGINEERING is a Canadian industrial engineering company headquartered in Sherbrooke, Quebec, with its engineering site in Sfax, Tunisia, building high-speed material-sorting systems that identify metal alloys inline from visible near-infrared (VNIR) camera signals. I worked on the signal-processing and classification stack behind the sorting decision, across two roles.",
+    "context": "OEM ENGINEERING is a Canadian industrial engineering company headquartered in Sherbrooke, Quebec, with its engineering site in Sfax, Tunisia, building high-speed material-sorting systems that identify metal alloys inline from visible near-infrared (VNIR) camera signals.",
+    "summary": "I worked on the signal-processing and classification stack behind the sorting decision, across two roles.",
     "roles": [
       {
         "role": "Machine Learning &amp; Statistical Engineer",
@@ -168,7 +173,7 @@
           {
             "id": "oem-speedup",
             "point": "Delivered a <b>100&times; signal-preprocessing speedup</b> by replacing a C# Savitzky-Golay implementation with optimized C++ filtering using fixed in-memory parameters and GCC optimization, while retaining the same filter behavior for inline sorting.",
-          "impact": "Preprocessing stopped being the bottleneck, and this is the path that went inline the following autumn, where the filter has to keep pace with the camera rather than catch up behind it."
+            "impact": "Preprocessing stopped being the bottleneck, and this is the path that went inline the following autumn, where the filter has to keep pace with the camera rather than catch up behind it."
           }
         ]
       }

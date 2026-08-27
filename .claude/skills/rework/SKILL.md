@@ -233,6 +233,58 @@ Append here every pass. This is the part that makes the file worth keeping.
     the component choice cost one question and settled it before anything was
     built.
 
+13. **Read the model document before calling a claim unsupported.** An audit
+    reported Career's *"three years in"* as contradicted by the datelines
+    below it. `career.md` §4 already said the count is paid roles minus the two
+    internships, which is exactly what the records show. The finding cost a
+    question that did not need asking, and the fix was a comment pointing at
+    the rule rather than a change to the page. Lesson 11 said to check the
+    repository before quoting a document at the author; this is the same
+    lesson pointing the other way, and both directions cost a pass.
+14. **A fallback that is fine for a string can be a lie at page scale.** A
+    missing French string falls back to English and is reported, which is
+    right. Enough of them and the page is English while `<html lang="fr">`,
+    the `hreflang` and the language switch all still announce French. The
+    quantity changed what the mechanism *was*. When a graceful degradation is
+    introduced, ask what it looks like at 0%, not only at 90%.
+15. **Validate before you write, not after.** The translation threshold
+    deleted seven withheld pages in pass 2, then hit a stale-translation
+    failure and returned 1: a build that reported doing nothing had already
+    removed seven files. Every check that can fail the build has to run while
+    the tree is still untouched.
+16. **An id is an address, and not every address is a place worth listing.**
+    Adding anchors so Home's evidence chips could name one certificate instead
+    of the whole block immediately pushed eleven issuer names into Career's
+    rail. `data-toc-skip` separates the two jobs. A new anchor is a rail entry
+    by default, and usually should not be.
+17. **Removing state beats making state honest.** The rail's `<details>` was
+    forced open by CSS on desktop while the element stayed closed, so it
+    reported itself collapsed while painting its contents. The obvious fix was
+    to emit `open` and close it with CSS on small screens. The better one was
+    to notice the disclosure only existed because the tree went three levels
+    deep, cap the tree, and delete the control. Ask what the control is *for*
+    before fixing how it behaves.
+18. **Set the element default to what the component already renders.**
+    Retagging every section and record heading on the site could have been a
+    visual redesign by accident. Writing the new `h2/h3/h4` sizes and colours
+    to exactly what `.block__title` and `.entry__title` were already producing
+    meant the outline changed and the rendering did not, and no component rule
+    had to be touched. A component overriding its own element's default is the
+    warning sign that the tags are wrong: `.contact-section__title` hardcoded
+    `--text-xl` on an `h2` for exactly that reason.
+19. **A guard is fatal only when the data to satisfy it exists.** `check_reach`
+    fails the build over a missing `as_of` because the figures were read on
+    some date and the author knows it. The undated in-progress paper gets a
+    report instead, because a submission date is a fact only the author has,
+    and a guard that fails the build over data nobody can supply is a guard
+    the next person deletes.
+20. **Two passes of audit, five corrections to the audit.** Lesson 13 fired
+    again: the Awards summary's "broken parallelism" was a documented rule in
+    the renderer's own docstring, and the job-summary finding was answered in
+    `career.md` §5. Before reporting that a rule is missing, read the function
+    that implements it and the document that owns it. Findings that survive
+    that check are worth acting on; the rest cost a question each.
+
 ---
 
 ## Upgrading this file

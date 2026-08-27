@@ -14,10 +14,9 @@ one covers courses that run for a semester.
 
 ```
 Model:  teaching
-Order:  level → workload → scale
+Order:  level → scale
 
   level      which cohort it was taught to   "Master's Year 1", "Master's Year 2"
-  workload   how much teaching it was        "32 h · 20 lecture + 8 lab + 4 project"
   scale      how large the group was         "12 students", "16 students"
 ```
 
@@ -39,10 +38,17 @@ it, and define their own when they do not. Only `level` and `workload` are new.
 exists: teaching a Master's Year 2 cohort is a different claim from tutoring
 undergraduates, and everything after it is read in that light.
 
-**`workload` second.** It is the substance of the appointment: how much
-teaching this actually was, broken into the three things it consisted of. It
-sits directly under `level` because together they answer *what was taught, and
-how much of it*.
+**`workload` is not in this model any more, and the specs panel is why.**
+It rendered `32 h &middot; 20 lecture + 8 lab + 4 project` on every course
+record, and the panel at the top of the page already states `32 h per course`
+and breaks it into exactly those three components, because the figure is a
+constant of the appointment rather than a fact about any one course. One page
+was stating one fact four times: once as the panel's whole reason for
+existing, then again on each of three records.
+
+The panel owns it. A course that ever differs from the panel is the case that
+earns the chip back, and at that point the panel is the thing that has stopped
+being true.
 
 **`scale` last, and quiet.** A cohort size is context for the record rather
 than a claim of its own, which is why it takes the regular-weight grey and the

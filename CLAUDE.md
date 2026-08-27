@@ -329,7 +329,7 @@ merely *not done yet* versus what was *decided against*.
 | **M1b** | ~~Home rebuilt~~ **done** | Home became the page it claims to be: one rule (restate only by projection, citation or quotation), a *Currently* projection, Impact in Numbers quoting the bullets it cites, Volunteering moved to Career, Domains deleted, and a model document that did not exist before. [`home.md`](home.md). |
 | **M2** | **The Brief / Full depth dial** | Spec in §7. Build after M1, so there is something worth reading in Full. Two blocks on Home are already projections, which proves the mechanism but not the control. |
 | **M3** | ~~Mobility line~~ **done** | EU residence permit, open to EU relocation and remote. One string, `availability` in `src/site.json`, rendered in Home's hero and on Contact. |
-| **M4** | **French version** | **Mechanism landed, translation open.** One source, two renderings, as required: English records in `src/data/` are untouched and `src/i18n/fr.json` overlays strings onto them by record id. `/fr/` routes, `hreflang` pairs, a language switch, and per-locale ordinals, months, durations, thousands separators and tag vocabulary all work. Awards is translated end to end as the pilot. **The remaining ~5,000 words are author-led** and the build lists what is still missing on every run. Two things still open: the two `block__intro` lines on the French Awards page are literal drafts and need the author's voice, and there is no French CV, so every French page links `_cv_en.pdf`. |
+| **M4** | **French version** | **Mechanism landed, one page published, the rest withheld.** One source, two renderings, as required: English records in `src/data/` are untouched and `src/i18n/fr.json` overlays strings onto them by record id. `/fr/` routes, `hreflang` pairs, a language switch, a French CV, and per-locale ordinals, months, durations, thousands separators and tag vocabulary all work. **Awards is the only page French publishes, and that is now enforced rather than aspired to**: a page under `MIN_TRANSLATED` is built, measured and thrown away, and no `hreflang`, no language switch and no navigation link mentions it (§9). The other seven measure 0-6%. **The remaining ~5,000 words are author-led** and the build prints the worklist, page by page, on every run. Still open: the two `block__intro` lines on the French Awards page are literal drafts and need the author's voice. |
 | **M5** | **Refresh cloud & integration framing** | Author intends to revisit how this is presented so it sharpens rather than dilutes the Data Engineering claim (§3). |
 
 ## 9. Honesty, and why there is no second rulebook
@@ -357,6 +357,11 @@ What the build refuses to produce, today:
 | A page context entry with no label the parser could read | The rail printing a slug back at the reader as if it were a title |
 | A translated string whose English original has since changed | The French confidently saying last month's number while the English says this month's |
 | A translated fragment missing an anchor or a `{{ build.* }}` block | A citation pointing at nothing, or a block of records absent from one language only |
+| A page whose locale rendering is under `MIN_TRANSLATED` different from its source | A URL announcing `lang="fr"` over English prose, with an `hreflang` and a language switch pointing readers at it |
+| A `reach` figure with no `as_of` | A hand-copied view count shown undated, which starts lying the moment it drifts |
+| A heading level skipped on the way down | A document whose outline says something different from what the page looks like |
+| The same word spelled two ways across the built pages | `colorisation` in a page description and `Colorization` in the record it describes |
+| A CSS class no markup uses, unless declared in `STAGED_CSS` with a reason | A styled component nothing renders, cited in these documents as though it worked |
 
 Every one of those was added *after* the failure it prevents actually shipped.
 That is the pattern to follow: when a claim goes wrong, the fix is a guard in
@@ -409,6 +414,17 @@ Two things are unchanged by this:
   up. The rule exists because a stale translation is worse than a missing one.
   A missing string falls back to English and is reported; a stale one reads as
   fluent, confident and wrong, in a language nobody proofreads.
+
+  **The same rule holds at page scale, and it did not used to.** Enough missing
+  strings and the fallback stops being a fallback: seven pages shipped as
+  English prose under `<html lang="fr">`, each with an `hreflang` telling a
+  crawler it was the French rendering and a switch inviting a French recruiter
+  to click. The declaration was the lie, not the English. `MIN_TRANSLATED` in
+  `tools/build.py` is the guard: below it the page is withheld, its `hreflang`
+  is not emitted, the switch does not offer it, and the navigation links to the
+  English URL instead, which says `lang="en"` and is English. Raising the
+  French coverage is how a page comes back, and the build prints how far each
+  one has to go.
 - **Trivial, reversible mechanics** (a typo, a rebuild, a dead link, applying
   a decision already taken) do not need an option list. Do them and report the
   diff. Anything a reader would notice does.
@@ -455,12 +471,21 @@ Two things are unchanged by this:
 | [`README.md`](README.md) | How to add each kind of record |
 | [`skills.md`](skills.md) | The Skills & Evidence block: the proof model, and the rule it breaks |
 | [`home.md`](home.md) | Home: the page that restates, and the three mechanisms that keep it honest |
+| [`contact.md`](contact.md) | Contact: the page that asks, and the drift that came of having no owner |
 | `career.md` · `projects.md` · `research.md` · `writing.md` · `teaching.md` · `workshops.md` | The model for one page each |
 
-**Contact has no model document.** It is the newest page, it hand-writes contact
-details `src/site.json` already holds, and it carries eight component classes
-[`DESIGN.md`](DESIGN.md) has never heard of. Those three facts are one fact: the
-page with no owner is the page that drifted. Writing `contact.md` is the first
-step of fixing it, not the last.
+**Contact has a model document now, and its absence was the finding.** It was
+the newest page, it hand-wrote contact details `src/site.json` already held for
+the JSON-LD, and it carried eight component classes [`DESIGN.md`](DESIGN.md)
+had never heard of. Those three facts were one fact: the page with no owner is
+the page that drifted, and it had, in every direction at once. It listed
+`Location: Sfax, Tunisia` directly above the availability sentence, handing a
+recruiter the disqualifying half first; its labels disagreed with the data the
+structured markup was built from; and its two section classes were
+`section.block` and `h2.block__title` under private names, with a hardcoded
+`font-size` covering the difference. All of it is now shared components and
+generated rows. [`contact.md`](contact.md) owns the rest, including the one
+thing still open: `Opportunities & Services` offers consulting, which is in
+tension with §3 and is the author's call.
 
 If a rule is worth following twice, write it into the document that owns it.

@@ -159,9 +159,20 @@ number that says nothing starts lying the moment it drifts.
 The counts are read by hand from Medium's stats page, and nothing keeps them
 current. Two rules make that safe:
 
-1. **The figures and the date move together.** Update `reach` on every record
-   and the *as of* date in the block's `block__note` in one change, or update
-   neither. A fresh date over stale numbers is worse than the stale numbers
+1. **The figures and the date move together, and the build now enforces it.**
+   `reach` carries `as_of` alongside `views` and `reads`, in the same object,
+   so the figure and its date cannot be edited apart. `check_reach` in
+   `tools/build.py` refuses a `reach` without one.
+
+   **This rule was written here, styled as `.block__note`, and built by
+   neither, for as long as the page existed.** Two hand-copied figures shipped
+   undated, one of them quoted on Home as a skill citation, on a site whose
+   third reader checks. `.block__note` sat in `main.css` with no user and was
+   reported as dead CSS on every run while [`CLAUDE.md`](CLAUDE.md) §6 named it
+   as the site's provenance mechanism. A rule nothing enforces is a rule the
+   repository has only promised.
+
+   Update `reach` on every record in one change, or update neither. A fresh date over stale numbers is worse than the stale numbers
    alone, because it converts an ageing fact into a false claim. The date sits
    in the note and not in the intro because provenance is a footnote: the intro
    is one line and it is a pitch ([`DESIGN.md`](DESIGN.md) §11.1), while a

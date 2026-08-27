@@ -26,11 +26,20 @@ schema_type: ProfilePage
            joining two things as peers. CLAUDE.md section 3 makes cloud and
            integration a qualifier of the role and not a second one, and the
            h1 is where that is tested. The qualifier is the first clause of
-           the lede below, and rows 3 and 4 of Skills & Evidence. -->
+           the lede below, and rows 3 and 4 of Skills & Evidence.
+
+           A `hero-header__headline` sat between this and the lede, reading
+           "Data Engineer . University Instructor at IHEC . Competitive
+           Programmer . Open Source Contributor". The lede below re-verbed
+           three of those four, IHEC was named twice in consecutive lines, and
+           "Data Engineer" appeared three times in the first 40 words counting
+           the h1 and the brand bar. home.md's source table lists "Title,
+           lede" and never knew the headline existed: it is the element that
+           arrived without the document, and it was the one restating. The
+           lede survives because it carries Azure, which the headline did not,
+           and because home.md puts the cloud qualifier in its first clause.
+           Do not add a third line here. -->
       <h1 class="page-title">Data Engineer</h1>
-      <p class="hero-header__headline">
-        Data Engineer &middot; University Instructor at IHEC &middot; Competitive Programmer &middot; Open Source Contributor
-      </p>
       <p class="page-lede">
         Building enterprise Azure data platforms, lecturing computer science &amp; distributed systems at IHEC Sfax, and competing in national algorithmic contests.
       </p>
@@ -66,7 +75,7 @@ schema_type: ProfilePage
      a job change on its own. Never give this block content of its own; the
      one sentence is `home_summary`, on the record. See home.md. -->
 <section class="block" aria-labelledby="currently">
-  <h3 class="block__title" id="currently">Currently</h3>
+  <h2 class="block__title" id="currently">Currently</h2>
   <p class="block__intro">Running the data platform behind a luxury fashion house.</p>
   <ul class="entries">
 {{ build.current_role }}
@@ -86,7 +95,7 @@ schema_type: ProfilePage
      longest block on the page and it is aimed at the reader who has already
      decided to keep going. Records: src/data/impact.json. -->
 <section class="block" aria-labelledby="impact">
-  <h3 class="block__title" id="impact">Impact in Numbers</h3>
+  <h2 class="block__title" id="impact">Impact in Numbers</h2>
   <!-- INTERIM, awaiting the author's sentence. The line it replaced read
        "Five results, each one quoting the record that earned it.": a count
        typed in a fragment while the records are `home: true` flags in data,
@@ -105,7 +114,7 @@ schema_type: ProfilePage
      src/data/skills.json; the proof order and the derived standing come from
      PROOF and standing() in tools/build.py. Never hand-write entries here. -->
 <section class="block" aria-labelledby="skills">
-  <h3 class="block__title" id="skills">Skills &amp; Evidence</h3>
+  <h2 class="block__title" id="skills">Skills &amp; Evidence</h2>
   <p class="block__intro">What I can do, and what proves it.</p>
 {{ build.proof_key }}
   <ul class="skills">

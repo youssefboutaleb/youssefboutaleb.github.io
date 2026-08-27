@@ -22,7 +22,7 @@
   <link rel="alternate" hreflang="x-default" href="https://youssefboutaleb.github.io/awards.html">
   <link rel="icon" type="image/svg+xml" href="images/icons/icon.svg">
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Noto-Sans-regular/Noto-Sans-regular.woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=3a302cd2f43b">
+  <link rel="stylesheet" href="assets/css/main.css?v=e75008ddc307">
 
   <script>
     // Before first paint, or the pinned theme flashes the other one on every
@@ -96,10 +96,9 @@
 
     <div class="page-body">
       <aside class="sidebar-context">
-        <details class="book-toc">
-          <summary class="book-toc__header" id="page-context-label">Contents</summary>
-          <nav class="book-toc__nav" aria-labelledby="page-context-label">
-            <ul class="book-toc__list">
+        <nav class="book-toc" aria-labelledby="page-context-label">
+          <p class="book-toc__header" id="page-context-label">Contents</p>
+          <ul class="book-toc__list">
               <li class="book-toc__item">
                 <a class="book-toc__link" href="#competitions">Competitions</a>
                 <ul class="book-toc__sublist">
@@ -134,74 +133,41 @@
                 </li>
                 </ul>
               </li>
-            </ul>
-          </nav>
-        </details>
+          </ul>
+        </nav>
       </aside>
 
       <main id="main" class="content">
         <header class="page-header">
-          <h1 class="page-title">Honors &amp; Awards</h1>
-          <!-- The best result at each scope, derived from src/data/awards.json by
-               render_awards_summary and citing the records below by anchor. The card
-               is the certifications card: the same grid, the same .entry, the same
-               .points list. It holds no prose and no figure of its own, and nothing
-               in it is styled. awards.md, The scope summary. -->
+          <h1 class="page-title">Awards</h1>
           <ul class="entries entries--grid">
             <li class="entry">
-              <p class="entry__title">Regional</p>
-              <ul class="tag-list" aria-label="Achievement details">
-                <li class="tag tag--placement"><span class="medal medal--gold" aria-hidden="true"></span>1st Place</li>
-                <li class="tag tag--scale"><b>86</b> teams</li>
-              </ul>
-              <ul class="points">
-                <li><a href="#award-hello-world-v40">Hello World v4.0</a></li>
-              </ul>
+              <p class="result__figure"><b>1st Place</b> of <b>86</b> teams</p>
+              <p class="result__source">Regional &middot; <a href="#award-hello-world-v40">Hello World v4.0</a></p>
             </li>
             <li class="entry">
-              <p class="entry__title">National</p>
-              <ul class="tag-list" aria-label="Achievement details">
-                <li class="tag tag--distinction">2&times; National Finalist</li>
-              </ul>
-              <ul class="points">
-                <li><a href="#award-tcpc-23">TCPC 23</a></li>
-                <li><a href="#award-tcpc-22">TCPC 22</a></li>
-              </ul>
+              <p class="result__figure"><b>2&times; National Finalist</b></p>
+              <p class="result__source">National &middot; <a href="#award-tcpc-23">TCPC 23</a> &middot; <a href="#award-tcpc-22">TCPC 22</a></p>
             </li>
             <li class="entry">
-              <p class="entry__title">African</p>
-              <ul class="tag-list" aria-label="Achievement details">
-                <li class="tag tag--placement">Quarter-finalist</li>
-                <li class="tag tag--scale"><b>200</b> teams</li>
-              </ul>
-              <ul class="points">
-                <li><a href="#award-a2sv-africa-to-silicon-valley-genai-hackathon">A2SV GenAI Hackathon</a></li>
-              </ul>
+              <p class="result__figure"><b>Quarter-finalist</b> of <b>200</b> teams</p>
+              <p class="result__source">African &middot; <a href="#award-a2sv-africa-to-silicon-valley-genai-hackathon">A2SV GenAI Hackathon</a></p>
             </li>
             <li class="entry">
-              <p class="entry__title">International</p>
-              <ul class="tag-list" aria-label="Achievement details">
-                <li class="tag tag--placement">643rd Place</li>
-                <li class="tag tag--scale"><b>7,094</b> teams</li>
-              </ul>
-              <ul class="points">
-                <li><a href="#award-ieeextreme-programming-competition-170">IEEEXtreme 17.0</a></li>
-              </ul>
+              <p class="result__figure"><b>643rd Place</b> of <b>7,094</b> teams</p>
+              <p class="result__source">International &middot; <a href="#award-ieeextreme-programming-competition-170">IEEEXtreme 17.0</a></p>
             </li>
           </ul>
         </header>
 
         <section class="block" aria-labelledby="competitions">
-          <h3 class="block__title" id="competitions">Competitions</h3>
+          <h2 class="block__title" id="competitions">Competitions</h2>
           <p class="block__intro">
             Engineering background plus competitive programming edge.
           </p>
           <ul class="entries">
-            <!-- Records live in src/data/awards.json; tag order and colour come
-                 from MODELS in tools/build.py, and the two blocks are a filter on
-                 `type` in build(). Never hand-write entries here. -->
             <li class="entry" id="award-hello-world-v40">
-              <p class="entry__title"><a class="link-external" href="https://www.facebook.com/CSENISsbc" target="_blank" rel="noopener">Hello World v4.0</a></p>
+              <h3 class="entry__title"><a class="link-external" href="https://www.facebook.com/CSENISsbc" target="_blank" rel="noopener">Hello World v4.0</a></h3>
               <p class="entry__period"><span class="entry__location">Sfax, Tunisia</span> &middot; <time datetime="2024-05">May 2024</time></p>
               <ul class="tag-list" aria-label="Achievement details">
                 <li class="tag tag--placement"><span class="medal medal--gold" aria-hidden="true"></span>1st Place</li>
@@ -214,7 +180,7 @@
               </ul>
             </li>
             <li class="entry" id="award-hello-world-v30">
-              <p class="entry__title"><a class="link-external" href="https://www.facebook.com/CSENISsbc" target="_blank" rel="noopener">Hello World v3.0</a></p>
+              <h3 class="entry__title"><a class="link-external" href="https://www.facebook.com/CSENISsbc" target="_blank" rel="noopener">Hello World v3.0</a></h3>
               <p class="entry__period"><span class="entry__location">Sfax, Tunisia</span> &middot; <time datetime="2023-05">May 2023</time></p>
               <ul class="tag-list" aria-label="Achievement details">
                 <li class="tag tag--placement"><span class="medal medal--silver" aria-hidden="true"></span>2nd Place</li>
@@ -227,7 +193,7 @@
               </ul>
             </li>
             <li class="entry" id="award-tcpc-23" data-toc-title="TCPC 23">
-              <p class="entry__title"><a class="link-external" href="https://www.facebook.com/TunisiaCPC" target="_blank" rel="noopener">Tunisian Collegiate Programming Contest 2023</a></p>
+              <h3 class="entry__title"><a class="link-external" href="https://www.facebook.com/TunisiaCPC" target="_blank" rel="noopener">Tunisian Collegiate Programming Contest 2023</a></h3>
               <p class="entry__period"><span class="entry__location">Tunis, Tunisia</span> &middot; <time datetime="2023-10">Oct 2023</time></p>
               <ul class="tag-list" aria-label="Achievement details">
                 <li class="tag tag--placement">13th Place</li>
@@ -241,7 +207,7 @@
               </ul>
             </li>
             <li class="entry" id="award-ieeextreme-programming-competition-170" data-toc-title="IEEEXtreme 17.0">
-              <p class="entry__title"><a class="link-external" href="https://ieeextreme.org/" target="_blank" rel="noopener">IEEEXtreme Programming Competition 17.0</a></p>
+              <h3 class="entry__title"><a class="link-external" href="https://ieeextreme.org/" target="_blank" rel="noopener">IEEEXtreme Programming Competition 17.0</a></h3>
               <p class="entry__period"><span class="entry__location">Sfax, Tunisia</span> &middot; <time datetime="2023-10">Oct 2023</time></p>
               <ul class="tag-list" aria-label="Achievement details">
                 <li class="tag tag--placement">643rd Place</li>
@@ -254,7 +220,7 @@
               </ul>
             </li>
             <li class="entry" id="award-tcpc-22" data-toc-title="TCPC 22">
-              <p class="entry__title"><a class="link-external" href="https://www.facebook.com/TunisiaCPC" target="_blank" rel="noopener">Tunisian Collegiate Programming Contest 2022</a></p>
+              <h3 class="entry__title"><a class="link-external" href="https://www.facebook.com/TunisiaCPC" target="_blank" rel="noopener">Tunisian Collegiate Programming Contest 2022</a></h3>
               <p class="entry__period"><span class="entry__location">Tunis, Tunisia</span> &middot; <time datetime="2022-10">Oct 2022</time></p>
               <ul class="tag-list" aria-label="Achievement details">
                 <li class="tag tag--placement">21st Place</li>
@@ -268,7 +234,7 @@
               </ul>
             </li>
             <li class="entry" id="award-ieeextreme-programming-competition-160" data-toc-title="IEEEXtreme 16.0">
-              <p class="entry__title"><a class="link-external" href="https://ieeextreme.org/" target="_blank" rel="noopener">IEEEXtreme Programming Competition 16.0</a></p>
+              <h3 class="entry__title"><a class="link-external" href="https://ieeextreme.org/" target="_blank" rel="noopener">IEEEXtreme Programming Competition 16.0</a></h3>
               <p class="entry__period"><span class="entry__location">Sfax, Tunisia</span> &middot; <time datetime="2022-10">Oct 2022</time></p>
               <ul class="tag-list" aria-label="Achievement details">
                 <li class="tag tag--placement">1,432nd Place</li>
@@ -281,7 +247,7 @@
               </ul>
             </li>
             <li class="entry" id="award-hello-world-v20">
-              <p class="entry__title"><a class="link-external" href="https://www.facebook.com/CSENISsbc" target="_blank" rel="noopener">Hello World v2.0</a></p>
+              <h3 class="entry__title"><a class="link-external" href="https://www.facebook.com/CSENISsbc" target="_blank" rel="noopener">Hello World v2.0</a></h3>
               <p class="entry__period"><span class="entry__location">Sfax, Tunisia</span> &middot; <time datetime="2022-05">May 2022</time></p>
               <ul class="tag-list" aria-label="Achievement details">
                 <li class="tag tag--placement">7th Place</li>
@@ -297,13 +263,13 @@
         </section>
 
         <section class="block" aria-labelledby="hackathons">
-          <h3 class="block__title" id="hackathons">Hackathons</h3>
+          <h2 class="block__title" id="hackathons">Hackathons</h2>
           <p class="block__intro">
             Rapid prototyping, product design, and fast technical delivery.
           </p>
           <ul class="entries">
             <li class="entry" id="award-a2sv-africa-to-silicon-valley-genai-hackathon" data-toc-title="A2SV GenAI Hackathon">
-              <p class="entry__title"><a class="link-external" href="https://www.a2sv.org/" target="_blank" rel="noopener">A2SV (Africa to Silicon Valley) GenAI Hackathon</a></p>
+              <h3 class="entry__title"><a class="link-external" href="https://www.a2sv.org/" target="_blank" rel="noopener">A2SV (Africa to Silicon Valley) GenAI Hackathon</a></h3>
               <p class="entry__period"><span class="entry__location">Online</span> &middot; <time datetime="2023-08">Aug 2023</time></p>
               <ul class="tag-list" aria-label="Achievement details">
                 <li class="tag tag--placement">Quarter-finalist</li>

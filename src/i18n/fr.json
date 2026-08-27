@@ -68,7 +68,8 @@
     "tag.placement.Quarter-finalist": "Quart de finaliste",
     "page.awards.title": "Distinctions",
     "page.awards.description": "Résultats en programmation compétitive et en hackathon, dont une première place à Hello World v4.0 Sfax sur 86 équipes.",
-    "placement.pattern": "{ordinal} place"
+    "placement.pattern": "{ordinal} place",
+    "scale.of": "sur"
   },
   "records": {
     "award-hello-world-v40.points": [

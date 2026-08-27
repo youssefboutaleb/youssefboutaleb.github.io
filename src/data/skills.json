@@ -2,164 +2,336 @@
   {
     "name": "Data pipeline engineering",
     "thread": "trunk",
-    "tools": ["Talend", "MuleSoft", "Apache Airflow"],
+    "tools": [
+      "Talend",
+      "MuleSoft",
+      "Apache Airflow"
+    ],
     "evidence": {
       "production": [
-        { "text": "Azure Data Factory &amp; Fabric at JACQUEMUS", "href": "career.html#experience" },
-        { "text": "API-led integration at OLIVESOFT", "href": "career.html#experience" }
+        {
+          "text": "Azure Data Factory &amp; Fabric at JACQUEMUS",
+          "href": "career.html#exp-jacquemus"
+        },
+        {
+          "text": "API-led integration at OLIVESOFT",
+          "href": "career.html#exp-olivesoft"
+        }
       ],
       "certification": [
-        { "text": "Talend Data Integration", "href": "career.html#certifications" },
-        { "text": "MuleSoft Developer L1", "href": "career.html#certifications" },
-        { "text": "Astronomer &times;2", "href": "career.html#certifications" }
+        {
+          "text": "Talend Data Integration",
+          "href": "career.html#cert-talend-di"
+        },
+        {
+          "text": "MuleSoft Developer L1",
+          "href": "career.html#cert-mulesoft-dev-l1"
+        },
+        {
+          "text": "Astronomer &times;2",
+          "href": "career.html#cert-astronomer"
+        }
       ],
       "taught": [
-        { "text": "Data Engineering 1 &amp; 2", "href": "teaching.html#courses-taught" }
+        {
+          "text": "Data Engineering 1",
+          "href": "teaching.html#course-data-engineering-1"
+        },
+        {
+          "text": "Data Engineering 2",
+          "href": "teaching.html#course-data-engineering-2"
+        }
       ]
     }
   },
   {
     "name": "Observability &amp; incident response",
     "thread": "trunk",
-    "tools": ["Datadog", "APM &amp; distributed tracing", "log management"],
+    "tools": [
+      "Datadog",
+      "APM &amp; distributed tracing",
+      "log management"
+    ],
     "evidence": {
       "production": [
-        { "text": "Datadog monitoring &amp; logging at JACQUEMUS", "href": "career.html#experience" }
+        {
+          "text": "Datadog monitoring &amp; logging at JACQUEMUS",
+          "href": "career.html#jq-observability"
+        }
       ],
       "certification": [
-        { "text": "Datadog &times;3", "href": "career.html#certifications" }
+        {
+          "text": "Datadog &times;3",
+          "href": "career.html#cert-datadog"
+        }
       ],
       "taught": [
-        { "text": "Logging &amp; Monitoring module", "href": "teaching.html#courses-taught" }
+        {
+          "text": "Logging &amp; Monitoring module",
+          "href": "teaching.html#data-engineering-2-m4"
+        }
       ],
       "published": [
-        { "text": "Datadog + Log4j2 write-up", "href": "research.html#technical-articles" }
+        {
+          "text": "Datadog + Log4j2 write-up",
+          "href": "research.html#datadog-log4j2-mulesoft"
+        }
       ]
     }
   },
   {
     "name": "Systems integration &amp; APIs",
     "thread": "trunk",
-    "tools": ["MuleSoft API-led", "REST", "ActiveMQ", "SFTP"],
+    "tools": [
+      "MuleSoft API-led",
+      "REST",
+      "ActiveMQ",
+      "SFTP"
+    ],
     "evidence": {
       "production": [
-        { "text": "Fault-tolerant async integration", "href": "career.html#experience" },
-        { "text": "Enterprise systems at JACQUEMUS", "href": "career.html#experience" }
+        {
+          "text": "Fault-tolerant async integration",
+          "href": "career.html#olivesoft-dlq"
+        },
+        {
+          "text": "Enterprise systems at JACQUEMUS",
+          "href": "career.html#exp-jacquemus"
+        }
       ],
       "certification": [
-        { "text": "MuleSoft Developer L1", "href": "career.html#certifications" }
+        {
+          "text": "MuleSoft Developer L1",
+          "href": "career.html#cert-mulesoft-dev-l1"
+        }
       ],
       "taught": [
-        { "text": "Sync &amp; Async Data Flows", "href": "teaching.html#courses-taught" }
+        {
+          "text": "Sync &amp; Async Data Flows",
+          "href": "teaching.html#data-engineering-2-m1"
+        }
       ]
     }
   },
   {
     "name": "Cloud platform operations",
     "thread": "trunk",
-    "tools": ["Azure", "IAM", "Automation Accounts", "Application Gateway", "Microsoft Fabric"],
+    "tools": [
+      "Azure",
+      "IAM",
+      "Automation Accounts",
+      "Application Gateway",
+      "Microsoft Fabric"
+    ],
     "evidence": {
       "production": [
-        { "text": "&euro;1,400/month saved", "href": "career.html#experience" },
-        { "text": "Azure Data Lake &amp; SQL integration", "href": "career.html#experience" }
+        {
+          "text": "&euro;1,400/month saved",
+          "href": "career.html#jq-finops"
+        },
+        {
+          "text": "Azure Data Lake &amp; SQL integration",
+          "href": "career.html#exp-jacquemus"
+        }
       ],
       "certification": [
-        { "text": "Azure DB Administrator (DP-300)", "href": "career.html#certifications" },
-        { "text": "Fabric Data Engineer (DP-700)", "href": "career.html#certifications" }
+        {
+          "text": "Azure DB Administrator (DP-300)",
+          "href": "career.html#cert-dp-300"
+        },
+        {
+          "text": "Fabric Data Engineer (DP-700)",
+          "href": "career.html#cert-dp-700"
+        }
       ]
     }
   },
   {
     "name": "Data warehousing &amp; analytics",
     "thread": "trunk",
-    "tools": ["Azure SQL", "SQL Server", "PostgreSQL", "Microsoft Fabric"],
+    "tools": [
+      "Azure SQL",
+      "SQL Server",
+      "PostgreSQL",
+      "Microsoft Fabric"
+    ],
     "evidence": {
       "production": [
-        { "text": "Azure data platform", "href": "career.html#experience" }
+        {
+          "text": "Azure data platform",
+          "href": "career.html#exp-jacquemus"
+        }
       ],
       "certification": [
-        { "text": "Azure DB Administrator (DP-300)", "href": "career.html#certifications" },
-        { "text": "Fabric Data Engineer (DP-700)", "href": "career.html#certifications" }
+        {
+          "text": "Azure DB Administrator (DP-300)",
+          "href": "career.html#cert-dp-300"
+        },
+        {
+          "text": "Fabric Data Engineer (DP-700)",
+          "href": "career.html#cert-dp-700"
+        }
       ],
       "taught": [
-        { "text": "Data Warehousing", "href": "teaching.html#courses-taught" },
-        { "text": "Analytics &amp; Reporting", "href": "teaching.html#courses-taught" }
+        {
+          "text": "Data Warehousing",
+          "href": "teaching.html#data-engineering-1-m2"
+        },
+        {
+          "text": "Analytics &amp; Reporting",
+          "href": "teaching.html#data-engineering-1-m5"
+        }
       ]
     }
   },
   {
     "name": "Machine learning &amp; computer vision",
     "thread": "branch",
-    "tools": ["Python", "YOLOv8", "TensorFlow", "Keras", "scikit-learn"],
+    "tools": [
+      "Python",
+      "YOLOv8",
+      "TensorFlow",
+      "Keras",
+      "scikit-learn"
+    ],
     "evidence": {
       "production": [
-        { "text": "Metal classifier at OEM", "href": "career.html#experience" }
+        {
+          "text": "Metal classifier at OEM",
+          "href": "career.html#exp-oem-engineering-sarl"
+        }
       ],
       "taught": [
-        { "text": "Machine Learning course", "href": "teaching.html#courses-taught" }
+        {
+          "text": "Machine Learning course",
+          "href": "teaching.html#course-machine-learning"
+        }
       ],
       "published": [
-        { "text": "Peer-reviewed, Elsevier", "href": "research.html#journal-articles" },
-        { "text": "YOLOv8 write-up, 3K views", "href": "research.html#technical-articles" }
+        {
+          "text": "Peer-reviewed, Elsevier",
+          "href": "research.html#pub-secure-and-transparent-energy-management-using-blockchain-and-machine-learning-anomaly-detection-a-case-study-of-the-ausgrid-dataset"
+        },
+        {
+          "text": "YOLOv8 write-up, 3K views",
+          "href": "research.html#yolov8-fastapi-gradio"
+        }
       ],
       "applied": [
-        { "text": "YOLOv8 meter detection", "href": "projects.html#applied-ml" },
-        { "text": "Image colorisation", "href": "projects.html#applied-ml" }
+        {
+          "text": "YOLOv8 meter detection",
+          "href": "projects.html#proj-custom-yolov8-model-for-number-detection-on-meters"
+        },
+        {
+          "text": "Image colorization",
+          "href": "projects.html#proj-image-colorization-with-deep-learning"
+        }
       ]
     }
   },
   {
     "name": "Programming &amp; scripting",
     "thread": "trunk",
-    "tools": ["Python", "Java", "SQL", "PowerShell", "C++", "PHP"],
+    "tools": [
+      "Python",
+      "Java",
+      "SQL",
+      "PowerShell",
+      "C++",
+      "PHP"
+    ],
     "evidence": {
       "production": [
-        { "text": "C++ filter, 100&times; speedup", "href": "career.html#experience" },
-        { "text": "PowerShell automation", "href": "career.html#experience" }
+        {
+          "text": "C++ filter, 100&times; speedup",
+          "href": "career.html#oem-speedup"
+        },
+        {
+          "text": "PowerShell automation",
+          "href": "career.html#experience"
+        }
       ],
       "taught": [
-        { "text": "Introduction to Python", "href": "workshops.html#workshops-delivered" }
+        {
+          "text": "Introduction to Python",
+          "href": "workshops.html#ws-introduction-to-python"
+        }
       ],
       "applied": [
-        { "text": "2 Kanboard plugins", "href": "projects.html#open-source" },
-        { "text": "8 contest results", "href": "awards.html#competitions" }
+        {
+          "text": "2 Kanboard plugins",
+          "href": "projects.html#open-source"
+        },
+        {
+          "text": "8 contest results",
+          "href": "awards.html#competitions"
+        }
       ]
     }
   },
   {
     "name": "Delivery &amp; collaboration",
     "thread": "trunk",
-    "tools": ["Git", "GitHub Actions", "Postman", "Agile/Scrum", "Jira", "Confluence"],
+    "tools": [
+      "Git",
+      "GitHub Actions",
+      "Postman",
+      "Agile/Scrum",
+      "Jira",
+      "Confluence"
+    ],
     "evidence": {
       "production": [
-        { "text": "Architecture &amp; recovery docs", "href": "career.html#experience" }
+        {
+          "text": "Architecture &amp; recovery docs",
+          "href": "career.html#summary"
+        }
       ],
       "applied": [
-        { "text": "2 upstream pull requests", "href": "projects.html#open-source" }
+        {
+          "text": "2 upstream pull requests",
+          "href": "projects.html#open-source"
+        }
       ]
     }
   },
   {
     "name": "Workflow orchestration",
     "thread": "trunk",
-    "tools": ["Apache Airflow 3"],
+    "tools": [
+      "Apache Airflow 3"
+    ],
     "evidence": {
       "certification": [
-        { "text": "Airflow 3 Fundamentals", "href": "career.html#certifications" },
-        { "text": "DAG Authoring", "href": "career.html#certifications" }
+        {
+          "text": "Airflow 3 Fundamentals",
+          "href": "career.html#cert-airflow-fundamentals"
+        },
+        {
+          "text": "DAG Authoring",
+          "href": "career.html#cert-airflow-dag-authoring"
+        }
       ],
       "taught": [
-        { "text": "Packaging &amp; Delivery module", "href": "teaching.html#courses-taught" }
+        {
+          "text": "Packaging &amp; Delivery module",
+          "href": "teaching.html#data-engineering-2-m5"
+        }
       ]
     }
   },
   {
     "name": "Distributed processing",
     "thread": "trunk",
-    "tools": ["Apache Spark"],
+    "tools": [
+      "Apache Spark"
+    ],
     "evidence": {
       "taught": [
-        { "text": "Processing at Volume", "href": "teaching.html#courses-taught" }
+        {
+          "text": "Processing at Volume",
+          "href": "teaching.html#data-engineering-2-m3"
+        }
       ]
     }
   }

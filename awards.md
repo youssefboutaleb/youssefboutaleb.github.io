@@ -178,10 +178,10 @@ for the site-wide intro rule; see below and [`DESIGN.md`](DESIGN.md) §11.1.
 
 The page opens on a card per scope, on the grid that carries Career's
 certifications ([`DESIGN.md`](DESIGN.md) §9.4), and it is **derived, never
-written**. Each card is a scope, the result as that record's own tag chips,
-and the record itself as a `.points` link into the page below.
-`render_awards_summary`
-takes the best record in each scope and applies one rule:
+written**. Each card leads with the result, and carries the scope and the
+record that earned it on a quiet provenance line beneath.
+`render_awards_summary` takes the best record in each scope and applies one
+rule:
 
 | The best record | The row says |
 |---|---|
@@ -194,6 +194,28 @@ records the card lists. Every string comes out of `meta_label`, the function
 that renders the tags below, so a card cannot come to disagree with the entry
 it links to, and it translates with the tag vocabulary rather than with chrome
 strings of its own.
+
+**The card used to be a certifications card and it read as the page saying
+everything twice.** A scope in the title slot, the winning record's own tag
+chips beneath it, and a `.points` list of the records. So the Regional card
+printed a gold disc, `1st Place` and `86 teams`, and the record 300px below
+printed a gold disc, `1st Place`, `Competitive Programming`, `Regional` and
+`86 teams`: three of the card's four facts, in the same chips, in the same
+colours, inside one screen. **A projection styled identically to its source
+does not read as a summary.**
+
+The fix is the one [`DESIGN.md`](DESIGN.md) §9.3 made for Impact in Numbers,
+for the same reason: *put the figure in the slot the title had.* The scope was
+never the interesting half of a scope card, because a reader looking at four
+cards can see they are scopes; the result is. So `.result__figure` carries the
+result at title weight, `.result__source` carries the scope and its records as
+provenance, and the chips are gone. Those two classes are borrowed rather than
+reinvented: they mean *the figure* and *where this came from*, which is what
+these two lines are, and only `.result`'s two-column grid belongs to Home.
+
+**The medal disc is deliberately absent here** and stays on the record. Rule 4
+keeps it because it is recognised before the label is read, which is worth a
+disc once and is a double-take twice.
 
 Three consequences, all of them rule 5 and rule 7 doing their job:
 

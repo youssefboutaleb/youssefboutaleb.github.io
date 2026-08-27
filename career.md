@@ -153,12 +153,21 @@ true` renders `~2,000 frames/second` (about this many). A record carrying
 neither prints the bare figure. Rendering a floor as an estimate, or the
 reverse, misstates a number the bullets below state exactly.
 
-`scale` may repeat a figure that also appears in a bullet, and the JACQUEMUS
-record does: the tag says `150+ pipelines` and the first bullet says *20+ of a
-150+ pipeline estate*. That is not the restatement rule 2 of §6 forbids. The
-tag states the size of the platform, which is context; the bullet states the
-share of it that is this author's, which is the claim. Dropping either one
-leaves a reader with the wrong picture, in opposite directions.
+`scale` may carry a scope and the system it sits inside, and the JACQUEMUS
+record does: `"count": 20, "of": 150` renders `20+ of 150+ pipelines`, and the
+first bullet says *20+ of a 150+ pipeline estate*. That is not the restatement
+rule 2 of §6 forbids. The figure states both the size of the platform, which
+is context, and the share of it that is this author's, which is the claim.
+Dropping either leaves a reader with the wrong picture, in opposite
+directions.
+
+**The tag used to say `150+ pipelines` alone, and the bullet was the only
+correction.** A reader who scans chips and stops, which is the first reader in
+[`CLAUDE.md`](CLAUDE.md) §2, took the estate for the scope and was over by a
+factor of seven before the bullet had a chance to say otherwise. `of` exists so
+the chip carries its own qualifier instead of depending on the line below it to
+supply one. A `scale` with a scope inside a larger system states both or it
+overstates.
 
 ### Vocabulary
 
@@ -595,9 +604,21 @@ Education stores plain integer years and sorts the same way.
 
 ## 5. The company summary
 
-Every job record carries a `summary`, and it is **two sentences with two
-different jobs**. The bullets below it report what the work achieved; the
-summary answers the question no bullet can: *what is this place, and what did I
+Every job record carries **two fields, because it was two sentences doing two
+different jobs in one paragraph**. `context` is what this place is; `summary`
+is what was owned inside it. The bullets below them report what the work
+achieved.
+
+**They were one field and the company half always came first, at 44 to 61
+words.** So the highest-value scan position on the site's most important page,
+directly under the role title, held a description of an employer the reader can
+look up, three times over, and a recruiter scanning for *what did you do* had
+to read past it on every record. Splitting the field lets typography sort them
+rather than the reader: `.entry__context` is muted and small, the treatment
+this site gives furniture, and `.entry__summary` stays body copy. The order is
+deliberately unchanged, so a reader who wants the company still meets it first.
+
+The two answer the question no bullet can: *what is this place, and what did I
 own inside it?*
 
 **It sits beneath the tag list, not above it**, which is the order every record
