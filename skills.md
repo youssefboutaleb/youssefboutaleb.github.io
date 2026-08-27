@@ -332,6 +332,19 @@ not because anyone re-ranked it.
    `href` needs relaxing, it is a claim with no evidence, and the answer is a
    record, a correction, or a deletion.
 
+   **A heading that is not a record is the harder version of this, because it
+   passes the build.** *Architecture & recovery docs* pointed at
+   `career.html#summary` for as long as the block existed. That anchor
+   resolves, so `check.py` was satisfied, but Career's Summary is the author's
+   own doctrine paragraph, not a dated record: the chip was rendering green
+   for *run in production* on the strength of a sentence saying that written
+   architecture documentation is part of the deliverable. Evidence that
+   restates the claim is not evidence. It resolved the way this rule says it
+   should, with a record: `jq-docs` in `experience.json` now names the
+   runbooks, the recovery procedures and the estate they cover, and the chip
+   cites that. **Every anchor an evidence chip names should be a record or a
+   declared aggregate, and a page's prose is neither.**
+
    *PowerShell automation* was the example, and how it resolved is worth
    keeping. It rendered green for production while no bullet in
    `experience.json` mentioned PowerShell, so it looked like an overclaim. It

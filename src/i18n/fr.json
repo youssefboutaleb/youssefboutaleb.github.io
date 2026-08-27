@@ -91,6 +91,7 @@
     "proof.Taught in English": "Enseigné en anglais",
     "proof.Published in English": "Publié en anglais",
     "research.as_of": "à jour en août 2026",
+    "research.submitted_to": "Soumis à",
     "writing.reach_note": "Chiffres d'audience relevés sur Medium, {when}.",
     "unit.hours_short": "h",
     "unit.pipelines": "pipelines",
@@ -259,6 +260,11 @@
             "id": "jq-observability",
             "point": "Instrumentation des charges d'ingestion avec <b>Datadog APM et des tableaux de bord de supervision sur mesure</b>, sur Azure Data Factory, Fabric et les pools Spark.",
             "impact": "Une couverture d'alerting sur l'ensemble du <b>parc de 150+ jobs</b> : une défaillance silencieuse d'un job ou d'une API remonte avant la fenêtre de reporting ouvrée, plutôt que par un signalement utilisateur."
+          },
+          {
+            "id": "jq-docs",
+            "point": "Rédaction des runbooks d'architecture de la plateforme, des procédures de reprise après sinistre et du playbook d'exploitation, pour le <b>parc de 150+ pipelines</b> et le parcours de commande retail.",
+            "impact": "L'équipe data et les ingénieurs d'astreinte reprennent une exécution en échec depuis le playbook plutôt qu'en escaladant vers la personne qui a construit le pipeline, ce qui raccourcit le temps de rétablissement pendant un incident."
           }
         ]
       }

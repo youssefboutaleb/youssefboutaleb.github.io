@@ -56,11 +56,15 @@ position, exactly as `host` does on Workshops and `scale` on Awards.
 | `authorship` | Derived, never written. See below. |
 | `publisher` | The publishing house, not the platform: `Elsevier`, not `ScienceDirect` |
 
-`Under Review` is declared but currently unused. It exists because
-`In Progress` covers two genuinely different states (a manuscript still being
-written and one sitting with reviewers) and the next record should not have to
-invent a word for the distinction under time pressure. Where the stage is
-known, prefer the precise value.
+`In Progress` covers a manuscript still being written; `Under Review` covers
+one sitting with reviewers. Where the stage is known, prefer the precise value.
+
+**`status` also decides the verb in the citation line.** `PENDING_STATUS` in
+[`tools/build.py`](tools/build.py) lists the two values above, and a record
+carrying either prints its `venue` as *Submitted to* rather than in the bare
+citation slot. Derived, never typed, for the same reason `authorship` is: a
+second field saying *this one is only a target* is a field that can disagree
+with the status chip 40px below it.
 
 ### `authorship` is derived, not typed
 
@@ -138,6 +142,16 @@ the title clickable.
   fact carried by one part of the entry is not restated by another. This is why
   the model asks `publisher` rather than `venue`: *Elsevier* is a fact the
   citation does not give.
+
+  **That reasoning holds only for work that is out, and for a while it was
+  applied to work that was not.** The under-review paper printed
+  `Authors &middot; <i>Computers & Industrial Engineering</i>`, which is the
+  same slot, the same italics and the same journal as the published paper
+  above it, and by academic convention that line means *published in*. The
+  `Under Review` chip did not undo it: a reader who scans citation lines never
+  reaches the chip. The journal still earns its place, because the target says
+  something real about the work, so the fix was the verb rather than the
+  deletion. See `status` above.
 - **The type.** *Journal Article* is what the block heading says. When a
   conference paper is added it takes a second `.block` titled *Conference
   Papers*, exactly as Awards splits into *Competitions* and *Hackathons*: a
@@ -185,7 +199,9 @@ abstract buries in its fourth sentence.
    `year` yet sorts last. Give it a `title`, `authors`, `venue`, `status`,
    `publisher`, a `summary`, and a `year` and `doi` once it is out.
 2. Use a value from the vocabulary table above, or add the new value to that
-   table in the same change.
+   table in the same change. A new value that means *not out yet* goes in
+   `PENDING_STATUS` too, or the record will print its target journal as though
+   the journal had accepted it.
 3. `python3 tools/build.py` then `python3 tools/check.py`. Never edit the root
    `research.html`; it is build output.
 

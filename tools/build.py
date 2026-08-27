@@ -648,6 +648,13 @@ MODELS = {
     "education": ("programme", "focus", "accreditation"),
 }
 
+# The `status` values that mean the work is not out yet. Read by the research
+# renderer, which prints a target journal as *submitted to* rather than in the
+# bare citation slot that means *published in*. Kept beside MODELS because it
+# is a fact about the `status` vocabulary declared there, and research.md
+# section "Vocabulary" is the other half of it.
+PENDING_STATUS = ("Under Review", "In Progress")
+
 # Skills are the one block whose tags are *citations* rather than dimensions,
 # so their model is declared apart from MODELS and read only by render_skill.
 # Order runs strongest proof first and never varies, which is what lets the
@@ -1357,7 +1364,20 @@ def render_publication(record: dict, site: dict = None) -> str:
 
     citation = render_authors(record["authors"])
     if t(record, "venue"):
-        citation += f' &middot; <i>{t(record, "venue")}</i>'
+        # The citation line is where a reader looks for *where this came out*,
+        # so a bare "Authors &middot; <i>Journal</i>" asserts publication by
+        # convention alone. On an unpublished record that is the same slot,
+        # the same italics and the same journal as the published paper above
+        # it, with only a chip 40px below to say otherwise. The journal is
+        # still worth carrying (the target says something about the work), so
+        # the fix is the verb, not the deletion: submitted, not published.
+        # Derived from `status` rather than typed beside it, for the reason
+        # `authorship` is (research.md): two fields that can disagree will.
+        if record.get("status") in PENDING_STATUS:
+            lead = tr("research.submitted_to", "Submitted to")
+            citation += f' &middot; {lead} <i>{t(record, "venue")}</i>'
+        else:
+            citation += f' &middot; <i>{t(record, "venue")}</i>'
     parts.append(f'<p class="entry__meta">{citation}</p>')
 
     position = author_position(record)
