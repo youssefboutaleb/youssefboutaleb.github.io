@@ -29,6 +29,96 @@ tools/
 Deployment stays build-free: the generated `*.html` files are committed and
 GitHub Pages serves them as-is. `.nojekyll` disables Jekyll processing.
 
+**There is a little JavaScript, and it is all in `src/layout.html`.** Two short
+inline blocks run the theme switch: one in the head that reads the stored
+preference before first paint, and one at the end of the body that records a
+click. Nothing else on the site scripts anything, no file is fetched, and with
+scripting off the switch is not rendered and the page still follows the
+reader's system scheme. Keep it that way: `DESIGN.md` §2 and `CLAUDE.md` §7
+carry why a control exists here at all.
+
+**Two things on every page are indexes of the rest, and neither is written by
+hand.** The page context rail in the left margin is built by parsing each page
+after it renders, so a record added to `src/data/` gains a rail entry with no
+second edit. Home's *Currently* and *Impact in Numbers* blocks are projections of
+records held elsewhere in the same way. If you find yourself typing a heading
+into the rail, or a sentence into Home that also exists on Career, stop: the
+site has a mechanism for that, and `home.md` explains it.
+
+## Translations
+
+**English is the source. A translation is an overlay, never a second copy.**
+`src/data/*.json` holds the records in English and is not touched by
+translation work; `src/i18n/<code>.json` maps strings onto them.
+
+```
+src/i18n/
+  fr.json              chrome, tag vocabulary, and record overlays
+  fr/pages/*.html      translated page fragments (optional, per page)
+```
+
+A locale file has five parts:
+
+| Key | Holds |
+|---|---|
+| `lang`, `og_locale`, `label` | what goes in `<html lang>`, `og:locale`, and the language switch |
+| `site` | overrides for `src/site.json`: role, description, last_updated |
+| `strings` | chrome, navigation, months, units, tag vocabulary, page titles |
+| `records` | `"<record id>.<field>": "..."`, the record prose |
+| `keep`, `ordinal`, `group` | what stays in English, how ordinals are formed, the thousands separator |
+
+**Record ids are the addresses, and they never change.** `award-tcpc-23` is
+built from the English title by `with_ids`, and `impact.json`, `skills.json`,
+the page context rail and every overlay key all address records by it.
+Translating an id would break all four at once and silently.
+
+**A missing string falls back to English**, and every build prints how many are
+still missing and which. That leniency is the point: a half-translated page is
+readable and an empty one is not. Add `"keep": ["*.title", "*.company"]` for
+strings that are deliberately staying English, so the report stays worth
+reading.
+
+**Page prose is a whole fragment, not keyed strings.** A heading and a
+`block__intro` are sentences with markup threaded through them. Drop a
+translated copy at `src/i18n/fr/pages/awards.html` and it is used instead of
+`src/pages/awards.html`. **The build fails** if it does not carry the same
+anchors and the same `{{ build.* }}` blocks, because a dropped anchor breaks a
+citation and a dropped block silently deletes every record under it.
+
+**Anything generated is generated per language.** Ordinals (`1st Place` /
+`1re place`), months, durations (`2 years 3 months` / `2 ans 3 mois`),
+thousands separators (`7,094` / `7 094`) and the metadata tags all come from
+the locale, never from a stored string. `1re` and `643e` follow one rule in
+`ordinal`, so no locale enumerates placements.
+
+### The two languages move together
+
+**A translated string whose English original later changes fails the build.**
+`src/i18n/<code>.lock.json` records the English each translation was made from;
+`build.py` compares and refuses when they have diverged. So the workflow for
+editing anything already translated is:
+
+```bash
+# 1. edit the English in src/data/ or src/pages/
+python3 tools/build.py            # fails, naming every key that drifted
+# 2. update the French in src/i18n/fr.json or src/i18n/fr/pages/
+python3 tools/build.py --sync     # re-stamp: the translation has caught up
+```
+
+The lock is committed. Do not hand-edit it, and do not reach for `--sync` to
+make an error go away: it asserts that you have updated the translation, and
+using it without doing so is how the site ends up saying two different numbers
+in two languages.
+
+**Missing and stale are deliberately different.** A missing string falls back
+to English and is counted on every build. A stale one is fatal, because it
+reads as fluent, confident and wrong, in a language nobody proofreads.
+
+To add a language: write `src/i18n/<code>.json` with at least `lang`,
+`og_locale` and `label`, then rebuild. It appears at `/<code>/`, gains
+`hreflang` pairs and a language switch entry, and falls back to English until
+you fill it in.
+
 ## Working on the site
 
 Edit content in `src/pages/`, shared chrome in `src/layout.html`, and identity
@@ -70,10 +160,30 @@ rebuild: the page never lists entries by hand:
 `placement` is a plain integer where there is a rank (`1` renders as `1st Place`
 with a gold medal; `2` silver, `3` bronze) or a string otherwise (`"Finalist"`).
 `venue`, `placement`, `scale` and `points` are all optional: a field with no
-data is left out rather than filled in. The four metadata tags always render in
+data is left out rather than filled in.
+
+**`short` is optional too, and every record type accepts it.** It is the label
+this record shows in the page context rail, for a title too long to sit in a
+240px track: `"IEEEXtreme Programming Competition 17.0"` carries
+`"short": "IEEEXtreme 17.0"`. Leave it out and the rail uses the record's own
+heading, which is right nearly always. It exists as data because the rail's
+parser used to hold the abbreviations itself, as literal string replacements
+naming two specific awards, so renaming either one here silently stopped
+shortening it. The four metadata tags always render in
 the order `placement → type → scope → scale`, defined once as
 `MODELS["awards"]` in `tools/build.py`; see [DESIGN.md §7](DESIGN.md) for the
 colour rules.
+
+**The cards at the top of the page follow on their own.** They show the best
+result in each scope, derived from these same fields by
+`render_awards_summary`, so adding a record that beats the current best in its
+scope moves its card with it and adding one that does not leaves it alone.
+There is nothing to edit by hand, and a scope no record reaches renders no
+card. A new `scope` value has to be added to `SCOPE_ORDER` in `tools/build.py`
+to appear at all, which is deliberate: the reading order is a decision, not a
+sort. The rule that picks each card's wording is in
+[awards.md](awards.md#the-scope-summary); the grid itself is
+[DESIGN.md §9.4](DESIGN.md).
 
 ### Adding a workshop
 
@@ -267,9 +377,9 @@ here and rendered once on Research.
 }
 ```
 
-**A bullet gains an `id` only when Home's Selected Impact cites it.** The id
+**A bullet gains an `id` only when Home's Impact in Numbers cites it.** The id
 becomes the anchor the citation lands on, and `check.py` validates it. Four
-bullets carry one today. See *Adding a Selected Impact line* below.
+bullets carry one today. See *Adding a Impact in Numbers line* below.
 
 **`home_summary` exists for the newest record only, and only Home reads it.**
 Home's *Currently* block is a projection of `experience[0]` after
@@ -395,6 +505,13 @@ needs, and that is already the group heading with the issuer's brand mark on
 it: a tag would restate the heading on every row. `icon` is a bare filename;
 the renderer builds `images/icons/<icon>`.
 
+**Check a new logo's fills before you add it.** If the SVG is a single-colour
+black mark, or a coloured mark carrying black ink, add it to `ICON_TREATMENT`
+in [`tools/build.py`](tools/build.py) as `mono` or `plate`. Everything else
+needs no entry. Nothing fails the build if you skip this: the logo simply
+disappears against the dark rendering's ground, which nobody reading in light
+mode will ever see. `DESIGN.md` §6 has the reasoning.
+
 **A new certification also updates Home**, with no second edit. The
 `Certified` row of Home's fact strip is `render_credential_row`, generated
 from this same file: one link per issuer, in the order the file writes them,
@@ -463,7 +580,7 @@ certification is the only way to move a row up. Full rationale, including why
 this is the one model whose categories may repeat and how `thread` stays out of
 self-assessment, in [skills.md](skills.md).
 
-### Adding a Selected Impact line
+### Adding a Impact in Numbers line
 
 `src/data/impact.json`. This is the only block on the site that restates facts
 held on other pages, so it is the only one that can contradict them. **It no
@@ -557,10 +674,30 @@ printing numbers that were already a tag and a bullet on the screen below.
 
 ### Adding a volunteering record
 
-`src/data/volunteering.json`, with `organisation`, `branch`, `period` and
-`summary`. No metadata model (there is nothing a reader needs that the four
-lines do not say) but it is an `.entry`, and every `.entry` on the site comes
-from data. One hand-written record is how the second one gets hand-written too.
+`src/data/volunteering.json`, with `organisation`, `initiative` and `points`,
+plus a date: `year` for a single edition, or `start` and `end` for a sustained
+engagement, which derive the range and the duration like every other dated
+record. `branch` and `url` are optional; only add a link you have actually
+opened. A record with no date renders no dateline rather than an empty one.
+
+**One record per edition.** Work that ran in two years is two records, the way
+Awards holds TCPC 22 and TCPC 23. The id is built from `organisation` **and**
+`year` together, because the organisation repeats and the id must not.
+
+`initiative` is the named programme the work happened under, *Orientini* or
+*COVID-19 response*. It renders on the dateline beside the year. It is not the
+education model's `programme`, which means something else entirely.
+
+**No metadata model, and that is a decision with a condition on it.** A chip
+row over crisis relief reads as credential-farming, which is the one register
+this block cannot survive. [career.md](career.md) §8 carries the argument and
+the condition for reopening it: a second record, so there is something to
+compare. Until then, do not tag the first one.
+
+It is an `.entry` like everything else, so it is rendered from data and it
+carries an id. The id is not decoration: without one a record is absent from
+the page context rail, cannot be cited, and **cannot be translated**, because
+the overlay addresses records by id.
 
 It renders as the **last block on Career**, not on Home. It closed the front
 page for a while, which put the least Data Engineering thing on the site in the

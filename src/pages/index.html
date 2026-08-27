@@ -19,7 +19,7 @@ schema_type: ProfilePage
      patching it. home-opening-options.md carries the full finding. -->
 <header class="page-header hero-header">
   <div class="hero-header__content">
-    <img class="hero-header__portrait" src="{{ site.portrait }}" alt="{{ site.portrait_alt }}" width="180" height="220">
+    <img class="hero-header__portrait" src="{{ page.root }}{{ site.portrait }}" alt="{{ site.portrait_alt }}" width="180" height="220">
     <div class="hero-header__bio">
       <!-- One word, deliberately. The h1 read "Data Engineer | Cloud &
            Integration": a pipe, which is not a separator this repository owns,
@@ -28,10 +28,11 @@ schema_type: ProfilePage
            h1 is where that is tested. The qualifier is the first clause of
            the lede below, and rows 3 and 4 of Skills & Evidence. -->
       <h1 class="page-title">Data Engineer</h1>
+      <p class="hero-header__headline">
+        Data Engineer &middot; University Instructor at IHEC &middot; Competitive Programmer &middot; Open Source Contributor
+      </p>
       <p class="page-lede">
-        I build and operate enterprise-scale data platforms on <b>Microsoft Azure</b>:
-        ETL/ELT pipelines, API-led integrations between business-critical systems, and the
-        observability that keeps them dependable in production.
+        Building enterprise Azure data platforms, lecturing computer science &amp; distributed systems at IHEC Sfax, and competing in national algorithmic contests.
       </p>
       <!-- The facts a recruiter filters on, in the first screen, because a
            filter reached late is a filter applied by guessing.
@@ -85,7 +86,7 @@ schema_type: ProfilePage
      longest block on the page and it is aimed at the reader who has already
      decided to keep going. Records: src/data/impact.json. -->
 <section class="block" aria-labelledby="impact">
-  <h3 class="block__title" id="impact">Selected Impact</h3>
+  <h3 class="block__title" id="impact">Impact in Numbers</h3>
   <!-- INTERIM, awaiting the author's sentence. The line it replaced read
        "Five results, each one quoting the record that earned it.": a count
        typed in a fragment while the records are `home: true` flags in data,

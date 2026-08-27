@@ -801,7 +801,7 @@ it delays the sentences only this block can carry.
 **It carries no figures**, for the reason the `.specs` strip was deleted
 below: a number belongs on the record that earned it. The three quantified
 lines a conventional CV summary ends on are already on this page as
-`.point__impact` lines, and on Home as *Selected Impact*, which quotes those
+`.point__impact` lines, and on Home as *Impact in Numbers*, which quotes those
 same bullets by id rather than restating them.
 
 **The block carries no capability rows.** It used to carry three `.deflist`
@@ -853,7 +853,7 @@ was written to prevent, arrived at from the other direction: not two pages
 disagreeing, but one page agreeing with itself three times and teaching the
 reader that the numbers are decoration.
 
-**Home's Selected Impact stays, and the asymmetry is the point.** Home's block
+**Home's Impact in Numbers stays, and the asymmetry is the point.** Home's block
 spans three pages (Career, Projects, Awards), so it is a site-wide selection
 and no single page can render it. Career's could only ever be a subset of the
 page it sat on, which is a table of contents for the screen below it. A block
@@ -874,7 +874,97 @@ in.
 
 ---
 
-## 8. Adding a record
+## 8. Volunteering, and the model it deliberately does not have
+
+The block sits last on the page, after the three credential blocks, so
+Education, Certifications and Online Courses stay one unbroken run. It came
+from Home, where it closed the front page: [`home.md`](home.md) has that
+argument.
+
+### Why it carries no tags
+
+Every other dated record on this page answers a metadata model. This one
+answers none, and the reason is register rather than convenience. A chip row
+reading *Crisis response &middot; Regional &middot; 4 months* over aid
+distribution during a pandemic reads as credential-farming, and that is the one
+tone this block cannot survive: its whole value is that it is the least
+self-interested thing on the site.
+
+**The condition for reopening this was a second record**, not a change of
+mind, because a model exists to make records comparable and one record compares
+to nothing. **The second and third records arrived, the question was asked, and
+the answer held.** Two editions of a student orientation event next to a
+pandemic relief effort do not need a chip to tell them apart: the organisation,
+the initiative and the bullets already do it, and the chip would only add the
+one tone this block cannot afford.
+
+What the pair did reveal was a **missing field**, which is the more useful kind
+of finding. Both records happened under a named programme, *COVID-19 response*
+and *Orientini*, and there was nowhere to put it. The Red Crescent record had
+been keeping its programme name in `period`, which is exactly why that field
+held a topic where every other record on the page holds a date.
+
+`initiative` renders on the dateline, joined to the year with a middot, which
+is the shape `render_experience` already uses for `Location &middot; Period`.
+It therefore needs no component, no class and no rule in `main.css`. It is
+**not** the education model's `programme`: that means an institution with a bar
+to clear (§2), and `build.py`'s own rule is that two models share a category
+name only when they mean the same thing by it.
+
+### What it does carry, and why each of those is not optional
+
+It was, until this was written, the only `.entry` on the site with no id, no
+tag and no link: zero of all three, where Certifications and Online Courses
+carry ten links each and Experience carries forty-one tags. Tags are a
+decision, see above. The other two were not.
+
+**The id was the expensive one.** Without it the record was absent from the
+page context rail (the section heading appeared, with nothing under it), it
+could not be cited by [`impact.json`](src/data/impact.json) or
+[`skills.json`](src/data/skills.json), and it could not be translated, because
+the overlay in `src/i18n/` addresses records by id. It was the one record on
+the site that could never be synchronised between the two languages, which is
+the rule `CLAUDE.md` §10 now makes non-negotiable. It is `vol-<organisation>`,
+stamped by `with_ids` like every other record.
+
+**`url` is optional and absent.** The organisation should be linked, the way
+every employer and school on this page is. It is not, because nobody has
+supplied a link that was checked, and a plausible-looking address for a Red
+Crescent branch is exactly the kind of thing this site must not invent.
+`DESIGN.md` Principle 3 and [`awards.md`](awards.md) rule 5.
+
+**One record per edition.** The JID work ran in 2022 and 2023 and is two
+records, not one spanning both, which is how Awards already holds TCPC 22 and
+TCPC 23, Hello World v2.0 through v4.0, and IEEEXtreme 16.0 and 17.0. A single
+record covering two editions does not sort, and it says less about either than
+two records do. Because `organisation` is then not unique, the id rule for this
+block is the pair `("organisation", "year")`: `ID_RULES` in `build.py` accepts a
+tuple for exactly this case.
+
+**Dates, where they exist.** `year` for a single-edition record, `start` and
+`end` for a sustained one, and `render_volunteering` derives the range and the
+duration from the latter the way §4 requires. **A record with neither renders
+no dateline at all** rather than an empty one, which is [`awards.md`](awards.md)
+rule 5. The Red Crescent record is in that state: nobody has supplied the
+months, so it is **honestly undated rather than dishonestly dated**. Sorting
+follows `publication_sort_key`'s rule, newest first and undated last, and
+nothing is invented to make a record sortable.
+
+### What it says
+
+Bullets, like the job records, not a paragraph. The prose previously opened
+*"Volunteered during the COVID-19 crisis"* underneath a heading reading
+*Volunteering* and a period reading *COVID-19 response*, which is the same fact
+three times before the first new word. The four clauses that followed are now
+two bullets and say the same things.
+
+**It carries no number, and that is the honest state.** Weeks active, shifts
+worked, households supplied: any one of them would change this block, and none
+of them is known. §6's rules for bullets apply here as everywhere, including
+the one that matters most: a figure nobody measured does not get estimated to
+make a record look better.
+
+## 9. Adding a record
 
 **A job.** Append to `src/data/experience.json` with `company`, `url`, `role`,
 `start`, `domain`, `engagement`, `mode`, `scale`, `stack`, and either `groups`

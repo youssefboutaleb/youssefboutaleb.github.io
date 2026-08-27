@@ -1,8 +1,36 @@
 [
   {
+    "organisation": "Jeunes Ingénieurs de Djerba (JID)",
+    "initiative": "Orientini",
+    "location": "Djerba, Tunisia",
+    "start": "2023-07",
+    "end": "2023-07",
+    "year": "2023",
+    "points": [
+      "Guided secondary school students through engineering fields and the careers each one leads to."
+    ]
+  },
+  {
+    "organisation": "Jeunes Ingénieurs de Djerba (JID)",
+    "initiative": "Orientini",
+    "location": "Djerba, Tunisia",
+    "start": "2022-07",
+    "end": "2022-07",
+    "year": "2022",
+    "points": [
+      "Guided secondary school students through engineering fields and the careers each one leads to."
+    ]
+  },
+  {
     "organisation": "Tunisian Red Crescent",
     "branch": "Houmt Souk branch, Djerba",
-    "period": "COVID-19 response",
-    "summary": "Volunteered during the COVID-19 crisis, helping organise aid distribution, assisting with crowd coordination, supporting elderly individuals, and participating in collecting and distributing essential supplies."
+    "initiative": "COVID-19 response",
+    "location": "Djerba, Tunisia",
+    "start": "2020-03",
+    "end": "2021-06",
+    "points": [
+      "Helped organise aid distribution and assisted with crowd coordination.",
+      "Collected and distributed essential supplies, and supported elderly residents."
+    ]
   }
 ]

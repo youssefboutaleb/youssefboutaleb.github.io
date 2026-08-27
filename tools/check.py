@@ -155,7 +155,14 @@ def dash_audit() -> None:
 
 
 def main() -> int:
-    pages = sorted(p for p in ROOT.glob("*.html"))
+    # Root pages are English; a locale directory holds one rendering each.
+    # They are checked identically: a translated page has the same anchors,
+    # the same classes and the same links to keep working, and it is the one
+    # nobody proofreads by eye.
+    pages = sorted(ROOT.glob("*.html"))
+    for locale_dir in sorted(ROOT.glob("*/")):
+        if (locale_dir / "index.html").exists() and locale_dir.name not in {"assets", "images", "data", "src", "tools"}:
+            pages += sorted(locale_dir.glob("*.html"))
     if not pages:
         print("no pages found", file=sys.stderr)
         return 1
@@ -166,34 +173,38 @@ def main() -> int:
     used_classes: set[str] = set()
 
     for page in pages:
-        audit = PageAudit(page.name)
+        label = str(page.relative_to(ROOT))
+        audit = PageAudit(label)
         audit.feed(page.read_text(encoding="utf-8"))
 
         for tag, line in audit.stack:
-            fail(page.name, f"<{tag}> opened at line {line} is never closed")
+            fail(label, f"<{tag}> opened at line {line} is never closed")
 
         if audit.h1_count != 1:
-            fail(page.name, f"expected exactly one <h1>, found {audit.h1_count}")
+            fail(label, f"expected exactly one <h1>, found {audit.h1_count}")
 
         duplicates = {i for i in audit.ids if audit.ids.count(i) > 1}
         if duplicates:
-            fail(page.name, f"duplicate id attributes: {', '.join(sorted(duplicates))}")
+            fail(label, f"duplicate id attributes: {', '.join(sorted(duplicates))}")
 
         used_classes |= audit.classes
         for name in sorted(audit.classes - known_classes):
-            fail(page.name, f"class '{name}' is used in markup but has no rule in main.css")
+            fail(label, f"class '{name}' is used in markup but has no rule in main.css")
 
         for ref, line in audit.refs:
             parsed = urlparse(ref)
             if parsed.scheme or parsed.netloc or ref.startswith(("#", "mailto:", "tel:", "data:")):
                 continue
-            target = ROOT / unquote(parsed.path)
+            # Relative to the page, not to the site root: /fr/awards.html
+            # reaches the stylesheet as ../assets/... and its sibling pages
+            # as bare names.
+            target = (page.parent / unquote(parsed.path)).resolve()
             if not target.exists():
-                fail(page.name, f"line {line}: broken local reference '{parsed.path}'")
+                fail(label, f"line {line}: broken local reference '{parsed.path}'")
 
             if parsed.fragment and target.suffix == ".html" and target.exists():
                 if f'id="{parsed.fragment}"' not in target.read_text(encoding="utf-8"):
-                    fail(page.name, f"line {line}: '{ref}' points at a missing anchor")
+                    fail(label, f"line {line}: '{ref}' points at a missing anchor")
 
     # Dead CSS is a maintenance tax: the next person cannot tell which rules
     # still matter. Reported, not fatal: a rule may be staged for a new page.

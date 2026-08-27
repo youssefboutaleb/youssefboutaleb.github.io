@@ -198,7 +198,7 @@ Append here every pass. This is the part that makes the file worth keeping.
    photograph above the text at column width. Copied here it would push the
    claim below the fold, so the treatment was taken and the placement was not.
 6. **A component borrowed from the wrong job creates every symptom at once.**
-   Selected Impact used `.entry`, which is for a dated record living on its own
+   Impact in Numbers used `.entry`, which is for a dated record living on its own
    page. That one decision produced the topic-as-title, the repeated dateline,
    the figure demoted to a chip and four identical `Career` tags. Findings that
    all trace to one component choice are one finding.
@@ -206,6 +206,32 @@ Append here every pass. This is the part that makes the file worth keeping.
    `13. COMPONENT: RESULT` silently produced two section 13s.
 8. **Check `href` targets exist before writing them.** `build.py` fails on a
    citation naming an id nothing carries, which is faster than being told.
+9. **A summary that hand-formats its own labels drifts in three directions at
+   once.** Awards' header strip wrote `f"{gold_count}st Place Regional"`, which
+   fused two tag categories, would have printed *2st* on a second gold, and
+   invented three chrome strings that then rendered in English on the French
+   page. Rebuilding it through `meta_label`, the function that renders the tags
+   on the records below, made the wording, the medal, the bold figure and the
+   French all correct for free. **Derive a summary through the renderer the
+   records already use, never through a format string.**
+10. **Deleting a component can falsify a stylesheet section header, which is
+    lesson 7 in the other direction.** `.awards-stats` went and `.hero-facts`
+    stayed in a section headed `(HOME ONLY)` that Awards had just stopped
+    making true. After removing or moving a rule, read the section header and
+    the comment above it, not only the rule.
+11. **Verify a rule before citing it, even one written in `DESIGN.md`.** I
+    quoted §9.3's *"entries are still never boxed"* to argue against a boxed
+    strip, having already grepped up `.entries--grid > .entry`, which boxes
+    Career's credential cards. A documented rule can be stale, and an
+    undocumented component (that grid) is exactly how it gets that way. One
+    grep would have caught it: check whether the repository agrees with the
+    document before you quote the document at the author.
+12. **Ask the claim question and the design question in the same round.** The
+    author said "I am also an African finalist" while the data said
+    *Quarter-finalist*. That is a factual correction to make or decline, not a
+    wording preference, and it is `CLAUDE.md` §5 territory. Putting it beside
+    the component choice cost one question and settled it before anything was
+    built.
 
 ---
 

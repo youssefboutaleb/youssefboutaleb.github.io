@@ -17,14 +17,20 @@ Deployment stays build-free: GitHub Pages serves the generated files directly.
 from __future__ import annotations
 
 import argparse
+import fnmatch
 import hashlib
 import json
 import re
 import sys
+import unicodedata
 from datetime import date
 from html import escape
 from html.parser import HTMLParser
 from pathlib import Path
+
+# French groups thousands with a narrow no-break space, not a comma: 7,094 is
+# 7 094. The character is U+202F, and it must not break across a line.
+THIN_SPACE = "\u202f"
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "src"
@@ -39,6 +45,201 @@ BANNER = (
     "     Rebuild: python3 tools/build.py\n"
     "-->\n"
 )
+
+# How a brand logo survives the dark rendering. The SVGs ship as <img>, so the
+# stylesheet cannot recolour their interiors; the modifier tells it what the
+# mark is made of and main.css section 17 acts on that. Keyed by filename so a
+# logo declares its treatment once instead of at every call site.
+#
+#   mono   single-colour black, inverts cleanly to white
+#   plate  coloured mark carrying black ink, keeps its colours on a light ground
+#
+# Anything absent from this table needs no treatment: it is a coloured mark that
+# already reads on either ground. Check a new logo before adding it, because a
+# black one that is missed here goes invisible in dark mode and nothing fails.
+ICON_TREATMENT = {
+    "github.svg": "mono",
+    "anthropic-light.svg": "mono",
+    "medium.svg": "mono",
+    "opencv.svg": "plate",
+}
+
+
+def icon_classes(filename: str, size: str) -> str:
+    """The class attribute for one brand logo at one size."""
+    treatment = ICON_TREATMENT.get(filename)
+    classes = f"icon icon--{size}"
+    return f"{classes} icon--{treatment}" if treatment else classes
+
+
+# --- locales ----------------------------------------------------------------
+
+# One source, two renderings, which is the whole of CLAUDE.md M4. English is
+# the source and lives in src/data/; a translation is an *overlay* in
+# src/i18n/<code>.json and never a second copy of the records.
+#
+# The overlay keys strings by `<record id>.<field>`, which is why record ids
+# are generated from the English title and never from the translated one:
+# impact.json cites bullets by id, skills.json carries forty citation targets,
+# and the page context rail anchors on the same ids. Translating an id would
+# break all three at once and silently, so structure, order, ids and every
+# citation stay single-source and only display strings vary.
+#
+# A locale that is missing a string falls back to English rather than to a
+# hole. That is deliberate: a half-translated page is readable and an empty one
+# is not, and `--check` lists what is still missing so the gap is visible.
+
+I18N = SRC / "i18n"
+
+
+class Locale:
+    """One rendering of the site: its language, its chrome, its overlay."""
+
+    def __init__(self, code: str, config: dict) -> None:
+        self.code = code                      # "en", "fr"
+        self.lang = config.get("lang", code)
+        self.og_locale = config.get("og_locale", "en_US")
+        self.label = config.get("label", code)
+        self.dir = "" if config.get("root") else f"{code}/"
+        # "" from the site root, "../" from a locale subdirectory. Only assets
+        # need it: a link from /fr/awards.html to career.html already resolves
+        # to /fr/career.html, which is the French page, for free.
+        self.up = "" if config.get("root") else "../"
+        self.strings = config.get("strings", {})
+        self.records = config.get("records", {})
+        # Keys that are deliberately not translated: proper nouns, employers,
+        # certification names, tech. Without this every build would list them
+        # as missing forever, and a report that is mostly noise is a report
+        # nobody reads. fnmatch patterns, so "*.title" covers a whole field.
+        self.keep = tuple(config.get("keep", ()))
+        # How this language builds an ordinal. English needs a table of
+        # suffixes and a teens exception; French needs "1re" and "Ne". The
+        # pilot found this the expensive way: with only placement.1, .2 and .3
+        # in the overlay, a 13th and a 643rd placement stayed English on the
+        # French page, and enumerating placement.643 is not a design.
+        self.ordinal_forms = config.get("ordinal")
+        self.group = config.get("group", ",")
+        self.overrides = config.get("site", {})
+        self.missing: set[str] = set()
+        # For every key that IS translated, the fingerprint of the English it
+        # was translated from. Compared against the lock file to catch the
+        # failure a fallback cannot: a string translated once, then edited in
+        # English, where the translation stays confidently wrong.
+        self.seen: dict[str, str] = {}
+
+    def number(self, value: int) -> str:
+        """`value` with this language's thousands separator.
+
+        English groups with a comma, French with a narrow no-break space:
+        7,094 teams is 7 094 equipes. The separator is part of the language,
+        not part of the figure, so the stored integer is never touched.
+        """
+        return f"{value:,}".replace(",", self.group)
+
+    def ordinal(self, number: int) -> str:
+        """`number` as an ordinal in this language."""
+        if not self.ordinal_forms:
+            return ordinal(number)
+        form = self.ordinal_forms.get(str(number)) or self.ordinal_forms["other"]
+        return form.replace("{n}", self.number(number))
+
+    def witness(self, key: str, source) -> None:
+        """Record what English this key was translated from."""
+        self.seen[key] = fingerprint(source)
+
+    def keeps(self, key: str) -> bool:
+        """Is this key deliberately left in the source language?"""
+        return any(fnmatch.fnmatch(key, pattern) for pattern in self.keep)
+
+    def text(self, key: str, default: str) -> str:
+        """A chrome string: navigation, buttons, aria labels, month names."""
+        if key in self.strings:
+            if self.code != "en":
+                self.witness(key, default)
+            return self.strings[key]
+        if self.code != "en" and not self.keeps(key):
+            self.missing.add(key)
+        return default
+
+
+def fingerprint(value) -> str:
+    """A stable short hash of an English source value.
+
+    json.dumps with sorted keys so a list of bullets fingerprints as a whole:
+    reordering them or editing one is a change to the thing that was
+    translated, and both should be caught.
+    """
+    payload = json.dumps(value, sort_keys=True, ensure_ascii=False)
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:12]
+
+
+def load_locales() -> list[Locale]:
+    """English first, then every overlay in src/i18n, alphabetically.
+
+    English is built from src/data/ alone and has no overlay file: it is the
+    source, and giving it one would be the first step towards forking it.
+    """
+    locales = [Locale("en", {"lang": "en", "og_locale": "en_US",
+                             "label": "English", "root": True})]
+    if I18N.is_dir():
+        # *.lock.json are the sync fingerprints, not languages. Without this
+        # the glob discovered "fr.lock" as a locale, built a site at /fr.lock/
+        # and wrote fr.lock.lock.json, which discovered "fr.lock.lock", and so
+        # on: one build produced 48 pages across five imaginary languages.
+        for path in sorted(I18N.glob("*.json")):
+            if path.name.endswith(".lock.json"):
+                continue
+            locales.append(Locale(path.stem, json.loads(path.read_text(encoding="utf-8"))))
+    return locales
+
+
+# The locale being rendered. A module-level binding rather than a parameter
+# threaded through every render_* function: this is a single-pass,
+# single-threaded build, and the alternative was fifteen signatures growing an
+# argument that fourteen of them would only pass along.
+ACTIVE = Locale("en", {"lang": "en", "og_locale": "en_US", "label": "English", "root": True})
+
+
+def asset(path: str) -> str:
+    """A site asset, addressed from the page currently being written.
+
+    Everything under images/ and data/ lives once at the site root, so a page
+    in a locale directory reaches it through "../". Links *between* pages need
+    no such help: awards.html from inside /fr/ already means /fr/awards.html,
+    which is the French page, which is what was wanted.
+
+    An absolute URL is returned untouched: some credentials link to the
+    issuer's own record rather than to a scan this site serves.
+    """
+    if path.startswith(("http://", "https://", "//", "mailto:", "#")):
+        return path
+    return f"{ACTIVE.up}{path}"
+
+
+def t(record: dict, field: str, default=None):
+    """The value of `field` on `record`, in the active locale.
+
+    Falls back to the English value. A record with no id cannot be overlaid,
+    which is correct: the overlay addresses records by id and an unaddressable
+    record has nothing to key on.
+    """
+    value = record.get(field, default)
+    record_id = record.get("id")
+    if ACTIVE.code == "en" or not record_id:
+        return value
+    key = f"{record_id}.{field}"
+    if key in ACTIVE.records:
+        ACTIVE.witness(key, value)
+        return ACTIVE.records[key]
+    if isinstance(value, str) and value.strip() and not ACTIVE.keeps(key):
+        ACTIVE.missing.add(key)
+    return value
+
+
+def tr(key: str, default: str) -> str:
+    """A chrome string in the active locale."""
+    return ACTIVE.text(key, default)
+
 
 PLACEHOLDER = re.compile(r"\{\{\s*([a-zA-Z0-9_.]+)\s*\}\}")
 FRONT_MATTER = re.compile(r"\A<!--\s*\n(.*?)\n-->\s*\n", re.DOTALL)
@@ -92,8 +293,24 @@ def parse_front_matter(raw: str) -> tuple[dict, str]:
 
 
 def slugify(text: str) -> str:
-    """Convert text into a safe HTML id anchor."""
+    """Convert text into a safe HTML id anchor, ASCII only.
+
+    Accents are folded rather than kept: `\\w` matches them, so an
+    organisation written "Jeunes Ingenieurs de Djerba" (with the accent) used
+    to produce an id carrying that accent. It works in a modern browser and it
+    is wrong here for two reasons. Every other id on the site is ASCII, and an
+    anchor is a durable name that gets pasted into citations, the page context
+    rail and translation overlay keys: it should survive a copy through any
+    tool that is careless about encoding.
+
+    Folding is a no-op for every id that existed before it was added, because
+    every source field was ASCII. It is here because the first accented record
+    arrived from the English data, not from the French overlay, which is where
+    it was expected.
+    """
     text = re.sub(r"<[^>]+>", "", text)
+    text = unicodedata.normalize("NFKD", text)
+    text = text.encode("ascii", "ignore").decode("ascii")
     text = re.sub(r"[^\w\s-]", "", text).strip().lower()
     return re.sub(r"[-\s]+", "-", text)
 
@@ -102,12 +319,15 @@ class TocNode:
     def __init__(self, node_id: str, title: str = "", level: int = 1):
         self.id = node_id
         self.title = title
-        self.level = level  # 1: Section, 2: Course/Entry, 3: Module/Group, 4: Lab
+        # 1: section, 2: record, 3: a part of a record (a course's modules).
+        # There is no level 4. One was declared here for a "Lab" tier that was
+        # never built, and it kept three CSS rules alive for years of nothing.
+        self.level = level
         self.children: list[TocNode] = []
 
 
 class BookTocParser(HTMLParser):
-    """Collect multi-level sections, courses, modules, and labs for book shortcuts navigation."""
+    """Collect sections, records and their parts for the page context rail."""
 
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
@@ -125,6 +345,12 @@ class BookTocParser(HTMLParser):
         tag_id = a.get("id")
         cls = a.get("class", "")
 
+        # A record may name itself for the rail. That is how an abbreviation
+        # gets in without this parser knowing anything about the content: two
+        # award names used to be string-replaced here by hand, so renaming one
+        # in awards.json silently stopped the replacement applying.
+        toc_title = a.get("data-toc-title")
+
         if tag == "section" and aria_lbl:
             self._sec_node = TocNode(aria_lbl, "", level=1)
             self.root.children.append(self._sec_node)
@@ -137,8 +363,14 @@ class BookTocParser(HTMLParser):
                 self._target_tag = tag
                 self._text_buf = []
 
-            elif tag == "li" and tag_id and ("entry" in cls or tag_id.startswith(("course-", "exp-", "edu-", "proj-", "pub-", "art-", "ws-", "award-"))):
-                self._entry_node = TocNode(tag_id, "", level=2)
+            # Both branches below used to carry an id-prefix allowlist beside
+            # the class test (course-, exp-, edu-, ... and mod-, hw-, cap-,
+            # grp-). Every record carries .entry and every indexed group
+            # carries .entry__group, and no id on the site has ever begun with
+            # one of those four group prefixes, so the lists matched nothing
+            # and quietly promised that a new prefix would be handled.
+            elif tag == "li" and tag_id and "entry" in cls.split():
+                self._entry_node = TocNode(tag_id, toc_title or "", level=2)
                 self._sec_node.children.append(self._entry_node)
                 self._group_node = None
 
@@ -147,9 +379,9 @@ class BookTocParser(HTMLParser):
                 self._target_tag = tag
                 self._text_buf = []
 
-            elif tag == "div" and tag_id and ("entry__group" in cls or tag_id.startswith(("mod-", "hw-", "cap-", "grp-"))):
+            elif tag == "div" and tag_id and "entry__group" in cls.split():
                 parent = self._entry_node or self._sec_node
-                self._group_node = TocNode(tag_id, "", level=3)
+                self._group_node = TocNode(tag_id, toc_title or "", level=3)
                 parent.children.append(self._group_node)
 
             elif tag == "p" and "entry__group-title" in cls and self._group_node:
@@ -163,7 +395,21 @@ class BookTocParser(HTMLParser):
 
     def handle_endtag(self, tag: str) -> None:
         if self._target_node and tag == self._target_tag:
+            # A node that named itself keeps that name: the whole point of
+            # data-toc-title is that the record decides, not this parser.
+            if self._target_node.title:
+                self._target_node = None
+                self._target_tag = None
+                self._text_buf = []
+                return
+
             text = " ".join("".join(self._text_buf).split())
+
+            # An .entry__title joins peers with a middot: `Role &middot;
+            # Company` on Career, `Title &middot; Venue` elsewhere. The rail
+            # has room for one of them, and which one is the useful half
+            # depends on the record: an employer is what a reader scans a
+            # career for, a title is what they scan everything else for.
             if "·" in text:
                 parts = [p.strip() for p in text.split("·")]
                 if self._target_node.id.startswith(("exp-", "edu-")) and len(parts) > 1 and parts[1]:
@@ -171,14 +417,11 @@ class BookTocParser(HTMLParser):
                 else:
                     text = parts[0]
 
-            text = text.replace("IEEEXtreme Programming Competition", "IEEEXtreme")
-            text = text.replace("A2SV (Africa to Silicon Valley)", "A2SV")
-
-            if text.startswith("Lab:"):
-                lab_body = re.sub(r"<[^>]+>", "", text[4:]).strip()
-                clause = re.split(r"[,;.]", lab_body)[0].strip()
-                text = f"Lab: {clause[:35].strip()}"
-
+            # A "Lab:" branch lived here, truncating a lab's title to 35
+            # characters. No .entry__group-title on the site begins with
+            # "Lab:", and labs are .point--lab list items that the rail never
+            # indexes, so it shortened nothing. It belonged to the same
+            # unbuilt level 4 as the dead CSS.
             self._target_node.title = text.strip()
             self._target_node = None
             self._target_tag = None
@@ -187,27 +430,53 @@ class BookTocParser(HTMLParser):
 
 def render_toc_node(node: TocNode) -> str:
     """Recursively render a TocNode and its children as HTML list items."""
-    link_class = "book-toc__link" if node.level == 1 else "book-toc__sublink"
-    title_text = node.title or node.id.replace("-", " ").title()
-    link_html = f'<a class="{link_class}" href="#{escape(node.id, quote=True)}">{escape(title_text)}</a>'
+    if not node.title:
+        raise ValueError(
+            f"page context: no label found for #{node.id}. This used to fall "
+            f"back to the id with its hyphens swapped for spaces and title "
+            f"cased, so a record whose title failed to parse shipped a rail "
+            f"entry reading 'Exp Jacquemus 1'. Give the record a heading the "
+            f"parser can read, or a data-toc-title of its own."
+        )
 
+    link_class = "book-toc__link" if node.level == 1 else "book-toc__sublink"
+    link_html = f'<a class="{link_class}" href="#{escape(node.id, quote=True)}">{escape(node.title)}</a>'
+
+    # No --level-N modifier on either element. Every depth is styled the same
+    # (one left hairline, one indent), so a per-level class carried nothing and
+    # simply guaranteed that main.css kept rules for depths the parser had
+    # stopped producing. The nesting is in the markup; the indent says the rest.
     if not node.children:
-        return f'<li class="book-toc__item book-toc__item--level-{node.level}">\n  {link_html}\n</li>'
+        return f'<li class="book-toc__item">\n  {link_html}\n</li>'
 
     children_html = "\n".join(indent(render_toc_node(child), 2) for child in node.children)
-    sublist_class = "book-toc__list" if node.level == 0 else f"book-toc__sublist book-toc__sublist--level-{node.level}"
     return (
-        f'<li class="book-toc__item book-toc__item--level-{node.level}">\n'
+        '<li class="book-toc__item">\n'
         f'  {link_html}\n'
-        f'  <ul class="{sublist_class}">\n'
+        '  <ul class="book-toc__sublist">\n'
         f'{children_html}\n'
-        f'  </ul>\n'
-        f'</li>'
+        '  </ul>\n'
+        '</li>'
     )
 
 
 def render_page_context(content: str, source: Path) -> str:
-    """Render the book shortcuts TOC navigation for sections and subsections."""
+    """Render the page context rail: an index of this page's own records.
+
+    Parses `content` *after* it has been rendered rather than reading the data
+    that produced it. That is the cheaper of the two and also the safer one: an
+    index built from the data would be asserting what the page contains, and
+    this one observes it, so it cannot name a record that failed to render or
+    an anchor that does not exist. It also means the rail costs nothing to
+    maintain, since a record added to src/data/ appears in it with no second
+    edit anywhere.
+
+    Returns "" for a page with no sections, which is what keeps the aside empty
+    rather than shipping a heading with nothing under it.
+
+    DESIGN.md section 12.2 for what it renders, section 4 for why a rail is
+    admissible here at all.
+    """
     parser = BookTocParser()
     parser.feed(content)
     parser.close()
@@ -215,20 +484,31 @@ def render_page_context(content: str, source: Path) -> str:
     if not parser.root.children:
         return ""
 
-    body = "\n".join(indent(render_toc_node(child), 2) for child in parser.root.children)
+    body = "\n".join(indent(render_toc_node(child), 6) for child in parser.root.children)
+    # <details> is what makes this affordable on a phone. Closed, it is one
+    # line; open, it is the same tree the desktop rail shows. Below 1024px the
+    # rail sat above the content at full length, which put roughly 668px of
+    # navigation in front of Teaching's first word. Above 1024px CSS forces it
+    # open and hides the marker, so the desktop rail is unchanged.
+    #
+    # The <nav> is labelled by the <summary> rather than carrying its own
+    # aria-label. The aside, the nav and the visible heading previously gave a
+    # screen reader three names for one region.
+    #
+    # The summary is one word and nothing else. It used to open with an inline
+    # SVG of a book, which was the only <svg> on any page of this site: every
+    # other icon is an <img> of a real brand mark, sized by a token, saying
+    # something a word could not. That one was aria-hidden and drew a picture
+    # of the three words beside it. DESIGN.md section 12.2.
     return (
-        '<nav class="book-toc" aria-label="On this page">\n'
-        '  <div class="book-toc__header">\n'
-        '    <svg class="book-toc__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">\n'
-        '      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>\n'
-        '      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>\n'
-        '    </svg>\n'
-        '    <span class="book-toc__title">On this page</span>\n'
-        '  </div>\n'
-        '  <ul class="book-toc__list">\n'
+        '<details class="book-toc">\n'
+        f'  <summary class="book-toc__header" id="page-context-label">{tr("chrome.contents", "Contents")}</summary>\n'
+        '  <nav class="book-toc__nav" aria-labelledby="page-context-label">\n'
+        '    <ul class="book-toc__list">\n'
         f'{body}\n'
-        '  </ul>\n'
-        '</nav>'
+        '    </ul>\n'
+        '  </nav>\n'
+        '</details>'
     )
 
 
@@ -257,7 +537,7 @@ def render_page_context(content: str, source: Path) -> str:
 # how a page ends up rendering empty or meaningless dimensions. Two models may
 # share a category name only if they mean the same thing by it.
 MODELS = {
-    "awards": ("placement", "type", "scope", "scale", "duration", "track"),
+    "awards": ("placement", "distinction", "type", "scope", "scale", "duration", "track"),
     "workshops": ("format", "mode", "duration", "audience", "scale", "host"),
     "teaching": ("level", "workload", "scale"),
     "research": ("status", "authorship", "publisher"),
@@ -406,7 +686,7 @@ def abbreviate(count: int) -> str:
         if count >= limit:
             scaled = f"{count / limit:.1f}".rstrip("0").rstrip(".")
             return f"{scaled}{suffix}"
-    return f"{count:,}"
+    return ACTIVE.number(count)
 
 
 def meta_label(field: str, value) -> tuple[str, str]:
@@ -419,7 +699,11 @@ def meta_label(field: str, value) -> tuple[str, str]:
     if field == "placement" and isinstance(value, int):
         medal = MEDALS.get(value)
         badge = f'<span class="medal medal--{medal}" aria-hidden="true"></span>' if medal else ""
-        return badge, f"{ordinal(value)} Place"
+        # "1st Place" in English, "1re place" in French. Two things vary and
+        # both are language: how the ordinal is formed, and how the phrase is
+        # built around it. Neither is a suffix that can be swapped.
+        phrase = tr("placement.pattern", "{ordinal} Place")
+        return badge, phrase.replace("{ordinal}", ACTIVE.ordinal(value))
     if field == "level" and isinstance(value, int):
         return "", f"Master&rsquo;s Year {value}"
     if field == "workload":
@@ -435,7 +719,7 @@ def meta_label(field: str, value) -> tuple[str, str]:
         # checkable in both directions. Rendering one as the other overstates
         # or understates a figure the bullets below state exactly, so the
         # record declares which it holds and neither is the default.
-        count = f"{value['count']:,}"
+        count = ACTIVE.number(value["count"])
         if value.get("minimum"):
             count = f"{count}+"
         elif value.get("approx"):
@@ -445,7 +729,8 @@ def meta_label(field: str, value) -> tuple[str, str]:
         # treatment of the same part of every scale value, never of one value
         # over another, so awards.md rule 4 holds: 86 teams and 643rd of 7,094
         # are emphasised identically.
-        return "", f"<b>{count}</b> {value['unit']}"
+        unit = value["unit"]
+        return "", f"<b>{count}</b> {tr(f'unit.{unit}', unit)}"
     if field == "upstream":
         return "", f"{UPSTREAM_STATES[value['state']]} &middot; PR #{value['pr']}"
     if field == "accreditation":
@@ -460,7 +745,12 @@ def meta_label(field: str, value) -> tuple[str, str]:
         # held up. A record carries both figures or neither: writing.md.
         return "", (f"{abbreviate(value['views'])} views"
                     f" &middot; {abbreviate(value['reads'])} reads")
-    return "", str(value)
+    # Everything else is a plain stored word: "Hackathon", "Regional",
+    # "On-site". These are the site's metadata vocabulary rather than prose,
+    # so they are translated by value and not by record: one entry in the
+    # overlay does every award that says "Hackathon", and a value nobody has
+    # translated falls through as English rather than as a gap.
+    return "", tr(f"tag.{field}.{value}", str(value))
 
 
 def meta_url(field: str, value) -> str | None:
@@ -587,29 +877,180 @@ def render_group(title: str, points: list, modifier: str = "", group_id: str = "
     )
 
 
+# Each record type's anchor id, derived from the English source field. Held in
+# one place because the page context rail, impact.json's citations,
+# skills.json's forty proof links and every translation overlay key all address
+# records by these strings: they are the site's stable names for its own
+# contents, and they must not move when a page is translated.
+ID_RULES = {
+    "award": "title",
+    "ws": "title",
+    "pub": "title",
+    "art": "title",
+    "proj": "title",
+    "exp": "company",
+    "edu": "institution",
+    # A tuple where one field is not unique on its own. Volunteering holds an
+    # edition per record, following the same convention as TCPC 22 and TCPC 23
+    # on Awards, so two JID records would otherwise collide on the
+    # organisation and produce one id for both.
+    "vol": ("organisation", "year"),
+}
+
+
+def with_ids(records: list[dict], prefix: str) -> list[dict]:
+    """Stamp each record with its anchor id, in place, before rendering.
+
+    The renderers used to each derive this themselves. Naming it once and
+    early means a record knows its own id before anything asks, which is what
+    lets the translation overlay address it and the renderer stop recomputing.
+    """
+    fields = ID_RULES[prefix]
+    if isinstance(fields, str):
+        fields = (fields,)
+    for record in records:
+        parts = [str(record[f]) for f in fields if record.get(f)]
+        record.setdefault("id", f"{prefix}-{slugify(' '.join(parts))}")
+    return records
+
+
+def entry_li(record: dict, entry_id: str, body: str) -> str:
+    """Wrap a rendered record as the site's .entry list item.
+
+    `short` is optional and does one job: it is the record's label in the page
+    context rail, for a title too long to sit in a 240px track. It is data
+    because the alternative was worse. The rail's parser used to carry the
+    abbreviations itself, as two literal str.replace calls naming two awards,
+    so renaming either one in awards.json silently stopped shortening it and
+    nothing failed. A record that needs a short name now says so next to the
+    long one, and the parser stays ignorant of what the site is about.
+    """
+    attributes = f'class="entry" id="{escape(entry_id, quote=True)}"'
+    if record.get("short"):
+        attributes += f' data-toc-title="{escape(record["short"], quote=True)}"'
+    return f'<li {attributes}>\n{body}\n</li>'
+
+
 def render_award(record: dict) -> str:
     """One award as the site-wide .entry record."""
-    title = record["title"]
+    title = t(record, "title")
     if record.get("url"):
         title = (
             f'<a class="link-external" href="{record["url"]}" target="_blank"'
             f' rel="noopener">{title}</a>'
         )
     if record.get("venue"):
-        title += f'<span class="entry__role"> &middot; {record["venue"]}</span>'
+        title += f'<span class="entry__role"> &middot; {t(record, "venue")}</span>'
 
-    year = record["year"]
+    dateline = []
+    if record.get("location"):
+        dateline.append(f'<span class="entry__location">{t(record, "location")}</span>')
+    if record.get("date"):
+        dt = record["date"]
+        dateline.append(f'<time datetime="{dt}">{month_year(dt)}</time>')
+    else:
+        year = record["year"]
+        dateline.append(f'<time datetime="{year}">{year}</time>')
+
     parts = [
         f'<p class="entry__title">{title}</p>',
-        f'<p class="entry__period"><time datetime="{year}">{year}</time></p>',
+        f'<p class="entry__period">{" &middot; ".join(dateline)}</p>',
         render_meta(record, "awards"),
     ]
     if record.get("points"):
-        parts.append(render_points(record["points"]))
+        parts.append(render_points(t(record, "points")))
 
     body = "\n".join(indent(part, 2) for part in parts if part)
-    award_id = f"award-{slugify(record['title'])}"
-    return f'<li class="entry" id="{award_id}">\n{body}\n</li>'
+    award_id = record["id"]
+    return entry_li(record, award_id, body)
+
+
+# The scopes a result can reach, weakest first, which is also the order the
+# strip reads in. Declared here rather than sorted out of the data, so a new
+# scope value has to be placed deliberately instead of appearing wherever
+# `sorted` happens to put it. The vocabulary is awards.md's, not a second one.
+SCOPE_ORDER = ("Regional", "National", "African", "International")
+
+
+def placement_rank(record: dict) -> tuple[int, int]:
+    """Sort key for "which of these results was the best".
+
+    An integer placement outranks a named stage, because 1st and 13th are
+    comparable and "Quarter-finalist" is not comparable to either. Named
+    stages keep the order the data gives them; there is one on the site today
+    and inventing a ladder for a second would be inventing data.
+    """
+    placement = record.get("placement")
+    if isinstance(placement, int):
+        return (0, placement)
+    return (1, 0)
+
+
+def render_awards_summary(awards: list[dict]) -> str:
+    """The Awards page's scope cards: the best result at every scope reached.
+
+    A *projection*, in the sense home.md gives the word. Every string in it
+    comes out of the same `meta_label` that renders the tags on the records
+    below, read from the same fields, so a card cannot come to disagree with
+    the entry it summarises. It writes no prose and holds no figure of its own.
+
+    One card per scope, and one rule decides what the card shows:
+
+      the best record carries a distinction   the distinction, counted when
+                                              more than one record in the
+                                              scope earned it
+      it does not                             its placement and its field size
+
+    That is what puts *2x National Finalist* on the National card rather than
+    *13th Place*: two finals is the fact, and the placements are on the two
+    records the card lists. It is also what keeps the International card
+    honest at *643rd Place*, per CLAUDE.md section 5.
+
+    **The card is a certifications card, structurally.** `.entries--grid` with
+    an `.entry` per cell, a heading, and a `.points` list of what the cell
+    contains. Certifications put the issuer in `.issuer` and its certificates
+    in the list; this puts the scope in `.entry__title` and the records that
+    reached it in the list, with the result itself as the record's own tag
+    chips in between. Nothing here is styled: DESIGN.md section 10.2.
+    """
+    cards = []
+    for scope in SCOPE_ORDER:
+        group = [a for a in awards if a.get("scope") == scope]
+        if not group:
+            continue
+        best = min(group, key=placement_rank)
+        distinction = best.get("distinction")
+        if distinction:
+            cited = [a for a in group if a.get("distinction") == distinction]
+            label = tr(f"tag.distinction.{distinction}", distinction)
+            if len(cited) > 1:
+                label = f"{len(cited)}&times; {label}"
+            chips = [f'<li class="tag tag--distinction">{label}</li>']
+        else:
+            cited = [best]
+            badge, label = meta_label("placement", best["placement"])
+            chips = [f'<li class="tag tag--placement">{badge}{label}</li>']
+            if best.get("scale"):
+                _, size = meta_label("scale", best["scale"])
+                chips.append(f'<li class="tag tag--scale">{size}</li>')
+        records = "\n".join(
+            f'  <li><a href="#{record["id"]}">'
+            f'{t(record, "short") or t(record, "title")}</a></li>'
+            for record in cited
+        )
+        parts = [
+            f'<p class="entry__title">{tr(f"tag.scope.{scope}", scope)}</p>',
+            f'<ul class="tag-list" aria-label="{MODEL_LABELS["awards"]}">\n'
+            + "\n".join("  " + chip for chip in chips)
+            + "\n</ul>",
+            f'<ul class="points">\n{records}\n</ul>',
+        ]
+        cards.append(
+            '<li class="entry">\n'
+            + "\n".join(indent(part, 2) for part in parts)
+            + "\n</li>"
+        )
+    return "\n".join(cards)
 
 
 def render_workshop(record: dict) -> str:
@@ -622,20 +1063,23 @@ def render_workshop(record: dict) -> str:
     """
     title = record["title"]
     if record.get("repo"):
-        name = "Workshop materials on GitHub"
+        name = tr("link.workshop_repo", "Workshop materials on GitHub")
+        github_icon = asset("images/icons/github.svg")
         title += (
             f'\n  <a class="icon-link" href="{record["repo"]}" target="_blank"'
             f' rel="noopener" title="{name}">'
-            f'<img class="icon icon--sm" src="images/icons/github.svg" alt="{name}"'
+            f'<img class="{icon_classes("github.svg", "sm")}"'
+            f' src="{github_icon}" alt="{name}"'
             f' width="15" height="15"></a>\n'
         )
 
     extra = ()
+    slides_icon = asset("images/icons/powerpoint.svg")
     if record.get("slides"):
         extra = (
             f'<li><a class="tag tag--critical link-external" href="{record["slides"]}"'
             f' target="_blank" rel="noopener" title="View slides in PowerPoint Online">'
-            f'<img class="icon icon--xs" src="images/icons/powerpoint.svg" alt=""'
+            f'<img class="icon icon--xs" src="{slides_icon}" alt=""'
             f' width="12" height="12">Slides (.pptx)</a></li>',
         )
 
@@ -651,8 +1095,8 @@ def render_workshop(record: dict) -> str:
         parts.append(render_points(record["points"]))
 
     body = "\n".join(indent(part, 2) for part in parts if part)
-    ws_id = f"ws-{slugify(record['title'])}"
-    return f'<li class="entry" id="{ws_id}">\n{body}\n</li>'
+    ws_id = record["id"]
+    return entry_li(record, ws_id, body)
 
 
 def publication_sort_key(record: dict) -> int:
@@ -754,8 +1198,8 @@ def render_publication(record: dict) -> str:
         parts.append(render_points(record["points"]))
 
     body = "\n".join(indent(part, 2) for part in parts if part)
-    pub_id = f"pub-{slugify(record['title'])}"
-    return f'<li class="entry" id="{pub_id}">\n{body}\n</li>'
+    pub_id = record["id"]
+    return entry_li(record, pub_id, body)
 
 
 def render_article(record: dict) -> str:
@@ -796,8 +1240,8 @@ def render_article(record: dict) -> str:
         parts.append(render_points(record["points"]))
 
     body = "\n".join(indent(part, 2) for part in parts if part)
-    art_id = f"art-{slugify(record['title'])}"
-    return f'<li class="entry" id="{art_id}">\n{body}\n</li>'
+    art_id = record["id"]
+    return entry_li(record, art_id, body)
 
 
 def project_sort_key(record: dict) -> int:
@@ -826,11 +1270,13 @@ def render_project(record: dict, articles: dict) -> str:
     """
     title = record["title"]
     if record.get("repo"):
-        name = "GitHub repository"
+        name = tr("link.repo", "GitHub repository")
+        github_icon = asset("images/icons/github.svg")
         title += (
             f'\n  <a class="icon-link" href="{record["repo"]}" target="_blank"'
             f' rel="noopener" title="{name}">'
-            f'<img class="icon icon--sm" src="images/icons/github.svg" alt="{name}"'
+            f'<img class="{icon_classes("github.svg", "sm")}"'
+            f' src="{github_icon}" alt="{name}"'
             f' width="15" height="15"></a>\n'
         )
 
@@ -868,8 +1314,8 @@ def render_project(record: dict, articles: dict) -> str:
         parts.append(render_points(record["points"]))
 
     body = "\n".join(indent(part, 2) for part in parts if part)
-    proj_id = f"proj-{slugify(record['title'])}"
-    return f'<li class="entry" id="{proj_id}">\n{body}\n</li>'
+    proj_id = record["id"]
+    return entry_li(record, proj_id, body)
 
 
 def course_sort_key(record: dict) -> tuple[int, int]:
@@ -914,7 +1360,7 @@ def render_course(record: dict) -> str:
                                   group_id=cap_id))
 
     body = "\n".join(indent(part, 2) for part in parts if part)
-    return f'<li class="entry" id="{course_id}">\n{body}\n</li>'
+    return entry_li(record, course_id, body)
 
 
 # --- career -----------------------------------------------------------------
@@ -934,7 +1380,7 @@ ONGOING = "Present"
 def month_year(value: str) -> str:
     """Render a stored "YYYY-MM" as "Aug 2024"."""
     year, month = value.split("-")
-    return f"{MONTHS[int(month) - 1]} {year}"
+    return f"{tr(f'month.{month}', MONTHS[int(month) - 1])} {year}"
 
 
 def tenure(start: str, end: str | None) -> str:
@@ -969,10 +1415,14 @@ def tenure(start: str, end: str | None) -> str:
 
     years, rest = divmod(months, 12)
     parts = []
+    # Plurals are per language, not a trailing "s": French pluralises "ans"
+    # but not "mois", so each locale supplies both forms rather than a rule.
     if years:
-        parts.append(f"{years} year" + ("s" if years > 1 else ""))
+        parts.append(f"{years} " + tr("unit.year" if years == 1 else "unit.years",
+                                      "year" if years == 1 else "years"))
     if rest:
-        parts.append(f"{rest} month" + ("s" if rest > 1 else ""))
+        parts.append(f"{rest} " + tr("unit.month" if rest == 1 else "unit.months",
+                                     "month" if rest == 1 else "months"))
     return " ".join(parts)
 
 
@@ -1074,8 +1524,8 @@ def render_experience(record: dict) -> str:
         parts.append(f'<div class="entry__roles">\n{nested}\n</div>')
 
     body = "\n".join(indent(part, 2) for part in parts if part)
-    exp_id = f"exp-{slugify(record['company'])}"
-    return f'<li class="entry" id="{exp_id}">\n{body}\n</li>'
+    exp_id = record["id"]
+    return entry_li(record, exp_id, body)
 
 
 def render_education(record: dict) -> str:
@@ -1125,8 +1575,8 @@ def render_education(record: dict) -> str:
         parts.append(render_group(group["title"], group["points"]))
 
     body = "\n".join(indent(part, 2) for part in parts if part)
-    edu_id = f"edu-{slugify(record['institution'])}"
-    return f'<li class="entry" id="{edu_id}">\n{body}\n</li>'
+    edu_id = record["id"]
+    return entry_li(record, edu_id, body)
 
 
 def render_credentials(record: dict, field: str) -> str:
@@ -1149,10 +1599,11 @@ def render_credentials(record: dict, field: str) -> str:
     from the URL scheme so that the hosted scans rendered bare, which left the
     two Microsoft rows looking like the only unclickable names in the block.
     """
-    icon = f'images/icons/{record["icon"]}'
+    icon = asset(f'images/icons/{record["icon"]}')
     heading = (
         '<p class="issuer">\n'
-        f'  <img class="icon icon--md" src="{icon}" alt="" width="18" height="18">\n'
+        f'  <img class="{icon_classes(record["icon"], "md")}"'
+        f' src="{icon}" alt="" width="18" height="18">\n'
         f'  {record[field]}\n'
         "</p>"
     )
@@ -1160,7 +1611,7 @@ def render_credentials(record: dict, field: str) -> str:
     items = []
     for credential in record["credentials"]:
         items.append(
-            f'  <li><a class="link-external" href="{credential["url"]}"'
+            f'  <li><a class="link-external" href="{asset(credential["url"])}"'
             f' target="_blank" rel="noopener">{credential["name"]}</a></li>'
         )
     body = "\n".join(items)
@@ -1302,19 +1753,10 @@ def render_current_role(record: dict) -> str:
         dateline.append(f'<span class="entry__location">{record["location"]}</span>')
     dateline.append(period)
 
-    # The route back to the substance, as a utility tag: the same mechanism
-    # render_project uses for a write-up, and for the same reason. It is an
-    # artefact attached to the record, not a dimension of it, so it renders
-    # after the model's categories and carries no ordering rule.
-    more = (
-        '<li><a class="tag tag--neutral" href="career.html#experience">'
-        'Full role on Career</a></li>'
-    )
-
     parts = [
         f'<p class="entry__title">\n  {" &middot; ".join(title_parts)}\n</p>',
         f'<p class="entry__period">{" &middot; ".join(dateline)}</p>',
-        render_meta(record, "experience", extra=(more,)),
+        render_meta(record, "experience"),
     ]
     if record.get("home_summary"):
         parts.append(f'<p class="entry__summary">{record["home_summary"]}</p>')
@@ -1508,25 +1950,80 @@ def render_impact(record: dict, page_labels: dict, projects: list[dict],
     return f'<li class="result">\n{body}\n</li>'
 
 
+def volunteering_sort_key(record: dict) -> str:
+    """Newest first; a record with no year yet sorts last.
+
+    The same rule publication_sort_key uses, for the same reason: nothing is
+    invented to make a record sortable. The Red Crescent record is undated
+    because nobody has supplied the months, not because it is oldest, and
+    guessing a year to place it correctly would be guessing.
+    """
+    return str(record.get("year") or "")
+
+
 def render_volunteering(record: dict) -> str:
     """One volunteering record as the site-wide .entry component.
 
-    It carries no metadata model (there is nothing a reader needs about it
-    that the four lines do not already say) but it is an `.entry`, and every
-    other `.entry` on the site is rendered from data. A single hand-written one
-    is how the next one gets hand-written too.
-    """
-    title = record["organisation"]
-    if record.get("branch"):
-        title += f' <span class="entry__role">&middot; {record["branch"]}</span>'
+    **No metadata model.** A chip row reading "Crisis relief" over pandemic aid
+    distribution reads as credential-farming, which is the one register this
+    block cannot afford. career.md section 8 carries the argument. Two records
+    were the stated condition for reopening the question; the pair arrived, the
+    question was asked, and the answer held.
 
-    parts = [
-        f'<p class="entry__title">{title}</p>',
-        f'<p class="entry__period">{record["period"]}</p>',
-        f'<p class="entry__summary">{record["summary"]}</p>',
-    ]
+    **`initiative` is what the pair actually revealed.** Both records happened
+    under a named programme, "COVID-19 response" and "Orientini", and there was
+    nowhere to put it: the first record had been keeping its programme name in
+    `period`, which is why that field held a topic instead of a date. It
+    renders on the dateline joined to the year with a middot, the same shape
+    render_experience uses for `Location &middot; Period`, so it needs no
+    component and no new rule in main.css.
+
+    **One record per edition**, which is how Awards already holds TCPC 22 and
+    TCPC 23, and Hello World v2.0 through v4.0. A single record spanning two
+    editions would not sort and would say less about either.
+
+    A record with neither `year` nor `start` renders no dateline at all rather
+    than an empty one: awards.md rule 5, missing data is omitted.
+    """
+    organisation = t(record, "organisation")
+    if record.get("url"):
+        organisation = (
+            f'<a class="link-external" href="{record["url"]}" target="_blank"'
+            f' rel="noopener">{organisation}</a>'
+        )
+    title = organisation
+    if record.get("branch"):
+        title += f' <span class="entry__role">&middot; {t(record, "branch")}</span>'
+
+    dateline = []
+    if record.get("location"):
+        dateline.append(f'<span class="entry__location">{t(record, "location")}</span>')
+    if record.get("initiative"):
+        dateline.append(t(record, "initiative"))
+    if record.get("start"):
+        start_str = month_year(record["start"])
+        if record.get("end"):
+            if record["start"] == record["end"]:
+                range_str = start_str
+            else:
+                range_str = f'{start_str} - {month_year(record["end"])}'
+        else:
+            range_str = f'{start_str} - {ONGOING}'
+        dateline.append(f'{range_str} ({tenure(record["start"], record.get("end"))})')
+    elif record.get("year"):
+        year = record["year"]
+        dateline.append(f'<time datetime="{year}">{year}</time>')
+
+    parts = [f'<p class="entry__title">{title}</p>']
+    if dateline:
+        parts.append(f'<p class="entry__period">{" &middot; ".join(dateline)}</p>')
+    if record.get("summary"):
+        parts.append(f'<p class="entry__summary">{t(record, "summary")}</p>')
+    if record.get("points"):
+        parts.append(render_points(t(record, "points")))
+
     body = "\n".join(indent(part, 2) for part in parts)
-    return f'<li class="entry">\n{body}\n</li>'
+    return entry_li(record, record["id"], body)
 
 
 def render_proof_key() -> str:
@@ -1655,40 +2152,205 @@ def json_ld(site: dict, meta: dict, canonical: str) -> str:
     return json.dumps(payload, separators=(",", ":"), ensure_ascii=False)
 
 
-def build(check_only: bool = False) -> int:
-    site = json.loads((SRC / "site.json").read_text(encoding="utf-8"))
-    layout = (SRC / "layout.html").read_text(encoding="utf-8")
+def fragment_for(locale: Locale, name: str) -> Path:
+    """The page fragment to render for this locale.
 
-    # Cache-bust CSS and JS off their actual contents, so a redeploy never
-    # serves a stale stylesheet and an unchanged one is never re-downloaded.
-    fingerprint = hashlib.sha256()
-    for asset in ("assets/css/main.css",):
-        fingerprint.update((ROOT / asset).read_bytes())
-    asset_version = fingerprint.hexdigest()[:12]
+    Prose is translated as a whole fragment (src/i18n/<code>/pages/<name>),
+    not as keyed strings. A heading and a block__intro are sentences with
+    markup threaded through them, and keying those by id produces an overlay
+    nobody can read and a translator cannot work in.
 
-    site_context = {f"site.{k}": v for k, v in site.items() if isinstance(v, (str, int))}
+    The fragment is the one thing here that is genuinely duplicated, so it is
+    the one thing guarded: check_fragment_parity refuses a translation that
+    does not carry the same anchors and the same generated blocks.
+    """
+    candidate = I18N / locale.code / "pages" / name
+    return candidate if candidate.exists() else PAGES / name
 
+
+def check_fragment_parity(locale: Locale, name: str) -> list[str]:
+    """Every id and every {{ block }} must survive translation.
+
+    An id is an anchor that impact.json, skills.json and the page context rail
+    all address; a missing {{ build.x }} silently drops a whole block of
+    records. Both are invisible in a language the author does not read, which
+    is exactly why the build checks rather than trusting.
+    """
+    translated = I18N / locale.code / "pages" / name
+    if not translated.exists():
+        return []
+    english = (PAGES / name).read_text(encoding="utf-8")
+    other = translated.read_text(encoding="utf-8")
+    locale.witness(f"pages/{name}", english)
+    problems = []
+    for label, pattern in (("anchor", r'id="([^"]+)"'), ("block", r"\{\{\s*([\w.]+)\s*\}\}")):
+        want = set(re.findall(pattern, english))
+        got = set(re.findall(pattern, other))
+        for item in sorted(want - got):
+            problems.append(f"{locale.code}/pages/{name}: {label} {item!r} is missing")
+        for item in sorted(got - want):
+            problems.append(f"{locale.code}/pages/{name}: {label} {item!r} is not in the English source")
+    return problems
+
+
+def render_alternates(site: dict, locales: list[Locale], output_name: str) -> str:
+    """hreflang for every rendering of this page, including x-default.
+
+    Search engines need to be told these are the same page in two languages
+    rather than two pages competing for the same words, and a reader arriving
+    from a French search should land on the French one.
+    """
+    leaf = "" if output_name == "index.html" else output_name
+    lines = []
+    for other in locales:
+        href = f"{site['base_url']}/{other.dir}{leaf}"
+        lines.append(f'<link rel="alternate" hreflang="{other.lang}" href="{href}">')
+    lines.append(f'<link rel="alternate" hreflang="x-default" href="{site["base_url"]}/{leaf}">')
+    return "\n".join(lines)
+
+
+def render_lang_switch(locales: list[Locale], active: Locale, output_name: str) -> str:
+    """The language control, beside the theme switch in the brand bar.
+
+    Links, not buttons: each one is a real page at a real URL, so this is
+    navigation and not state, and it needs no script. The active language is
+    marked with aria-current and rendered as plain text rather than a link,
+    because a link to the page you are on is a small lie.
+    """
+    if len(locales) < 2:
+        return ""
+    leaf = "" if output_name == "index.html" else output_name
+    items = []
+    for other in locales:
+        if other.code == active.code:
+            items.append(
+                f'<span class="lang-switch__current" aria-current="true">{other.label}</span>'
+            )
+        else:
+            href = f"{active.up}{other.dir}{leaf}" or f"{active.up}index.html"
+            items.append(
+                f'<a class="lang-switch__option" href="{href}" lang="{other.lang}"'
+                f' hreflang="{other.lang}">{other.label}</a>'
+            )
+    body = f' <span class="lang-switch__sep" aria-hidden="true">&middot;</span> '.join(items)
+    label = tr("chrome.language", "Language:")
+    return (f'<div class="lang-switch">\n'
+            f'  <span class="lang-switch__label">{label}</span>\n'
+            f'  {body}\n'
+            f'</div>')
+
+
+def chrome_context() -> dict:
+    """The layout's own words, in the active locale."""
+    return {
+        "chrome.skip": tr("chrome.skip", "Skip to content"),
+        "chrome.cv": tr("chrome.cv", "CV (PDF)"),
+        "chrome.primary_nav": tr("chrome.primary_nav", "Primary"),
+        "chrome.theme": tr("chrome.theme", "Theme:"),
+        "chrome.theme_system": tr("chrome.theme_system", "System"),
+        "chrome.theme_light": tr("chrome.theme_light", "Light"),
+        "chrome.theme_dark": tr("chrome.theme_dark", "Dark"),
+        "chrome.theme_group": tr("chrome.theme_group", "Colour theme"),
+        "chrome.last_update": tr("chrome.last_update", "Last update"),
+        "chrome.hosted": tr("chrome.hosted", "Hosted on GitHub Pages"),
+    }
+
+
+def lock_path(locale: Locale) -> Path:
+    return I18N / f"{locale.code}.lock.json"
+
+
+def check_translations(locales: list[Locale], sync: bool) -> list[str]:
+    """Fail when a translated string's English original has since changed.
+
+    The fallback in `t` covers a string that was never translated. Nothing
+    covered the opposite and worse case: a string translated once, then edited
+    in English, where the French keeps saying the old thing with no gap for
+    anyone to notice. Two pages then disagree about a figure or a date, in a
+    language the author does not proofread, which is the exact drift every
+    other guard in this build exists to prevent.
+
+    The lock records the English each translation was made from. A mismatch is
+    fatal rather than a warning, because a stale translation is not less
+    complete than a missing one, it is wrong. `--sync` re-stamps the lock and
+    is how you say "I have updated the French to match".
+
+    A locale with no lock yet is bootstrapped rather than failed: the first
+    build after adding a language has nothing to have drifted from.
+    """
+    problems: list[str] = []
+    for locale in locales:
+        if locale.code == "en":
+            continue
+        path = lock_path(locale)
+        previous = json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
+
+        if previous is not None and not sync:
+            for key, digest in sorted(locale.seen.items()):
+                was = previous.get(key)
+                if was is not None and was != digest:
+                    problems.append(
+                        f"{locale.code}: {key} was translated from an English "
+                        f"source that has since changed. Update the translation, "
+                        f"then re-stamp with: python3 tools/build.py --sync"
+                    )
+
+        if sync or previous is None:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(
+                json.dumps(locale.seen, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+                encoding="utf-8",
+            )
+    return problems
+
+
+def report_missing(locales: list[Locale]) -> None:
+    """Say what is still English, per locale, on every build.
+
+    A missing string falls back rather than failing, because a half-translated
+    page is readable and an empty one is not. That leniency only works if the
+    gap is visible, so it is counted here and never silently absorbed.
+    """
+    for locale in locales:
+        if locale.code == "en" or not locale.missing:
+            continue
+        keys = sorted(locale.missing)
+        head = ", ".join(keys[:6])
+        more = f", and {len(keys) - 6} more" if len(keys) > 6 else ""
+        print(f"  {locale.code}: {len(keys)} untranslated: {head}{more}")
+
+
+def page_blocks(site: dict) -> dict:
+    """Every data-driven region of every page, rendered for ACTIVE.
+
+    Called once per locale. The records are re-read and re-rendered each
+    time rather than rendered once and patched, because a translation is
+    not a string substitution over finished markup: an ordinal, a month, a
+    duration and a tag are all generated, and each is generated
+    differently per language.
+    """
     # Data-driven sections. A page fragment holds the section's heading and
     # prose; the records themselves come from src/data/, rendered through the
     # shared metadata rules so the tag order and colours are identical
     # everywhere. Indented to sit inside the <ul class="entries"> that the
     # fragment opens.
-    awards = json.loads((DATA / "awards.json").read_text(encoding="utf-8"))
+    # Ids are stamped before anything renders or sorts: see with_ids.
+    awards = with_ids(json.loads((DATA / "awards.json").read_text(encoding="utf-8")), "award")
     competitions = [a for a in awards if a.get("type") == "Competitive Programming"]
     hackathons = [a for a in awards if a.get("type") == "Hackathon"]
-    workshops = json.loads((DATA / "workshops.json").read_text(encoding="utf-8"))
+    workshops = with_ids(json.loads((DATA / "workshops.json").read_text(encoding="utf-8")), "ws")
     courses = sorted(
         json.loads((DATA / "teaching.json").read_text(encoding="utf-8")),
         key=course_sort_key,
         reverse=True,
     )
     publications = sorted(
-        json.loads((DATA / "research.json").read_text(encoding="utf-8")),
+        with_ids(json.loads((DATA / "research.json").read_text(encoding="utf-8")), "pub"),
         key=publication_sort_key,
         reverse=True,
     )
     articles = sorted(
-        json.loads((DATA / "writing.json").read_text(encoding="utf-8")),
+        with_ids(json.loads((DATA / "writing.json").read_text(encoding="utf-8")), "art"),
         key=publication_sort_key,
         reverse=True,
     )
@@ -1698,7 +2360,7 @@ def build(check_only: bool = False) -> int:
     # restating the heading it already sits under: the tension awards.md
     # records, resolved research.md's way.
     projects = sorted(
-        json.loads((DATA / "projects.json").read_text(encoding="utf-8")),
+        with_ids(json.loads((DATA / "projects.json").read_text(encoding="utf-8")), "proj"),
         key=project_sort_key,
         reverse=True,
     )
@@ -1707,12 +2369,12 @@ def build(check_only: bool = False) -> int:
     # credentials keep the order they are written in, because an issuer group
     # has no date to sort on and grouping by issuer is the ordering.
     experience = sorted(
-        json.loads((DATA / "experience.json").read_text(encoding="utf-8")),
+        with_ids(json.loads((DATA / "experience.json").read_text(encoding="utf-8")), "exp"),
         key=tenure_sort_key,
         reverse=True,
     )
     education = sorted(
-        json.loads((DATA / "education.json").read_text(encoding="utf-8")),
+        with_ids(json.loads((DATA / "education.json").read_text(encoding="utf-8")), "edu"),
         key=lambda record: record["start"],
         reverse=True,
     )
@@ -1724,7 +2386,11 @@ def build(check_only: bool = False) -> int:
     # cannot name one page and point at another.
     page_labels = {entry["href"]: entry["label"] for entry in site["nav"]}
     impact = json.loads((DATA / "impact.json").read_text(encoding="utf-8"))
-    volunteering = json.loads((DATA / "volunteering.json").read_text(encoding="utf-8"))
+    volunteering = sorted(
+        with_ids(json.loads((DATA / "volunteering.json").read_text(encoding="utf-8")), "vol"),
+        key=volunteering_sort_key,
+        reverse=True,
+    )
     citations = cite_index(experience)
     skills = sorted(
         json.loads((DATA / "skills.json").read_text(encoding="utf-8")),
@@ -1735,6 +2401,7 @@ def build(check_only: bool = False) -> int:
     blocks = {
         "build.credential_row": indent(render_credential_row(certifications), 8),
         "build.language_row": indent(render_language_row(languages), 8),
+        "build.awards_summary": indent(render_awards_summary(awards), 4),
         "build.awards": indent("\n".join(render_award(a) for a in awards), 4),
         "build.competitions": indent("\n".join(render_award(a) for a in competitions), 4),
         "build.hackathons": indent("\n".join(render_award(a) for a in hackathons), 4),
@@ -1768,51 +2435,108 @@ def build(check_only: bool = False) -> int:
         "build.volunteering": indent(
             "\n".join(render_volunteering(v) for v in volunteering), 4),
     }
+    return blocks
 
+
+def build(check_only: bool = False, sync: bool = False) -> int:
+    site = json.loads((SRC / "site.json").read_text(encoding="utf-8"))
+    layout = (SRC / "layout.html").read_text(encoding="utf-8")
+
+    # Cache-bust CSS and JS off their actual contents, so a redeploy never
+    # serves a stale stylesheet and an unchanged one is never re-downloaded.
+    fingerprint = hashlib.sha256()
+    for asset in ("assets/css/main.css",):
+        fingerprint.update((ROOT / asset).read_bytes())
+    asset_version = fingerprint.hexdigest()[:12]
+
+    site_context = {f"site.{k}": v for k, v in site.items() if isinstance(v, (str, int))}
+
+    global ACTIVE
+
+    locales = load_locales()
+    problems: list[str] = []
     stale: list[str] = []
     written: list[str] = []
 
-    for nav_entry in site["nav"]:
-        source = PAGES / nav_entry["href"]   # content fragment mirrors its output name
-        meta, content = parse_front_matter(source.read_text(encoding="utf-8"))
-        content = render(content.strip(), {**site_context, **blocks})
-        page_context = render_page_context(content, source)
+    for locale in locales:
+        ACTIVE = locale
 
-        output_name = nav_entry["href"]
-        canonical = f"{site['base_url']}/{'' if output_name == 'index.html' else output_name}"
-        title_tag = meta["title"] if meta.get("nav") == "home" else f"{meta['title']} &middot; {site['name']}"
+        # Re-rendered per locale rather than substituted into finished markup:
+        # ordinals, months, durations and tags are all generated, and each is
+        # generated differently per language.
+        blocks = page_blocks(site)
+        locale_site = {**site, **locale.overrides}
+        locale_context = {f"site.{k}": v for k, v in locale_site.items()
+                          if isinstance(v, (str, int))}
+        # <html lang> and og:locale are the locale's own, not the site's.
+        # Missing this shipped a French page announcing itself as English,
+        # which is the one metadata error a translation cannot survive: it
+        # tells a screen reader which voice to use and a search engine which
+        # audience to serve.
+        locale_context["site.lang"] = locale.lang
+        locale_context["site.locale"] = locale.og_locale
 
-        nav_items = [
-            {
-                **item,
-                "aria_current": ' aria-current="page"' if item["id"] == nav_entry["id"] else "",
+        for nav_entry in site["nav"]:
+            source = fragment_for(locale, nav_entry["href"])
+            problems += check_fragment_parity(locale, nav_entry["href"])
+            meta, content = parse_front_matter(source.read_text(encoding="utf-8"))
+            content = render(content.strip(),
+                             {**locale_context, **blocks, "page.root": locale.up})
+            page_context = render_page_context(content, source)
+
+            output_name = nav_entry["href"]
+            path = f"{locale.dir}{'' if output_name == 'index.html' else output_name}"
+            canonical = f"{site['base_url']}/{path}"
+            page_title = tr(f"page.{nav_entry['id']}.title", meta["title"])
+            title_tag = (page_title if meta.get("nav") == "home"
+                         else f"{page_title} &middot; {locale_site['name']}")
+
+            nav_items = [
+                {
+                    **item,
+                    "label": tr(f"nav.{item['id']}", item["label"]),
+                    "aria_current": ' aria-current="page"' if item["id"] == nav_entry["id"] else "",
+                }
+                for item in site["nav"]
+            ]
+
+            context = {
+                **locale_context,
+                "page.title_tag": title_tag,
+                "page.description": tr(f"page.{nav_entry['id']}.description", meta["description"]),
+                "page.canonical": canonical,
+                "page.og_type": "profile" if meta.get("nav") == "home" else "article",
+                "page.content": indent(content, 8),
+                "page.root": locale.up,
+                "build.page_context": indent(page_context, 8),
+                "build.asset_version": asset_version,
+                "build.json_ld": json_ld(locale_site, meta, canonical),
+                "build.nav": render_items("nav-item.html", nav_items),
+                "build.alternates": indent(render_alternates(site, locales, output_name), 2),
+                "build.lang_switch": indent(render_lang_switch(locales, locale, output_name), 10),
+                "build.chrome": "",
+                **chrome_context(),
             }
-            for item in site["nav"]
-        ]
 
-        context = {
-            **site_context,
-            "page.title_tag": title_tag,
-            "page.description": meta["description"],
-            "page.canonical": canonical,
-            "page.og_type": "profile" if meta.get("nav") == "home" else "article",
-            "page.content": indent(content, 8),
-            "build.page_context": indent(page_context, 8),
-            "build.asset_version": asset_version,
-            "build.json_ld": json_ld(site, meta, canonical),
-            "build.nav": render_items("nav-item.html", nav_items),
-        }
+            page_html = BANNER.format(source=source.name) + render(layout, context)
+            target = ROOT / path if path.endswith(".html") else ROOT / locale.dir / "index.html"
 
-        page_html = BANNER.format(source=source.name) + render(layout, context)
-        target = ROOT / output_name
+            if check_only:
+                current = target.read_text(encoding="utf-8") if target.exists() else ""
+                if current != page_html:
+                    stale.append(str(target.relative_to(ROOT)))
+            else:
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text(page_html, encoding="utf-8")
+                written.append(str(target.relative_to(ROOT)))
 
-        if check_only:
-            current = target.read_text(encoding="utf-8") if target.exists() else ""
-            if current != page_html:
-                stale.append(output_name)
-        else:
-            target.write_text(page_html, encoding="utf-8")
-            written.append(output_name)
+    ACTIVE = locales[0]
+    problems += check_translations(locales, sync)
+    if problems:
+        for problem in sorted(set(problems)):
+            print(f"translation: {problem}", file=sys.stderr)
+        return 1
+    report_missing(locales)
 
     if check_only:
         if stale:
@@ -1821,6 +2545,8 @@ def build(check_only: bool = False) -> int:
         print(f"up to date: {len(site['nav'])} pages")
         return 0
 
+    if sync:
+        print("translation locks re-stamped")
     print(f"built {len(written)} pages @ assets {asset_version}: " + ", ".join(written))
     return 0
 
@@ -1869,7 +2595,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="verify output is current")
     parser.add_argument("--watch", action="store_true", help="watch src/ and assets/ and rebuild automatically")
+    parser.add_argument("--sync", action="store_true",
+                        help="re-stamp the translation locks: use after updating a translation "
+                             "to match an edited English source")
     args = parser.parse_args()
     if args.watch:
         sys.exit(watch())
-    sys.exit(build(check_only=args.check))
+    sys.exit(build(check_only=args.check, sync=args.sync))

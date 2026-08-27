@@ -1,0 +1,44 @@
+<!--
+title: Distinctions
+description: Résultats en programmation compétitive et en hackathon, dont une première place à Hello World v4.0 Sfax sur 86 équipes.
+nav: awards
+-->
+<header class="page-header">
+  <h1 class="page-title">Distinctions</h1>
+  <!-- Le meilleur résultat par portée, dérivé de src/data/awards.json par
+       render_awards_summary et citant par ancre les enregistrements
+       ci-dessous. La carte est celle des certifications : même grille, même
+       .entry, même liste .points. Aucune prose ni aucun chiffre propre, et
+       rien n'y est mis en forme. awards.md. -->
+  <ul class="entries entries--grid">
+{{ build.awards_summary }}
+  </ul>
+</header>
+
+<section class="block" aria-labelledby="competitions">
+  <h3 class="block__title" id="competitions">Concours</h3>
+  <p class="block__intro">
+    Une formation d'ingénieur, doublée du réflexe de la programmation compétitive.
+  </p>
+  <ul class="entries">
+    <!-- DRAFT: les deux block__intro de cette page sont des lignes de pitch et
+         relèvent de la voix de l'auteur (CLAUDE.md section 6). Elles sont
+         traduites ici littéralement pour que la page fonctionne, et attendent
+         d'être réécrites, pas relues.
+
+         Les enregistrements viennent de src/data/awards.json ; l'ordre et la
+         couleur des tags viennent de MODELS dans tools/build.py. Ne jamais
+         écrire d'entrée à la main ici. -->
+{{ build.competitions }}
+  </ul>
+</section>
+
+<section class="block" aria-labelledby="hackathons">
+  <h3 class="block__title" id="hackathons">Hackathons</h3>
+  <p class="block__intro">
+    Prototypage rapide, conception produit et livraison technique sous contrainte.
+  </p>
+  <ul class="entries">
+{{ build.hackathons }}
+  </ul>
+</section>

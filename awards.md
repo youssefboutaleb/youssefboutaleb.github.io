@@ -116,27 +116,21 @@ other three so it can be read the same way.
 
 ```
 Model:  awards
-Order:  placement → type → scope → scale → duration → track
+Order:  placement → distinction → type → scope → scale → duration → track
 
-  placement  where the entry finished          1, 2, 13, "Quarter-finalist"
-  type       what kind of event it was         "Competitive Programming", "Hackathon"
-  scope      how far the field reached         "Regional", "National",
-                                               "African", "International"
-  scale      how large the field was           "7,094 teams", "86 teams", "200 teams"
-  duration   how long the event lasted         "48h"
-  track      event focus / topic area          "GenAI for Healthcare"
+  placement    where the entry finished          1, 2, 13, "Quarter-finalist"
+  distinction  notable stage or honor            "National Finalist"
+  type         what kind of event it was         "Competitive Programming", "Hackathon"
+  scope        how far the field reached         "Regional", "National",
+                                                 "African", "International"
+  scale        how large the field was           "7,094 teams", "86 teams", "200 teams"
+  duration     how long the event lasted         "48h"
+  track        event focus / topic area          "GenAI for Healthcare"
 ```
 
 The order is defined once, in `MODELS["awards"]` in `tools/build.py`.
 
-**`placement` first**, because it is the only reason the record is on the page,
-and it carries the medal disc for a top-three finish (rule 6). **`type`
-second**, because a 13th place in a programming contest and a 13th place in a
-hackathon are different results. **`scope` third**, as the qualifier on how far
-that result reaches. **`scale` fourth, and quiet**: a field size is the context
-that makes a placement legible rather than a claim of its own, which is why it
-takes the regular-weight grey. **`duration` and `track`** provide situational
-context for time-bounded hackathons, taking the same regular-weight grey.
+**`placement` first**, because it is the primary ranking metric. **`distinction` second**, highlighting stage honors like *National Finalist*. **`type` third**, distinguishing programming contests from hackathons. **`scope` fourth**, as the qualifier on how far that result reaches. **`scale` fifth, and quiet**: field size legibility. **`duration` and `track`** provide situational context for hackathons.
 
 ### Vocabulary
 
@@ -179,6 +173,42 @@ for the site-wide intro rule; see below and [`DESIGN.md`](DESIGN.md) §11.1.
 > the same situation the other way, keeping the type in the block heading and
 > out of the model. Awards keeps the tag for now; if it goes, it goes from
 > `MODELS["awards"]` and nowhere else.
+
+### The scope summary
+
+The page opens on a card per scope, on the grid that carries Career's
+certifications ([`DESIGN.md`](DESIGN.md) §9.4), and it is **derived, never
+written**. Each card is a scope, the result as that record's own tag chips,
+and the record itself as a `.points` link into the page below.
+`render_awards_summary`
+takes the best record in each scope and applies one rule:
+
+| The best record | The row says |
+|---|---|
+| carries a `distinction` | that distinction, counted when more than one record in the scope earned it |
+| does not | its `placement` and its `scale` |
+
+Which is why National reads *2&times; National Finalist* rather than *13th
+Place*: two national finals is the fact, and the two placements are on the two
+records the card lists. Every string comes out of `meta_label`, the function
+that renders the tags below, so a card cannot come to disagree with the entry
+it links to, and it translates with the tag vocabulary rather than with chrome
+strings of its own.
+
+Three consequences, all of them rule 5 and rule 7 doing their job:
+
+- **A scope with no record renders no card.** Nothing is invented to square
+  the 2&times;2 shape.
+- **`SCOPE_ORDER` in `tools/build.py` fixes the reading order**, weakest reach
+  first. A new scope value is placed there deliberately, not wherever a sort
+  puts it.
+- **The International card says *643rd Place* and *7,094 teams*** and is
+  meant to. [`CLAUDE.md`](CLAUDE.md) §5: a summary where every figure is
+  maximally flattering is a summary nobody believes, and the honest placement
+  is the one that makes the 1st above it worth reading.
+
+The cards replaced `.awards-stats`, a bordered box that hand-formatted its own
+labels; the full list of what that cost is in [`DESIGN.md`](DESIGN.md) §9.4.
 
 ### The records
 

@@ -9,7 +9,7 @@ A record on Career is true because it is the record. A figure on Home is true
 only for as long as it still agrees with the record it came from. Twice now it
 has stopped agreeing, in both directions:
 
-- Selected Impact once read *"2 plugins accepted upstream, both listed in the
+- Impact in Numbers once read *"2 plugins accepted upstream, both listed in the
   official directory"* while `projects.json` had both pull requests `open`.
 - After they merged, the same block read *"submitted upstream, both open"*
   while Projects rendered *Accepted upstream*, so the front page was
@@ -34,9 +34,9 @@ Three ways a block satisfies it:
 |---|---|---|
 | **Projection**: rendered from another page's records | Currently | Cannot drift. There is one copy |
 | **Citation**: a chip that links to the record | Skills & Evidence | `check.py` fails the build on a dead anchor |
-| **Quotation**: the record's own sentence, rendered here | Selected Impact | Cannot drift. There is one copy, and it lives on the record |
+| **Quotation**: the record's own sentence, rendered here | Impact in Numbers | Cannot drift. There is one copy, and it lives on the record |
 
-**There used to be a fourth, and it is gone.** Selected Impact held a
+**There used to be a fourth, and it is gone.** Impact in Numbers held a
 hand-written sentence beside a hand-written figure, both restating a bullet that
 already existed in `experience.json`. Two copies of one fact, kept in agreement
 by a person, on the block this document opens by calling the most dangerous on
@@ -59,7 +59,7 @@ summarise another page is the signal that the summary belongs on that page.
 ```
 The opening       identity, claim, availability, credentials
 Currently         the job I am doing right now                 ← projection
-Selected Impact   what changed because I shipped               ← restatement
+Impact in Numbers what changed because I shipped               ← restatement
 Skills & Evidence what I can do, and what proves it            ← citations
 ```
 
@@ -69,7 +69,7 @@ and asks the hiring manager to come back. The blocks also lengthen as the page
 descends, so the longest and most detailed one is aimed at the reader who has
 already decided to keep going.
 
-Selected Impact used to be last, behind a block 3.4 times its size, roughly two
+Impact in Numbers used to be last, behind a block 3.4 times its size, roughly two
 screens down. A hiring manager who read three blocks and left never reached the
 one that says what changed.
 
@@ -80,7 +80,7 @@ sequence, and each block is aimed at one of them:
 |---|---|---|
 | The opening | Recruiter, in seconds | Right shape of candidate, what is certified, and can they be hired |
 | Currently | Hiring manager | Scale and ownership, today, not three years ago |
-| Selected Impact | Hiring manager | What actually changed |
+| Impact in Numbers | Hiring manager | What actually changed |
 | Skills & Evidence | Hiring manager, then engineer | Capability, with the proof attached |
 
 **Currently sits above Skills & Evidence** because it is the only block that
@@ -90,8 +90,8 @@ and it survives being fourth: it is also by far the longest, and putting it
 higher buries everything underneath it.
 
 That argument was written for Currently and stopped one block short. It is more
-true of Selected Impact than of any other block on the page, which is why
-Selected Impact is now third.
+true of Impact in Numbers than of any other block on the page, which is why
+Impact in Numbers is now third.
 
 ---
 
@@ -122,7 +122,7 @@ Azure, ETL/ELT, integration, observability: both, in that order. About 45 words
 spent twice, before the reader reached one piece of evidence.
 
 **That was the one restatement on Home that neither generated nor cited
-anything.** The rule at the top of this document exists because Selected Impact
+anything.** The rule at the top of this document exists because Impact in Numbers
 drifted twice, and the guard built for it (`cite`, quotation through an id)
 cannot see two hand-written paragraphs agreeing with each other by hand. The
 fix was not to reword one of them. It was to remove the second block, because
@@ -248,16 +248,10 @@ sentence.
 Data Engineer · JACQUEMUS          Paris, France · Aug 2024 - Present (2 years)
 [Luxury E-commerce & Retail] [Permanent] [Remote] [150+ pipelines]
 [Azure Data Factory] [Azure Fabric] [Apache Spark] [Datadog]
-[Full role on Career]
 Order, customer, product and pricing data into a medallion lakehouse, on
 flows carrying roughly 800,000 events and records a day and order peaks
 near 5,000 an hour at sale events.
 ```
-
-`Full role on Career` is a **utility** tag, not a category: it is an artefact
-attached to the record rather than a dimension of it, so it renders after the
-model's categories and carries no ordering rule. Same mechanism
-[`projects.md`](projects.md) uses for a write-up link.
 
 Three rules:
 
@@ -301,7 +295,7 @@ it**, which is the distinction that keeps it out of the self-assessment
 is `branch` while carrying six citations and the strongest standing the model
 awards: the field did not demote it, it filed it.
 
-### Selected Impact
+### Impact in Numbers
 
 The block that quotes. Records: [`src/data/impact.json`](src/data/impact.json),
 rendered as `.result` ([`DESIGN.md`](DESIGN.md) §9.3).
@@ -378,7 +372,7 @@ Three things come out of that one id, and none of them can be typed:
 
 1. **The sentence.** The bullet's `impact` line, which is the register
    [`DESIGN.md`](DESIGN.md) §9.2 defines for exactly this: *what changed
-   because it shipped*. Selected Impact is that register at Home's altitude,
+   because it shipped*. Impact in Numbers is that register at Home's altitude,
    which is why the two share a sentence instead of paraphrasing each other.
    A bullet with no `impact` line renders its `point` text instead: still the
    source's own words, never a summary of them.

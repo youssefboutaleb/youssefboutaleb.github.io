@@ -179,9 +179,9 @@ restates facts held elsewhere on the site.* Under that rule, the old Skills
 list was correctly markup: nothing else on the site claimed a proficiency.
 
 Adding evidence flipped it. Every chip now points at a record on another page,
-which makes this block the second one (after Selected Impact) that can
+which makes this block the second one (after Impact in Numbers) that can
 quietly contradict the site it sits on. It is therefore data, for exactly the
-reason Selected Impact is: the failure mode is a link that names one thing and
+reason Impact in Numbers is: the failure mode is a link that names one thing and
 points at another, and `check.py` can only catch that if the link is generated.
 
 **Consequence: `check.py` validates every one of these citations.** A chip

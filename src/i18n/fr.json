@@ -1,0 +1,123 @@
+{
+  "lang": "fr",
+  "og_locale": "fr_FR",
+  "label": "Français",
+  "keep": [
+    "*.title",
+    "award-hello-world-*.venue",
+    "*.stack",
+    "*.institution",
+    "*.company",
+    "*.issuer",
+    "*.platform",
+    "*.publisher",
+    "*.name",
+    "tag.*.Hackathon"
+  ],
+  "site": {
+    "role": "Ingénieur Data",
+    "description": "Ingénieur Data : pipelines ETL/ELT à l'échelle de l'entreprise, intégrations pilotées par API et observabilité sur Microsoft Azure. Certifié Microsoft, MuleSoft, Talend, Datadog et Astronomer.",
+    "last_updated": "août 2026",
+    "resume": "data/Youssef_BOUTALEB_cv_fr.pdf"
+  },
+  "strings": {
+    "chrome.skip": "Aller au contenu",
+    "chrome.cv": "CV (PDF)",
+    "chrome.primary_nav": "Principale",
+    "chrome.language": "Langue :",
+    "chrome.contents": "Sommaire",
+    "chrome.theme": "Thème :",
+    "chrome.theme_group": "Thème de couleur",
+    "chrome.theme_system": "Système",
+    "chrome.theme_light": "Clair",
+    "chrome.theme_dark": "Sombre",
+    "chrome.last_update": "Dernière mise à jour",
+    "chrome.hosted": "Hébergé sur GitHub Pages",
+    "nav.home": "Accueil",
+    "nav.career": "Parcours",
+    "nav.projects": "Projets",
+    "nav.research": "Recherche",
+    "nav.teaching": "Enseignement",
+    "nav.workshops": "Ateliers",
+    "nav.awards": "Distinctions",
+    "nav.contact": "Contact",
+    "month.01": "janv.",
+    "month.02": "févr.",
+    "month.03": "mars",
+    "month.04": "avr.",
+    "month.05": "mai",
+    "month.06": "juin",
+    "month.07": "juil.",
+    "month.08": "août",
+    "month.09": "sept.",
+    "month.10": "oct.",
+    "month.11": "nov.",
+    "month.12": "déc.",
+    "unit.year": "an",
+    "unit.years": "ans",
+    "unit.month": "mois",
+    "unit.months": "mois",
+    "unit.teams": "équipes",
+    "tag.type.Competitive Programming": "Programmation compétitive",
+    "tag.type.Hackathon": "Hackathon",
+    "tag.scope.Regional": "Régional",
+    "tag.scope.National": "National",
+    "tag.scope.International": "International",
+    "tag.scope.African": "Afrique",
+    "tag.distinction.National Finalist": "Finaliste national",
+    "tag.placement.Quarter-finalist": "Quart de finaliste",
+    "page.awards.title": "Distinctions",
+    "page.awards.description": "Résultats en programmation compétitive et en hackathon, dont une première place à Hello World v4.0 Sfax sur 86 équipes.",
+    "placement.pattern": "{ordinal} place"
+  },
+  "records": {
+    "award-hello-world-v40.points": [
+      "8 / 8 problèmes résolus en 4 h (équipe de 2)"
+    ],
+    "award-hello-world-v30.points": [
+      "6 / 8 problèmes résolus en 4 h (équipe de 2)"
+    ],
+    "award-hello-world-v20.points": [
+      "5 / 8 problèmes résolus en 4 h (équipe de 2)"
+    ],
+    "award-tcpc-23.points": [
+      "10 / 14 problèmes résolus en 5 h (équipe de 3)"
+    ],
+    "award-tcpc-22.points": [
+      "8 / 14 problèmes résolus en 5 h (équipe de 3)"
+    ],
+    "award-ieeextreme-programming-competition-170.points": [
+      "11 / 26 problèmes résolus en 24 h (équipe de 2)"
+    ],
+    "award-ieeextreme-programming-competition-160.points": [
+      "8 / 26 problèmes résolus en 24 h (équipe de 2)"
+    ],
+    "award-a2sv-africa-to-silicon-valley-genai-hackathon.points": [
+      "MVP livré en 48 h, transformant des données complexes de diagnostic clinique et de médication en résumés HTML accessibles aux patients",
+      "Conception du service FastAPI et des gabarits Jinja2, consommant des schémas JSON structurés validés contre les sorties du LLM",
+      "Intégration avec l'API Hugging Face Inference (Falcon) ; en binôme avec Mohamed Brahim, qui a mené le pipeline GenAI et le pitch"
+    ],
+    "vol-tunisian-red-crescent.organisation": "Croissant-Rouge tunisien",
+    "vol-tunisian-red-crescent.branch": "Comité local de Houmt Souk, Djerba",
+    "vol-tunisian-red-crescent.points": [
+      "Participation à l'organisation de la distribution de l'aide et à la coordination des files d'attente.",
+      "Collecte et distribution de produits de première nécessité, et accompagnement des personnes âgées."
+    ],
+    "vol-tunisian-red-crescent.initiative": "Riposte COVID-19",
+    "vol-jeunes-ingenieurs-de-djerba-jid-2022.organisation": "Jeunes Ingénieurs de Djerba (JID)",
+    "vol-jeunes-ingenieurs-de-djerba-jid-2022.initiative": "Orientini",
+    "vol-jeunes-ingenieurs-de-djerba-jid-2022.points": [
+      "Accompagnement de lycéens dans le choix d'une filière d'ingénierie et des carrières auxquelles elle mène."
+    ],
+    "vol-jeunes-ingenieurs-de-djerba-jid-2023.organisation": "Jeunes Ingénieurs de Djerba (JID)",
+    "vol-jeunes-ingenieurs-de-djerba-jid-2023.initiative": "Orientini",
+    "vol-jeunes-ingenieurs-de-djerba-jid-2023.points": [
+      "Accompagnement de lycéens dans le choix d'une filière d'ingénierie et des carrières auxquelles elle mène."
+    ]
+  },
+  "ordinal": {
+    "1": "1re",
+    "other": "{n}e"
+  },
+  "group": " "
+}

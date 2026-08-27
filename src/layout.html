@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="{{ site.lang }}">
+<html lang="{{ site.lang }}" class="no-js">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light">
+  <meta name="color-scheme" content="light dark">
 
   <title>{{ page.title_tag }}</title>
   <meta name="description" content="{{ page.description }}">
@@ -12,9 +12,29 @@
   <meta name="google-site-verification" content="{{ site.google_site_verification }}">
 
   <link rel="canonical" href="{{ page.canonical }}">
-  <link rel="icon" type="image/svg+xml" href="{{ site.favicon }}">
-  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Noto-Sans-regular/Noto-Sans-regular.woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v={{ build.asset_version }}">
+{{ build.alternates }}
+  <link rel="icon" type="image/svg+xml" href="{{ page.root }}{{ site.favicon }}">
+  <link rel="preload" as="font" type="font/woff2" href="{{ page.root }}assets/fonts/Noto-Sans-regular/Noto-Sans-regular.woff2" crossorigin>
+  <link rel="stylesheet" href="{{ page.root }}assets/css/main.css?v={{ build.asset_version }}">
+
+  <script>
+    // Before first paint, or the pinned theme flashes the other one on every
+    // page load. Reads one key and sets one attribute; everything else the
+    // switch does is CSS.
+    (function () {
+      var root = document.documentElement;
+      root.classList.remove('no-js');
+      try {
+        var stored = localStorage.getItem('theme');
+        if (stored === 'light' || stored === 'dark') {
+          root.setAttribute('data-theme', stored);
+        }
+      } catch (error) {
+        // Storage can throw outright in a locked-down browser, not merely
+        // return null. The reader still gets their system's scheme.
+      }
+    })();
+  </script>
 
   <meta property="og:type" content="{{ page.og_type }}">
   <meta property="og:title" content="{{ page.title_tag }}">
@@ -29,7 +49,7 @@
 </head>
 
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#main">{{ chrome.skip }}</a>
 
   <div class="layout">
 
@@ -38,10 +58,19 @@
         <a class="site-header__name" href="index.html">{{ site.name }}</a>
         <div class="site-header__details">
           <span class="site-header__role">{{ site.role }}</span>
-          <a class="site-header__cv" href="{{ site.resume }}" target="_blank" rel="noopener">CV (PDF)</a>
+          <a class="site-header__cv" href="{{ page.root }}{{ site.resume }}" target="_blank" rel="noopener">{{ chrome.cv }}</a>
+          <div class="theme-switch" role="group" aria-label="{{ chrome.theme_group }}">
+            <span class="theme-switch__label">{{ chrome.theme }}</span>
+            <button class="theme-switch__option" type="button" data-theme-value="system">{{ chrome.theme_system }}</button>
+            <span class="theme-switch__sep" aria-hidden="true">&middot;</span>
+            <button class="theme-switch__option" type="button" data-theme-value="light">{{ chrome.theme_light }}</button>
+            <span class="theme-switch__sep" aria-hidden="true">&middot;</span>
+            <button class="theme-switch__option" type="button" data-theme-value="dark">{{ chrome.theme_dark }}</button>
+          </div>
+{{ build.lang_switch }}
         </div>
       </div>
-      <nav class="nav" aria-label="Primary">
+      <nav class="nav" aria-label="{{ chrome.primary_nav }}">
         <ul class="nav__list">
 {{ build.nav }}
         </ul>
@@ -49,7 +78,7 @@
     </header>
 
     <div class="page-body">
-      <aside class="sidebar-context" aria-label="Page shortcuts">
+      <aside class="sidebar-context">
 {{ build.page_context }}
       </aside>
 
@@ -59,10 +88,52 @@
     </div>
 
     <footer class="site-footer">
-      <p>Last update: {{ site.last_updated }} &middot; Hosted on GitHub Pages &middot; Youssef Boutaleb</p>
+      <p>{{ chrome.last_update }}: {{ site.last_updated }} &middot; {{ chrome.hosted }} &middot; {{ site.name }}</p>
     </footer>
 
   </div>
+
+  <script>
+    // The switch. Appearance is CSS reading [data-theme] off <html>; this only
+    // records the choice and keeps the buttons' pressed state truthful.
+    (function () {
+      var root = document.documentElement;
+      var group = document.querySelector('.theme-switch');
+      if (!group) { return; }
+      var options = group.querySelectorAll('.theme-switch__option');
+
+      function sync() {
+        var current = root.getAttribute('data-theme') || 'system';
+        for (var i = 0; i < options.length; i++) {
+          var pressed = options[i].getAttribute('data-theme-value') === current;
+          options[i].setAttribute('aria-pressed', pressed ? 'true' : 'false');
+        }
+      }
+
+      group.addEventListener('click', function (event) {
+        var button = event.target.closest('.theme-switch__option');
+        if (!button) { return; }
+        var choice = button.getAttribute('data-theme-value');
+        if (choice === 'system') {
+          root.removeAttribute('data-theme');
+        } else {
+          root.setAttribute('data-theme', choice);
+        }
+        try {
+          if (choice === 'system') {
+            localStorage.removeItem('theme');
+          } else {
+            localStorage.setItem('theme', choice);
+          }
+        } catch (error) {
+          // The choice still holds for this page view.
+        }
+        sync();
+      });
+
+      sync();
+    })();
+  </script>
 
   <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.analytics_id }}"></script>
   <script>

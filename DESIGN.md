@@ -128,9 +128,78 @@ reports any token nothing consumes.
 
 **Status colours** exist for tags alone, see §7.
 
-Light-only, and it prints cleanly. Dark mode is deliberately deferred: the
-brand logos in `images/icons/` are fixed-colour SVGs that would each need a
-treatment, and half-solving it is worse than not solving it.
+### The dark rendering
+
+**This section used to defer it.** It read: *"Light-only, and it prints
+cleanly. Dark mode is deliberately deferred: the brand logos in
+`images/icons/` are fixed-colour SVGs that would each need a treatment, and
+half-solving it is worse than not solving it."* The reasoning was sound and the
+measurement behind it was never taken. When it was, the blocker turned out to
+be **three logos, not sixteen**: `github.svg` (which carries no `fill` at all
+and so inherits the SVG default of black), `anthropic-light.svg`, and
+`opencv.svg`. Nine others are saturated brand colours that read on either
+ground, `icon.svg` is the favicon and never appears in content, and
+`linkedin.svg` and `medium.svg` are not rendered anywhere: `socials[].icon` in
+`src/site.json` is read only for the JSON-LD `sameAs`, which takes the `href`.
+Three is a solvable number, so the deferral no longer holds. §6 carries how
+those three are handled.
+
+**It defaults to the reader's system setting, and a switch in the brand bar
+can pin it.** The default is the important half: *System* is a state the
+control returns to, not a third palette, so a reader who never touches it is
+followed by their own machine. The control shipped after the theme did, on the
+author's call; the argument admitting it is in `CLAUDE.md` §7 with the other
+two, and it is the first thing on this site to store anything.
+
+**It is one set of tokens, not two.** Every token that differs is written once
+as `light-dark(light, dark)`, and the whole mechanism is the `color-scheme`
+property: `light dark` on `:root` follows the system, and
+`:root[data-theme="light"]` / `[data-theme="dark"]` pin it. That is the entire
+implementation, and the switch sets one attribute.
+
+The alternative was a second block repeating the same forty names under a dark
+selector, which Principle 6 calls a defect and which is not theoretical: the
+first version of this was written that way, and it immediately grew a
+scheme-aware copy of `prefers-contrast: more` to go with it. Merging the palette
+deleted that copy, because `--ink-900` now *is* the far end of the ramp
+whichever way the ramp runs.
+
+It mirrors the light theme's contrast *relationships* rather than inventing new
+ones, so the page keeps the weight it reads with:
+
+| Role | Light | | Dark | |
+|---|---|---|---|---|
+| heading | `#222222` | 15.9:1 | `#e9ebed` | 14.9:1 |
+| body | `#373737` | 11.9:1 | `#c3c7cc` | 10.5:1 |
+| muted | `#6b6b6b` | 5.3:1 | `#8b9197` | 5.6:1 |
+| link | `#267cb9` | 4.5:1 | `#6fb3e8` | 7.9:1 |
+
+The link is the one value deliberately raised: a 4.5:1 blue on a dark ground
+reads thin at 15px. All seven status families were re-derived the same way and
+the weakest of them, accent at 7.5:1, is stronger than the weakest in light
+(accent, 5.6:1). The ground is `#16181a` rather than `#000000`, because pure
+black under light text haloes on long prose and this site is long prose.
+
+The metals carry over unchanged; only the ring flips. On paper it is a darker
+shade of the same metal and reads as a struck edge, and on a dark ground a
+darker ring dissolves into the page, so it becomes a lighter shade and reads as
+a rim light instead.
+
+**One token is a pair for a reason that is easy to get backwards.**
+`--color-on-accent` is the ink on `--color-link`, which today is the skip link
+alone. It was written as a fixed `#ffffff` on the reasoning that the accent
+beneath it is "a strong blue in both renderings". That is false: the link blue
+is *dark* in light (`#267cb9`, taking white ink at 4.5:1) and was *lightened*
+in dark to clear the ground (`#6fb3e8`), where white falls to **2.3:1** and the
+skip link becomes unreadable precisely when a keyboard reader needs it. The ink
+flips with the accent instead, and clears 7.9:1. A colour that is dark in one
+rendering and light in the other cannot take the same ink in both.
+
+**It still prints cleanly**, and print does it with one declaration:
+`color-scheme: light` in §21 resolves every `light-dark()` pair to its light
+half, whatever the reader pinned on screen, including the tag families and the
+logo treatments. The overrides beside it then flatten what remains to black,
+because a CV wants ink rather than the theme's greys.
 
 ## 3. Spacing
 
@@ -145,9 +214,15 @@ so the vertical texture of the original page survives:
 
 ## 4. Layout & containers
 
-**One centred column, `1100px` at most, `--gutter` of padding either side.**
-Above it sits `.site-header`: the name, the role, the CV link, and the
-horizontal `.nav`. Below it, `.site-footer`.
+**One centred column, `--gutter` of padding either side.** Above it sits
+`.site-header`: the name, the role, the CV link, and the horizontal `.nav`.
+Below it, `.site-footer`.
+
+The container is **`1100px` up to 1024px of viewport, and `1240px` above it**,
+where the page context rail appears alongside the column. The extra 140px is
+not the site getting wider: it is most of what the rail takes back, so the
+records keep close to the width they had. The arithmetic is in the next
+section, because it is the whole argument for the rail being admissible.
 
 ### The rail, and why it is gone
 
@@ -170,8 +245,57 @@ in a long document, is now `.site-header__cv`, at the top of every page, and it
 prints.
 
 `--container-max`, `--container-fluid`, `--sidebar-width` and `--column-gap`
-were the rail's tokens. They are deleted rather than orphaned: a token nothing
+were the rail's tokens. They were deleted rather than orphaned: a token nothing
 reads is how a stylesheet starts describing a site that no longer exists.
+
+Three came back when the second rail did, under plainer names: `--container`
+(1100px), `--container-wide` (1240px) and `--rail-width` (240px). They are
+tokens and not literals for a reason worth stating, because the rail shipped
+with the numbers written into the component and it took an audit to notice that
+`1240px` there had been contradicting the `1100px at most` in this section for
+as long as both existed.
+
+### The page context rail, and why it is different
+
+A rail came back. Not the one above, and the distinction is the reason it is
+allowed to exist: **the identity rail restated the page, and this one indexes
+it.** `.sidebar-context` holds `.book-toc`, a sticky outline of the records on
+the current page. It is generated in `tools/build.py` by parsing the page after
+it has been rendered, so it indexes exactly what shipped and cannot describe a
+record that is not there. It is the left column of `.page-body` above 1024px
+and stacks above the content below it.
+
+**It answers each of the three objections above.**
+
+- *The rail answered one question twice.* This one answers a question the page
+  never answered at all. Nothing in it is restated: it is a projection of the
+  records, in the sense `CLAUDE.md` §7 uses the word, and there is no second
+  body of prose to keep in agreement.
+- *It cost a quarter of the viewport.* It still does, near enough: 240px of
+  track plus a `--space-8` gap of 60px is 300px of 1240, or **24.2%**. What
+  changed is that the container widened to absorb most of it. The content
+  column runs 940px against the old 1100px, so the cost is 160px, not 300.
+  Prose does not notice, because `--measure` caps it at 74ch long before
+  either figure. The two cases §4 named as worst affected, Career's tag rows
+  and Teaching's spec strip, wrap 160px earlier than they did.
+- *It put contact details on eight pages.* It puts nothing on eight pages. Its
+  contents differ per page because they are that page's records.
+
+**What earns it is Teaching.** That page is 1,635 words inside a *single*
+section, so nothing derived from headings could have helped it: an outline of
+this site's headings yields one entry there, and one or two on five of the
+eight pages. Indexing records instead yields 23 entries on Teaching, its
+courses and then their modules, three levels deep. Career gets 12, its sections
+and then the employers and schools inside them. That is the difference between
+a control worth having and furniture.
+
+**It does not print.** Section 21 hides it with `.nav` and `.site-footer`, and
+resets `.page-body` to `display: block`. An anchor link is dead text on paper,
+and the page it would head is a CV.
+
+**On Principle 1**, which says a document rather than an interface: the
+argument for admitting a second exception is in `CLAUDE.md` §7, beside the
+first.
 
 ## 5. Borders, radius & elevation
 
@@ -195,6 +319,41 @@ sized social marks with `width="15%"`, which is why they never lined up.
 
 Decorative icons take `alt=""`; an icon that is the only content of a link
 carries that link's accessible name in its `alt`.
+
+### Logos in the dark rendering
+
+Logos ship as `<img>`, so the stylesheet cannot reach inside them and recolour
+a path. Two modifiers say what a mark is *made of*, and §2's dark block acts on
+that. Neither does anything in light: the marks are already correct on paper.
+
+| Modifier | For | Dark treatment |
+|---|---|---|
+| `.icon--mono` | a single-colour black mark | `filter: invert(1)`, which yields white |
+| `.icon--plate` | a coloured mark carrying black ink | keeps its colours, gains a white ground |
+
+Both are single unconditional rules reading `--icon-invert`, `--icon-plate-bg`
+and `--icon-plate-pad`, which are `light-dark()` pairs like everything else.
+`invert(0)` is a no-op and a transparent plate with no padding is invisible, so
+the light rendering leaves both marks exactly as authored without a second rule
+saying so, and a reader who pins dark on a light machine gets the right marks
+because nothing here consults the system directly.
+
+Inverting a monochrome mark is colour substitution, not an effect: there is
+nothing else in the mark for the filter to touch, and white is the dark variant
+those brands publish themselves. It is wrong for a *coloured* mark, which is
+why OpenCV takes the plate instead: inverting it would turn its red, green and
+blue discs cyan, magenta and yellow, and it cannot simply be left alone either
+because its wordmark path is 7,688 characters against roughly 600 for each of
+the three discs, so most of the logo would vanish. The plate is the one fill
+the out-of-scope list at the top of this document would otherwise forbid,
+admitted because the alternative is a broken logo.
+
+**The treatment is data, not markup.** `ICON_TREATMENT` in
+[`tools/build.py`](tools/build.py) keys it by filename so a logo declares
+itself once instead of at every call site. A logo absent from that table gets
+no treatment, which is correct for a coloured mark and silently wrong for a
+black one: nothing fails the build, it simply goes invisible on a dark ground.
+Check a new logo's fills before adding it.
 
 ## 7. Tags
 
@@ -225,6 +384,7 @@ There is one model per record type. The nine in use today:
 | Variant | Colour |
 |---|---|
 | `.tag--placement` | Amber (+ medal disc, below) |
+| `.tag--distinction` | Amber |
 | `.tag--type` | Blue |
 | `.tag--scope` | Violet |
 | `.tag--scale` | Grey, regular weight |
@@ -319,7 +479,7 @@ There is one model per record type. The nine in use today:
 | `.tag--focus` | Blue: *the substance slot, as `domain` is on a job* |
 | `.tag--accreditation` | Grey, regular weight, and carries a link to the accrediting body |
 
-**Selected Impact had a model here and no longer has one.** It declared
+**Impact in Numbers had a model here and no longer has one.** It declared
 `result` (amber), `figure` (grey, value in bold) and `source` (grey, linked,
 the one linked tag that stayed inside the site). All three are deleted with the
 block's move to `.result` (§9.3): a figure that leads at 17px does not need a
@@ -663,7 +823,7 @@ The label text lives in `IMPACT_LABEL` in `tools/build.py`, never in the data:
 
 ### 9.3 `.result`: the figure-led record
 
-Home's Selected Impact. Three parts, in this order and this rank:
+Home's Impact in Numbers. Three parts, in this order and this rank:
 
 ```
 €1,400 per month   A recurring monthly saving on the platform budget,   result__consequence
@@ -679,7 +839,7 @@ at body size, capped to the measure. The provenance line closes it at
 
 **Why this is not an `.entry`.** It was one. `.entry` is the component for a
 dated record living on its own page: a job, a project, an award, each with a
-title, a period and a body of its own. A Selected Impact record has none of
+title, a period and a body of its own. A Impact in Numbers record has none of
 those. It is a pointer to a result, and forcing it into `.entry` required
 inventing all three:
 
@@ -701,7 +861,72 @@ more true here.
 fixed thing and a long flowing thing side by side", and a fifth case should use
 it rather than invent a sixth shape.
 
-**Entries are still never boxed**, and neither is this.
+**A record in a reading list is never boxed**, and neither is this. That
+sentence used to read *entries are never boxed*, flatly, and it was never
+true: `.entries--grid` has boxed the credential cards on Career since long
+before it was written. The distinction it was reaching for is real and is
+§9.4's subject: a record you **read** is a bulleted item in a column of prose,
+and a record you **count** is a cell in a grid.
+
+### 9.4 `.entries--grid`: the card grid
+
+The one place a record is boxed. `.entries` becomes
+`repeat(auto-fit, minmax(18rem, 1fr))`, drops its bullets, and each `.entry`
+inside gains `--space-3`/`--space-4` of padding, `--color-surface`, a
+`--color-border-soft` hairline and `--radius-md`.
+
+```
+┌────────────────────────────┐  ┌────────────────────────────┐
+│ Microsoft                  │  │ Regional                   │
+│ • Azure Database Admin…    │  │ [● 1st Place] [86 teams]   │
+│ • Fabric Data Engineer…    │  │ • Hello World v4.0         │
+│ • Fabric Analytics Eng…    │  └────────────────────────────┘
+└────────────────────────────┘
+  Career, Certifications          Awards, the scope summary
+```
+
+**What earns a box.** A cell whose records are a **set to be counted, not a
+sequence to be read**. Three Microsoft certificates and one MuleSoft is a
+shape the reader takes in at a glance and never reads top to bottom; so is
+*this person reached four scopes and here is the best result in each*. A job
+history is the opposite: it is read in order, one record informs the next, and
+boxing it would cut the thread. That is the whole test, and it is why Career's
+Experience and Awards' own eight records stay unboxed on the same pages that
+carry a grid.
+
+**The cell is always heading, then list.** Certifications put the issuer in
+`.issuer` (it has a logo, so it is a flex row) and its certificates in
+`.points`. The Awards summary puts the scope in `.entry__title` (no logo, so
+the plain heading) and the records that reached it in `.points`, with the
+result between them as the record's own `.tag--placement` and `.tag--scale`
+chips. **Nothing in the Awards cards is styled**: every class in them already
+existed, and the values come from `meta_label`, the function that renders the
+tags on the records below, so a card cannot say *Quarter-finalist* while the
+entry it links to says something else.
+
+**Two columns, not four.** `18rem` against the ~764px content column fits
+exactly two, so four scopes read as 2×2 and collapse to one column on a phone
+with no breakpoint of their own. A narrower `minmax` to force one row of four
+was measured and declined: at `11rem` the fit is exact to the pixel, and a
+grid that is exact to the pixel becomes 3+1 the moment anything moves.
+
+**It replaced `.awards-stats`**, a bordered box that sat in the same place and
+is deleted along with its section of the stylesheet. The box is the shape a
+summary keeps wanting to be, so this records why that one was wrong, and none
+of the reasons is *it was boxed*:
+
+| The box did | The cost |
+|---|---|
+| Invent its own surface, border and radius | A seventh shape where §9.3 had already named the idiom to reuse, and it is this grid |
+| Carry no `--measure` cap and no internal structure | ~415px of 13px text floating in a ~764px bordered element, so half of a visibly bordered thing was empty |
+| Fuse two tag categories into *1st Place Regional* | `awards.md` rule 4: one category, one treatment, and `placement` is not `scope` |
+| Format an ordinal off a count | A second gold would have rendered *2st Place Regional*, and *Regional* was hardcoded beside a number that never measured it |
+| Sum every field size into *13,999+ Teams Competed* | The largest and boldest number on the page, 96% of it carried by the 643rd and 1,432nd placements |
+| Summarise the Competitions block only | The African hackathon, and the whole second half of the page, absent from its own summary |
+| Invent three chrome strings | All three rendered in English on `fr/awards.html` |
+
+Every one of those followed from hand-writing a component instead of composing
+one out of the parts already on the page.
 
 ## 10. The rule that emptied a component
 
@@ -718,7 +943,7 @@ That rule is the one worth keeping:
 
 §9 settles it for `.entry`: those are records and always come from
 `src/data/`. `.deflist` was the case that needed a rule of its own, because
-Skills, Languages, Domains and Selected Impact once looked like one component
+Skills, Languages, Domains and Impact in Numbers once looked like one component
 doing four different jobs. Applying the rule to each in turn is what emptied
 it, one user at a time, and each departure is the rule working rather than a
 component falling out of favour.
@@ -733,7 +958,7 @@ each one, which is the difference between a keyword and a claim.
 second half of the rule, and moved to `src/data/skills.json` on its own
 component (`.skills`, §9.1). See [`skills.md`](skills.md).
 
-**Selected Impact** went further than the rule asked. Every line in it is a
+**Impact in Numbers** went further than the rule asked. Every line in it is a
 second telling of a record on another page, so it is the one block that can
 quietly contradict the site it sits on. It did, twice, in both directions: the
 front page read *2 plugins accepted upstream, both listed in the official
@@ -858,7 +1083,7 @@ place to park things that failed to earn a block.
 Every page is the same stack:
 
 ```
-page-header   h1 + optional lede
+page-header   h1 + optional lede + optional summary grid (§9.4)
 block         h3 (underlined) + optional intro
               + entries or skills          
               + optional note                                        ← repeated
@@ -945,11 +1170,88 @@ tables inherited its styling and **no page could show which one you were on**.
 `.nav` keeps the look (evenly distributed links over a hairline) as a list,
 with `aria-current="page"` rendered as bold ink.
 
-### 12.1 Book shortcuts sidebar navigation
+### 12.1 The language switch
 
-`.book-toc` is a hierarchical outline navigation tree (book shortcuts table of contents) positioned in the left margin area on desktop viewports.
-It is generated dynamically at build time by parsing sections (`h2`, `h3` inside `section[aria-labelledby]`) and subsections (record entries, companies, publications, projects, etc.).
-On desktop (`>1024px`), it occupies the left margin column as a sticky outline tree (`.sidebar-context`). On narrower screens (`≤1024px`), it renders as a clean bordered outline card above the page content.
+`.lang-switch`, in the brand bar above the theme switch. **Links, not buttons,
+and the distinction is the design**: each language is a real page at a real
+URL, so this is navigation. It needs no script, it survives with scripting off,
+and a reader can bookmark or share the French page as itself. The theme switch
+beside it has to be buttons for the opposite reason, because a theme is not a
+place.
+
+The language being read renders as plain text with `aria-current`, not as a
+link to the page you are already on. It does not print (§21). It is absent
+entirely when only one locale exists, so the site carries no dead control while
+a translation is unfinished.
+
+### 12.2 Page context
+
+The second navigation on the site, and the only one whose contents differ per
+page. **Why a rail is admissible here is in §4**, with the arithmetic; **why a
+control is admissible at all is in `CLAUDE.md` §7**, beside the depth dial.
+This section is the reference for what it renders.
+
+| | |
+|---|---|
+| Slot | `.sidebar-context`, the `aside` |
+| Component | `.book-toc`, a `details` inside it |
+| Built by | `render_page_context` in `tools/build.py` |
+| Source | the page's own markup: `h2` and `h3` inside `section[aria-labelledby]`, then `li.entry` inside each, then `div.entry__group` inside those |
+| Depth | three levels, where the records have them (a course, then its modules) |
+| Labels | the record's own heading, unless it carries `data-toc-title` |
+
+**Above `1024px`** it is the sticky left track of `.page-body`, and CSS forces
+the `details` open and takes the marker away, so it reads as a rail and not as
+a control. Forcing it open takes two declarations, because browsers hide the
+contents two different ways: older engines set `display: none` on the children,
+newer ones set `content-visibility: hidden` on `::details-content`. Override
+one and not the other and the rail is collapsed on half the web.
+
+**At or below `1024px`** `.page-body` stacks and the `details` is closed: one
+line reading *Contents*, which the reader opens if they want it. It was
+previously a bordered card holding the whole tree, which put roughly **668px**
+of links in front of Teaching's first word on a phone. It does not print (§21).
+
+**It is built from type and whitespace**, like the rest of the site. It had
+been written in a different vocabulary: an uppercase letterspaced heading and a
+tinted rounded card, the first two items on the out-of-scope list at the top of
+this document, plus ten literal values including a `1.5px` border that exists
+nowhere else. The nesting device is now the same 2px left hairline
+`.entry__group--homework` uses to tie a course's assignments to the course.
+
+**The header is one word and no picture.** It opened with an inline SVG of a
+book, and that was **the only `<svg>` on any page of this site**: §17's icons
+are all `<img>` of a real brand mark, sized by a token, carrying something a
+word could not. This one was `aria-hidden`, drew the three words next to it,
+sat at a hardcoded `16px` that is on none of `--icon-xs` (12), `--icon-sm`
+(15) or `--icon-md` (18), and was painted `--color-muted` beside a
+`--color-heading` label, so the largest object in the header was also the
+palest. Keeping it meant maintaining an icon vocabulary of one.
+
+The label went with it from ink and bold to `--color-muted` and
+`--weight-regular`, the treatment `.entry__period` and the two switch
+separators already carry. At `--text-xs` bold it sat one step *below* the 13px
+bold `.book-toc__link` under it while matching it in weight, which read as a
+broken first item rather than as the title of a list.
+
+**And the header no longer sets `display`.** A `summary` is `display: list-item`;
+the flex box that laid the icon out beside the word had replaced that, which
+took the disclosure marker away at every width. Below `1024px` the control
+therefore opened with nothing saying so except a decorative glyph, and the two
+rules above that hide the marker on the desktop rail had never had a marker to
+hide. They do now.
+
+**It is not hand written.** A record added to `src/data/` appears in it with no
+second edit, and `render_toc_node` raises rather than inventing a label from an
+id: it used to fall back to the slug with its hyphens swapped for spaces and
+title cased, so a record whose heading failed to parse would have shipped a
+rail entry reading *Exp Jacquemus 1*.
+
+**It is not stateful**, and there is no `--level-N` class on any item. Every
+depth is styled identically, so a per-level modifier carried nothing and only
+kept rules alive for depths the parser had stopped producing: a fourth level
+was declared in `TocNode` for a "Lab" tier that was never built, and it held
+three CSS rules and a truncation branch hostage for the whole of its life.
 
 ## 13. Responsive behaviour
 
@@ -999,7 +1301,7 @@ The site answers hiring questions in order:
 | What have they built with, and for how long? | Home → the opening, then Currently |
 | How do they work? | Career → Summary |
 | What can they actually do, and how would I know? | Home → Skills & Evidence |
-| What impact did they create? | Home → Selected Impact |
+| What impact did they create? | Home → Impact in Numbers |
 | What problems have they solved? | Career → Experience |
 | What can they build? | Projects |
 | How technically deep are they? | Research, Workshops, Teaching |

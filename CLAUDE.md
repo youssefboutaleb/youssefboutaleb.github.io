@@ -139,7 +139,7 @@ which is the ordinary way this rule pays off.
 
 **Home sits on the line, deliberately, and that is why it is the hardest page
 to write.** The hero and the Profile paragraph are first person and warm; the
-Currently block, Skills & Evidence and Selected Impact are records and read
+Currently block, Skills & Evidence and Impact in Numbers are records and read
 clinically. The pitch lines carry the warmth so the records do not have to.
 
 The contrast is itself the argument: *this person can be human and rigorous, and
@@ -219,7 +219,7 @@ Reference examples, from Awards:
 | **Provenance** | Where a hand-copied figure came from, and when | `block__note`, beneath the records |
 | **Mechanics** | How a block works, what a tag means, why | The model documents, never the page |
 
-**Consequence is written once and may be read twice.** Home's Selected Impact
+**Consequence is written once and may be read twice.** Home's Impact in Numbers
 does not summarise a bullet, it quotes the bullet's own `impact` line through an
 id, so the two pages share a sentence rather than keeping two in agreement. If a
 sentence would be true on Home and on Career, that is the signal it belongs on
@@ -246,7 +246,7 @@ out of sync with the first.
 
 **The mechanism is no longer theoretical.** Home already renders two blocks as
 projections of records held elsewhere: *Currently* prints `experience[0]`'s
-title, dateline and tags with no content of its own, and *Selected Impact*
+title, dateline and tags with no content of its own, and *Impact in Numbers*
 quotes a bullet's `impact` line through an id. Both prove the thing M2 depends
 on, which is that a shorter rendering can be a *view* of the data rather than a
 second body of prose. What they do not prove is the hard part: a global control,
@@ -260,6 +260,63 @@ how much of the document is shown and nothing else: no state, no navigation, no
 animation, no content that exists only in one mode. That reasoning is the
 boundary. A second control needs an argument this strong, made in writing first.
 
+### The second exception: the page context rail
+
+Written after the fact, which is the wrong order and is recorded as such: the
+rail shipped before the argument for it existed.
+
+**It fails the dial's test and passes a different one.** The dial is admissible
+because it is not navigation. The rail *is* navigation, so that reasoning
+cannot be borrowed, and the honest question is whether Principle 1 forbids a
+table of contents. It does not, and the reason is in the principle's own second
+sentence: *a reader should be able to print the page and lose nothing.*
+
+**Removing the rail loses no information.** Every line in it is an anchor to a
+record that is already on the page, generated from the same data that rendered
+the record. It carries no prose of its own, no state, no mode, and no
+JavaScript: it is a list of links, which is what a contents page has been since
+long before there were interfaces to confuse it with. That is the test a second
+exception has to pass, and it is stricter than it sounds: an element is part of
+the document, not an interface on top of it, **when deleting it costs the
+reader nothing but convenience.** The rail is deleted in print for exactly that
+reason, and the printed page is not poorer for it.
+
+**Where the boundary now sits.** `main.css` styles `.book-toc__link.is-active`,
+and nothing sets that class. Wiring it up would add scroll position as state,
+which is the thing the first two exceptions were careful not to introduce. It
+would need its own argument, and this paragraph is not it.
+
+### The third exception: the theme switch
+
+**This one stores something, and the paragraph above had just finished saying
+that was the line.** Recorded that way round on purpose. The author asked for
+the control after the dark rendering shipped without one, having chosen
+system-only when it was first put to them; reversing a decision is theirs to
+do, and the argument then has to be made honestly rather than retrofitted to
+look like it was always fine.
+
+**What it stores is not about the document.** One key holds one of two strings,
+naming a rendering the reader prefers. It changes no content, adds no page to
+the site, appears in nothing that prints, and is invisible to every other
+reader. The scroll-spy fails on exactly the count this passes: it would make
+the document react continuously to how the page is being read, which is what
+turns a document into an application. A theme preference is set once and then
+does nothing, more like the browser's own zoom than like a feature.
+
+**Why the default is not enough on its own.** `prefers-color-scheme` reports
+the machine, and the machine is often wrong about the room: a laptop pinned to
+dark all year is being read at noon by a window, and a reader who wants this
+page light for an hour has no way to say so. That is an accessibility
+affordance, and the cost of not having one is paid by the reader who cannot
+comfortably read the page at all.
+
+**What keeps it a reading aid.** *System* is the default and a state the
+control can return to, not a third palette, so the honest answer is that most
+readers never touch it and are followed by their own machine. It renders only
+when JavaScript runs, it is hidden in print, and the entire mechanism is one
+attribute on `<html>` feeding the `color-scheme` property. If a future change
+needs it to do more than that, it has outgrown this argument.
+
 ## 8. Roadmap
 
 Recorded so they are worked toward deliberately, and so an agent knows what is
@@ -268,11 +325,11 @@ merely *not done yet* versus what was *decided against*.
 | # | Milestone | Notes |
 |---|---|---|
 | **M1a** | ~~Skills & Evidence block~~ **done** | Home's Skills list became a capability → evidence block: a fixed label column carrying the capability and its derived standing, and a flowing column carrying its tools and every record on the site that proves them. A true five-column matrix was considered and rejected on measurements; the argument is in [`skills.md`](skills.md). |
-| **M1** | **Prove data engineering ability, harder** | The author's first concern, and the site's biggest gap. **Partly landed.** Done: job bullets naming systems, volumes and failure modes, each with its consequence on a `.point__impact` line; Home's *Currently* block, which puts the current platform and its scale on the front page as a projection; Selected Impact rebuilt to quote those bullets rather than paraphrase them. Still open, and **author-led**: pipeline case studies (problem → architecture → trade-offs → what broke → what changed), at least one real architecture diagram, and possibly a *How I work* page from the doctrine now in Career's Summary. **Do not auto-generate this content.** |
-| **M1b** | ~~Home rebuilt~~ **done** | Home became the page it claims to be: one rule (restate only by projection, citation or quotation), a *Currently* projection, Selected Impact quoting the bullets it cites, Volunteering moved to Career, Domains deleted, and a model document that did not exist before. [`home.md`](home.md). |
+| **M1** | **Prove data engineering ability, harder** | The author's first concern, and the site's biggest gap. **Partly landed.** Done: job bullets naming systems, volumes and failure modes, each with its consequence on a `.point__impact` line; Home's *Currently* block, which puts the current platform and its scale on the front page as a projection; Impact in Numbers rebuilt to quote those bullets rather than paraphrase them. Still open, and **author-led**: pipeline case studies (problem → architecture → trade-offs → what broke → what changed), at least one real architecture diagram, and possibly a *How I work* page from the doctrine now in Career's Summary. **Do not auto-generate this content.** |
+| **M1b** | ~~Home rebuilt~~ **done** | Home became the page it claims to be: one rule (restate only by projection, citation or quotation), a *Currently* projection, Impact in Numbers quoting the bullets it cites, Volunteering moved to Career, Domains deleted, and a model document that did not exist before. [`home.md`](home.md). |
 | **M2** | **The Brief / Full depth dial** | Spec in §7. Build after M1, so there is something worth reading in Full. Two blocks on Home are already projections, which proves the mechanism but not the control. |
 | **M3** | ~~Mobility line~~ **done** | EU residence permit, open to EU relocation and remote. One string, `availability` in `src/site.json`, rendered in Home's hero and on Contact. |
-| **M4** | **French version** | After the English site is stable. Must not fork the content model: one source, two renderings, or it is not worth doing. |
+| **M4** | **French version** | **Mechanism landed, translation open.** One source, two renderings, as required: English records in `src/data/` are untouched and `src/i18n/fr.json` overlays strings onto them by record id. `/fr/` routes, `hreflang` pairs, a language switch, and per-locale ordinals, months, durations, thousands separators and tag vocabulary all work. Awards is translated end to end as the pilot. **The remaining ~5,000 words are author-led** and the build lists what is still missing on every run. Two things still open: the two `block__intro` lines on the French Awards page are literal drafts and need the author's voice, and there is no French CV, so every French page links `_cv_en.pdf`. |
 | **M5** | **Refresh cloud & integration framing** | Author intends to revisit how this is presented so it sharpens rather than dilutes the Data Engineering claim (§3). |
 
 ## 9. Honesty, and why there is no second rulebook
@@ -292,11 +349,14 @@ What the build refuses to produce, today:
 | The build fails on | So this cannot happen |
 |---|---|
 | A citation pointing at a page or anchor that does not exist | A skill or an impact line citing proof the site does not carry |
-| A Selected Impact figure absent from the bullet it cites | A bullet edited and its figure on Home left behind |
+| A Impact in Numbers figure absent from the bullet it cites | A bullet edited and its figure on Home left behind |
 | An impact record with both `cite` and `evidence`, or neither | Two hand-written copies of one sentence, drifting apart |
 | Two bullets sharing an id | A citation landing on the wrong evidence |
 | A `result` written beside `upstream_prs` | Home calling a pull request *submitted* while Projects calls it *accepted* |
 | A built page that has drifted from its source | A hand-edit to a generated file surviving a rebuild |
+| A page context entry with no label the parser could read | The rail printing a slug back at the reader as if it were a title |
+| A translated string whose English original has since changed | The French confidently saying last month's number while the English says this month's |
+| A translated fragment missing an anchor or a `{{ build.* }}` block | A citation pointing at nothing, or a block of records absent from one language only |
 
 Every one of those was added *after* the failure it prevents actually shipped.
 That is the pattern to follow: when a claim goes wrong, the fix is a guard in
@@ -341,6 +401,14 @@ Two things are unchanged by this:
 
 - **Positioning, claims, numbers, legal status**: always the author's call,
   never inferred: no option list makes one of these safe to decide alone.
+- **The two languages move together.** A change to an English record, fragment
+  or chrome string is not finished until its French counterpart is changed with
+  it. This is not a habit to remember: `tools/build.py` records the English each
+  translation was made from and **fails the build** when that English moves,
+  and `python3 tools/build.py --sync` is how you say the translation has caught
+  up. The rule exists because a stale translation is worse than a missing one.
+  A missing string falls back to English and is reported; a stale one reads as
+  fluent, confident and wrong, in a language nobody proofreads.
 - **Trivial, reversible mechanics** (a typo, a rebuild, a dead link, applying
   a decision already taken) do not need an option list. Do them and report the
   diff. Anything a reader would notice does.
