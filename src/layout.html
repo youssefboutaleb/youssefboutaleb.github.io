@@ -41,7 +41,7 @@
   <meta property="og:description" content="{{ page.description }}">
   <meta property="og:url" content="{{ page.canonical }}">
   <meta property="og:locale" content="{{ site.locale }}">
-  <meta property="og:site_name" content="{{ site.name }}">
+  <meta property="og:site_name" content="{{ site.site_name }}">
   <meta property="og:image" content="{{ site.base_url }}/{{ site.portrait }}">
   <!-- Measured from the file at build time, never typed. A crawler given the
        size lays the card out on its first pass instead of deferring until it
@@ -52,6 +52,13 @@
   <!-- `summary`, not `summary_large_image`. The image is a square portrait and
        the large card is a 2:1 crop, which would cut a face in half. -->
   <meta name="twitter:card" content="summary">
+  <!-- Twitter falls back to the og: pair when these are absent, so they are
+       redundant to a parser that follows the spec and are here for the ones
+       that do not. They read the same two values, never a second wording. -->
+  <meta name="twitter:title" content="{{ page.title_tag }}">
+  <meta name="twitter:description" content="{{ page.description }}">
+  <meta name="twitter:image" content="{{ site.base_url }}/{{ site.portrait }}">
+  <meta name="twitter:image:alt" content="{{ site.portrait_alt }}">
 
   <script type="application/ld+json">{{ build.json_ld }}</script>
 </head>

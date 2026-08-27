@@ -13,9 +13,11 @@ repository rather than only the built pages.
 
 from __future__ import annotations
 
+import json
 import re
 import subprocess
 import sys
+from html import unescape
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlparse
@@ -268,6 +270,103 @@ def dash_audit() -> None:
                 fail(str(path.relative_to(ROOT)), f"line {number}: {hit}")
 
 
+def metadata_audit(pages: list[Path]) -> None:
+    """The head's four renderings of one page must say the same thing.
+
+    A page states its title and its description four times: in <title> and
+    <meta name="description">, again for Open Graph, again for Twitter, and
+    again inside the Schema.org block. Only the first pair is read by a human
+    proofreading the page, which is why the other three are where drift hides.
+
+    It hid there. json_ld() read the fragment's English comment header while
+    the head meta resolved the same two fields through the locale overlay, so
+    seven French pages shipped a French <title> above an English Schema.org
+    description, and every existing guard passed: the strings were present,
+    the JSON was valid, the page was over MIN_TRANSLATED on its body text.
+    Nothing compared the copies to each other. This does.
+
+    It also pins the values that are supposed to be constant, because the
+    cheapest way for a social card to break is for one page out of sixteen to
+    quietly stop carrying og:image.
+    """
+    base = "https://youssefboutaleb.github.io"
+    required_og = ("og:type", "og:site_name", "og:title", "og:description",
+                   "og:url", "og:locale", "og:image", "og:image:width",
+                   "og:image:height", "og:image:alt")
+    required_twitter = ("twitter:card", "twitter:title", "twitter:description",
+                        "twitter:image", "twitter:image:alt")
+
+    for page in pages:
+        label = str(page.relative_to(ROOT))
+        text = page.read_text(encoding="utf-8")
+
+        og = dict(re.findall(r'<meta property="(og:[^"]+)" content="([^"]*)"', text))
+        twitter = dict(re.findall(r'<meta name="(twitter:[^"]+)" content="([^"]*)"', text))
+        for key in required_og:
+            if key not in og:
+                fail(label, f"head: no {key}")
+        for key in required_twitter:
+            if key not in twitter:
+                fail(label, f"head: no {key}")
+
+        title = re.search(r"<title>(.*?)</title>", text, re.S)
+        description = re.search(r'<meta name="description" content="([^"]*)"', text)
+        canonical = re.search(r'<link rel="canonical" href="([^"]*)"', text)
+        if not (title and description and canonical):
+            fail(label, "head: no title, description or canonical")
+            continue
+        title, description = title.group(1), description.group(1)
+        canonical = canonical.group(1)
+
+        # The copies, against the originals.
+        for key, original, name in (("og:title", title, "<title>"),
+                                    ("twitter:title", title, "<title>"),
+                                    ("og:description", description, "the description"),
+                                    ("twitter:description", description, "the description")):
+            if key in og | twitter and (og | twitter)[key] != original:
+                fail(label, f"head: {key} does not match {name}")
+
+        if og.get("og:url") != canonical:
+            fail(label, "head: og:url does not match the canonical link")
+        if not canonical.startswith(base + "/"):
+            fail(label, f"head: canonical {canonical!r} is not an absolute {base} URL")
+        for key, source in (("og:image", og), ("twitter:image", twitter)):
+            if key in source and source[key] != f"{base}/images/me.jpg":
+                fail(label, f"head: {key} is not the absolute portrait URL")
+        if og.get("og:type") not in {"website", "profile"}:
+            fail(label, f"head: og:type is {og.get('og:type')!r}, not website or profile")
+        if twitter.get("twitter:card") not in {"summary", "summary_large_image"}:
+            fail(label, f"head: twitter:card is {twitter.get('twitter:card')!r}")
+
+        block = re.search(r'<script type="application/ld\+json">(.*?)</script>', text, re.S)
+        if not block:
+            fail(label, "head: no Schema.org block")
+            continue
+        try:
+            data = json.loads(block.group(1))
+        except json.JSONDecodeError as error:
+            fail(label, f"head: the Schema.org block is not valid JSON ({error})")
+            continue
+
+        if data.get("@type") == "Person":
+            for key in ("name", "url", "image", "jobTitle", "description",
+                        "email", "sameAs", "worksFor"):
+                if not data.get(key):
+                    fail(label, f"Person: no {key}")
+        else:
+            for key in ("name", "url", "description", "isPartOf", "author"):
+                if not data.get(key):
+                    fail(label, f"{data.get('@type')}: no {key}")
+            if data.get("url") != canonical:
+                fail(label, "Schema.org: url does not match the canonical link")
+            # unescape, because the head is HTML and the JSON block is not.
+            if data.get("description") != unescape(description):
+                fail(label, "Schema.org: description does not match the head's. "
+                            "A renderer is reading the fragment instead of t().")
+            if unescape(data.get("name", "")) not in unescape(title):
+                fail(label, "Schema.org: name is not the page's title")
+
+
 def main() -> int:
     # Root pages are English; a locale directory holds one rendering each.
     # They are checked identically: a translated page has the same anchors,
@@ -291,6 +390,7 @@ def main() -> int:
     css_variable_audit()
     dash_audit()
     spelling_audit(pages)
+    metadata_audit(pages)
     used_classes: set[str] = set()
 
     for page in pages:

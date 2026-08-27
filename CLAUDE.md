@@ -363,6 +363,8 @@ What the build refuses to produce, today:
 | A heading level skipped on the way down | A document whose outline says something different from what the page looks like |
 | The same word spelled two ways across the built pages | `colorisation` in a page description and `Colorization` in the record it describes |
 | A CSS class no markup uses, unless declared in `STAGED_CSS` with a reason | A styled component nothing renders, cited in these documents as though it worked |
+| A head whose `og:`, `twitter:` and Schema.org copies disagree with `<title>` and the description | A French page whose card and structured data quote the English it was translated from |
+| A page missing any `og:` or `twitter:` tag, or an `og:image` that is not the absolute portrait URL | One page out of sixteen silently sharing with no image, on the network nobody tests |
 
 Every one of those was added *after* the failure it prevents actually shipped.
 That is the pattern to follow: when a claim goes wrong, the fix is a guard in

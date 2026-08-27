@@ -2695,7 +2695,19 @@ def render_diagram(spec: dict) -> str:
         "</figure>")
 
 
-def json_ld(site: dict, meta: dict, canonical: str) -> str:
+def json_ld(site: dict, meta: dict, canonical: str,
+            title: str, description: str, employer: dict | None = None) -> str:
+    """The structured data for one page, in one locale.
+
+    `title` and `description` are passed in, never re-read from `meta`. The
+    fragment's comment header is the English source; the locale's rendering
+    of it lives in the overlay, and the head meta already resolves it through
+    `tr()`. Reading `meta` here a second time is what shipped seven French
+    pages whose head said one thing in French and whose Schema.org block said
+    another in English, with nothing failing the build. One resolved string,
+    handed to both, is the guard: they cannot disagree because there is only
+    one of them.
+    """
     person = {
         "@context": "https://schema.org",
         "@type": "Person",
@@ -2707,12 +2719,22 @@ def json_ld(site: dict, meta: dict, canonical: str) -> str:
         "email": site["contact"][0]["href"].replace("mailto:", ""),
         "sameAs": [s["href"] for s in site["socials"]],
     }
+    # The current post, read off the top of experience.json rather than typed.
+    # A role that ends, or a company that changes, moves the record and the
+    # Person node follows it; a hand-written employer here would be a second
+    # copy of a fact Career already owns, free to disagree with it.
+    if employer:
+        person["worksFor"] = {
+            "@type": "Organization",
+            "name": employer["company"],
+            **({"url": employer["url"]} if employer.get("url") else {}),
+        }
     page = {
         "@context": "https://schema.org",
         "@type": meta.get("schema_type", "WebPage"),
-        "name": meta["title"],
+        "name": title,
         "url": canonical,
-        "description": meta["description"],
+        "description": description,
         "isPartOf": {"@type": "WebSite", "name": site["name"], "url": site["base_url"] + "/"},
         "author": {"@type": "Person", "name": site["name"], "url": site["base_url"] + "/"},
     }
@@ -3109,6 +3131,15 @@ def build(check_only: bool = False, sync: bool = False) -> int:
 
     site_context = {f"site.{k}": v for k, v in site.items() if isinstance(v, (str, int))}
 
+    # The current post, for the Person node's worksFor. Same file and same
+    # ordering Career renders from, so the employer named in structured data
+    # is the one at the top of the page and cannot be separately edited.
+    current_post = max(
+        with_ids(json.loads((DATA / "experience.json").read_text(encoding="utf-8")), "exp"),
+        key=tenure_sort_key,
+        default=None,
+    )
+
     global ACTIVE
 
     locales = load_locales()
@@ -3223,6 +3254,15 @@ def build(check_only: bool = False, sync: bool = False) -> int:
 
             canonical = f"{site['base_url']}/{path}"
             page_title = tr(f"page.{nav_entry['id']}.title", meta["title"])
+            # The brand a social card prints. It is home's title verbatim, so
+            # the name-plus-role join is written in one place and punctuated by
+            # the locale that owns it: a colon in English, a spaced colon in
+            # French. Never assembled here from `name` and `role`, which would
+            # be a second rendering free to drift from the first.
+            site_name = tr("page.home.title",
+                           bodies[(source_locale.code, "index.html")]["meta"]["title"])
+            page_description = tr(f"page.{nav_entry['id']}.description",
+                                  meta["description"])
             title_tag = (page_title if meta.get("nav") == "home"
                          else f"{page_title} &middot; {locale_site['name']}")
 
@@ -3262,9 +3302,10 @@ def build(check_only: bool = False, sync: bool = False) -> int:
                 "site.portrait_width": portrait_w,
                 "site.portrait_height": portrait_h,
                 "page.title_tag": title_tag,
-                "page.description": tr(f"page.{nav_entry['id']}.description", meta["description"]),
+                "page.description": page_description,
+                "site.site_name": site_name,
                 "page.canonical": canonical,
-                "page.og_type": "profile" if meta.get("nav") == "home" else "article",
+                "page.og_type": "profile" if meta.get("nav") == "home" else "website",
                 "page.content": indent(content, 8),
                 "page.root": locale.up,
                 # The brand bar goes home, and home is this locale's home only
@@ -3275,7 +3316,9 @@ def build(check_only: bool = False, sync: bool = False) -> int:
                                   if item["id"] == "home"),
                 "build.page_context": indent(page_context, 8),
                 "build.asset_version": asset_version,
-                "build.json_ld": json_ld(locale_site, meta, canonical),
+                "build.json_ld": json_ld(locale_site, meta, canonical,
+                                         page_title, page_description,
+                                         current_post),
                 "build.nav": render_items("nav-item.html", nav_items),
                 "build.alternates": indent(render_alternates(site, allowed, output_name), 2),
                 "build.lang_switch": indent(render_lang_switch(allowed, locale, output_name), 10),
