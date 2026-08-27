@@ -330,8 +330,16 @@ not because anyone re-ranked it.
 
    A chip that is not an aggregate and cannot find a record is not a chip whose
    `href` needs relaxing, it is a claim with no evidence, and the answer is a
-   record or a deletion. *PowerShell automation* is the current one: it renders
-   green for production and no bullet in `experience.json` mentions PowerShell.
+   record, a correction, or a deletion.
+
+   *PowerShell automation* was the example, and how it resolved is worth
+   keeping. It rendered green for production while no bullet in
+   `experience.json` mentioned PowerShell, so it looked like an overclaim. It
+   was not: the `jq-finops` bullet had described *automating
+   development-environment shutdowns* all along and had simply never named the
+   tool. The bullet says `PowerShell` now and the chip cites it. **A chip that
+   cannot find its record is a question, not a verdict**, and only the author
+   can answer which of the three it is.
 3. **Chip text says what the evidence *is*,** specifically: *€1,400/month
    saved*, not *Azure work*. The chip is the reason to click.
 4. **Do not set a standing or a position.** Both are computed. Adding a

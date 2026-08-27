@@ -85,7 +85,7 @@
       "count": 200,
       "unit": "teams"
     },
-    "duration": "48h",
+    "duration": 48,
     "track": "GenAI for Healthcare",
     "points": [
       "Delivered an MVP in 48h transforming complex clinical diagnosis and medication data into patient-accessible HTML summaries",

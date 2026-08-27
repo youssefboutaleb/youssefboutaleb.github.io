@@ -2,10 +2,23 @@
   {
     "title": "Secure and transparent energy management using blockchain and machine learning anomaly detection: A case study of the Ausgrid dataset",
     "authors": [
-      { "name": "N. Moumni", "scholar": "https://scholar.google.com/citations?user=XTaxAz8AAAAJ&amp;hl=en" },
-      { "name": "Y. Boutaleb", "scholar": "https://scholar.google.com/citations?user=mAUhy6QAAAAJ", "self": true },
-      { "name": "F. Chaabane", "scholar": "https://scholar.google.com/citations?user=cDtJ8FcAAAAJ&amp;hl=fr" },
-      { "name": "F. Drira", "scholar": "https://scholar.google.com/citations?user=gAUXwRwAAAAJ&amp;hl=en" }
+      {
+        "name": "N. Moumni",
+        "scholar": "https://scholar.google.com/citations?user=XTaxAz8AAAAJ&amp;hl=en"
+      },
+      {
+        "name": "Y. Boutaleb",
+        "scholar": "https://scholar.google.com/citations?user=mAUhy6QAAAAJ",
+        "self": true
+      },
+      {
+        "name": "F. Chaabane",
+        "scholar": "https://scholar.google.com/citations?user=cDtJ8FcAAAAJ&amp;hl=fr"
+      },
+      {
+        "name": "F. Drira",
+        "scholar": "https://scholar.google.com/citations?user=gAUXwRwAAAAJ&amp;hl=en"
+      }
     ],
     "venue": "Computers &amp; Industrial Engineering",
     "year": 2025,
@@ -23,12 +36,22 @@
   {
     "title": "Dual verification-based multimodal approach for reliable pothole and speed bump detection on embedded system",
     "authors": [
-      { "name": "S. Khemakhem", "scholar": "https://scholar.google.com/citations?user=jDoLSoMAAAAJ&amp;hl=fr" },
-      { "name": "Y. Boutaleb", "scholar": "https://scholar.google.com/citations?user=mAUhy6QAAAAJ", "self": true },
-      { "name": "W. Ouarda", "scholar": "https://scholar.google.com/citations?hl=fr&amp;user=60EYHCsAAAAJ" }
+      {
+        "name": "S. Khemakhem",
+        "scholar": "https://scholar.google.com/citations?user=jDoLSoMAAAAJ&amp;hl=fr"
+      },
+      {
+        "name": "Y. Boutaleb",
+        "scholar": "https://scholar.google.com/citations?user=mAUhy6QAAAAJ",
+        "self": true
+      },
+      {
+        "name": "W. Ouarda",
+        "scholar": "https://scholar.google.com/citations?hl=fr&amp;user=60EYHCsAAAAJ"
+      }
     ],
     "venue": "Computers &amp; Industrial Engineering",
-    "status": "In Progress",
+    "status": "Under Review",
     "summary": "Edge-computing data pipeline combining accelerometer telemetry and vision streams with dual-verification consensus, preventing single noisy sensor channels from triggering false hazard alerts.",
     "points": [
       "<b>Multimodal sensor stream fusion:</b> synchronizes IMU motion telemetry with visual detection models on resource-constrained embedded targets.",

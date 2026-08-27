@@ -40,7 +40,7 @@
         "points": [
           {
             "id": "jq-finops",
-            "point": "Reduced <b>Azure infrastructure spend by &euro;1,400 per month</b> by automating development-environment shutdowns, matching compute size to each environment, and redesigning shared Spark pools.",
+            "point": "Reduced <b>Azure infrastructure spend by &euro;1,400 per month</b> by automating development-environment shutdowns with <b>PowerShell</b> runbooks in Azure Automation Accounts, matching compute size to each environment, and redesigning shared Spark pools.",
             "impact": "A recurring monthly saving on the platform budget, taken with no SLA impact on the morning reporting pipelines."
           }
         ]

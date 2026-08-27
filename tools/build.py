@@ -840,6 +840,13 @@ def meta_label(field: str, value) -> tuple[str, str]:
         # over another, so awards.md rule 4 holds: 86 teams and 643rd of 7,094
         # are emphasised identically.
         return "", f"<b>{count}</b> {unit_text}"
+    if field == "duration" and isinstance(value, int):
+        # Stored as a number, spaced here, so `2h` and `20 h` cannot coexist.
+        # They did: Workshops wrote `2h` and `4h` straight into the data while
+        # Teaching's panel wrote `20 h` and `1.5-2 h`, which is the same unit
+        # in one document spelled two ways. A value formatted at the call site
+        # is a value that drifts from every other call site.
+        return "", f"{ACTIVE.number(value)} {tr('unit.hours_short', 'h')}"
     if field == "upstream":
         return "", f"{UPSTREAM_STATES[value['state']]} &middot; PR #{value['pr']}"
     if field == "accreditation":
@@ -1313,8 +1320,16 @@ def render_publication(record: dict, site: dict = None) -> str:
         year = record["year"]
         parts.append(f'<p class="entry__period"><time datetime="{year}">{year}</time></p>')
     else:
+        # The dateline says *when*, and only when. It read "In progress (as of
+        # August 2026)" while the `status` chip 40px below it read "In
+        # Progress": one fact in two slots, in two capitalisations. The chip is
+        # the model's declared home for a status (MODELS["research"]), so the
+        # dateline keeps the half no chip carries, which is the same half every
+        # other record puts here: a time. A published paper's dateline is
+        # `2025`; an unpublished one's is the date this claim was last true.
         as_of = site.get("last_updated", "August 2026") if site else "August 2026"
-        parts.append(f'<p class="entry__period">{tr("research.in_progress", f"In progress (as of {as_of})")}</p>')
+        stamp = tr("research.as_of", f"as of {as_of}")
+        parts.append(f'<p class="entry__period">{stamp}</p>')
 
     citation = render_authors(record["authors"])
     if record.get("venue"):
@@ -2649,33 +2664,6 @@ def report_missing(locales: list[Locale]) -> None:
         print(f"  {locale.code}: {len(keys)} untranslated: {head}{more}")
 
 
-def report_undated(publications: list[dict]) -> None:
-    """Name every record shipping with no date on it.
-
-    Every record on this site carries a dateline except one: the in-progress
-    paper has no `year`, so it renders with no `entry__period` at all and a
-    reader cannot tell whether "In Progress" means last month or 2021. On a
-    page whose neighbouring record is dated 2025, an undated one reads as
-    older, not newer.
-
-    This reports rather than fails, and the distinction is deliberate.
-    `check_reach` is fatal because the data to satisfy it already exists: the
-    figures were read on some date and that date is known. A submission date is
-    a fact only the author has, and a guard that fails the build over data
-    nobody can supply is a guard that gets deleted. So it is listed on every
-    run, next to the untranslated strings and the withheld pages, until the
-    author fills it in.
-    """
-    undated = [r for r in publications if not r.get("year") and r.get("status") != "In Progress"]
-    if not undated:
-        return
-    print(f"  {len(undated)} record(s) shipping with no date:")
-    for record in undated:
-        # Raw records, read before with_ids has stamped anything, so the
-        # title is the only handle they have.
-        print(f"      {record['title'][:60]}  ({record.get('status', 'no status')})")
-
-
 def report_withheld(withheld: list[tuple[str, str, float]]) -> None:
     """Name every page a locale is not publishing, and how far off it is.
 
@@ -3017,7 +3005,6 @@ def build(check_only: bool = False, sync: bool = False) -> int:
     ACTIVE = source_locale
     report_missing(locales)
     report_withheld(withheld)
-    report_undated(json.loads((DATA / "research.json").read_text(encoding="utf-8")))
 
     if check_only:
         if stale:

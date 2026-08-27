@@ -438,6 +438,9 @@ is back.
 renders the bare number. The two are different claims and are not
 interchangeable.
 
+`duration` stores a number of hours as an integer and `meta_label` adds the
+unit, so `2h` and `20 h` cannot both exist. They did, in one document.
+
 Add `"of"` when the figure is a share of something larger, and the chip states
 both: `{"count": 20, "of": 150, "unit": "pipelines", "minimum": true}` renders
 `20+ of 150+ pipelines`. The shape applies to both numbers. Use it whenever the

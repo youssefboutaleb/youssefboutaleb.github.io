@@ -84,15 +84,10 @@ Carried from phase 1, unchanged:
 
 New from this pass:
 
-5. **The in-progress paper has no date.** It is the one record on the site
-   shipping without one, and `report_undated` now names it on every build. It
-   needs a submission or start date, or the record needs to say why it has
-   none.
-6. **`Opportunities & Services` offers consulting.** [`contact.md`](contact.md)
-   §5 states the tension with CLAUDE.md §3: a row offering *Consulting &
-   services* beside *founding engineering positions* invites the reader to
-   conclude the author is shopping rather than targeting. Either the row goes
-   or §3 is revised; at the moment one of the two is wrong.
+5. ~~**The in-progress paper has no date.**~~ **Closed.** See phase 3 below.
+6. ~~**`Opportunities & Services` offers consulting.**~~ **Closed by the
+   author, in CLAUDE.md §3's favour:** the row is deleted and the block is
+   `Opportunities & Roles`.
 7. **Nothing links to Contact but the navigation.** A closing line on Home was
    offered and not chosen, so the invitation renders on Contact alone.
 
@@ -101,7 +96,63 @@ New from this pass:
 - **`.entry__context` reads before `.entry__summary` still.** Only the
   typography sorts them. Reversing the order was available and not taken:
   a reader who does want the employer should still meet it first.
-- **Unit formatting** (`2h` on Workshops, `20 h` on Teaching) is unchanged and
-  unguarded.
+- ~~**Unit formatting**~~ **Closed.** See phase 3 below.
 - **`medal--bronze`** remains the one staged CSS rule, declared in
   `STAGED_CSS`. It is reachable code awaiting a third place, not dead.
+
+---
+
+# Phase 3: closing the author-led items
+
+Five items that needed a fact only the author had. Four are now closed.
+
+| Item | Resolution |
+|---|---|
+| `Opportunities & Services` offered consulting | **Row deleted, block renamed `Opportunities & Roles`.** CLAUDE.md §3 won: the page now says one thing about what is wanted. `contact.md` §5 |
+| The in-progress paper had no date | **Dateline derived from `site.last_updated`.** Every record on the site now carries one. `report_undated` was deleted with it: `render_publication` emits a dateline on both branches, so the condition it reported is unreachable |
+| `In progress` rendered twice on that record | **Status moved to `Under Review`; the dateline keeps the time alone.** `as of August 2026`, then `[Under Review]` |
+| Unit formatting drifted | **`duration` is stored as an integer and spaced once in `meta_label`.** `2h` and `48h` became `2 h` and `48 h` |
+| `PowerShell automation` cited nothing | **The `jq-finops` bullet now names the tool, and the chip points at it.** See below |
+
+## The two that needed care
+
+**`In progress` twice.** The first fix put `In progress (as of August 2026)` in
+the dateline while the `status` chip 40px below still read `In Progress`: one
+fact in two slots, in two capitalisations. The slots have different jobs and
+the fix is to let each do its own. `MODELS["research"]` declares `status` as a
+tag, so the chip owns the status; the dateline owns the time, which is what it
+holds on every other record on the site (a published paper's dateline is
+`2025`). The record now reads: title, `as of August 2026`, authors and venue,
+then `[Under Review] [Second Author]`.
+
+**PowerShell.** The chip claimed production PowerShell and nothing in
+`experience.json` mentioned it, so there was no bullet to point at and no
+agent could write one: what the work was is a fact only the author has. Put to
+the author, the answer was that the evidence had been there all along and did
+not name its tool. The `jq-finops` bullet already described *automating
+development-environment shutdowns*, and `Automation Accounts` was already a
+listed tool on the Cloud platform operations row.
+
+So the bullet now reads *"by automating development-environment shutdowns with
+**PowerShell** runbooks in Azure Automation Accounts"*, and the chip points at
+`career.html#jq-finops` instead of the top of the Experience block.
+
+**This is the C7 finding paying off twice.** The chip was unverifiable *and*
+its claim was true; the block-level anchor hid both facts equally. A citation
+that has to name a record is a citation somebody has to check, and checking it
+is what surfaced a tool the record had simply forgotten to mention.
+
+## Still open
+
+1. **`Architecture & recovery docs`** points at `career.html#summary`, which is
+   prose rather than a record. A green production chip is asserting more than a
+   paragraph carries. Needs a bullet on a role record, or the chip retired.
+2. **The French translation**, roughly 5,000 words. Seven of eight pages are
+   withheld and the build prints the worklist on every run.
+3. **The two French `block__intro` lines** on Awards are literal drafts.
+4. **Nothing links to Contact but the navigation.**
+5. **The `Under Review` paper names a venue it has not been accepted to.**
+   `venue: Computers & Industrial Engineering` renders in the slot the
+   published paper's accepted venue occupies, so the layout does not
+   distinguish *under review at X* from *published in X*. Raised, not acted on:
+   it is a claim, and it is the author's.

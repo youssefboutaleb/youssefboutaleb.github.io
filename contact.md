@@ -47,7 +47,7 @@ choices a reader acts on rather than terms being defined.
 | Primary email, Academic email, Phone / WhatsApp | `contact[]` in `src/site.json`, via `render_contact_channels` |
 | Based in | `location` and `availability` in `src/site.json`, joined |
 | LinkedIn, GitHub, Medium | `socials[]` in `src/site.json`, via `render_contact_socials` |
-| Opportunities & Services | Written in the fragment. See §5 |
+| Opportunities & Roles | Written in the fragment. See §5 |
 
 **`site.json` was always the source and the page ignored it.** The JSON-LD that
 a search engine reads was built from `contact[0]` and `socials[]`, while the
@@ -84,15 +84,23 @@ places each held their own copy. The joining here is punctuation and nothing
 else. If the merged line ever reads awkwardly, the fix is the author changing
 the one string in `site.json`, never this page rewording it in passing.
 
-## 5. What is still open
+## 5. Opportunities & Roles
 
-**`Opportunities & Services` is hand-written and offers consulting.**
+**One row, and it says employment.** The block was *Opportunities & Services*
+and carried a second row offering *Consulting & services: cloud data
+platforms, reliable ETL/ELT pipelines, warehousing, and data quality*.
+
 [`CLAUDE.md`](CLAUDE.md) §3 is that Data Engineering is the role and that a
-change making the target role harder to name in one word is wrong. A row
-offering *Consulting & services* beside *founding engineering positions* is in
-tension with that, and a reader can conclude the author is shopping rather than
-targeting. This is a positioning call and therefore the author's: either the
-row goes, or §3 is revised, because at the moment one of the two is wrong.
+change making the target role harder to name in one word is wrong. A consulting
+offer beside *founding engineering positions* let a reader conclude the author
+was shopping rather than targeting, which is §3's failure exactly. The author
+resolved it in §3's favour: the row is deleted and the heading renamed, so the
+page now says one thing about what is wanted.
+
+**Do not add a services row back** without revising §3 first. The tension was
+real and it was settled, not forgotten.
+
+## 6. What is still open
 
 **There is no closing route to this page.** Nothing on the site links here
 except the navigation. Home ends on its longest block with no next step, and
