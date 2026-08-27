@@ -1,0 +1,92 @@
+<!--
+title: Enseignement
+description: Graduate lecturer at IHEC Sfax qui enseigne Machine Learning and two Data Engineering courses on the M.Sc. Data Science programme: Spark, Airflow, Docker, Loguru.
+nav: qui enseigne
+-->
+<header class="page-header">
+  <h1 class="page-title">Enseignement</h1>
+</header>
+
+<!-- BROUILLON : les lignes block__intro de cette page sont des lignes de
+     pitch et relèvent de la voix de l'auteur (CLAUDE.md section 6). Elles
+     sont traduites ici littéralement pour que la page fonctionne, et
+     attendent d'être réécrites, pas relues. -->
+<section class="block" aria-labelledby="courses-taught">
+  <h2 class="block__title" id="courses-taught">Cours de master</h2>
+  <p class="block__intro">
+    Enseignant vacataire à <a href="https://ihecsf.rnu.tn/" target="_blank" rel="noopener">IHEC Sfax</a>, qui enseigne
+    sur site dans le
+    <a href="https://ihecsf.rnu.tn/fr/article/765/master-professionnel-en-data-science-for-business-amp-economics"
+      target="_blank" rel="noopener">M.Sc. Data Science</a> .
+  </p>
+  <!-- The constants of the appointment, side by side rather than stacked. What
+       each column may carry, and why the assessment scheme lives here at all,
+       is in qui enseigne.md; the component is DESIGN.md §10.1. -->
+  <div class="specs">
+    <div class="spec">
+      <p class="spec__title">Charge</p>
+      <p class="spec__lead">32 h par cours</p>
+      <dl class="spec__rows">
+        <div class="spec__row">
+          <dt>Cours magistraux</dt>
+          <dd>20 h</dd>
+          <dd class="spec__detail">5 modules &times; 4 h : fondements théoriques, principes d'architecture et
+            exercices guidés.</dd>
+        </div>
+        <div class="spec__row">
+          <dt>Travaux pratiques</dt>
+          <dd>8 h</dd>
+          <dd class="spec__detail">1 travail pratique par module, 1,5-2 h : exercices d'application et
+            revues de solutions en groupe.</dd>
+        </div>
+        <div class="spec__row">
+          <dt>Projet final</dt>
+          <dd>4 h</dd>
+          <dd class="spec__detail">Séance d'atelier dédiée : implémentation d'un pipeline de bout en bout et accompagnement
+            de projet.</dd>
+        </div>
+      </dl>
+    </div>
+    <div class="spec">
+      <p class="spec__title">Langue et outils</p>
+      <dl class="spec__rows">
+        <div class="spec__row">
+          <dt>Enseignement</dt>
+          <dd>Français et anglais</dd>
+        </div>
+        <div class="spec__row">
+          <dt>Supports</dt>
+          <dd>Anglais</dd>
+          <dd class="spec__detail">Diapositives, dépôts de code, devoirs et examens.</dd>
+        </div>
+      </dl>
+    </div>
+    <div class="spec">
+      <p class="spec__title">Évaluation</p>
+      <dl class="spec__rows">
+        <div class="spec__row">
+          <dt>Examen final</dt>
+          <dd>50%</dd>
+        </div>
+        <div class="spec__row">
+          <dt>Devoirs de module</dt>
+          <dd>20%</dd>
+        </div>
+        <div class="spec__row">
+          <dt>Projet final</dt>
+          <dd>15%</dd>
+        </div>
+        <div class="spec__row">
+          <dt>Assiduité et participation</dt>
+          <dd>15%</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+  <ul class="entries">
+    <!-- Records live in src/data/qui enseigne.json; tag order and colour come
+         from MODELS in tools/build.py, and the newest-first ordering from
+         course_sort_key. Never hand-write entries here. -->
+    {{ build.courses }}
+  </ul>
+</section>

@@ -284,6 +284,21 @@ Append here every pass. This is the part that makes the file worth keeping.
     `career.md` §5. Before reporting that a rule is missing, read the function
     that implements it and the document that owns it. Findings that survive
     that check are worth acting on; the rest cost a question each.
+21. **A mechanism is not landed until it reaches the content.** `CLAUDE.md`
+    M4 said "mechanism landed, translation open" for months. The overlay
+    addressed records by id, and ten of twelve renderers read `record[...]`
+    directly, six data files had no ids, and `t()` never reported a list as
+    missing, so the build cheerfully reported 61 missing strings for a site
+    with 3,250 untranslated words. **The absence of reported work is not
+    evidence that the work is small.** Before trusting a coverage number, check
+    that the thing producing it can see what it claims to measure.
+22. **A guard written for one locale will fire on another.** `check_figure`
+    asserts a hand-written figure appears in the prose it cites; in French,
+    `1 400 EUR` does not contain `&euro;1,400` and `zéro` does not contain
+    `Zero`. The fix was to make the figure translatable so the check compares
+    like with like, not to weaken the check. Likewise the new spelling audit
+    reported the correct French `vectorisation` against the correct English
+    `vectorization`, and had to be scoped to the source locale.
 
 ---
 

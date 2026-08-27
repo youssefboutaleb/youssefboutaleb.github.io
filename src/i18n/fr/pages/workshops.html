@@ -1,0 +1,24 @@
+<!--
+title: Ateliers
+description: Technical workshops on computer architecture, ARM assembly, competitive programming and Python, delivered for OLIVESOFT, Securinets ENIS and IEEE ENIS.
+nav: workshops
+-->
+<header class="page-header">
+  <h1 class="page-title">Ateliers</h1>
+</header>
+
+<!-- BROUILLON : les lignes block__intro de cette page sont des lignes de
+     pitch et relèvent de la voix de l'auteur (CLAUDE.md section 6). Elles
+     sont traduites ici littéralement pour que la page fonctionne, et
+     attendent d'être réécrites, pas relues. -->
+<section class="block" aria-labelledby="workshops-delivered">
+  <h2 class="block__title" id="workshops-delivered">Ateliers animés</h2>
+  <p class="block__intro">
+    Enseigner comment les données circulent dans le matériel : des hiérarchies mémoire et pipelines CPU aux structures de données et algorithmes efficaces.
+  </p>
+  <ul class="entries">
+    <!-- Records live in src/data/workshops.json; tag order and colour come
+         from MODELS in tools/build.py. Never hand-write entries here. -->
+    {{ build.workshops }}
+  </ul>
+</section>

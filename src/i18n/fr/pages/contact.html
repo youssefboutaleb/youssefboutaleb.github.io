@@ -1,0 +1,82 @@
+<!--
+title: Contact
+description: Contact Youssef Boutaleb for Data Postes d'ingénierie, enterprise integration pipelines, cloud architecture, and technical discussions.
+nav: contact
+schema_type: ContactPage
+-->
+<!-- Availability and Based in live here, not in Coordonnées. They are
+     facts about the person, and a channel list answers how to reach one: a
+     reader scanning addresses was meeting a sentence about EU work
+     authorisation in the middle of them.
+
+     DESIGN.md 9 already lets a page-header carry a title and a summary grid,
+     which is the slot Awards fills. `.hero-facts` is the label column Home
+     renders the same availability sentence in, so the shape is one a reader
+     has already seen, and DESIGN.md 11 asks a fifth label-column case to reuse
+     the idiom rather than invent a sixth.
+
+     Both strings come from src/site.json and neither is edited here.
+     CLAUDE.md 4: never paraphrase a residence status. -->
+<header class="page-header">
+  <h1 class="page-title">Contact</h1>
+{{ build.contact_facts }}
+</header>
+
+<!-- This page ran its own component vocabulary and its own heading level until
+     now: `.contact-section` and `.contact-section__title`, an `h2` on a site
+     whose other seven pages open their sections with an `h3`, and a
+     `font-size` hardcoded to match the `block__title` it was not. One visual
+     rank spelled two ways, with CSS covering the difference so nothing could
+     see it. It is `section.block` and `h2.block__title` now, like everywhere
+     else, and the two orphan classes are deleted.
+
+     `.contact-list` survives and is the right component: a quiet label
+     identifying a channel, its actionable address on the right edge. It is the
+     label-column idiom DESIGN.md 11 names, and three other blocks use it.
+
+     Addresses and handles are generated from src/site.json, which already held
+     them for the JSON-LD. Do not type one in here. contact.md carries the
+     model. -->
+<!-- BROUILLON : les lignes block__intro et le page-lede de cette page sont
+     des lignes de pitch et relèvent de la voix de l'auteur (CLAUDE.md
+     section 6). Elles sont traduites ici littéralement pour que la page
+     fonctionne, et attendent d'être réécrites, pas relues. -->
+<section class="block" aria-labelledby="direct-contact">
+  <h2 class="block__title" id="direct-contact">Coordonnées</h2>
+  <!-- The one sentence on this site that asks the reader to do something. It
+       sat unused in src/site.json since the day it was written, on the page
+       whose whole job it is. -->
+  <p class="block__intro">{{ site.contact_invitation }}</p>
+  <ul class="contact-list">
+{{ build.contact_channels }}
+  </ul>
+</section>
+
+<!-- The consulting row is deliberate and was restored by the author after being
+     removed. contact.md 5 carries the decision and the tension it accepts with
+     CLAUDE.md section 3. Do not remove it again on section 3's authority: that
+     argument has been made and answered. -->
+<section class="block" aria-labelledby="opportunities-services">
+  <h2 class="block__title" id="opportunities-services">Opportunités et prestations</h2>
+  <ul class="contact-list">
+    <li class="contact-list__item">
+      <div class="contact-list__row">
+        <span class="contact-list__label">Postes d'ingénierie</span>
+        <span class="contact-list__value">Postes d'ingénierie à temps plein, à temps partiel et de fondateur technique</span>
+      </div>
+    </li>
+    <li class="contact-list__item">
+      <div class="contact-list__row">
+        <span class="contact-list__label">Conseil et prestations</span>
+        <span class="contact-list__value">Plateformes de données cloud, pipelines ETL/ELT fiables, entreposage et qualité des données</span>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<section class="block" aria-labelledby="connect">
+  <h2 class="block__title" id="connect">Réseaux</h2>
+  <ul class="contact-list">
+{{ build.contact_socials }}
+  </ul>
+</section>

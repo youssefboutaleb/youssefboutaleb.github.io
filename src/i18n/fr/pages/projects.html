@@ -1,0 +1,35 @@
+<!--
+title: Projets
+description: Open-source Kanboard plugins accepted into the official plugin directory, plus applied computer vision: YOLOv8 meter detection and image colorization.
+nav: projects
+-->
+<header class="page-header">
+  <h1 class="page-title">Projets</h1>
+</header>
+
+<!-- BROUILLON : les lignes block__intro de cette page sont des lignes de
+     pitch et relèvent de la voix de l'auteur (CLAUDE.md section 6). Elles
+     sont traduites ici littéralement pour que la page fonctionne, et
+     attendent d'être réécrites, pas relues. -->
+<section class="block" aria-labelledby="open-source">
+  <h2 class="block__title" id="open-source">Contributions open source</h2>
+  <p class="block__intro">
+    Outillage et intégrations de flux de travail construits pour documenter les systèmes et fluidifier le travail d'ingénierie.
+  </p>
+  <ul class="entries">
+    <!-- Records live in src/data/projects.json, selected by their `block`
+         field; tag order and colour come from MODELS in tools/build.py.
+         Never hand-write entries here. -->
+{{ build.open_source }}
+  </ul>
+</section>
+
+<section class="block" aria-labelledby="applied-ml">
+  <h2 class="block__title" id="applied-ml">Projets appliqués</h2>
+  <p class="block__intro">
+    Vision par ordinateur appliquée et pipelines de mise en service de modèles, construits pour l'ingestion et l'inférence automatisées.
+  </p>
+  <ul class="entries">
+{{ build.ml_projects }}
+  </ul>
+</section>

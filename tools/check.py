@@ -203,7 +203,12 @@ def spelling_audit(pages: list[Path]) -> None:
     which is what shipped. The dash ban is enforced to the codepoint and this
     was not enforced at all.
     """
-    text = " ".join(p.read_text(encoding="utf-8") for p in pages).lower()
+    # English pages only. A locale directory is a different language, and
+    # comparing across them reported the correct French "vectorisation"
+    # against the correct English "vectorization" as a repository that
+    # could not spell.
+    english = [p for p in pages if p.parent == ROOT]
+    text = " ".join(p.read_text(encoding="utf-8") for p in english).lower()
     for ise in SPELLING_PAIRS:
         ize = ise.replace("ise", "ize").replace("isation", "ization")
         counts = {}

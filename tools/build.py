@@ -264,7 +264,14 @@ def t(record: dict, field: str, default=None):
     if key in ACTIVE.records:
         ACTIVE.witness(key, value)
         return ACTIVE.records[key]
-    if isinstance(value, str) and value.strip() and not ACTIVE.keeps(key):
+    # A list counts. This tested `isinstance(value, str)` only, so every
+    # `points` array on the site fell through untranslated and was never
+    # reported, which is most of the words on most of the pages. The
+    # translation gate then measured those pages at 0% and could not say why.
+    # A non-empty list. An empty one is a record that simply has no groups or
+    # no sub-roles, and reporting it asks for a translation of nothing.
+    translatable = bool(value) and isinstance(value, (str, list, dict)) and str(value).strip()
+    if translatable and not ACTIVE.keeps(key):
         ACTIVE.missing.add(key)
     return value
 
@@ -651,7 +658,7 @@ PROOF = ("production", "certification", "taught", "published", "applied")
 
 # What each kind of proof is called when a reader hovers the group. The label
 # is on the list, not on every chip, for the reason MODEL_LABELS exists.
-PROOF_LABEL = "Evidence"
+PROOF_LABEL_EN = "Evidence"
 
 # The same five kinds, named for the reader rather than for the schema. They
 # render once, as the key above the block.
@@ -677,7 +684,7 @@ PROOF_KEY = {
 # than a third. It renders on its own line *above* the evidence, never merged
 # into it: skills.md's colour-run reading is a claim about the colour of a row's
 # FIRST chip, and an outlined tool chip in front of the run would destroy it.
-TOOLS_LABEL = "Tools"
+TOOLS_LABEL_EN = "Tools"
 
 # Standing is derived from which kinds of proof a skill actually has, never
 # typed into the data. A self-assessed level is the thing this block exists to
@@ -942,10 +949,10 @@ def render_meta(record: dict, model: str, extra: tuple[str, ...] = (), extra_hea
     if not tags:
         return ""
     body = "\n".join("  " + tag for tag in tags)
-    return f'<ul class="tag-list" aria-label="{MODEL_LABELS[model]}">\n{body}\n</ul>'
+    return f'<ul class="tag-list" aria-label="{tr(f"model_label.{model}", MODEL_LABELS[model])}">\n{body}\n</ul>'
 
 
-IMPACT_LABEL = "Impact:"
+IMPACT_LABEL_EN = "Impact:"
 
 
 def render_point(point, point_id: str = "") -> str:
@@ -962,7 +969,7 @@ def render_point(point, point_id: str = "") -> str:
     if impact:
         text += (
             f'\n  <span class="point__impact">'
-            f"<b>{IMPACT_LABEL}</b> {impact}</span>"
+            f"<b>{tr("label.impact", IMPACT_LABEL_EN)}</b> {impact}</span>"
         )
     return f"<li{attrs}>{text}</li>"
 
@@ -1012,6 +1019,22 @@ ID_RULES = {
     # on Awards, so two JID records would otherwise collide on the
     # organisation and produce one id for both.
     "vol": ("organisation", "year"),
+    # Everything below was rendering with an id the renderer computed for
+    # itself and the record never saw, which is why none of it could be
+    # translated: `t()` addresses a record by `record["id"]` and returned the
+    # English every time because there was nothing to key on.
+    "course": "title",
+    "skill": "name",
+    "cert": "issuer",
+    "learn": "platform",
+    "lang": "name",
+    # Impact records are addressable so their `figure` can be translated. It
+    # could not be, and check_figure compares that figure against the prose it
+    # cites *in the active locale*: a French bullet reading "1 400 EUR" would
+    # have been checked against the English "&euro;1,400" and failed the build,
+    # and the unit beside it ("per month") was going to render in English on
+    # the French front page regardless.
+    "impact": "title",
 }
 
 
@@ -1043,8 +1066,8 @@ def entry_li(record: dict, entry_id: str, body: str) -> str:
     long one, and the parser stays ignorant of what the site is about.
     """
     attributes = f'class="entry" id="{escape(entry_id, quote=True)}"'
-    if record.get("short"):
-        attributes += f' data-toc-title="{escape(record["short"], quote=True)}"'
+    if t(record, "short"):
+        attributes += f' data-toc-title="{escape(t(record, "short"), quote=True)}"'
     return f'<li {attributes}>\n{body}\n</li>'
 
 
@@ -1056,11 +1079,11 @@ def render_award(record: dict) -> str:
             f'<a class="link-external" href="{record["url"]}" target="_blank"'
             f' rel="noopener">{title}</a>'
         )
-    if record.get("venue"):
+    if t(record, "venue"):
         title += f'<span class="entry__role"> &middot; {t(record, "venue")}</span>'
 
     dateline = []
-    if record.get("location"):
+    if t(record, "location"):
         dateline.append(f'<span class="entry__location">{t(record, "location")}</span>')
     if record.get("date"):
         dt = record["date"]
@@ -1074,7 +1097,7 @@ def render_award(record: dict) -> str:
         f'<p class="entry__period">{" &middot; ".join(dateline)}</p>',
         render_meta(record, "awards"),
     ]
-    if record.get("points"):
+    if t(record, "points"):
         parts.append(render_points(t(record, "points")))
 
     body = "\n".join(indent(part, 2) for part in parts if part)
@@ -1201,7 +1224,7 @@ def render_workshop(record: dict) -> str:
     a slide deck is an artefact, not a dimension of the session, so it renders
     as a utility tag appended after the model's four.
     """
-    title = record["title"]
+    title = t(record, "title")
     if record.get("repo"):
         name = tr("link.workshop_repo", "Workshop materials on GitHub")
         github_icon = asset("images/icons/github.svg")
@@ -1229,10 +1252,10 @@ def render_workshop(record: dict) -> str:
         f'<p class="entry__period"><time datetime="{year}">{year}</time></p>',
         render_meta(record, "workshops", extra),
     ]
-    if record.get("summary"):
-        parts.append(f'<p class="entry__summary">{record["summary"]}</p>')
-    if record.get("points"):
-        parts.append(render_points(record["points"]))
+    if t(record, "summary"):
+        parts.append(f'<p class="entry__summary">{t(record, "summary")}</p>')
+    if t(record, "points"):
+        parts.append(render_points(t(record, "points")))
 
     body = "\n".join(indent(part, 2) for part in parts if part)
     ws_id = record["id"]
@@ -1308,7 +1331,7 @@ def render_publication(record: dict, site: dict = None) -> str:
     if record.get("doi"):
         link = f"https://doi.org/{record['doi']}"
 
-    title = record["title"]
+    title = t(record, "title")
     if link:
         title = (
             f'<a class="link-external" href="{link}" target="_blank"'
@@ -1333,18 +1356,18 @@ def render_publication(record: dict, site: dict = None) -> str:
         parts.append(f'<p class="entry__period">{stamp}</p>')
 
     citation = render_authors(record["authors"])
-    if record.get("venue"):
-        citation += f' &middot; <i>{record["venue"]}</i>'
+    if t(record, "venue"):
+        citation += f' &middot; <i>{t(record, "venue")}</i>'
     parts.append(f'<p class="entry__meta">{citation}</p>')
 
     position = author_position(record)
     parts.append(render_meta({**record, "authorship": position} if position else record,
                              "research"))
 
-    if record.get("summary"):
-        parts.append(f'<p class="entry__summary">{record["summary"]}</p>')
-    if record.get("points"):
-        parts.append(render_points(record["points"]))
+    if t(record, "summary"):
+        parts.append(f'<p class="entry__summary">{t(record, "summary")}</p>')
+    if t(record, "points"):
+        parts.append(render_points(t(record, "points")))
 
     body = "\n".join(indent(part, 2) for part in parts if part)
     pub_id = record["id"]
@@ -1370,7 +1393,7 @@ def render_article(record: dict) -> str:
     the two blocks are read one after the other, and a trailing icon on one of
     them would break the column the eye is already following.
     """
-    title = record["title"]
+    title = t(record, "title")
     if record.get("url"):
         title = (
             f'<a class="link-external" href="{record["url"]}" target="_blank"'
@@ -1384,10 +1407,10 @@ def render_article(record: dict) -> str:
         f'<p class="entry__period"><time datetime="{year}">{year}</time></p>',
         render_meta(record, "writing"),
     ]
-    if record.get("summary"):
-        parts.append(f'<p class="entry__summary">{record["summary"]}</p>')
-    if record.get("points"):
-        parts.append(render_points(record["points"]))
+    if t(record, "summary"):
+        parts.append(f'<p class="entry__summary">{t(record, "summary")}</p>')
+    if t(record, "points"):
+        parts.append(render_points(t(record, "points")))
 
     body = "\n".join(indent(part, 2) for part in parts if part)
     art_id = record["id"]
@@ -1461,7 +1484,7 @@ def render_project(record: dict, articles: dict) -> str:
     here: it is one URL, so it is declared in one file, and a project can no
     longer end up pointing at an address the Research page has since changed.
     """
-    title = record["title"]
+    title = t(record, "title")
     if record.get("repo"):
         name = tr("link.repo", "GitHub repository")
         github_icon = asset("images/icons/github.svg")
@@ -1501,10 +1524,10 @@ def render_project(record: dict, articles: dict) -> str:
         f'<p class="entry__period"><time datetime="{year}">{year}</time></p>',
         render_meta(record, "projects", extra=tuple(extra_tail), extra_head=tuple(extra_head)),
     ]
-    if record.get("summary"):
-        parts.append(f'<p class="entry__summary">{record["summary"]}</p>')
-    if record.get("points"):
-        parts.append(render_points(record["points"]))
+    if t(record, "summary"):
+        parts.append(f'<p class="entry__summary">{t(record, "summary")}</p>')
+    if t(record, "points"):
+        parts.append(render_points(t(record, "points")))
 
     body = "\n".join(indent(part, 2) for part in parts if part)
     proj_id = record["id"]
@@ -1518,36 +1541,43 @@ def course_sort_key(record: dict) -> tuple[int, int]:
 
 def render_course(record: dict) -> str:
     """One taught course as the site-wide .entry record."""
-    course_slug = slugify(record["title"])
-    course_id = f"course-{course_slug}"
+    # Slugged from the English title, via the id with_ids already stamped, and
+    # never from t(): a French page slugging a French title would produce a
+    # different anchor for the same course, breaking every citation that points
+    # at it and the anchor parity check_fragment_parity enforces.
+    course_id = record["id"]
+    course_slug = course_id[len("course-"):]
     year, term = record["year"], record["term"]
     period = f"{term} {year}-{year + 1}"
 
     parts = [
-        f'<h3 class="entry__title">{record["title"]}</h3>',
+        f'<h3 class="entry__title">{t(record, "title")}</h3>',
         f'<p class="entry__period">{period}</p>',
         render_meta(record, "teaching"),
     ]
-    if record.get("summary"):
-        parts.append(f'<p class="entry__summary">{record["summary"]}</p>')
+    if t(record, "summary"):
+        parts.append(f'<p class="entry__summary">{t(record, "summary")}</p>')
 
-    for number, module in enumerate(record.get("syllabus", []), start=1):
+    for number, module in enumerate(t(record, "syllabus", []) or [], start=1):
         mod_id = f"{course_slug}-m{number}"
-        parts.append(render_group(f"Module {number}: {module['title']}",
+        parts.append(render_group(f'{tr("course.module", "Module")} {number}{tr("punct.colon", ": ")}{module["title"]}',
                                   module["points"], group_id=mod_id))
         homework = module.get("homework")
         if homework:
             hw_id = f"{course_slug}-m{number}-hw"
             parts.append(render_group(
-                f"Module {number} Homework: {homework['title']}",
+                f'{tr("course.module", "Module")} {number}'
+                f' {tr("course.homework", "Homework")}'
+                f'{tr("punct.colon", ": ")}{homework["title"]}',
                 homework["points"],
                 modifier="entry__group--homework",
                 group_id=hw_id))
 
-    capstone = record.get("capstone")
+    capstone = t(record, "capstone")
     if capstone:
         cap_id = f"{course_slug}-project"
-        parts.append(render_group(f"Final Project: {capstone['title']}",
+        parts.append(render_group(
+            f'{tr("course.capstone", "Final Project")}{tr("punct.colon", ": ")}{capstone["title"]}',
                                   capstone["points"],
                                   modifier="entry__group--capstone",
                                   group_id=cap_id))
@@ -1567,7 +1597,7 @@ MONTHS = ("Jan", "Feb", "Mar", "Apr", "May", "Jun",
 # A role with no end date is the one being held now. The word is produced by
 # the renderer rather than typed into `end`, because "Present" is not a date
 # and storing it as one is how a leaver's record keeps claiming a job.
-ONGOING = "Present"
+ONGOING_EN = "Present"
 
 
 def month_year(value: str) -> str:
@@ -1642,7 +1672,7 @@ def render_experience_role(role: dict) -> str:
     container, which carries the vertical connector. See career.md section 1,
     "A company with more than one role", for why it is a left rule.
     """
-    end = month_year(role["end"]) if role.get("end") else ONGOING
+    end = month_year(role["end"]) if role.get("end") else tr("date.present", ONGOING_EN)
     period = (f'{month_year(role["start"])} - {end}'
               f' ({tenure(role["start"], role.get("end"))})')
 
@@ -1653,14 +1683,14 @@ def render_experience_role(role: dict) -> str:
 
     parts = [
         (f'<h4 class="entry__group-title">\n'
-         f'  <span class="entry__subrole">{role["role"]}</span>\n'
+         f'  <span class="entry__subrole">{t(role, "role")}</span>\n'
          '</h4>'),
         f'<p class="entry__period">{" &middot; ".join(dateline)}</p>',
         render_meta(role, "experience"),
     ]
     if role.get("points"):
         parts.append(render_points(role["points"]))
-    for group in role.get("groups", []):
+    for group in t(role, "groups", []) or []:
         parts.append(render_group(group["title"], group["points"]))
 
     body = "\n".join(indent(part, 2) for part in parts if part)
@@ -1681,7 +1711,7 @@ def render_experience(record: dict) -> str:
             f'<a href="{record["url"]}" target="_blank" rel="noopener">{company}</a>'
         )
 
-    end = month_year(record["end"]) if record.get("end") else ONGOING
+    end = month_year(record["end"]) if record.get("end") else tr("date.present", ONGOING_EN)
     period = (f'{month_year(record["start"])} - {end}'
               f' ({tenure(record["start"], record.get("end"))})')
 
@@ -1691,8 +1721,8 @@ def render_experience(record: dict) -> str:
     title_parts.append(f'<span class="entry__company">{company}</span>')
 
     dateline = []
-    if record.get("location"):
-        dateline.append(f'<span class="entry__location">{record["location"]}</span>')
+    if t(record, "location"):
+        dateline.append(f'<span class="entry__location">{t(record, "location")}</span>')
     dateline.append(period)
 
     parts = [
@@ -1710,15 +1740,15 @@ def render_experience(record: dict) -> str:
     # the site's most important page. Splitting the field lets typography sort
     # them, so the context is furniture and the ownership is body copy. The
     # order is unchanged: a reader who wants the company still meets it first.
-    if record.get("context"):
-        parts.append(f'<p class="entry__context">{record["context"]}</p>')
-    if record.get("summary"):
-        parts.append(f'<p class="entry__summary">{record["summary"]}</p>')
-    if record.get("points"):
-        parts.append(render_points(record["points"]))
-    for group in record.get("groups", []):
+    if t(record, "context"):
+        parts.append(f'<p class="entry__context">{t(record, "context")}</p>')
+    if t(record, "summary"):
+        parts.append(f'<p class="entry__summary">{t(record, "summary")}</p>')
+    if t(record, "points"):
+        parts.append(render_points(t(record, "points")))
+    for group in t(record, "groups", []) or []:
         parts.append(render_group(group["title"], group["points"]))
-    roles = record.get("roles", [])
+    roles = t(record, "roles", []) or []
     if roles:
         # One wrapper, so the connector down the left is a single unbroken line
         # rather than one detached segment per role. The wrapper is what says
@@ -1755,8 +1785,8 @@ def render_education(record: dict) -> str:
         )
 
     dateline = []
-    if record.get("location"):
-        dateline.append(f'<span class="entry__location">{record["location"]}</span>')
+    if t(record, "location"):
+        dateline.append(f'<span class="entry__location">{t(record, "location")}</span>')
     # The same parenthetical the jobs above carry, from the same reasoning:
     # a reader should not have to subtract. Education stores plain years, so
     # the span is the difference between them and no month arithmetic applies.
@@ -1765,16 +1795,16 @@ def render_education(record: dict) -> str:
     dateline.append(f'{record["start"]}-{record["end"]} ({length})')
 
     parts = [
-        f'<h3 class="entry__title">\n  {record["degree"]}\n'
+        f'<h3 class="entry__title">\n  {t(record, "degree")}\n'
         f'  <span class="entry__role">&middot; {institution}</span>\n</h3>',
         f'<p class="entry__period">{" &middot; ".join(dateline)}</p>',
         render_meta(record, "education"),
     ]
-    if record.get("summary"):
-        parts.append(f'<p class="entry__summary">{record["summary"]}</p>')
-    if record.get("points"):
-        parts.append(render_points(record["points"]))
-    for group in record.get("groups", []):
+    if t(record, "summary"):
+        parts.append(f'<p class="entry__summary">{t(record, "summary")}</p>')
+    if t(record, "points"):
+        parts.append(render_points(t(record, "points")))
+    for group in t(record, "groups", []) or []:
         parts.append(render_group(group["title"], group["points"]))
 
     body = "\n".join(indent(part, 2) for part in parts if part)
@@ -1879,10 +1909,23 @@ def render_credential_row(certifications: list) -> str:
         )
     return (
         '<div class="hero-facts__row">\n'
-        "  <dt>Certified</dt>\n"
+        f'  <dt>{tr("facts.certified", "Certified")}</dt>\n'
         f'  <dd>{" &middot; ".join(links)}</dd>\n'
         "</div>"
     )
+
+
+def proof_link(item: dict) -> str:
+    """One language-proof link. The label translates by value, the href does not.
+
+    `evidence` on a language record is a structure of addresses, not prose, so
+    it is not routed through the record overlay: translating a block of links
+    wholesale is how an href gets edited by someone editing a sentence. The
+    visible half is translated on its own, by value, the way the tag vocabulary
+    is: one entry does every record that says the same thing.
+    """
+    label = tr(f"proof.{item['text']}", item["text"])
+    return f'<a href="{item["href"]}">{label}</a>'
 
 
 def render_language_row(languages: list) -> str:
@@ -1909,20 +1952,19 @@ def render_language_row(languages: list) -> str:
         proof = ""
         if record.get("evidence"):
             links = " &middot; ".join(
-                f'<a href="{item["href"]}">{item["text"]}</a>'
-                for item in record["evidence"]
+                proof_link(item) for item in record["evidence"]
             )
             proof = f'\n    <span class="hero-facts__proof">{links}</span>'
         rows.append(
             '  <div class="hero-facts__lang">\n'
-            f'    <dt>{record["name"]}</dt>\n'
-            f'    <dd>{record["level"]}{proof}</dd>\n'
+            f'    <dt>{t(record, "name")}</dt>\n'
+            f'    <dd>{t(record, "level")}{proof}</dd>\n'
             "  </div>"
         )
     body = "\n".join(rows)
     return (
         '<div class="hero-facts__row">\n'
-        "  <dt>Languages</dt>\n"
+        f'  <dt>{tr("facts.languages", "Languages")}</dt>\n'
         "  <dd>\n"
         '    <dl class="hero-facts__langs">\n'
         + indent(body, 4)
@@ -1962,7 +2004,7 @@ def render_current_role(record: dict) -> str:
             f'<a href="{record["url"]}" target="_blank" rel="noopener">{company}</a>'
         )
 
-    end = month_year(record["end"]) if record.get("end") else ONGOING
+    end = month_year(record["end"]) if record.get("end") else tr("date.present", ONGOING_EN)
     period = (f'{month_year(record["start"])} - {end}'
               f' ({tenure(record["start"], record.get("end"))})')
 
@@ -1972,8 +2014,8 @@ def render_current_role(record: dict) -> str:
     title_parts.append(f'<span class="entry__company">{company}</span>')
 
     dateline = []
-    if record.get("location"):
-        dateline.append(f'<span class="entry__location">{record["location"]}</span>')
+    if t(record, "location"):
+        dateline.append(f'<span class="entry__location">{t(record, "location")}</span>')
     dateline.append(period)
 
     parts = [
@@ -1981,8 +2023,8 @@ def render_current_role(record: dict) -> str:
         f'<p class="entry__period">{" &middot; ".join(dateline)}</p>',
         render_meta(record, "experience"),
     ]
-    if record.get("home_summary"):
-        parts.append(f'<p class="entry__summary">{record["home_summary"]}</p>')
+    if t(record, "home_summary"):
+        parts.append(f'<p class="entry__summary">{t(record, "home_summary")}</p>')
 
     body = "\n".join(indent(part, 2) for part in parts if part)
     return f'<li class="entry">\n{body}\n</li>'
@@ -2022,14 +2064,14 @@ def cite_index(sources: dict[str, list[dict]]) -> dict[str, dict]:
                 index[key] = {"point": point, "owner": owner}
 
     def scan(record: dict, owner: dict) -> None:
-        walk(record.get("points", []), owner)
-        for group in record.get("groups", []):
+        walk(t(record, "points", []) or [], owner)
+        for group in t(record, "groups", []) or []:
             walk(group["points"], owner)
 
     for page, records in sources.items():
         for record in records:
             scan(record, {**record, "page": page})
-            for role in record.get("roles", []):
+            for role in t(record, "roles", []) or []:
                 # A sub-role inherits its company from the record above it, and
                 # keeps its own dates: OEM's two roles ran in different summers.
                 scan(role, {**record, **role, "page": page})
@@ -2088,10 +2130,10 @@ def check_figure(record: dict, *sources: str) -> None:
     ("Zero data lost") and lowercase mid-sentence ("guaranteed zero feedback
     data loss"), and that difference is typography rather than a discrepancy.
     """
-    needle = record["figure"]["value"].lower()
+    needle = t(record, "figure")["value"].lower()
     if not any(needle in source.lower() for source in sources):
         raise ValueError(
-            f'{record["title"]}: figure "{record["figure"]["value"]}" does not '
+            f'{t(record, "title")}: figure "{t(record, "figure")["value"]}" does not '
             "appear in the evidence it cites. Either the bullet changed and the "
             "figure did not, or the figure is phrased differently from its source."
         )
@@ -2144,13 +2186,13 @@ def render_impact(record: dict, page_labels: dict, projects: list[dict],
     company. A record with both `cite` and `evidence`, or neither, is a build
     error.
     """
-    figure = record["figure"]
+    figure = t(record, "figure")
     lead = f'<b>{figure["value"]}</b> {figure["unit"]}'
 
     if record.get("cite"):
-        if record.get("evidence") or record.get("source"):
+        if t(record, "evidence") or record.get("source"):
             raise ValueError(
-                f'{record["title"]}: `cite` derives the sentence and the source, '
+                f'{t(record, "title")}: `cite` derives the sentence and the source, '
                 "so writing `evidence` or `source` beside it invites the two to "
                 "disagree, which is the whole reason `cite` exists."
             )
@@ -2168,11 +2210,11 @@ def render_impact(record: dict, page_labels: dict, projects: list[dict],
     else:
         if not record.get("upstream_prs"):
             raise ValueError(
-                f'{record["title"]}: an impact record cites a bullet with `cite`, '
+                f'{t(record, "title")}: an impact record cites a bullet with `cite`, '
                 "or aggregates project records with `upstream_prs`. There is no "
                 "third kind."
             )
-        sentence = record["evidence"]
+        sentence = t(record, "evidence")
         check_figure(record, sentence)
         context = upstream_result(record["upstream_prs"], projects)
         href = record["source"]
@@ -2234,7 +2276,7 @@ def render_volunteering(record: dict) -> str:
         title += f' <span class="entry__role">&middot; {t(record, "branch")}</span>'
 
     dateline = []
-    if record.get("location"):
+    if t(record, "location"):
         dateline.append(f'<span class="entry__location">{t(record, "location")}</span>')
     if record.get("initiative"):
         dateline.append(t(record, "initiative"))
@@ -2246,7 +2288,7 @@ def render_volunteering(record: dict) -> str:
             else:
                 range_str = f'{start_str} - {month_year(record["end"])}'
         else:
-            range_str = f'{start_str} - {ONGOING}'
+            range_str = f'{start_str} - {tr("date.present", ONGOING_EN)}'
         dateline.append(f'{range_str} ({tenure(record["start"], record.get("end"))})')
     elif record.get("year"):
         year = record["year"]
@@ -2255,9 +2297,9 @@ def render_volunteering(record: dict) -> str:
     parts = [f'<h3 class="entry__title">{title}</h3>']
     if dateline:
         parts.append(f'<p class="entry__period">{" &middot; ".join(dateline)}</p>')
-    if record.get("summary"):
+    if t(record, "summary"):
         parts.append(f'<p class="entry__summary">{t(record, "summary")}</p>')
-    if record.get("points"):
+    if t(record, "points"):
         parts.append(render_points(t(record, "points")))
 
     body = "\n".join(indent(part, 2) for part in parts)
@@ -2276,7 +2318,7 @@ def render_proof_key() -> str:
     """
     chips = "\n".join(
         f'  <li class="tag tag--{kind}">{label}</li>'
-        for kind, label in PROOF_KEY.items()
+        for kind, label in ((k, tr(f"proof_key.{k}", v)) for k, v in PROOF_KEY.items())
     )
     return (f'<ul class="tag-list tag-list--key" aria-label="What the evidence'
             f' colours mean">\n{chips}\n</ul>')
@@ -2320,16 +2362,16 @@ def render_skill(record: dict) -> str:
 
     head = (
         '<div class="skill__head">\n'
-        f'  <h3 class="skill__name">{record["name"]}</h3>\n'
-        f'  <p class="skill__standing">{standing(evidence)}</p>\n'
+        f'  <h3 class="skill__name">{t(record, "name")}</h3>\n'
+        f'  <p class="skill__standing">{tr(f"standing.{standing(evidence)}", standing(evidence))}</p>\n'
         "</div>"
     )
     proof = (
         '<div class="skill__proof">\n'
-        f'  <ul class="tag-list skill__tools" aria-label="{TOOLS_LABEL}">\n'
+        f'  <ul class="tag-list skill__tools" aria-label="{tr("label.tools", TOOLS_LABEL_EN)}">\n'
         + "\n".join("  " + line for line in tools.splitlines())
         + "\n  </ul>\n"
-        f'  <ul class="tag-list" aria-label="{PROOF_LABEL}">\n'
+        f'  <ul class="tag-list" aria-label="{tr("label.evidence", PROOF_LABEL_EN)}">\n'
         + "\n".join("  " + line for line in chips)
         + "\n  </ul>\n"
         "</div>"
@@ -2773,7 +2815,7 @@ def page_blocks(site: dict) -> dict:
     hackathons = [a for a in awards if a.get("type") == "Hackathon"]
     workshops = with_ids(json.loads((DATA / "workshops.json").read_text(encoding="utf-8")), "ws")
     courses = sorted(
-        json.loads((DATA / "teaching.json").read_text(encoding="utf-8")),
+        with_ids(json.loads((DATA / "teaching.json").read_text(encoding="utf-8")), "course"),
         key=course_sort_key,
         reverse=True,
     )
@@ -2811,14 +2853,14 @@ def page_blocks(site: dict) -> dict:
         key=lambda record: record["start"],
         reverse=True,
     )
-    certifications = json.loads((DATA / "certifications.json").read_text(encoding="utf-8"))
-    languages = json.loads((DATA / "languages.json").read_text(encoding="utf-8"))
-    online_courses = json.loads((DATA / "courses.json").read_text(encoding="utf-8"))
+    certifications = with_ids(json.loads((DATA / "certifications.json").read_text(encoding="utf-8")), "cert")
+    languages = with_ids(json.loads((DATA / "languages.json").read_text(encoding="utf-8")), "lang")
+    online_courses = with_ids(json.loads((DATA / "courses.json").read_text(encoding="utf-8")), "learn")
     # Home. An impact line cites the page that evidences it, and the link text
     # comes from the navigation rather than from the record, so a citation
     # cannot name one page and point at another.
     page_labels = {entry["href"]: entry["label"] for entry in site["nav"]}
-    impact = json.loads((DATA / "impact.json").read_text(encoding="utf-8"))
+    impact = with_ids(json.loads((DATA / "impact.json").read_text(encoding="utf-8")), "impact")
     volunteering = sorted(
         with_ids(json.loads((DATA / "volunteering.json").read_text(encoding="utf-8")), "vol"),
         key=volunteering_sort_key,
@@ -2834,7 +2876,7 @@ def page_blocks(site: dict) -> dict:
         "workshops.html": workshops,
     })
     skills = sorted(
-        json.loads((DATA / "skills.json").read_text(encoding="utf-8")),
+        with_ids(json.loads((DATA / "skills.json").read_text(encoding="utf-8")), "skill"),
         key=skill_sort_key,
     )
     open_source = [p for p in projects if p.get("block") == "open-source"]

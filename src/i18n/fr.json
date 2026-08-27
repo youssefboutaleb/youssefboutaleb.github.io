@@ -11,14 +11,23 @@
     "*.issuer",
     "*.platform",
     "*.publisher",
-    "*.name",
-    "tag.*.Hackathon"
+    "tag.*.Hackathon",
+    "tag.host.*",
+    "tag.platform.*",
+    "tag.publisher.*",
+    "*.short",
+    "*.venue",
+    "cert-*.issuer",
+    "learn-*.platform"
   ],
   "site": {
     "role": "Ingénieur Data",
     "description": "Ingénieur Data : pipelines ETL/ELT à l'échelle de l'entreprise, intégrations pilotées par API et observabilité sur Microsoft Azure. Certifié Microsoft, MuleSoft, Talend, Datadog et Astronomer.",
     "last_updated": "août 2026",
-    "resume": "data/Youssef_BOUTALEB_cv_fr.pdf"
+    "resume": "data/Youssef_BOUTALEB_cv_fr.pdf",
+    "location": "Sfax, Tunisie",
+    "contact_invitation": "Ouvert aux postes d'ingénierie des données, et aux échanges sur les pipelines, l'intégration et l'observabilité.",
+    "portrait_alt": "Portrait de Youssef Boutaleb"
   },
   "strings": {
     "chrome.skip": "Aller au contenu",
@@ -69,7 +78,92 @@
     "page.awards.title": "Distinctions",
     "page.awards.description": "Résultats en programmation compétitive et en hackathon, dont une première place à Hello World v4.0 Sfax sur 86 équipes.",
     "placement.pattern": "{ordinal} place",
-    "scale.of": "sur"
+    "scale.of": "sur",
+    "contact.primary-email": "E-mail principal",
+    "contact.academic-email": "E-mail universitaire",
+    "contact.phone-whatsapp": "Téléphone / WhatsApp",
+    "contact.availability": "Disponibilité",
+    "contact.based-in": "Basé à",
+    "link.repo": "Dépôt GitHub",
+    "link.workshop_repo": "Supports de l'atelier sur GitHub",
+    "proof.Taught in French": "Enseigné en français",
+    "proof.Taught in English": "Enseigné en anglais",
+    "proof.Published in English": "Publié en anglais",
+    "research.as_of": "à jour en août 2026",
+    "writing.reach_note": "Chiffres d'audience relevés sur Medium, {when}.",
+    "unit.hours_short": "h",
+    "unit.pipelines": "pipelines",
+    "unit.students": "étudiants",
+    "unit.participants": "participants",
+    "unit.households": "foyers",
+    "unit.frames/second": "images/seconde",
+    "tag.audience.Engineering Students": "Étudiants ingénieurs",
+    "tag.audience.Engineers &amp; Executives": "Ingénieurs et dirigeants",
+    "tag.authorship.Second Author": "Deuxième auteur",
+    "tag.domain.Luxury E-commerce &amp; Retail": "E-commerce et retail de luxe",
+    "tag.domain.Time-Series Sensor Data (Energy Research)": "Séries temporelles de capteurs (recherche énergie)",
+    "tag.domain.Time-Series Sensor Data (Industrial Sorting)": "Séries temporelles de capteurs (tri industriel)",
+    "tag.engagement.Permanent": "CDI",
+    "tag.engagement.Part-time": "Temps partiel",
+    "tag.engagement.Summer Internship": "Stage d'été",
+    "tag.engagement.End-of-studies Internship": "Stage de fin d'études",
+    "tag.focus.Data Engineering &amp; Distributed Systems": "Data engineering et systèmes distribués",
+    "tag.format.Workshop": "Atelier",
+    "tag.format.Workshop Series": "Série d'ateliers",
+    "tag.format.Hands-on Lab": "Atelier pratique",
+    "tag.format.Walkthrough": "Tutoriel guidé",
+    "tag.format.Configuration Guide": "Guide de configuration",
+    "tag.kind.Kanboard Plugin": "Plugin Kanboard",
+    "tag.kind.Notebook": "Notebook",
+    "tag.mode.On-site": "Sur site",
+    "tag.mode.Online": "En ligne",
+    "tag.mode.Remote": "Télétravail",
+    "tag.mode.Remote delivery": "Réalisé à distance",
+    "tag.programme.National Preparatory Programme": "Classes préparatoires nationales",
+    "tag.status.Published": "Publié",
+    "tag.status.Under Review": "En cours d'évaluation",
+    "tag.track.GenAI for Healthcare": "GenAI pour la santé",
+    "course.module": "Module",
+    "course.homework": "Devoir",
+    "course.capstone": "Projet final",
+    "page.career.description": "Ingénierie des données sur des plateformes de retail de luxe chez JACQUEMUS et dans l'écosystème LVMH, et traitement de signaux de capteurs industriels avant cela. Postes, formation, certifications.",
+    "page.projects.description": "Plugins Kanboard open source acceptés dans le répertoire officiel, et vision par ordinateur appliquée : détection de chiffres sur compteurs par YOLOv8 et colorisation d'images.",
+    "page.research.description": "Recherche évaluée par les pairs sur la gestion énergétique par blockchain avec détection d'anomalies par apprentissage automatique, et articles techniques sur le service YOLOv8 et les logs Datadog.",
+    "page.teaching.description": "Enseignant vacataire à l'IHEC Sfax : Machine Learning et deux cours d'ingénierie des données du Master Data Science. Spark, Airflow, Docker, Loguru.",
+    "page.workshops.description": "Ateliers techniques sur l'architecture des ordinateurs, l'assembleur ARM, la programmation compétitive et Python, animés pour OLIVESOFT, Securinets ENIS et IEEE ENIS.",
+    "page.home.description": "Ingénieur Data : pipelines ETL/ELT d'entreprise, intégrations pilotées par API et observabilité sur Azure. Certifié Microsoft, MuleSoft, Talend et Datadog.",
+    "page.contact.description": "Contacter Youssef Boutaleb pour des postes d'ingénierie des données, des pipelines d'intégration, de l'architecture cloud et des échanges techniques.",
+    "page.career.title": "Parcours",
+    "page.projects.title": "Projets",
+    "page.research.title": "Recherche",
+    "page.teaching.title": "Enseignement",
+    "page.workshops.title": "Ateliers",
+    "page.contact.title": "Contact",
+    "label.evidence": "Preuves",
+    "label.tools": "Outils",
+    "label.impact": "Impact :",
+    "proof_key.production": "En production",
+    "proof_key.certification": "Certifié",
+    "proof_key.taught": "Enseigné",
+    "proof_key.published": "Publié",
+    "proof_key.applied": "Appliqué",
+    "standing.Production-proven": "Éprouvé en production",
+    "standing.Run in production": "Exploité en production",
+    "standing.Verified: not yet in production": "Vérifié : pas encore en production",
+    "standing.Applied &amp; studied": "Appliqué et étudié",
+    "model_label.awards": "Détails de la distinction",
+    "model_label.workshops": "Détails de l'atelier",
+    "model_label.teaching": "Détails du cours",
+    "model_label.research": "Détails de la publication",
+    "model_label.writing": "Détails de l'article",
+    "model_label.projects": "Détails du projet",
+    "model_label.experience": "Détails du poste",
+    "model_label.education": "Détails du programme",
+    "facts.certified": "Certifié",
+    "facts.languages": "Langues",
+    "date.present": "aujourd'hui",
+    "page.home.title": "Youssef Boutaleb : Ingénieur Data",
+    "punct.colon": " : "
   },
   "records": {
     "award-hello-world-v40.points": [
@@ -114,7 +208,434 @@
     "vol-jeunes-ingenieurs-de-djerba-jid-2023.initiative": "Orientini",
     "vol-jeunes-ingenieurs-de-djerba-jid-2023.points": [
       "Accompagnement de lycéens dans le choix d'une filière d'ingénierie et des carrières auxquelles elle mène."
-    ]
+    ],
+    "award-a2sv-africa-to-silicon-valley-genai-hackathon.location": "En ligne",
+    "award-hello-world-v20.location": "Sfax, Tunisie",
+    "award-hello-world-v30.location": "Sfax, Tunisie",
+    "award-hello-world-v40.location": "Sfax, Tunisie",
+    "award-ieeextreme-programming-competition-160.location": "Sfax, Tunisie",
+    "award-ieeextreme-programming-competition-170.location": "Sfax, Tunisie",
+    "award-tcpc-22.location": "Tunis, Tunisie",
+    "award-tcpc-23.location": "Tunis, Tunisie",
+    "edu-higher-institute-of-applied-sciences-and-technology-of-mahdia.location": "Mahdia, Tunisie",
+    "edu-national-engineering-school-of-sfax.location": "Sfax, Tunisie",
+    "exp-jacquemus.location": "Paris, France",
+    "exp-oem-engineering-sarl.location": "Sfax, Tunisie",
+    "exp-olivesoft.location": "Sfax, Tunisie",
+    "exp-regim-lab.location": "Sfax, Tunisie",
+    "vol-jeunes-ingenieurs-de-djerba-jid-2022.location": "Djerba, Tunisie",
+    "vol-jeunes-ingenieurs-de-djerba-jid-2023.location": "Djerba, Tunisie",
+    "vol-tunisian-red-crescent.location": "Djerba, Tunisie",
+    "exp-jacquemus.context": "JACQUEMUS est une maison de mode de luxe française qui vend du prêt-à-porter, de la maroquinerie et des accessoires via son propre e-commerce, ses boutiques et ses partenaires grossistes, sur des flux de commandes culminant autour de 5 000 commandes par heure lors des opérations de soldes et une plateforme de données ingérant environ 800 000 événements et enregistrements par jour, sur plusieurs centaines de gigaoctets.",
+    "exp-jacquemus.summary": "Je travaille dans l'équipe Data Platform : je traite les données internes de commandes, clients, produits et tarifs par ETL et modélisation, j'intègre les systèmes externes qui gravitent autour (taux de change, e-mailing transactionnel, expédition et remboursements), et je fais atterrir l'ensemble dans une architecture lakehouse en médaillon.",
+    "exp-jacquemus.home_summary": "Données de commandes, clients, produits et tarifs vers un lakehouse en médaillon, sur des flux portant environ 800 000 événements et enregistrements par jour et des pics proches de 5 000 commandes par heure lors des soldes.",
+    "exp-jacquemus.groups": [
+      {
+        "title": "Ingénierie des données",
+        "points": [
+          {
+            "point": "Construction et maintenance de <b>20+ pipelines sur un parc de 150+</b>, couvrant Salesforce, ORLI/WMS, PostgreSQL, des API, des partages de fichiers, Azure Data Lake et Azure SQL.",
+            "impact": "Les équipes analytics, logistique, reporting e-commerce et gestion des stocks travaillent à partir de ces flux : un pipeline bloqué retarde le reporting commercial du matin et la synchronisation des stocks."
+          },
+          "Exploitation du parcours de commande retail sur des fréquences de rafraîchissement allant de <b>10 minutes</b> au quotidien et à l'hebdomadaire, avec des charges d'ingestion atteignant <b>150 Mo</b> par exécution.",
+          "Intégration de <b>services web Quarkus</b> en direct à côté des jobs planifiés, pour que les données qui ne peuvent pas attendre une fenêtre de rafraîchissement transitent par une API plutôt que par une table de batch."
+        ]
+      },
+      {
+        "title": "Cloud et FinOps",
+        "points": [
+          {
+            "id": "jq-finops",
+            "point": "Réduction de <b>&euro;1,400 par mois</b> sur la facture d'infrastructure Azure, en automatisant l'extinction des environnements de développement par des runbooks <b>PowerShell</b> dans Azure Automation Accounts, en ajustant la taille de calcul à chaque environnement et en repensant les pools Spark partagés.",
+            "impact": "Une économie mensuelle récurrente sur le budget de la plateforme, obtenue sans impact SLA sur les pipelines de reporting du matin."
+          }
+        ]
+      },
+      {
+        "title": "Supervision et observabilité",
+        "points": [
+          {
+            "id": "jq-observability",
+            "point": "Instrumentation des charges d'ingestion avec <b>Datadog APM et des tableaux de bord de supervision sur mesure</b>, sur Azure Data Factory, Fabric et les pools Spark.",
+            "impact": "Une couverture d'alerting sur l'ensemble du <b>parc de 150+ jobs</b> : une défaillance silencieuse d'un job ou d'une API remonte avant la fenêtre de reporting ouvrée, plutôt que par un signalement utilisateur."
+          }
+        ]
+      }
+    ],
+    "exp-olivesoft.context": "OLIVESOFT est un cabinet de conseil data et Salesforce basé à Paris, qui délivre des prestations d'ingénierie des données, d'intégration et de BI pour plus de 20 clients, principalement dans le retail de luxe, run et supervision quotidiens des plateformes qu'il construit inclus.",
+    "exp-olivesoft.summary": "J'ai travaillé sur le compte Kenzo Paris / LVMH, en construisant le flux de données d'avis clients en production entre le service desk et la plateforme de feedback.",
+    "exp-olivesoft.points": [
+      {
+        "point": "Construction d'une <b>intégration MuleSoft asynchrone pilotée par API</b> reliant Salesforce Service Cloud à Diduenjoy, de zéro, pour le compte Kenzo Paris / LVMH.",
+        "impact": "Découplage du travail des agents du service desk de la latence de l'API aval, supprimant les blocages d'agents quand la plateforme de feedback externe était lente ou indisponible."
+      },
+      {
+        "id": "olivesoft-dlq",
+        "point": "Mise en place de <b>contrats REST RAML, de politiques de rejeu automatiques et de files de rebut (DLQ)</b> pour absorber les défaillances passagères des endpoints.",
+        "impact": "Zero perte de données d'avis garantie pendant les indisponibilités aval, et un suivi fiable de la satisfaction client établi pour le compte."
+      }
+    ],
+    "exp-regim-lab.context": "REGIM Lab (REsearch Groups in Intelligent Machines) est le laboratoire de recherche appliquée de l'École Nationale d'Ingénieurs de Sfax.",
+    "exp-regim-lab.summary": "J'ai travaillé sur un prototype de recherche et une étude de cas portant sur une gestion énergétique sûre et transparente, à partir du jeu de données public de compteurs communicants Ausgrid ; il ne s'agissait pas d'un déploiement en production.",
+    "exp-regim-lab.points": [
+      "Ingestion de <b>télémétrie à intervalles de 30 minutes</b> sur les 300 foyers du jeu de données Ausgrid, vers une application web de supervision et un tableau de bord de revue pour les administrateurs.",
+      "Développement d'un <b>pipeline de détection d'anomalies par régression</b> pour investiguer les relevés bruités des compteurs, et stockage des empreintes cryptographiques des relevés via des <b>smart contracts Ethereum</b>, constituant une piste d'audit infalsifiable."
+    ],
+    "exp-oem-engineering-sarl.context": "OEM ENGINEERING est une société canadienne d'ingénierie industrielle dont le siège est à Sherbrooke, au Québec, et le site d'ingénierie à Sfax, en Tunisie. Elle construit des systèmes de tri de matériaux à haute cadence qui identifient les alliages métalliques en ligne à partir de signaux de caméras proche infrarouge visible (VNIR).",
+    "exp-oem-engineering-sarl.summary": "J'ai travaillé sur la chaîne de traitement du signal et de classification qui porte la décision de tri, à travers deux postes.",
+    "exp-oem-engineering-sarl.roles": [
+      {
+        "role": "Machine Learning &amp; Statistical Engineer",
+        "start": "2022-09",
+        "end": "2023-05",
+        "engagement": "Part-time",
+        "scale": {
+          "count": 2000,
+          "unit": "frames/second",
+          "approx": true
+        },
+        "stack": [
+          "C++",
+          "XGBoost",
+          "scikit-learn",
+          "VNIR Spectroscopy"
+        ],
+        "groups": [
+          {
+            "title": "Classification temps réel",
+            "points": [
+              {
+                "point": "Intégration de la <b>chaîne de filtrage Savitzky-Golay en C++</b> déployée dans la classification d'alliages en ligne, en soutenant environ <b>2 000 images par seconde</b> pour des décisions de tri en temps réel.",
+                "impact": "L'identification des alliages tourne à la vitesse nominale du convoyeur, qui est la contrainte que le système de tri doit tenir pour fonctionner en ligne."
+              }
+            ]
+          },
+          {
+            "title": "R&amp;D modèle",
+            "points": [
+              "Construction d'un <b>modèle XGBoost de validation</b> hors ligne atteignant <b>94,7 % de justesse</b> sur des jeux de données spectrales ; maintenu hors production car son exécution plus lente ne tenait pas la contrainte temps réel du système."
+            ]
+          }
+        ]
+      },
+      {
+        "role": "Signal Processing Engineer",
+        "start": "2022-06",
+        "end": "2022-08",
+        "engagement": "Summer Internship",
+        "stack": [
+          "C++",
+          "Savitzky-Golay Filtering",
+          "VNIR Spectroscopy"
+        ],
+        "points": [
+          {
+            "id": "oem-speedup",
+            "point": "Gain de <b>100&times; sur le prétraitement du signal</b>, en remplaçant une implémentation Savitzky-Golay en C# par un filtrage C++ optimisé à paramètres fixes en mémoire et compilation optimisée GCC, tout en conservant le même comportement de filtre pour le tri en ligne.",
+            "impact": "Le prétraitement a cessé d'être le goulot d'étranglement, et c'est cette chaîne qui est passée en ligne l'automne suivant, là où le filtre doit tenir la cadence de la caméra au lieu de courir derrière."
+          }
+        ]
+      }
+    ],
+    "edu-national-engineering-school-of-sfax.degree": "Diplôme d'Ingénieur en Informatique",
+    "edu-national-engineering-school-of-sfax.summary": "Cycle d'ingénieur en informatique, spécialisation ingénierie des données, systèmes distribués, architectures cloud et IA appliquée.",
+    "edu-national-engineering-school-of-sfax.groups": [
+      {
+        "title": "Projet de fin d'études",
+        "points": [
+          "<b>Sujet :</b> intégration tolérante aux pannes entre un service desk Salesforce et une plateforme externe d'avis clients, étudiée sur un stage de fin d'études de six mois chez OLIVESOFT.",
+          "<b>La thèse :</b> un échange asynchrone par file d'attente permet au service desk de continuer à fonctionner quand la plateforme aval est lente ou indisponible. Le mémoire expose l'architecture, les cas de panne qu'elle couvre et les compromis qu'elle accepte.",
+          "<b>Résultat :</b> un mémoire écrit et une intégration en production, soutenus pour l'obtention du diplôme en 2024."
+        ]
+      },
+      {
+        "title": "Spécialisation données et systèmes",
+        "points": [
+          "<b>Ingénierie des données et cloud :</b> traitement big data, systèmes de gestion de bases de données (SGBD), business intelligence, calcul parallèle et distribué, et architectures cloud.",
+          "<b>IA appliquée :</b> apprentissage automatique et vision par ordinateur.",
+          "<b>Artisanat logiciel et systèmes :</b> DevOps, microservices, blockchain industrielle et clean coding."
+        ]
+      },
+      {
+        "title": "Clubs étudiants et formation",
+        "points": [
+          "<b>Responsable formation, Securinets ENIS :</b> animation du parcours de formation technique du club, 6 sessions par an (3 par semestre), de l'assembleur x86 aux travaux pratiques de rétro-ingénierie, jusqu'à l'exploitation web et l'injection SQL, ouvert aux membres du club comme à tout étudiant de l'ENIS qui se présentait.",
+          "<b>Trouver les personnes pour l'enseigner :</b> recrutement d'étudiants avancés et d'ingénieurs en poste pour les sujets que le club ne pouvait pas couvrir lui-même, et construction du calendrier du semestre autour de leurs disponibilités.",
+          "<b>Membre, IEEE Student Branch ENIS :</b> membre du groupe animant la série d'initiation à la programmation (fondamentaux CS, Python, C++ pour la programmation compétitive)."
+        ]
+      }
+    ],
+    "edu-higher-institute-of-applied-sciences-and-technology-of-mahdia.degree": "Cycle préparatoire intégré (Mathématiques et Physique)",
+    "edu-higher-institute-of-applied-sciences-and-technology-of-mahdia.summary": "Le cycle préparatoire national tunisien aux écoles d'ingénieurs, filière MP : mathématiques et physique intensives, l'admission à l'École Nationale d'Ingénieurs de Sfax (ENIS) étant décidée par le classement au concours national.",
+    "edu-higher-institute-of-applied-sciences-and-technology-of-mahdia.points": [
+      "<b>Mathématiques avancées :</b> analyse réelle et complexe, algèbre linéaire, théorie des matrices, équations différentielles, méthodes numériques et théorie des probabilités.",
+      "<b>Physique et fondements du calcul :</b> mécanique classique, électromagnétisme, thermodynamique, physique des ondes et résolution algorithmique de problèmes."
+    ],
+    "impact-azure-cost-control.figure": {
+      "value": "&euro;1,400",
+      "unit": "par mois"
+    },
+    "impact-pipeline-observability.figure": {
+      "value": "150+",
+      "unit": "jobs sous alerte"
+    },
+    "impact-integration-resilience.figure": {
+      "value": "Zero",
+      "unit": "donnée d'avis perdue"
+    },
+    "impact-signal-preprocessing.figure": {
+      "value": "100&times;",
+      "unit": "plus rapide"
+    },
+    "impact-open-source.figure": {
+      "value": "2",
+      "unit": "plugins Kanboard"
+    },
+    "impact-open-source.evidence": "Intégration de Draw.io et refonte des pièces jointes : 2 plugins désormais dans le répertoire officiel des plugins Kanboard, PR #586 et PR #585.",
+    "proj-kanboard-plugin-drawio-integration.summary": "Intègre <b>diagrams.net</b> au Markdown de Kanboard, avec édition en direct dans le navigateur, affichage plein écran des diagrammes et interopérabilité Wiki.js ; accepté dans le répertoire officiel des plugins Kanboard.",
+    "proj-kanboard-plugin-drawio-integration.points": [
+      "<b>Architecture de diagrammes embarqués :</b> rend nativement les blocs de diagramme délimités sous forme d'images isolées, dans les descriptions de tâches, les commentaires et les couloirs, sans modifier le schéma de base de données.",
+      "<b>Interopérabilité et édition en direct :</b> intègre la messagerie postMessage de l'iframe de l'éditeur draw.io, avec affichage des diagrammes en pleine taille et une compatibilité octet pour octet avec le format Wiki.js.",
+      "<b>Sécurité et durcissement CSP :</b> impose un rendu SVG en mode image pour neutraliser les scripts actifs, verrouille les origines des iframes et restreint la Content Security Policy aux contextes de même origine."
+    ],
+    "proj-kanboard-plugin-file-attachment-interaction.summary": "Framework de pièces jointes pour l'entreprise, ajoutant des aperçus dans la modale (Office, PDF, CSV, code), des éditeurs de grille et de texte en direct et le versionnement par branches ; accepté dans le répertoire officiel des plugins Kanboard.",
+    "proj-kanboard-plugin-file-attachment-interaction.points": [
+      "<b>Moteur de parsing multi-formats :</b> analyse Office OpenXML (Word, PowerPoint, Excel), PDF, Markdown et code source directement dans les modales de tâche, par parcours DOM en PHP pur.",
+      "<b>Édition interactive et versionnement :</b> propose l'édition de grille tableur dans le navigateur, la validation de texte et de code en direct, et des mises à jour sur place sûres ou un versionnement par branches pour les révisions de pièces jointes.",
+      "<b>Défense en profondeur et vérification :</b> neutralise les attaques XXE via LIBXML_NONET, restreint le streaming des PDF en iframe par une CSP frame-ancestors, et maintient 770 tests automatisés au niveau 8 de PHPStan."
+    ],
+    "proj-custom-yolov8-model-for-number-detection-on-meters.summary": "Automatise la lecture des chiffres sur des photographies de compteurs, en servant les poids entraînés via un service REST FastAPI conteneurisé et un espace Gradio sur Hugging Face.",
+    "proj-custom-yolov8-model-for-number-detection-on-meters.points": [
+      "<b>Pipeline de vision de bout en bout :</b> annote des jeux de données de compteurs sur Roboflow et entraîne des poids de détection d'objets YOLOv8 sur des itérations de 100 époques.",
+      "<b>Accélération parallèle :</b> accélère l'extraction de caractéristiques et la régression des boîtes englobantes par exécution parallèle sur deux accélérateurs Kaggle avec DataParallel.",
+      "<b>Service REST et Gradio conteneurisés :</b> empaquette les poids entraînés dans des endpoints FastAPI dockerisés pour l'inférence automatisée sur images, aux côtés d'espaces Gradio interactifs sur Hugging Face."
+    ],
+    "proj-image-colorization-with-deep-learning.summary": "Reconstruit une colorisation plausible d'images en niveaux de gris à travers quatre modèles progressifs en notebook (des réseaux convolutifs de référence aux GAN adversariaux), afin d'évaluer la fidélité structurelle et chromatique.",
+    "proj-image-colorization-with-deep-learning.points": [
+      "<b>Architecture de modèles progressive :</b> implémente quatre architectures neuronales successives (des réseaux convolutifs de référence aux réseaux antagonistes génératifs) pour reconstruire des photos en niveaux de gris.",
+      "<b>Perte perceptuelle et entraînement :</b> optimise les réseaux générateurs par une combinaison de perte pixel et de perte adversariale du discriminateur, pour équilibrer cohérence structurelle et vivacité de la colorisation.",
+      "<b>Évaluation de la fidélité :</b> évalue la reconstruction des couleurs sur des jeux de test pour mesurer la similarité structurelle, la justesse chromatique et la réduction des artefacts visuels."
+    ],
+    "pub-secure-and-transparent-energy-management-using-blockchain-and-machine-learning-anomaly-detection-a-case-study-of-the-ausgrid-dataset.summary": "Architecture de données énergétiques décentralisée, associant l'immuabilité de la blockchain pour les pistes d'audit des compteurs communicants à des pipelines d'apprentissage non supervisé pour détecter les anomalies de consommation.",
+    "pub-secure-and-transparent-energy-management-using-blockchain-and-machine-learning-anomaly-detection-a-case-study-of-the-ausgrid-dataset.points": [
+      "<b>Pipeline de données et auditabilité :</b> ingère des séries temporelles de compteurs communicants à haute fréquence dans un registre décentralisé, garantissant des relevés de consommation infalsifiables.",
+      "<b>Moteur d'anomalies non supervisé :</b> compare des modèles de restauration de données et d'annotation non supervisée d'anomalies sur les flux de compteurs, pour détecter les vols d'électricité et les anomalies de capteurs.",
+      "<b>Validation empirique :</b> évalué sur 300 flux résidentiels de consommation solaire et réseau issus du jeu de données de compteurs communicants Ausgrid, en Australie."
+    ],
+    "pub-dual-verification-based-multimodal-approach-for-reliable-pothole-and-speed-bump-detection-on-embedded-system.summary": "Pipeline de données en edge computing combinant télémétrie accélérométrique et flux vidéo par consensus à double vérification, empêchant qu'un seul canal de capteur bruité déclenche de fausses alertes de danger.",
+    "pub-dual-verification-based-multimodal-approach-for-reliable-pothole-and-speed-bump-detection-on-embedded-system.points": [
+      "<b>Fusion de flux de capteurs multimodaux :</b> synchronise la télémétrie de mouvement IMU avec des modèles de détection visuelle sur des cibles embarquées à ressources contraintes.",
+      "<b>Consensus à double vérification :</b> exige l'accord des canaux inertiel et visuel avant d'enregistrer une anomalie de chaussée, éliminant les faux positifs dus au bruit d'un capteur isolé."
+    ],
+    "yolov8-fastapi-gradio.summary": "Pipeline de données de vision par ordinateur de bout en bout : de l'annotation du jeu de données sur Roboflow et de l'entraînement parallèle sur TPU x2 Kaggle (DataParallel) à l'inférence FastAPI conteneurisée et au service Gradio sur Hugging Face.",
+    "datadog-log4j2-mulesoft.summary": "Architecture de streaming de logs sans agent : configuration d'un appender HTTP Log4j2 asynchrone qui poste les événements JSONLayout directement vers l'API Send Logs de Datadog, sans bloquer les threads d'exécution.",
+    "ws-introduction-to-cs-fundamentals-hardware.summary": "Série d'ateliers en deux parties, animée pour <b><a href=\"https://www.linkedin.com/company/olivesoft/posts/?feedView=all\" target=\"_blank\" rel=\"noopener\">OLIVE-LEARN</a></b> (le programme de formation interne d'OLIVESOFT), retraçant le mouvement des données depuis les architectures matérielles parallèles jusqu'aux portes logiques.",
+    "ws-introduction-to-cs-fundamentals-hardware.points": [
+      "<b>Partie 1.a : exécution efficace des données et du code :</b> pipeline d'instructions du CPU, hiérarchie mémoire (caches L1/L2/L3), et comment le DMA, les cartes réseau et les APU déchargent le cœur principal du déplacement des données.",
+      "<b>Partie 1.b : calcul parallèle et liaisons Python :</b> modèles d'exécution SIMD, SIMT et MIMD, en montrant comment du code Python de haut niveau (vectorisation NumPy, threads GPU PyTorch) cible le matériel vectoriel sous-jacent.",
+      "<b>Partie 2 : calcul au niveau du circuit :</b> stockage des données et arithmétique construits depuis les bascules SR/D jusqu'aux registres 4 bits, aux additionneurs et à une unité arithmétique et logique."
+    ],
+    "ws-assembly-programming-workshop.summary": "Un atelier pratique sur l'exécution matérielle et la manipulation de données de bas niveau, montrant l'écart de performance entre Python de haut niveau et l'assembleur sur machine nue.",
+    "ws-assembly-programming-workshop.points": [
+      "<b>Architecture bus et mémoire :</b> transferts de données sur le bus système, ordre des octets (boutisme), E/S mappées en mémoire et alignement des registres.",
+      "<b>Assembleur ARM et gestion de la pile :</b> pression sur les registres, opérations bit à bit, cadres de pile, exécution conditionnelle et exercices de code guidés.",
+      "<b>Comparaison Python et assembleur ARM :</b> doubles implémentations montrant comment les abstractions de haut niveau introduisent un surcoût mémoire et de pile par rapport à la manipulation directe des registres.",
+      "<b>Jeu sur machine nue :</b> en extension, un casse-briques implémenté en assembleur x86, en C et en C++ pour comparer contrôle mémoire manuel et vitesse d'exécution."
+    ],
+    "ws-introduction-to-competitive-programming.summary": "Une session de live coding menant les participants du raisonnement par force brute à la résolution optimisée fondée sur les patrons.",
+    "ws-introduction-to-competitive-programming.points": [
+      "<b>Exercices sur les techniques de base :</b> problèmes LeetCode résolus en direct avec sommes préfixes, recherche dichotomique et stratégies à deux pointeurs, convertissant des approches en <i>O</i>(<i>N</i><sup>2</sup>) en solutions en <i>O</i>(<i>N</i>) et <i>O</i>(log <i>N</i>).",
+      "<b>Raisonnement sur la complexité :</b> décomposition de l'analyse Big-O en temps et en espace pour du code itératif et récursif avec retour sur trace, y compris les bornes inférieures théoriques du tri sous différentes hypothèses (<i>O</i>(<i>N</i> log <i>N</i>) contre <i>O</i>(<i>N</i>) quand le minimum et le maximum sont connus).",
+      "<b>Feuille de route d'entraînement :</b> un parcours d'auto-formation à travers NeetCode, Codeforces, HackerRank, <i>Competitive Programming 4</i>, CLRS et le cours d'algorithmique de Sedgewick sur Coursera."
+    ],
+    "ws-introduction-to-python.summary": "Une session fondatrice menant les étudiants de la syntaxe Python à l'analyse de jeux de données réels et à leur représentation graphique.",
+    "ws-introduction-to-python.points": [
+      "<b>Mise en place de l'environnement :</b> configuration de PyCharm avec des environnements virtuels isolés (<code>venv</code>), pour établir des flux de travail propres et reproductibles.",
+      "<b>Langage et structures de données :</b> syntaxe Python, logique d'état dynamique et structures natives (listes, tuples, dictionnaires) comme briques d'organisation des données.",
+      "<b>Fichiers et visualisation :</b> lecture de fichiers CSV avec les gestionnaires de contexte (<code>with open</code>) et le module <code>csv</code>, puis tracé des données obtenues avec Matplotlib."
+    ],
+    "course-data-engineering-2.summary": "La suite en deuxième année : passer de la construction d'un pipeline à son exploitation, face aux modes de défaillance de la production.",
+    "course-data-engineering-2.syllabus": [
+      {
+        "title": "Flux de données synchrones et asynchrones",
+        "points": [
+          "<b>Compromis entre modèles de flux :</b> mise en regard de la requête-réponse bloquante et des files de messages, pour évaluer couplage et tolérance à la latence.",
+          "<b>Propagation des défaillances aval :</b> comment la contre-pression et la croissance des files évitent la perte d'enregistrements sous forte charge.",
+          "<b>Lab :</b> le même pipeline d'ingestion implémenté deux fois (HTTP bloquant contre file découplée), puis mis en défaut sous charge synthétique pour comparer perte d'enregistrements et latence de traitement."
+        ]
+      },
+      {
+        "title": "Conception de pipelines résilients et idempotence",
+        "points": [
+          "<b>Le principe d'idempotence :</b> Airflow garantit qu'une tâche peut être rejouée ; c'est votre modèle de données et votre stratégie transactionnelle qui doivent garantir que le rejeu est sans danger.",
+          "<b>Mécanique du rejeu sûr :</b> UPSERT sur clé métier unique, patrons MERGE par table de staging, et suppression-avant-écriture transactionnelle sur des partitions de date.",
+          "<b>Orchestration contre idempotence :</b> distinguer la configuration des rejeux d'un DAG Airflow des garanties transactionnelles au niveau de la base.",
+          "<b>Lab :</b> un DAG <b>Airflow</b> multi-tâches écrit avec rejeux par tâche, backoff exponentiel et UPSERT idempotents, mis en échec en cours d'exécution puis réparé par un backfill daté sur la fenêtre manquante."
+        ]
+      },
+      {
+        "title": "Traitement à grande échelle avec Apache Spark",
+        "points": [
+          "<b>Mécanique du traitement distribué :</b> exécution de transformations <b>Apache Spark</b> sur des sources opérationnelles <b>PostgreSQL</b>.",
+          "<b>Lecture des plans d'exécution :</b> analyse des plans <b>Spark</b> via <code>EXPLAIN</code> pour repérer les étapes de shuffle et les débordements sur disque.",
+          "<b>Lab :</b> une transformation de jointure et d'agrégation écrite en <b>Spark</b> sur des tables sources <b>PostgreSQL</b>, refactorée une fois le plan d'exécution révélant les goulots de shuffle, avec comparaison des temps d'exécution."
+        ]
+      },
+      {
+        "title": "Journalisation, supervision et observabilité",
+        "points": [
+          "<b>Suivi structuré des erreurs :</b> intégration d'identifiants de tâche contextuels et d'identifiants d'exécution avec <b>Loguru</b>.",
+          "<b>Supervision opérationnelle :</b> construction de tableaux de bord temps réel et de règles d'alerte à seuil dans <b>Datadog</b>.",
+          "<b>Lab :</b> un pipeline instrumenté avec des enregistrements <b>Loguru</b> structurés expédiés vers <b>Datadog</b>, avec une alerte de défaillance automatisée déclenchée et vérifiée sous injection d'erreurs synthétiques."
+        ]
+      },
+      {
+        "title": "Packaging et livraison",
+        "points": [
+          "<b>Conteneurisation de l'environnement :</b> empaquetage de pipelines de données Python dans des images <b>Docker</b> reproductibles.",
+          "<b>Versionnement des données et des artefacts :</b> suivi des jeux de données et des modèles intermédiaires avec <b>DVC</b>.",
+          "<b>Automatisation CI/CD :</b> construction de workflows automatisés avec <b>GitHub Actions</b> pour pousser les images vers le <b>GitHub Container Registry</b>.",
+          "<b>Lab :</b> un pipeline empaqueté en image <b>Docker</b> avec suivi de données <b>DVC</b> et un workflow <b>GitHub Actions</b> qui construit, teste et publie les conteneurs à chaque commit sur la branche principale."
+        ]
+      }
+    ],
+    "course-data-engineering-2.capstone": {
+      "title": "Pipeline d'ingestion tolérant aux pannes",
+      "points": [
+        "<b>Architecture technique et flux de données :</b> pipeline d'ingestion de bout en bout portant les données d'une source opérationnelle <b>PostgreSQL</b> à travers une transformation <b>Spark</b> vers une cible analytique, planifié comme un DAG <b>Airflow</b> avec rejeux et un chemin de backfill fonctionnel.",
+        "<b>Exploitabilité, conteneurisation et supervision :</b> journalisation <b>Loguru</b> structurée remontée sur un tableau de bord <b>Datadog</b>, le pipeline complet étant conteneurisé et livré par CI.",
+        "<b>Rapport écrit et soutenance orale :</b> dépôt exécutable en une seule commande, accompagné d'un schéma d'architecture et d'une soutenance des choix de rejeu, de délai d'expiration et d'idempotence."
+      ]
+    },
+    "course-data-engineering-1.summary": "Le cours d'ingénierie des données de première année : comment les données analytiques sont stockées, déplacées et traitées à un volume qui ne tient plus sur une seule machine.",
+    "course-data-engineering-1.syllabus": [
+      {
+        "title": "Fondamentaux du big data et limites mémoire",
+        "points": [
+          "<b>Les frontières de la machine unique :</b> identifier la limite mémoire à partir de laquelle le traitement sur une seule machine échoue et l'outillage distribué devient nécessaire.",
+          "<b>Exécution en mémoire contre par blocs :</b> comparaison entre chargement intégral du jeu de données en mémoire et traitement par blocs partitionnés.",
+          "<b>Lab :</b> la même agrégation exécutée sur un jeu de données tenu entier en mémoire puis sur un jeu lu et partitionné par blocs, chronométrée dans les deux cas pour situer la limite de la machine unique."
+        ]
+      },
+      {
+        "title": "Entrepôts de données et modélisation dimensionnelle",
+        "points": [
+          "<b>Architectures OLTP et OLAP :</b> pourquoi le stockage analytique est structuré autrement que les bases opérationnelles transactionnelles.",
+          "<b>Modélisation en schéma en étoile :</b> définition des faits, des dimensions conformes, des clés de substitution et du grain explicite dans <b>PostgreSQL</b>.",
+          "<b>Lab :</b> un schéma en étoile conçu à partir d'une source opérationnelle normalisée et créé dans <b>PostgreSQL</b>, puis interrogé pour mesurer les performances des requêtes analytiques."
+        ]
+      },
+      {
+        "title": "Architectures ETL et transformations sûres",
+        "points": [
+          "<b>Étapes du pipeline :</b> extraction, nettoyage, conformation et chargement des données des systèmes opérationnels vers les entrepôts.",
+          "<b>Logique de transformation :</b> écriture de routines ETL robustes en <b>Python</b> avec des opérations de base de données atomiques.",
+          "<b>Lab :</b> un job ETL <b>Python</b> extrayant depuis une base opérationnelle, conformant les enregistrements et les chargeant dans un schéma en étoile <b>PostgreSQL</b>."
+        ]
+      },
+      {
+        "title": "Traitement à grande échelle avec Apache Spark",
+        "points": [
+          "<b>Paradigmes de calcul distribué :</b> traitement distribué des données via les abstractions DataFrame d'<b>Apache Spark</b>.",
+          "<b>Comparaison de passage à l'échelle :</b> évaluation du calcul distribué Spark face à une exécution Python sur machine unique.",
+          "<b>Lab :</b> réécriture des transformations ETL Python en opérations DataFrame <b>Spark</b> sur des extractions plus volumineuses, pour identifier le point de bascule où le distribué devient gagnant."
+        ]
+      },
+      {
+        "title": "Analytique et reporting",
+        "points": [
+          "<b>Service analytique :</b> connexion des entrepôts opérationnels aux outils de BI pour le reporting métier.",
+          "<b>Modélisation sémantique des mesures :</b> construction de rapports <b>Power BI</b> sur des schémas en étoile conformes, avec des mesures modélisées plutôt que des calculs au niveau du visuel.",
+          "<b>Lab :</b> <b>Power BI</b> connecté à un schéma en étoile <b>PostgreSQL</b>, avec un tableau de bord construit sur des dimensions conformes et des mesures sémantiques explicites."
+        ]
+      }
+    ],
+    "course-data-engineering-1.capstone": {
+      "title": "Entrepôt de la source au tableau de bord",
+      "points": [
+        "<b>Architecture technique et flux de données :</b> pipeline de bout en bout d'une source opérationnelle jusqu'à un tableau de bord <b>Power BI</b> publié.",
+        "<b>Exploitabilité et modélisation :</b> implémentation d'un schéma en étoile avec définitions de grain explicites, clés de substitution et pipelines de transformation atomiques.",
+        "<b>Rapport écrit et soutenance orale :</b> remise des définitions de schéma, du code ETL et soutenance des choix de modélisation dimensionnelle (grain, clés et agrégats)."
+      ]
+    },
+    "course-machine-learning.summary": "Le cours d'apprentissage automatique appliqué de la formation, mené de la formulation d'un problème métier déterministe en problème apprenable jusqu'à la décision de savoir si le résultat signifie quelque chose ou si l'expérience doit être repensée.",
+    "course-machine-learning.syllabus": [
+      {
+        "title": "Apprentissage supervisé et classification déséquilibrée",
+        "points": [
+          "<b>Le cadre, et ce qui le rend difficile :</b> le <a href=\"https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud/data\" target=\"_blank\" rel=\"noopener\">jeu de données de fraude bancaire ULB</a>, qui porte 284 807 transactions dont 492 fraudes (0,17 % de classe positive).",
+          "<b>Le piège de la justesse :</b> montrer pourquoi une référence naïve prédisant zéro fraude atteint 99,83 % de justesse, ce qui impose une évaluation par le score F1.",
+          "<b>Ingénierie de caractéristiques sous contrainte :</b> travailler avec 28 colonnes de composantes principales, où Time et Amount sont les principales caractéristiques disponibles pour la transformation.",
+          "<b>Compromis entre estimateurs :</b> évaluation des arbres de décision, des forêts aléatoires et de la régression logistique dans <b>Scikit-learn</b>, au regard des hypothèses sur les données.",
+          "<b>Lab :</b> douze étudiants en trois équipes, chaque équipe ajustant un estimateur (arbre de décision, forêt aléatoire, régression logistique) sur une préparation <b>Pandas</b> partagée dans <b>Google Colab</b>, en comparant justesse et F1 à l'échelle de la salle."
+        ],
+        "homework": {
+          "title": "Benchmark de détection de fraude",
+          "points": [
+            "<b>Défi individuel sur Colab :</b> un devoir individuel dans <b>Google Colab</b> où le jeu de données et les métriques d'évaluation sont fixés, tandis que la sélection de caractéristiques, le choix d'estimateur et le réglage des hyperparamètres sont libres.",
+            "<b>Les trois leviers :</b> sélection et préparation des caractéristiques, choix de l'estimateur, et optimisation des hyperparamètres.",
+            "<b>Rendu attendu :</b> un notebook commenté portant la meilleure justesse et le meilleur score F1 atteints, reproductible directement depuis le notebook.",
+            "<b>Argumentaire oral :</b> défendre quels leviers ont fait bouger le score et quels paramètres n'ont eu qu'un effet négligeable."
+          ]
+        }
+      },
+      {
+        "title": "Descente de gradient et optimisation (à la main)",
+        "points": [
+          "<b>Optimisation depuis les principes :</b> apprendre la descente de gradient comme le mécanisme sous-jacent de l'ajustement d'un modèle, et non comme un appel de bibliothèque.",
+          "<b>Paramètres de convergence :</b> analyse des taux d'apprentissage, des surfaces de perte et des pas de mise à jour des paramètres.",
+          "<b>Lab :</b> descente de gradient implémentée depuis la dérivée en <b>NumPy</b> pur, en traçant les courbes de perte pour différents taux d'apprentissage jusqu'à observer stagnation ou divergence."
+        ]
+      },
+      {
+        "title": "Apprentissage non supervisé et clustering (à la main)",
+        "points": [
+          "<b>Représentation non supervisée :</b> découvrir la structure latente sans étiquettes de vérité terrain.",
+          "<b>Mécanique des K-moyennes :</b> étape d'affectation, règle de mise à jour des centroïdes, et choix du k optimal par inertie et analyse de silhouette.",
+          "<b>Lab :</b> K-moyennes implémenté à la main en <b>NumPy</b> (affectation, mise à jour des centroïdes, test de convergence) et validé contre <b>Scikit-learn</b>."
+        ]
+      },
+      {
+        "title": "Évaluation de modèle et courbes de diagnostic",
+        "points": [
+          "<b>Validation de la généralisation :</b> techniques de validation croisée séparant l'ajustement à l'entraînement de la performance en généralisation.",
+          "<b>Visualisation de diagnostic :</b> lecture des matrices de confusion, des compromis précision-rappel et des courbes d'apprentissage <b>Matplotlib</b>.",
+          "<b>Lab :</b> un classifieur validé par validation croisée sur une cible déséquilibrée, avec matrices de confusion et courbes d'apprentissage <b>Matplotlib</b> utilisées pour diagnostiquer sous-apprentissage et surapprentissage."
+        ]
+      },
+      {
+        "title": "Le flux de travail pratique et l'export de modèle",
+        "points": [
+          "<b>Intégration de bout en bout :</b> extraction des données depuis <b>PostgreSQL</b>, préparation des caractéristiques dans <b>Pandas</b>, ajustement de pipelines <b>Scikit-learn</b> et évaluation des métriques.",
+          "<b>Reproductibilité et persistance :</b> export des artefacts de pipeline ajustés avec leurs métadonnées d'évaluation.",
+          "<b>Lab :</b> un script de flux de travail Python de bout en bout (requête ➔ préparation ➔ ajustement ➔ évaluation), avec artefacts de modèle et métriques persistés ensemble."
+        ]
+      }
+    ],
+    "course-machine-learning.capstone": {
+      "title": "Étude de prédiction appliquée",
+      "points": [
+        "<b>Architecture technique et flux de données :</b> étude de prédiction supervisée menée d'une extraction <b>PostgreSQL</b> à une préparation de caractéristiques <b>Pandas</b>, jusqu'à un modèle <b>Scikit-learn</b> réglé battant une référence naïve.",
+        "<b>Exploitabilité et réglage du pipeline :</b> recherche d'hyperparamètres validée par validation croisée sur des pipelines scikit-learn, avec persistance des métriques.",
+        "<b>Rapport écrit et soutenance orale :</b> rendu sous forme de notebook comportant les figures d'évaluation <b>Matplotlib</b>, défendu sur la question de savoir si les résultats empiriques soutiennent la conclusion finale."
+      ]
+    },
+    "lang-arabic.level": "Langue maternelle",
+    "lang-french.level": "Maîtrise professionnelle complète",
+    "lang-english.level": "Maîtrise professionnelle complète",
+    "skill-data-pipeline-engineering.name": "Ingénierie de pipelines de données",
+    "skill-cloud-platform-operations.name": "Exploitation de plateformes cloud",
+    "skill-workflow-orchestration.name": "Orchestration de workflows",
+    "skill-distributed-processing.name": "Traitement distribué",
+    "skill-data-warehousing-amp-analytics.name": "Entreposage de données et analytique",
+    "skill-programming-amp-scripting.name": "Programmation et scripting",
+    "skill-observability-amp-incident-response.name": "Observabilité et réponse aux incidents",
+    "skill-systems-integration-amp-apis.name": "Intégration de systèmes et API",
+    "skill-machine-learning-amp-computer-vision.name": "Apprentissage automatique et vision par ordinateur",
+    "skill-delivery-amp-collaboration.name": "Livraison et collaboration",
+    "lang-arabic.name": "Arabe",
+    "lang-french.name": "Français",
+    "lang-english.name": "Anglais"
   },
   "ordinal": {
     "1": "1re",

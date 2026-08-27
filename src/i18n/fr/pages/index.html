@@ -39,9 +39,9 @@ schema_type: ProfilePage
            lede survives because it carries Azure, which the headline did not,
            and because home.md puts the cloud qualifier in its first clause.
            Do not add a third line here. -->
-      <h1 class="page-title">Data Engineer</h1>
+      <h1 class="page-title">Ingénieur Data</h1>
       <p class="page-lede">
-        Building enterprise Azure data platforms, lecturing computer science &amp; distributed systems at IHEC Sfax, and competing in national algorithmic contests.
+        Je construis des plateformes de données Azure d'entreprise, j'enseigne l'informatique et les systèmes distribués à l'IHEC Sfax, et je concours dans les compétitions nationales d'algorithmique.
       </p>
       <!-- The facts a recruiter filters on, in the first screen, because a
            filter reached late is a filter applied by guessing.
@@ -59,7 +59,7 @@ schema_type: ProfilePage
            src/data/certifications.json and src/data/languages.json. -->
       <dl class="hero-facts">
         <div class="hero-facts__row">
-          <dt>Availability</dt>
+          <dt>Disponibilité</dt>
           <dd>{{ site.availability }}</dd>
         </div>
 {{ build.credential_row }}
@@ -74,9 +74,13 @@ schema_type: ProfilePage
      being done now. It is experience[0] after tenure_sort_key, so it follows
      a job change on its own. Never give this block content of its own; the
      one sentence is `home_summary`, on the record. See home.md. -->
+<!-- BROUILLON : les lignes block__intro et le page-lede de cette page sont
+     des lignes de pitch et relèvent de la voix de l'auteur (CLAUDE.md
+     section 6). Elles sont traduites ici littéralement pour que la page
+     fonctionne, et attendent d'être réécrites, pas relues. -->
 <section class="block" aria-labelledby="currently">
-  <h2 class="block__title" id="currently">Currently</h2>
-  <p class="block__intro">Running the data platform behind a luxury fashion house.</p>
+  <h2 class="block__title" id="currently">En ce moment</h2>
+  <p class="block__intro">J'exploite la plateforme de données d'une maison de mode de luxe.</p>
   <ul class="entries">
 {{ build.current_role }}
   </ul>
@@ -95,14 +99,14 @@ schema_type: ProfilePage
      longest block on the page and it is aimed at the reader who has already
      decided to keep going. Records: src/data/impact.json. -->
 <section class="block" aria-labelledby="impact">
-  <h2 class="block__title" id="impact">Impact in Numbers</h2>
+  <h2 class="block__title" id="impact">L'impact en chiffres</h2>
   <!-- INTERIM, awaiting the author's sentence. The line it replaced read
        "Five results, each one quoting the record that earned it.": a count
        typed in a fragment while the records are `home: true` flags in data,
        so a sixth record made it silently wrong, followed by a description of
        the mechanism, which CLAUDE.md section 6 keeps off the page entirely.
        A block__intro is one line and it is a pitch. -->
-  <p class="block__intro">What changed because the work shipped.</p>
+  <p class="block__intro">Ce qui a changé parce que le travail a été livré.</p>
   <ul class="results">
 {{ build.impact }}
   </ul>
@@ -114,8 +118,8 @@ schema_type: ProfilePage
      src/data/skills.json; the proof order and the derived standing come from
      PROOF and standing() in tools/build.py. Never hand-write entries here. -->
 <section class="block" aria-labelledby="skills">
-  <h2 class="block__title" id="skills">Skills &amp; Evidence</h2>
-  <p class="block__intro">What I can do, and what proves it.</p>
+  <h2 class="block__title" id="skills">Compétences et preuves</h2>
+  <p class="block__intro">Ce que je sais faire, et ce qui le prouve.</p>
 {{ build.proof_key }}
   <ul class="skills">
 {{ build.skills }}
