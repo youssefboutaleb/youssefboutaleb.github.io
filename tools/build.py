@@ -2632,7 +2632,13 @@ def render_diagram(spec: dict) -> str:
     a diagram nobody can read is decoration, and DESIGN.md Principle 1 does not
     admit decoration.
     """
-    layers = spec["layers"]
+    # Every user-visible string here goes through `t()`. A diagram is drawn
+    # once per locale (page_blocks is re-rendered per language), so reading
+    # `spec["title"]` directly would put English lane labels and English box
+    # text inside a French page and report nothing missing, which is the
+    # failure CLAUDE.md section 9 lists and which render_skill had shipped.
+    # `edges` never translates: those are node ids, not prose.
+    layers = t(spec, "layers")
     rows = max(len(layer["nodes"]) for layer in layers)
     width = PAD * 2 + len(layers) * NODE_W + (len(layers) - 1) * GAP_X
     height = PAD * 2 + LANE_H + rows * NODE_H + (rows - 1) * GAP_Y
@@ -2677,15 +2683,15 @@ def render_diagram(spec: dict) -> str:
     title_id, desc_id = f'{spec["id"]}-title', f'{spec["id"]}-desc'
     body = "\n".join(
         indent(part, 4) for part in
-        [f'<title id="{title_id}">{spec["title"]}</title>',
-         f'<desc id="{desc_id}">{spec["desc"]}</desc>'] + labels + edges + boxes)
+        [f'<title id="{title_id}">{t(spec, "title")}</title>',
+         f'<desc id="{desc_id}">{t(spec, "desc")}</desc>'] + labels + edges + boxes)
     return (
         f'<figure class="diagram" id="{spec["id"]}">\n'
         f'  <svg class="diagram__svg" viewBox="0 0 {width} {height:.0f}"'
         f' role="img" aria-labelledby="{title_id} {desc_id}">\n'
         f'{body}\n'
         "  </svg>\n"
-        f'  <figcaption class="diagram__caption">{spec["caption"]}</figcaption>\n'
+        f'  <figcaption class="diagram__caption">{t(spec, "caption")}</figcaption>\n'
         "</figure>")
 
 

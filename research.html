@@ -172,6 +172,24 @@
           </ul>
         </section>
 
+          <figure class="diagram" id="ausgrid_pipeline">
+            <svg class="diagram__svg" viewBox="0 0 808 98" role="img" aria-labelledby="ausgrid_pipeline-title ausgrid_pipeline-desc">
+              <title id="ausgrid_pipeline-title">Ausgrid smart-meter anomaly detection pipeline</title>
+              <desc id="ausgrid_pipeline-desc">Smart-meter time-series is ingested at 30-minute intervals, hashed into a blockchain audit trail so a reading cannot be altered without evidence, then passed to an unsupervised anomaly engine whose output is grid anomaly alerts for power theft and sensor faults.</desc>
+              <text class="diagram__lane" x="86" y="22" text-anchor="middle">Ingestion</text>
+              <text class="diagram__lane" x="298" y="22" text-anchor="middle">Verification</text>
+              <text class="diagram__lane" x="510" y="22" text-anchor="middle">Analytics</text>
+              <text class="diagram__lane" x="722" y="22" text-anchor="middle">Output</text>
+              <path class="diagram__edge" d="M160 60 C192 60 192 60 224 60"/>
+              <path class="diagram__edge" d="M372 60 C404 60 404 60 436 60"/>
+              <path class="diagram__edge" d="M584 60 C616 60 616 60 648 60"/>
+              <g class="diagram__node"><rect x="12" y="34" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="86" y="58">Smart-meter</tspan><tspan x="86" y="70">time-series</tspan></text></g>
+              <g class="diagram__node"><rect x="224" y="34" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="298" y="58">Blockchain audit</tspan><tspan x="298" y="70">trail</tspan></text></g>
+              <g class="diagram__node"><rect x="436" y="34" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="510" y="58">Unsupervised anomaly</tspan><tspan x="510" y="70">engine</tspan></text></g>
+              <g class="diagram__node"><rect x="648" y="34" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="722" y="64">Grid anomaly alerts</tspan></text></g>
+            </svg>
+            <figcaption class="diagram__caption">300 residential solar and grid feeds, at 30-minute intervals.</figcaption>
+          </figure>
         <section class="block" aria-labelledby="technical-articles">
           <h2 class="block__title" id="technical-articles">Technical Articles</h2>
           <p class="block__intro">

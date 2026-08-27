@@ -325,6 +325,37 @@
           </ul>
         </section>
 
+          <figure class="diagram" id="jq_platform">
+            <svg class="diagram__svg" viewBox="0 0 808 320" role="img" aria-labelledby="jq_platform-title jq_platform-desc">
+              <title id="jq_platform-title">Plateforme de données commandes, clients, produits et tarifs de JACQUEMUS</title>
+              <desc id="jq_platform-desc">Salesforce, ORLI/WMS, PostgreSQL et Azure SQL alimentent deux chemins d'ingestion : Azure Data Factory pour les jobs planifiés, et des services web Quarkus pour les données qui ne peuvent pas attendre une fenêtre de rafraîchissement. Les deux font atterrir un lakehouse en médaillon sur Azure Fabric, transformé avec Apache Spark, qui sert les équipes analytics, logistique, reporting e-commerce et gestion des stocks. Datadog APM instrumente aussi bien la partie ingestion que le lakehouse.</desc>
+              <text class="diagram__lane" x="86" y="22" text-anchor="middle">Sources</text>
+              <text class="diagram__lane" x="298" y="22" text-anchor="middle">Ingestion</text>
+              <text class="diagram__lane" x="510" y="22" text-anchor="middle">Lakehouse</text>
+              <text class="diagram__lane" x="722" y="22" text-anchor="middle">Restitution</text>
+              <path class="diagram__edge" d="M160 60 C192 60 192 134 224 134"/>
+              <path class="diagram__edge" d="M160 134 C192 134 192 134 224 134"/>
+              <path class="diagram__edge" d="M160 208 C192 208 192 134 224 134"/>
+              <path class="diagram__edge" d="M160 282 C192 282 192 134 224 134"/>
+              <path class="diagram__edge" d="M160 60 C192 60 192 208 224 208"/>
+              <path class="diagram__edge" d="M160 282 C192 282 192 208 224 208"/>
+              <path class="diagram__edge" d="M372 134 C404 134 404 171 436 171"/>
+              <path class="diagram__edge" d="M372 208 C404 208 404 171 436 171"/>
+              <path class="diagram__edge" d="M372 134 C510 134 510 134 648 134"/>
+              <path class="diagram__edge" d="M584 171 C616 171 616 134 648 134"/>
+              <path class="diagram__edge" d="M584 171 C616 171 616 208 648 208"/>
+              <g class="diagram__node"><rect x="12" y="34" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="86" y="64">Salesforce</tspan></text></g>
+              <g class="diagram__node"><rect x="12" y="108" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="86" y="138">ORLI/WMS</tspan></text></g>
+              <g class="diagram__node"><rect x="12" y="182" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="86" y="212">PostgreSQL</tspan></text></g>
+              <g class="diagram__node"><rect x="12" y="256" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="86" y="286">Azure SQL</tspan></text></g>
+              <g class="diagram__node"><rect x="224" y="108" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="298" y="138">Azure Data Factory</tspan></text></g>
+              <g class="diagram__node"><rect x="224" y="182" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="298" y="212">Services web Quarkus</tspan></text></g>
+              <g class="diagram__node"><rect x="436" y="145" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="510" y="162">Lakehouse en</tspan><tspan x="510" y="175">médaillon (Fabric,</tspan><tspan x="510" y="188">Spark)</tspan></text></g>
+              <g class="diagram__node"><rect x="648" y="108" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="722" y="138">Datadog APM</tspan></text></g>
+              <g class="diagram__node"><rect x="648" y="182" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="722" y="206">Analytique et</tspan><tspan x="722" y="218">reporting</tspan></text></g>
+            </svg>
+            <figcaption class="diagram__caption">Rafraîchissement de 10 minutes au quotidien, sur des charges d'ingestion atteignant 150 Mo.</figcaption>
+          </figure>
         <section class="block" aria-labelledby="education">
           <h2 class="block__title" id="education">Formation</h2>
           <ul class="entries">

@@ -172,10 +172,28 @@
           </ul>
         </section>
 
+          <figure class="diagram" id="ausgrid_pipeline">
+            <svg class="diagram__svg" viewBox="0 0 808 98" role="img" aria-labelledby="ausgrid_pipeline-title ausgrid_pipeline-desc">
+              <title id="ausgrid_pipeline-title">Pipeline de détection d'anomalies sur compteurs communicants Ausgrid</title>
+              <desc id="ausgrid_pipeline-desc">Les séries temporelles des compteurs communicants sont ingérées par intervalles de 30 minutes, puis hachées dans une piste d'audit blockchain pour qu'un relevé ne puisse pas être modifié sans laisser de trace, avant d'être passées à un moteur d'anomalies non supervisé dont la sortie alimente des alertes d'anomalie réseau, vol d'électricité et défaillance de capteur.</desc>
+              <text class="diagram__lane" x="86" y="22" text-anchor="middle">Ingestion</text>
+              <text class="diagram__lane" x="298" y="22" text-anchor="middle">Vérification</text>
+              <text class="diagram__lane" x="510" y="22" text-anchor="middle">Analyse</text>
+              <text class="diagram__lane" x="722" y="22" text-anchor="middle">Sortie</text>
+              <path class="diagram__edge" d="M160 60 C192 60 192 60 224 60"/>
+              <path class="diagram__edge" d="M372 60 C404 60 404 60 436 60"/>
+              <path class="diagram__edge" d="M584 60 C616 60 616 60 648 60"/>
+              <g class="diagram__node"><rect x="12" y="34" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="86" y="58">Séries temporelles</tspan><tspan x="86" y="70">des compteurs</tspan></text></g>
+              <g class="diagram__node"><rect x="224" y="34" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="298" y="58">Piste d'audit</tspan><tspan x="298" y="70">blockchain</tspan></text></g>
+              <g class="diagram__node"><rect x="436" y="34" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="510" y="58">Moteur d'anomalies</tspan><tspan x="510" y="70">non supervisé</tspan></text></g>
+              <g class="diagram__node"><rect x="648" y="34" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="722" y="58">Alertes d'anomalie</tspan><tspan x="722" y="70">réseau</tspan></text></g>
+            </svg>
+            <figcaption class="diagram__caption">300 flux résidentiels solaires et réseau, par intervalles de 30 minutes.</figcaption>
+          </figure>
         <section class="block" aria-labelledby="technical-articles">
           <h2 class="block__title" id="technical-articles">Articles techniques</h2>
           <p class="block__intro">
-            Guides techniques pratiques sur les pipelines de mise en service de modèles, l'agrégation de flux de logs et l'observabilité en production.
+            Guides techniques pratiques sur les pipelines de mise en production de modèles, l'agrégation de flux de logs et l'observabilité en production.
           </p>
           <ul class="entries">
             <li class="entry" id="datadog-log4j2-mulesoft">

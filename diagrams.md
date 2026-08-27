@@ -3,11 +3,22 @@
 The model for [`src/data/diagrams.json`](src/data/diagrams.json) and
 `render_diagram` in [`tools/build.py`](tools/build.py).
 
-**`diagrams.json` is empty, and that is the correct state until the author
-fills it.** [`CLAUDE.md`](CLAUDE.md) §8/M1 says, in those words, *do not
-auto-generate this content*. What is built here is the container: an agent may
-extend the renderer, fix the geometry, and add a diagram the author has
+**`diagrams.json` holds two diagrams now**, and the rule that kept it empty
+still stands: [`CLAUDE.md`](CLAUDE.md) §8/M1 says, in those words, *do not
+auto-generate this content*. What is built here is the container. An agent may
+extend the renderer, fix the geometry, and draw a diagram the author has
 described. It may not decide what connects to what.
+
+**Both existing diagrams were declared by the author and then narrowed to what
+the records carry**, which is the precedent worth keeping. The first draft of
+the JACQUEMUS platform named Shopify, Salesforce POS, Synapse and Power BI;
+`experience.json` names none of the four, and PostgreSQL, Azure SQL and the
+Quarkus API path that it does name were absent from the drawing. A diagram
+that introduces nouns the bullets beside it do not carry does not prove the
+architecture, it proves the page disagrees with itself, and the engineer reader
+of [`CLAUDE.md`](CLAUDE.md) §2 is exactly the one who checks. **When the
+author's sketch and the records diverge, the divergence is a question for the
+author, not a detail for the renderer to smooth over.**
 
 ---
 
@@ -110,7 +121,25 @@ own container and the body never scrolls sideways.
 1. Write the record in `src/data/diagrams.json`.
 2. Place `{{ build.diagram.<id> }}` in the fragment, under the record it
    belongs to.
-3. Remove the six `diagram*` names from `STAGED_CSS` in
-   [`tools/check.py`](tools/check.py). They are staged precisely because
-   nothing uses them yet, and `check.py` will tell you they are now in use.
-4. `python3 tools/build.py && python3 tools/check.py`.
+3. The six `diagram*` names are out of `STAGED_CSS` in
+   [`tools/check.py`](tools/check.py) already, because markup reaches them now.
+   Nothing to do unless a new rule is added ahead of its first user.
+4. **Translate it.** `title`, `desc`, `caption` and `layers` all route through
+   `t()`, keyed on the diagram's `id`: `jq_platform.layers` overlays the lane
+   labels and every box label at once, and `edges` never translates because
+   those are node ids. A diagram is redrawn per locale, so a field read off the
+   spec directly would put English boxes inside a French page and report
+   nothing missing, which is the failure [`CLAUDE.md`](CLAUDE.md) §9 lists.
+5. `python3 tools/build.py && python3 tools/check.py`.
+
+## 8. Where they are
+
+| Diagram | Page | What it adds to the prose |
+|---|---|---|
+| `jq_platform` | Career, under Experience | The four sources and the two ingestion paths are spread across three groups of one record; the picture is what puts them in one shape, and shows the live Quarkus path running beside the scheduled jobs rather than after them |
+| `ausgrid_pipeline` | Research, under Journal Articles | The bullets say what each stage does; the drawing says the ledger sits *between* ingestion and analysis rather than beside them, which is the whole claim of the paper |
+
+Both sit under the block rather than inside a record, because a diagram is
+about a block: it draws what several records or several groups of one record
+share, and a `<figure>` nested in an `<li class="entry">` would say it belongs
+to one of them.

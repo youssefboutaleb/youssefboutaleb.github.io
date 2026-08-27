@@ -7,10 +7,6 @@ nav: research
   <h1 class="page-title">Recherche</h1>
 </header>
 
-<!-- BROUILLON : les lignes block__intro de cette page sont des lignes de
-     pitch et relèvent de la voix de l'auteur (CLAUDE.md section 6). Elles
-     sont traduites ici littéralement pour que la page fonctionne, et
-     attendent d'être réécrites, pas relues. -->
 <section class="block" aria-labelledby="journal-articles">
   <h2 class="block__title" id="journal-articles">Publications évaluées par les pairs</h2>
   <p class="block__intro">
@@ -24,10 +20,15 @@ nav: research
   </ul>
 </section>
 
+<!-- The pipeline behind the Ausgrid paper, drawn under Publications. The
+     bullets say what each stage does; the diagram says what order they run
+     in and that the ledger sits between ingestion and analysis rather than
+     beside them. diagrams.md. -->
+{{ build.diagram.ausgrid_pipeline }}
 <section class="block" aria-labelledby="technical-articles">
   <h2 class="block__title" id="technical-articles">Articles techniques</h2>
   <p class="block__intro">
-    Guides techniques pratiques sur les pipelines de mise en service de modèles, l'agrégation de flux de logs et l'observabilité en production.
+    Guides techniques pratiques sur les pipelines de mise en production de modèles, l'agrégation de flux de logs et l'observabilité en production.
   </p>
   <ul class="entries">
     <!-- Records live in src/data/writing.json, on their own model, see

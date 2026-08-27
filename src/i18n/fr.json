@@ -794,7 +794,7 @@
       ],
       "published": [
         {
-          "text": "Article à comité de lecture, Elsevier",
+          "text": "Article évalué par les pairs, Elsevier",
           "href": "research.html#pub-secure-and-transparent-energy-management-using-blockchain-and-machine-learning-anomaly-detection-a-case-study-of-the-ausgrid-dataset"
         },
         {
@@ -880,7 +880,109 @@
           "href": "teaching.html#data-engineering-2-m3"
         }
       ]
-    }
+    },
+    "jq_platform.title": "Plateforme de données commandes, clients, produits et tarifs de JACQUEMUS",
+    "jq_platform.desc": "Salesforce, ORLI/WMS, PostgreSQL et Azure SQL alimentent deux chemins d'ingestion : Azure Data Factory pour les jobs planifiés, et des services web Quarkus pour les données qui ne peuvent pas attendre une fenêtre de rafraîchissement. Les deux font atterrir un lakehouse en médaillon sur Azure Fabric, transformé avec Apache Spark, qui sert les équipes analytics, logistique, reporting e-commerce et gestion des stocks. Datadog APM instrumente aussi bien la partie ingestion que le lakehouse.",
+    "jq_platform.caption": "Rafraîchissement de 10 minutes au quotidien, sur des charges d'ingestion atteignant 150 Mo.",
+    "jq_platform.layers": [
+      {
+        "label": "Sources",
+        "nodes": [
+          {
+            "id": "sf",
+            "label": "Salesforce"
+          },
+          {
+            "id": "wms",
+            "label": "ORLI/WMS"
+          },
+          {
+            "id": "pg",
+            "label": "PostgreSQL"
+          },
+          {
+            "id": "asql",
+            "label": "Azure SQL"
+          }
+        ]
+      },
+      {
+        "label": "Ingestion",
+        "nodes": [
+          {
+            "id": "adf",
+            "label": "Azure Data Factory"
+          },
+          {
+            "id": "quarkus",
+            "label": "Services web Quarkus"
+          }
+        ]
+      },
+      {
+        "label": "Lakehouse",
+        "nodes": [
+          {
+            "id": "lake",
+            "label": "Lakehouse en médaillon (Fabric, Spark)"
+          }
+        ]
+      },
+      {
+        "label": "Restitution",
+        "nodes": [
+          {
+            "id": "ddog",
+            "label": "Datadog APM"
+          },
+          {
+            "id": "biz",
+            "label": "Analytique et reporting"
+          }
+        ]
+      }
+    ],
+    "ausgrid_pipeline.title": "Pipeline de détection d'anomalies sur compteurs communicants Ausgrid",
+    "ausgrid_pipeline.desc": "Les séries temporelles des compteurs communicants sont ingérées par intervalles de 30 minutes, puis hachées dans une piste d'audit blockchain pour qu'un relevé ne puisse pas être modifié sans laisser de trace, avant d'être passées à un moteur d'anomalies non supervisé dont la sortie alimente des alertes d'anomalie réseau, vol d'électricité et défaillance de capteur.",
+    "ausgrid_pipeline.caption": "300 flux résidentiels solaires et réseau, par intervalles de 30 minutes.",
+    "ausgrid_pipeline.layers": [
+      {
+        "label": "Ingestion",
+        "nodes": [
+          {
+            "id": "meters",
+            "label": "Séries temporelles des compteurs"
+          }
+        ]
+      },
+      {
+        "label": "Vérification",
+        "nodes": [
+          {
+            "id": "chain",
+            "label": "Piste d'audit blockchain"
+          }
+        ]
+      },
+      {
+        "label": "Analyse",
+        "nodes": [
+          {
+            "id": "engine",
+            "label": "Moteur d'anomalies non supervisé"
+          }
+        ]
+      },
+      {
+        "label": "Sortie",
+        "nodes": [
+          {
+            "id": "alerts",
+            "label": "Alertes d'anomalie réseau"
+          }
+        ]
+      }
+    ]
   },
   "ordinal": {
     "1": "1re",
