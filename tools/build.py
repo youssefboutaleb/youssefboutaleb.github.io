@@ -2369,12 +2369,28 @@ def render_skill(record: dict) -> str:
     """
     evidence = record["evidence"]
 
+    # Standing reads the English evidence, the chips read the locale's. The
+    # split is deliberate: `standing()` answers *which kinds of proof exist*,
+    # which is a fact about the career and identical in every language, while
+    # the chip is prose naming the record a reader will land on. Computing the
+    # standing from the overlay would let a translator who dropped a chip
+    # silently demote the row.
+    #
+    # The chips went through `record["evidence"]` until this comment existed,
+    # which is the failure CLAUDE.md section 9 lists as build-refused: a field
+    # a renderer reads directly instead of through `t()` is never reported
+    # missing, so all 39 chips rendered English on the French page while the
+    # coverage figure counted them as fine. Every user-visible string here
+    # routes through `t()` now, and an untranslated `evidence` shows up in the
+    # build's missing list like everything else.
+    localised = t(record, "evidence") or evidence
+
     tools = "\n".join(
         f'  <li class="tag tag--stack">{tool}</li>' for tool in record["tools"]
     )
     chips = []
     for kind in PROOF:
-        for item in evidence.get(kind, []):
+        for item in localised.get(kind, []):
             chips.append(
                 f'  <li><a class="tag tag--{kind}" href="{item["href"]}">'
                 f'{item["text"]}</a></li>'

@@ -61,7 +61,21 @@ The opening       identity, claim, availability, credentials
 Currently         the job I am doing right now                 ← projection
 Impact in Numbers what changed because I shipped               ← restatement
 Skills & Evidence what I can do, and what proves it            ← citations
+The closing       the invitation, and where to take it         ← projection
 ```
+
+**The closing is a projection, which is the only reason it is allowed.** It is
+the fifth block and the one exception to the shape of the other four: no
+heading, no records, one line and a link. The line is not written on Home. It
+is `contact_invitation` in `src/site.json`, which already renders as Contact's
+own intro, so the two pages share a sentence rather than keeping two in
+agreement, which is the same mechanism Impact in Numbers uses and the same
+reason `availability` has one owner ([`CLAUDE.md`](CLAUDE.md) §4).
+
+It takes `data-toc-skip` and is absent from the rail on purpose. The rail is a
+contents page, and *Get in touch* is not a section of the document: it is the
+document ending. Listing it would also print, two inches under the nav bar, a
+link to the page the nav bar already links to.
 
 **The order is the reader sequence, not block strength.** Recruiter, hiring
 manager, hiring manager, engineer, and it no longer hands off to the engineer
@@ -459,4 +473,10 @@ Recorded so it is not re-added by someone who notices the gap.
 4. **Every block gets a `block__intro`**, one line, and it is a pitch
    ([`DESIGN.md`](DESIGN.md) §11.1). Home is the page a recruiter opens first
    and was, for a while, the page with the fewest pitch lines on it.
-5. Run `python3 tools/build.py && python3 tools/check.py`.
+5. **A block with no heading needs `data-toc-skip`, and the build says so.**
+   A `<section class="block" aria-labelledby="x">` with no `h2` carrying `id`
+   `x` raises *page context: no label found*, which is the guard doing its job:
+   a rail entry with nothing to print is how a slug ships as though it were a
+   title. Either give the block a real heading or declare it out of the rail,
+   and the second answer needs the reason written here, as the closing has.
+6. Run `python3 tools/build.py && python3 tools/check.py`.

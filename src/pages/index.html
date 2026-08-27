@@ -121,3 +121,19 @@ schema_type: ProfilePage
 {{ build.skills }}
   </ul>
 </section>
+
+<!-- The one block on Home that asks for something, and the only one with no
+     records under it. It carries no heading and takes `data-toc-skip`,
+     because the rail is a contents page and this is the page ending rather
+     than a section of it: a "Get in touch" entry in the rail would say what
+     the nav bar says two inches above it.
+
+     The sentence is not typed here. `contact_invitation` in src/site.json
+     already renders as Contact's own intro, so Home projects it, which is
+     home.md's rule: a line that would be true on Home and on Contact belongs
+     to one of them and is quoted by the other. Two copies of an invitation
+     drift exactly the way the availability sentence did before section 4 gave
+     it one owner. -->
+<section class="block" data-toc-skip>
+  <p class="block__intro">{{ site.contact_invitation }} <a href="contact.html">Get in touch &rarr;</a></p>
+</section>

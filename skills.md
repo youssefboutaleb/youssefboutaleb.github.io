@@ -188,6 +188,30 @@ points at another, and `check.py` can only catch that if the link is generated.
 pointing at a page that does not exist, or an anchor that does not exist, fails
 the build. A skill cannot cite proof the site does not carry.
 
+**And the chip text is translated, which it was not for as long as the French
+existed.** `render_skill` read `item["text"]` off the English record directly
+instead of through `t()`, so all thirty-nine chips rendered English on
+`fr/index.html` while the coverage figure counted them as fine: a field that
+never passes through `t()` is a field the build never reports missing
+([`CLAUDE.md`](CLAUDE.md) §9). The overlay key is `<skill-id>.evidence` and it
+mirrors the whole structure, `href` included, exactly as `groups` does on an
+experience record.
+
+**`standing()` still reads the English.** Which kinds of proof a capability has
+is a fact about the career and is the same in every language, so deriving it
+from the overlay would let a translator who dropped a chip silently demote a
+row from *Production-proven*. The split is in the renderer and is deliberate.
+
+Two things stay in English inside the French chips, because the records they
+land on do: **certifications**, which are awarded titles rather than
+descriptions (*Talend Data Integration*, *DP-700*), and **course titles**,
+which `fr/teaching.html` prints in English today. Module names do not: the
+syllabus is translated, so *Logging & Monitoring module* becomes *Module
+Journalisation et supervision* and the chip says what the heading under it
+says. **A chip that names a record in a different language from the record is
+the same failure as a chip pointing at the wrong anchor**, and neither
+`check.py` nor the build can see it.
+
 ---
 
 ## Standing is derived, never typed

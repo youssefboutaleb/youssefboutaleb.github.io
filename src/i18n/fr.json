@@ -642,7 +642,245 @@
     "skill-delivery-amp-collaboration.name": "Livraison et collaboration",
     "lang-arabic.name": "Arabe",
     "lang-french.name": "Français",
-    "lang-english.name": "Anglais"
+    "lang-english.name": "Anglais",
+    "skill-data-pipeline-engineering.evidence": {
+      "production": [
+        {
+          "text": "Azure Data Factory et Fabric chez JACQUEMUS",
+          "href": "career.html#exp-jacquemus"
+        },
+        {
+          "text": "Intégration pilotée par API chez OLIVESOFT",
+          "href": "career.html#exp-olivesoft"
+        }
+      ],
+      "certification": [
+        {
+          "text": "Talend Data Integration",
+          "href": "career.html#cert-talend-di"
+        },
+        {
+          "text": "MuleSoft Developer L1",
+          "href": "career.html#cert-mulesoft-dev-l1"
+        },
+        {
+          "text": "Astronomer &times;2",
+          "href": "career.html#cert-astronomer"
+        }
+      ],
+      "taught": [
+        {
+          "text": "Data Engineering 1",
+          "href": "teaching.html#course-data-engineering-1"
+        },
+        {
+          "text": "Data Engineering 2",
+          "href": "teaching.html#course-data-engineering-2"
+        }
+      ]
+    },
+    "skill-observability-amp-incident-response.evidence": {
+      "production": [
+        {
+          "text": "Supervision et journalisation Datadog chez JACQUEMUS",
+          "href": "career.html#jq-observability"
+        }
+      ],
+      "certification": [
+        {
+          "text": "Datadog &times;3",
+          "href": "career.html#cert-datadog"
+        }
+      ],
+      "taught": [
+        {
+          "text": "Module Journalisation et supervision",
+          "href": "teaching.html#data-engineering-2-m4"
+        }
+      ],
+      "published": [
+        {
+          "text": "Article Datadog + Log4j2",
+          "href": "research.html#datadog-log4j2-mulesoft"
+        }
+      ]
+    },
+    "skill-systems-integration-amp-apis.evidence": {
+      "production": [
+        {
+          "text": "Intégration asynchrone tolérante aux pannes",
+          "href": "career.html#olivesoft-dlq"
+        },
+        {
+          "text": "Systèmes d'entreprise chez JACQUEMUS",
+          "href": "career.html#exp-jacquemus"
+        }
+      ],
+      "certification": [
+        {
+          "text": "MuleSoft Developer L1",
+          "href": "career.html#cert-mulesoft-dev-l1"
+        }
+      ],
+      "taught": [
+        {
+          "text": "Flux de données synchrones et asynchrones",
+          "href": "teaching.html#data-engineering-2-m1"
+        }
+      ]
+    },
+    "skill-cloud-platform-operations.evidence": {
+      "production": [
+        {
+          "text": "&euro;1,400 par mois économisés",
+          "href": "career.html#jq-finops"
+        },
+        {
+          "text": "Intégration Azure Data Lake et SQL",
+          "href": "career.html#exp-jacquemus"
+        }
+      ],
+      "certification": [
+        {
+          "text": "Azure DB Administrator (DP-300)",
+          "href": "career.html#cert-dp-300"
+        },
+        {
+          "text": "Fabric Data Engineer (DP-700)",
+          "href": "career.html#cert-dp-700"
+        }
+      ]
+    },
+    "skill-data-warehousing-amp-analytics.evidence": {
+      "production": [
+        {
+          "text": "Plateforme de données Azure",
+          "href": "career.html#exp-jacquemus"
+        }
+      ],
+      "certification": [
+        {
+          "text": "Azure DB Administrator (DP-300)",
+          "href": "career.html#cert-dp-300"
+        },
+        {
+          "text": "Fabric Data Engineer (DP-700)",
+          "href": "career.html#cert-dp-700"
+        }
+      ],
+      "taught": [
+        {
+          "text": "Entrepôts de données",
+          "href": "teaching.html#data-engineering-1-m2"
+        },
+        {
+          "text": "Analytique et reporting",
+          "href": "teaching.html#data-engineering-1-m5"
+        }
+      ]
+    },
+    "skill-machine-learning-amp-computer-vision.evidence": {
+      "production": [
+        {
+          "text": "Classifieur de métaux chez OEM",
+          "href": "career.html#exp-oem-engineering-sarl"
+        }
+      ],
+      "taught": [
+        {
+          "text": "Cours Machine Learning",
+          "href": "teaching.html#course-machine-learning"
+        }
+      ],
+      "published": [
+        {
+          "text": "Article à comité de lecture, Elsevier",
+          "href": "research.html#pub-secure-and-transparent-energy-management-using-blockchain-and-machine-learning-anomaly-detection-a-case-study-of-the-ausgrid-dataset"
+        },
+        {
+          "text": "Article YOLOv8, 3 000 vues",
+          "href": "research.html#yolov8-fastapi-gradio"
+        }
+      ],
+      "applied": [
+        {
+          "text": "Détection de compteurs YOLOv8",
+          "href": "projects.html#proj-custom-yolov8-model-for-number-detection-on-meters"
+        },
+        {
+          "text": "Colorisation d'images",
+          "href": "projects.html#proj-image-colorization-with-deep-learning"
+        }
+      ]
+    },
+    "skill-programming-amp-scripting.evidence": {
+      "production": [
+        {
+          "text": "Filtre C++, gain de 100&times;",
+          "href": "career.html#oem-speedup"
+        },
+        {
+          "text": "Automatisation PowerShell",
+          "href": "career.html#jq-finops"
+        }
+      ],
+      "taught": [
+        {
+          "text": "Introduction to Python",
+          "href": "workshops.html#ws-introduction-to-python"
+        }
+      ],
+      "applied": [
+        {
+          "text": "2 plugins Kanboard",
+          "href": "projects.html#open-source"
+        },
+        {
+          "text": "8 résultats de concours",
+          "href": "awards.html#competitions"
+        }
+      ]
+    },
+    "skill-delivery-amp-collaboration.evidence": {
+      "production": [
+        {
+          "text": "Documentation d'architecture et de reprise",
+          "href": "career.html#jq-docs"
+        }
+      ],
+      "applied": [
+        {
+          "text": "2 pull requests en amont",
+          "href": "projects.html#open-source"
+        }
+      ]
+    },
+    "skill-workflow-orchestration.evidence": {
+      "certification": [
+        {
+          "text": "Airflow 3 Fundamentals",
+          "href": "career.html#cert-airflow-fundamentals"
+        },
+        {
+          "text": "DAG Authoring",
+          "href": "career.html#cert-airflow-dag-authoring"
+        }
+      ],
+      "taught": [
+        {
+          "text": "Module Packaging et livraison",
+          "href": "teaching.html#data-engineering-2-m5"
+        }
+      ]
+    },
+    "skill-distributed-processing.evidence": {
+      "taught": [
+        {
+          "text": "Traitement à grande échelle",
+          "href": "teaching.html#data-engineering-2-m3"
+        }
+      ]
+    }
   },
   "ordinal": {
     "1": "1re",
