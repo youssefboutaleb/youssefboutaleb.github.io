@@ -86,8 +86,7 @@ New from this pass:
 
 5. ~~**The in-progress paper has no date.**~~ **Closed.** See phase 3 below.
 6. ~~**`Opportunities & Services` offers consulting.**~~ **Closed by the
-   author, in CLAUDE.md §3's favour:** the row is deleted and the block is
-   `Opportunities & Roles`.
+   author, against the audit:** the row stands. See the correction in phase 3.
 7. **Nothing links to Contact but the navigation.** A closing line on Home was
    offered and not chosen, so the invitation renders on Contact alone.
 
@@ -108,7 +107,7 @@ Five items that needed a fact only the author had. Four are now closed.
 
 | Item | Resolution |
 |---|---|
-| `Opportunities & Services` offered consulting | **Row deleted, block renamed `Opportunities & Roles`.** CLAUDE.md §3 won: the page now says one thing about what is wanted. `contact.md` §5 |
+| `Opportunities & Services` offered consulting | **Raised, deleted, and restored by the author.** The row stands and the block keeps its name. The §3 argument was put and answered; see the correction below. `contact.md` §5 |
 | The in-progress paper had no date | **Dateline derived from `site.last_updated`.** Every record on the site now carries one. `report_undated` was deleted with it: `render_publication` emits a dateline on both branches, so the condition it reported is unreachable |
 | `In progress` rendered twice on that record | **Status moved to `Under Review`; the dateline keeps the time alone.** `as of August 2026`, then `[Under Review]` |
 | Unit formatting drifted | **`duration` is stored as an integer and spaced once in `meta_label`.** `2h` and `48h` became `2 h` and `48 h` |
@@ -156,3 +155,32 @@ is what surfaced a tool the record had simply forgotten to mention.
    published paper's accepted venue occupies, so the layout does not
    distinguish *under review at X* from *published in X*. Raised, not acted on:
    it is a claim, and it is the author's.
+
+## Correction to phase 3
+
+**The consulting row was restored by the author, and the Based in row was
+split.** Both reverse decisions recorded above, and the record is corrected
+rather than quietly overwritten.
+
+`Opportunities & Services` keeps its name and its two rows. The audit argued
+the consulting row against [`CLAUDE.md`](CLAUDE.md) §3; the row was deleted on
+that reading and the author put it back. **That closes it.** §3 governs how the
+role is claimed, which happens on Home's `h1`, the hero lede and the ordering
+of Skills & Evidence. What work is accepted is a different question, and it is
+the author's. `contact.md` §5 now says so, with an instruction not to re-delete
+the row on §3's authority: the argument has been made and answered, and making
+it again would be an agent overruling a positioning call that §10 reserves
+absolutely.
+
+`Availability` and `Based in` are two rows again, and the availability sentence
+leads. Phase 1 merged them into one row because the original two put `Location:
+Sfax, Tunisia` above the availability line, handing a recruiter the
+disqualifying half first. The merge fixed the ordering and cost the sentence
+its own line, where it read as a tail on a location rather than as the most
+consequential string on the page. Separated and reordered keeps both: the
+decisive fact first, the location after it as context. Neither string is
+edited; both come from `src/site.json`.
+
+**Two audit findings, two author reversals, and both were right.** Worth
+recording plainly: an audit can be correct that something is a tension and
+wrong that deleting it is the resolution.

@@ -47,7 +47,7 @@ choices a reader acts on rather than terms being defined.
 | Primary email, Academic email, Phone / WhatsApp | `contact[]` in `src/site.json`, via `render_contact_channels` |
 | Based in | `location` and `availability` in `src/site.json`, joined |
 | LinkedIn, GitHub, Medium | `socials[]` in `src/site.json`, via `render_contact_socials` |
-| Opportunities & Roles | Written in the fragment. See §5 |
+| Opportunities & Services | Written in the fragment. See §5 |
 
 **`site.json` was always the source and the page ignored it.** The JSON-LD that
 a search engine reads was built from `contact[0]` and `socials[]`, while the
@@ -84,23 +84,50 @@ places each held their own copy. The joining here is punctuation and nothing
 else. If the merged line ever reads awkwardly, the fix is the author changing
 the one string in `site.json`, never this page rewording it in passing.
 
-## 5. Opportunities & Roles
+## 5. Opportunities & Services
 
-**One row, and it says employment.** The block was *Opportunities & Services*
-and carried a second row offering *Consulting & services: cloud data
-platforms, reliable ETL/ELT pipelines, warehousing, and data quality*.
+Two rows: **Engineering roles**, and **Consulting & services**.
 
-[`CLAUDE.md`](CLAUDE.md) §3 is that Data Engineering is the role and that a
-change making the target role harder to name in one word is wrong. A consulting
-offer beside *founding engineering positions* let a reader conclude the author
-was shopping rather than targeting, which is §3's failure exactly. The author
-resolved it in §3's favour: the row is deleted and the heading renamed, so the
-page now says one thing about what is wanted.
+**The consulting row is deliberate, and it has already survived being
+deleted.** An audit raised it against [`CLAUDE.md`](CLAUDE.md) §3, which says
+Data Engineering is the role and that a change making the target role harder to
+name in one word is wrong. The argument was that a consulting offer beside
+*founding engineering positions* lets a reader conclude the author is shopping
+rather than targeting. The row was removed on that reading, and the author put
+it back.
 
-**Do not add a services row back** without revising §3 first. The tension was
-real and it was settled, not forgotten.
+**That is the author's call and it is now made.** Do not remove the row again
+on §3's authority: the argument has been put and answered, and re-deleting it
+would be an agent overruling a positioning decision, which
+[`CLAUDE.md`](CLAUDE.md) §10 reserves absolutely to the author. If the tension
+still seems worth resolving, the thing to change is §3, in writing, with the
+author, not this page in passing.
 
-## 6. What is still open
+What §3 does still govern is everything above this block: the `h1` on Home is
+one word, the hero lede leads with the role, and Skills & Evidence is ordered
+`trunk` before `branch`. The claim is made there. This block states what work
+is being accepted, which is a different question from what the role is.
+
+## 6. Based in, and Availability, are two rows
+
+The availability sentence has its own row and it comes **first**:
+
+> **Availability** EU residence permit holder. Open to relocation within the
+> EU and to fully remote roles.
+> **Based in** Sfax, Tunisia
+
+They were two rows originally, in the other order, and §4 above is why that
+failed. They were then merged into one row to remove the surface entirely, and
+the author asked for the sentence back on a line of its own, which is right:
+it is the longest and most consequential string on the page and as a tail on a
+location it read like a footnote to Tunisia.
+
+**Separated, but ordered.** The decisive fact leads and the location follows it
+as context, which is the reverse of the arrangement that caused the problem.
+Both strings come from [`src/site.json`](src/site.json) and neither is edited
+here.
+
+## 7. What is still open
 
 **There is no closing route to this page.** Nothing on the site links here
 except the navigation. Home ends on its longest block with no next step, and

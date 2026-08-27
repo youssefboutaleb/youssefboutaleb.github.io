@@ -2391,14 +2391,36 @@ def render_contact_channels(site: dict) -> str:
             "  </a>\n"
             "</li>"
         )
-    rows.append(
-        '<li class="contact-list__item">\n'
-        '  <div class="contact-list__row">\n'
-        f'    <span class="contact-list__label">{tr("contact.based-in", "Based in")}</span>\n'
-        f'    <span class="contact-list__value">{site["location"]}. {site["availability"]}</span>\n'
-        "  </div>\n"
-        "</li>"
-    )
+    # Two rows, and the availability leads.
+    #
+    # They were two rows before, in the other order: `Location: Sfax, Tunisia`
+    # above the availability sentence, which handed a recruiter the
+    # disqualifying half first and left them to reconcile two adjacent facts
+    # themselves. They were merged into one row to remove the surface, and the
+    # author has since asked for the sentence on a line of its own, which is
+    # the right call: it is the longest and most consequential string on the
+    # page and it was reading as a tail on a location.
+    #
+    # So: separated, but ordered. The favourable and decisive fact is first and
+    # the location follows it as context, which is the reverse of the version
+    # that caused the problem. CLAUDE.md section 4: a recruiter who has to
+    # wonder filters silently.
+    #
+    # `availability` renders verbatim in both. Section 4 forbids paraphrasing a
+    # residence status, and the reason the site once carried three different
+    # wordings is that three places each held their own copy.
+    for label_key, label, value in (
+        ("contact.availability", "Availability", site["availability"]),
+        ("contact.based-in", "Based in", site["location"]),
+    ):
+        rows.append(
+            '<li class="contact-list__item">\n'
+            '  <div class="contact-list__row">\n'
+            f'    <span class="contact-list__label">{tr(label_key, label)}</span>\n'
+            f'    <span class="contact-list__value">{value}</span>\n'
+            "  </div>\n"
+            "</li>"
+        )
     return "\n".join(rows)
 
 
