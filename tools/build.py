@@ -1126,12 +1126,16 @@ def render_performance(record: dict) -> str:
         return ""
     solved = ACTIVE.number(perf["solved"])
     problems = ACTIVE.number(perf["problems"])
+    # No <b> here. `.perf__row > dd` is bold in full, unit included, which is
+    # how `.spec__row` renders `20 h`: the label recedes and the value carries
+    # the weight. Emphasising only the numerator would also have been awards.md
+    # rule 4 broken, styling part of a value rather than the whole category.
     rows = [
         (
             tr("perf.problems", "Problems"),
-            f'<b>{solved} / {problems}</b> {tr("perf.solved", "solved")}',
+            f'{solved} / {problems} {tr("perf.solved", "solved")}',
         ),
-        (tr("perf.team", "Team"), f'<b>{ACTIVE.number(perf["team"])}</b>'),
+        (tr("perf.team", "Team"), ACTIVE.number(perf["team"])),
     ]
     body = "\n".join(
         f'  <div class="perf__row">\n'

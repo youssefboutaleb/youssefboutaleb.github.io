@@ -99,4 +99,24 @@ only opening by the decision recorded in
   other finding in this file. Not touched in this pass.
 - **Nothing has been seen rendered.** The markup, the data and the build output
   are verified; how the `.perf` strip sits under a five-chip tag row is
-  reasoned from the CSS.
+  reasoned from the CSS. The strip took two corrective passes after the author
+  looked at it on a screen, which is the argument for doing that earlier: it
+  shipped stacked, went to two columns on request, and then needed the track,
+  the gaps, the inset and the ink all re-derived, because a component turned
+  sideways keeps solving the problem it had before. Both faults were visible at
+  a glance and invisible in the markup.
+
+## Corrections to this file's own pass
+
+- **`.perf` shipped with a 22px indent that lined up with nothing.**
+  `padding-left: 1.4em` was copied from `.points`, which earns it by being a
+  `<ul>` drawing bullet markers into that gutter. A `<dl>` draws none, so the
+  strip sat inset from the title, the dateline and the tag row above it.
+- **It shipped with a third ink recipe.** A muted label against a heading-ink
+  value containing a `<b>` that was also heading ink, so a figure and its unit
+  differed by weight alone. `.spec__row` already had the right answer and its
+  own comment already said why. It uses that now, and the `<b>` is gone from
+  `render_performance`.
+- **The 7rem label track survived the rotation to two columns**, where it was
+  pure air: `Team` used 37px of it and its figure sat 75px away, further than
+  the 20px separating the two pairs.

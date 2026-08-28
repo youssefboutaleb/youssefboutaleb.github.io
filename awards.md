@@ -24,7 +24,7 @@ award) is the same component:
 Title: Qualifier              identity
 Period                         when
 [ metadata tags ]              the facts, in a fixed order   ← this document
-Label      figure              a measurement, where there is one
+Label  figure   Label  figure  measurements, side by side
 - point                        what was actually done
 - point
 ```
@@ -239,6 +239,16 @@ Three consequences, all of them rule 5 and rule 7 doing their job:
   meant to. [`CLAUDE.md`](CLAUDE.md) §5: a summary where every figure is
   maximally flattering is a summary nobody believes, and the honest placement
   is the one that makes the 1st above it worth reading.
+
+**The four cards sit on one line, on a grid that is not counting them.** The
+summary is the only user of `.entries--grid--compact`, which lowers the track
+minimum from `18rem` to `12rem` and nothing else. At `18rem` only two tracks
+fitted the document column, so the four scopes read as a 2x2 block of cards
+stretched to twice the width their two lines need. The reasoning, including
+why the base grid keeps `18rem` for the certifications card and why this is a
+track minimum rather than a hardcoded four, is in [`DESIGN.md`](DESIGN.md)
+9.4. Rule 5 is the reason it matters: a scope with no record renders no card,
+so the row has to lay out three cards as readily as four.
 
 The cards replaced `.awards-stats`, a bordered box that hand-formatted its own
 labels; the full list of what that cost is in [`DESIGN.md`](DESIGN.md) §9.4.

@@ -371,6 +371,19 @@ Append here every pass. This is the part that makes the file worth keeping.
     team out of each string and failed loudly on anything that did not match.
     Retyping 28 integers by hand out of a terminal is how a 6 becomes an 8 in
     one record and nothing catches it.
+34. **A component turned through ninety degrees keeps solving the old
+    problem.** `.perf` was built stacked, with a 7rem label track that made its
+    two labels align down one column. Asked for two columns, I rotated the grid
+    and left the track, so each label now sat alone in a cell with up to 75px
+    of air before its figure, while the two pairs were 20px apart: the gap
+    inside a pair beat the gap between pairs. Re-derive the tracks and the gaps
+    when the axis changes; they encode the old layout's constraints.
+35. **Copy the declaration, inherit the reason, or do not copy it.** `.perf`
+    took `padding-left: 1.4em` from `.points` so the two would hang off one
+    edge. `.points` earns that inset by being a <ul> that draws bullet markers
+    into it; a <dl> draws none, so the strip sat 22px in with an empty gutter,
+    out of line with every other line in the record. Before borrowing a value,
+    read what pays for it.
 
 ---
 

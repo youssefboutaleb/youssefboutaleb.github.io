@@ -120,3 +120,96 @@ column.
   in the arithmetic. Worth a look on a real screen.
 - **Nothing here has been seen rendered.** Every number above is measured from
   the font files and the CSS, not from a browser.
+
+---
+
+# Second pass: the display pair
+
+The site came back to the same reference nine days later, with a sharper brief:
+*follow andrewng.org's title and subtitle design exactly; the size may be
+modified.*
+
+## What "exactly" turned out to mean
+
+The first pass measured Ng's **sizes** and rejected them. It never read the
+rule. Fetched and read this time, the whole of it is:
+
+```css
+h1,h2,h3,h4,h5,h6 { font-family:"ABCSynt",Georgia,serif; color:#0f0f23;
+                    letter-spacing:-.02em; line-height:1.15 }
+h1,h2 { font-weight:400 }
+h1 { 48px → 72px @768px }   h2 { 30px → 36px }   /* body 17px, #3a3a4a */
+```
+
+**The design is that h1 and h2 are one treatment at two sizes.** Four shared
+declarations, a size each, ratio exactly 2.00, and the size is the only thing
+separating the ranks. This site was separating them four times over: 400 vs
+700, `#393939` vs `#494949`, tracked vs untracked, and a hairline under the
+second one.
+
+**One number in the first pass's table was wrong.** It recorded Ng's body as
+14px, making the title 5.14 times it, and that ratio is most of why the pass
+argued against following the reference. The body is 17px. The real ratio is
+4.24, much nearer Tufte's 2.29 than 5.14 suggested, and this pass lands at 4.00.
+
+## The three questions put to the author
+
+| | Options | Chosen |
+|---|---|---|
+| **Size** | 64/32 · 56/28 · 72/36 (Ng literal) | **64 / 32** |
+| **The h2 hairline** | remove and add air · keep · keep but lighten | **remove, add air** |
+| **Typeface** | keep Noto Sans · add a serif for headings | **keep Noto Sans** |
+
+72/36 was costed and rejected on one measurement: `Ingénieur Data` sets 510px
+at 72px against a 492px bio column at a 1024px viewport, so Home's title would
+wrap across most laptop widths. At 64px it is 453px and holds one line
+everywhere, with about 36px to spare at the tightest (721px).
+
+Ng's serif heading face was offered and declined, which keeps
+[`DESIGN.md`](DESIGN.md)'s *"a second (serif or display) typeface"* exclusion
+standing. Everything else about the treatment is now the reference's.
+
+## What shipped
+
+| | Before | After |
+|---|---|---|
+| `--text-3xl` | 40px | **64px** |
+| `--text-2xl` | 24px | **32px** |
+| `h1` : `h2` | 1.67 | **2.00** |
+| `h2` weight | 700 | **400** |
+| `h2` tracking | none | **-0.02em** |
+| `h1` colour | `#393939` (`.page-title` override) | **`#222222`**, the override deleted |
+| `h2` colour | `#494949` | **`#222222`**, one heading ink |
+| Heading line height | 1.2 | **1.15**, new `--leading-display`, the pair only |
+| `.block__title` underline | `1px solid --rule-soft` | **gone on screen**, kept in print |
+| `.block` bottom margin | 32px | **60px** |
+| Responsive | 40/32/28 and 24/22/20 | **64/48/40** and **32/28/24** |
+| Print | `h1` 400, `h2` inherits | `h2` takes back 700 and its hairline, block gap back to 32px |
+
+Two tokens were deleted rather than left unread: `--color-heading-2` and the
+`--ink-800` `#393939` step behind it. The page-title colour override was their
+only consumer, and `check.py`'s token audit reported them the moment it went.
+Deleting them also closed the one item this file left open, which was that the
+`h1` had dropped to weight 400 and could buy the optical weight back by
+darkening. It has.
+
+**No markup changed, in either language, and no content changed.** The `h1` is
+`.page-title` on eight pages and the `h2` is `.block__title` on twenty; nothing
+else uses either token.
+
+## Still open
+
+- **Nothing here has been seen rendered.** Again. The widths are measured from
+  the shipped face with `fontTools` and the columns from the CSS; there is no
+  browser in this environment, and `firefox` is a stub that asks to be
+  installed. The one place that matters is Home, because its `h1` is the only
+  one sharing a line with anything, and that is the case the arithmetic above
+  covers most carefully.
+- **The mobile ratio loosens on purpose**, to 1.71 at ≤720px and 1.67 at
+  ≤480px, because a weight-400 section heading with no rule under it has to
+  stay clear of the 16px body and 24px is the floor. Ng does the same thing
+  (72 → 48 for the title, 36 → 30 for the heading). If the section headings
+  read weak on a phone, that floor is the number to raise.
+- **`.block`'s 60px is the hairline's replacement and is the value most likely
+  to want tuning** once it is seen. The pair moves together: less space wants
+  the rule back.

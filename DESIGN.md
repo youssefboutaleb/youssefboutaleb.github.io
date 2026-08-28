@@ -79,8 +79,8 @@ of register: a serif for titles reads as *magazine*, not as *academic page*.
 | `--text-base` | 16px | 1.14 | Body copy, navigation |
 | `--text-lg` | 17px | 1.06 | Record titles (`h3`) |
 | `--text-xl` | 20px | 1.18 | The name in the brand bar, the page lede |
-| `--text-2xl` | 24px | 1.20 | Section headings (`h2`) |
-| `--text-3xl` | 40px | 1.67 | Page title (`h1`), and nothing else |
+| `--text-2xl` | 32px | 1.60 | Section headings (`h2`) |
+| `--text-3xl` | 64px | 2.00 | Page title (`h1`), and nothing else |
 
 The bottom of the scale is the original theme's, with **one change: body copy
 moved from 14px to 15px.** That step is the whole accessibility argument and
@@ -104,44 +104,117 @@ than chosen:
 
 | | Body | `h1` | `h2` | `h1` ÷ body | `h1` : `h2` |
 |---|---|---|---|---|---|
-| andrewng.org | 14px | 48 → 72px | 30 → 36px | 5.14 | 2.00 |
+| andrewng.org | 17px | 48 → 72px | 30 → 36px | 4.24 | 2.00 |
 | Tufte CSS | 21px | 48px | 33px | 2.29 | 1.45 |
-| **This site** | 16px | **40px** | **24px** | **2.50** | **1.67** |
-| This site, before | 16px | 25px | 19px | 1.56 | 1.32 |
+| **This site** | 16px | **64px** | **32px** | **4.00** | **2.00** |
+| This site, at 40px | 16px | 40px | 24px | 2.50 | 1.67 |
+| This site, before that | 16px | 25px | 19px | 1.56 | 1.32 |
 
-andrewng.org is a landing page of about 180 words where the type is the design,
-and 5.14 is a landing page's ratio. Tufte CSS is unambiguously a document and
-still sets 48px, which is the useful finding: **large type is not what makes a
-page stop being a document, the ratio is.** This sits between them and nearer
-Tufte.
+Read in that order, because the site has now been here twice and moved further
+the second time. **The first pass measured andrewng.org and deliberately did
+not follow it**, landing at 2.50 on the argument that 5.14 was a landing page's
+ratio and Tufte's 2.29 was a document's. That arithmetic was wrong in one
+place: the reference's body is 17px, not 14px, so its title is 4.24 times its
+body and not 5.14, which is a good deal closer to Tufte than the table then
+said. The second pass was asked for the reference's design directly, and 4.00
+is where the same reasoning lands once the ratio is right.
 
-**The page title is the one heading that is not bold**, at weight 400. At 40px
-the size is the whole signal and bold on top of it is the combination that
-reads as a landing page; Tufte sets its 48px `h1` in 400 for the same reason.
-Section headings stay at 700, so the two ranks are separated by two different
-devices rather than competing on one.
+Tufte CSS is still the load-bearing reference, and for the same reason: it is
+unambiguously a document and still sets 48px, so **large type is not what makes
+a page stop being a document.** What makes it stop is decoration, and the
+change below removes some.
 
-**It is also the one element with negative tracking**, at `-0.02em`. That is
-the site's existing principle pointed the other way: the only other
-letter-spacing rules here are *positive*, on 12px tags and 10px diagram labels,
-because small type wants opening up. Large type wants closing, and 40px at
-default tracking sets loose.
+### The display pair is one treatment at two sizes
 
-Line height: 1.2 for headings, 1.45 for short-measure text, 1.6 for prose.
+This is the reference's heading rule, and it is the whole of it:
+
+```css
+h1, h2 {
+  color: var(--color-heading);          /* the darkest ink, darker than body */
+  font-weight: var(--weight-regular);   /* 400, both of them */
+  letter-spacing: -0.02em;
+  line-height: var(--leading-display);  /* 1.15 */
+}
+h1 { font-size: var(--text-3xl); }      /* 64px */
+h2 { font-size: var(--text-2xl); }      /* 32px */
+```
+
+Four shared declarations and a size each. **The ranks are separated by size
+alone**, at exactly 2.00, which is what andrewng.org does and what this site
+previously did not.
+
+What it replaced separated them three times over. The title was 400, tracked
+and `#393939`; the section heading was 700, untracked, `#494949` and carried a
+hairline underline. Size, weight, colour and a rule were all saying the same
+thing at once, and the section heading was the element paying for it: at 24px
+bold with a line under it, it was shouting to be told apart from records it is
+already twice the size of.
+
+**Weight 400 on the title is the older half of the argument and is unchanged.**
+At 64px the size is the whole signal, and bold on top of it is the combination
+that reads as a landing page; Tufte sets its 48px `h1` in 400 for the same
+reason. What is new is that the section heading joins it rather than answering
+it.
+
+**The negative tracking now covers both**, at `-0.02em`, which is the site's
+existing principle pointed the other way: the only other letter-spacing rules
+here are *positive*, on 12px tags and 10px diagram labels, because small type
+wants opening up. Large type wants closing, and neither 64px nor 32px sets
+tight on its own.
+
+**The hairline under the section heading is gone.** It is the one place this
+system's own founding line, *hairlines for structure*, was overruled on
+purpose. It was drawn when the heading was 19px and bold, where a heading does
+need help not to read as a bold paragraph. At 32px it had stopped separating
+anything and had become decoration. What replaces it is space: `.block`'s
+bottom margin went from 32px to 60px in the same edit, which is how the
+reference separates its own sections, and the two changes are not separable.
+`.spec__title` still carries that hairline and keeps it: a 14px column label
+has no size to fall back on.
+
+**One token died of it.** `--color-heading-2` (and `--ink-800`, the `#393939`
+step behind it) had exactly one consumer, the page title's colour override.
+With the title on the darkest ink there was nothing left reading them, and
+`check.py`'s token audit said so, so the ramp is a step shorter: §4's palette
+descends `#222222`, `#494949`, `#373737`.
+
+Line height: 1.15 for the display pair, 1.2 for other headings, 1.45 for
+short-measure text, 1.6 for prose.
 
 **The display step comes down twice, and nothing else moves with it.** At
-≤720px `--text-3xl` is 32px and `--text-2xl` 22px; at ≤480px, 28px and 20px. A
-40px title is sized against a 908px column and below 720px there is not one.
-Everything 20px and below is sized for reading rather than for the column and
-stays where it is.
+≤720px `--text-3xl` is 48px and `--text-2xl` 28px; at ≤480px, 40px and 24px. A
+64px title is sized against a 908px column and below 720px there is not one.
+The ratio loosens to 1.71 and then 1.67 rather than holding at 2.00, and that
+is deliberate: at weight 400 with no rule beneath it, a section heading has to
+stay clear of the 16px body, and 24px is the floor that keeps it clear. The
+reference does the same, dropping its title 72 → 48 while its heading only goes
+36 → 30. Everything 20px and below is sized for reading rather than for the
+column and stays where it is.
+
+**The Home hero is the one place the size had to be checked rather than
+chosen**, because it is the only `h1` that is not alone in a full-width header:
+it sits beside the 180px portrait. Measured from the shipped face at weight
+400, `Ingénieur Data` (the longer of the two) is 453px at 64px, against a bio
+column of 492px at a 1024px viewport and 489px at 721px. It holds one line at
+every width, with about 36px to spare at the tightest. **72px, the reference's
+own number, is what this ruled out**: the same string is 510px and wraps across
+most laptop widths.
 
 **Print does not inherit this ramp, deliberately.** The tokens are in `rem` and
-the print stylesheet does not override the root, so a 40px title would set at
-30pt on a document whose entire reason for printing is that it doubles as a CV
+the print stylesheet does not override the root, so a 64px title would set at
+48pt on a document whose entire reason for printing is that it doubles as a CV
 with a page budget the screen does not have. Print sizes in points against its
 10.5pt body: `h1` 20pt, `h2` 13pt, the lede 12pt, the brand-bar name 14pt, and
-the `h1`'s tracking is reset, because it was an optical correction for 40px and
-not for 20pt.
+both headings' tracking is reset, because it was an optical correction for 64px
+and 32px and not for 20pt and 13pt.
+
+**Print is also where the section heading keeps its weight and its hairline.**
+The underline was dropped on the argument that 32px separates a section on its
+own. 13pt against a 10.5pt body does not, and 60px of white between blocks is
+not affordable on a page being rationed, so print takes back the 700 and the
+rule and brings the block gap down to 32px. It is the only rank the two media
+disagree about, and the disagreement is the size argument applied honestly in
+both.
 
 **Prose is capped at `--measure` (74ch), and that cap is load-bearing.** The
 column is 1100px wide; at 15px, an uncapped line runs to roughly 110 characters,
@@ -153,13 +226,14 @@ records still use the full width. Every prose container carries it: `.prose`,
 
 ### Heading ramp
 
-The theme's signature is a *stepped* grey ramp: each heading level one notch
-lighter than the one above:
+The theme's signature was a *stepped* grey ramp, each heading level one notch
+lighter than the one above. It still is from the record title down; the top of
+it is now a pair rather than two steps (§1):
 
 | Level | Element | Size | Weight | Colour | Role |
 |---|---|---|---|---|---|
-| Page title | `h1` `.page-title` | 40px | **400** | `#393939` | One per page |
-| Section | `h2` `.block__title` | 24px | 700 | `#494949` | Underlined |
+| Page title | `h1` `.page-title` | 64px | **400** | `#222222` | One per page |
+| Section | `h2` `.block__title` | 32px | **400** | `#222222` | One treatment with the title, at half the size |
 | Lede | `.page-lede` | 20px | 400 | `#494949` | Home, Contact, Teaching, Workshops (§11.1) |
 | Record | `h3` `.entry__title`, `.issuer`, `.skill__name` | 17px | 700 | `#222222` | One per record |
 | Group | `h4` `.entry__group-title` | 16px | 700 | `#494949` | A part of a record |
@@ -171,10 +245,17 @@ page reads calm rather than shouty. It is also why the ramp is stated by role
 here rather than assumed to descend with the tag number.
 
 **The weight column is not decoration in this table.** It is the only place the
-ramp does not descend with the size, and the exception is the top row: the
-largest thing on the page is the lightest heading on it. That is what keeps a
-40px title from reading as a shout, and it is why `h1` overrides the shared
-`h1..h6` weight rather than inheriting it.
+ramp does not descend with the size, and the exception is the top two rows: the
+two largest things on the page are the lightest headings on it. That is what
+keeps a 64px title from reading as a shout, and it is why `h1, h2` override the
+shared `h1..h6` weight rather than inheriting it.
+
+**The two top rows are also where the colour ramp stops descending.** They sit
+on the same `#222222` the record titles do, which is the reference's rule (one
+heading colour, darker than the body) and which retired the `#393939` step
+entirely: nothing else was using it. The stepped greys resume beneath them, and
+the sentence above about body text being darker than the heading over it is now
+true only of the lede and the group title.
 
 **`.page-title` no longer overrides its bottom margin.** It used to reduce the
 site's default `--space-5` to `--space-3`, which was right for 25px and wrong
@@ -218,7 +299,9 @@ One grey ramp and one blue. Nothing else may be introduced.
 - **Links**: `--blue-600` `#267cb9`, the theme's blue (4.6:1 on white, AA).
   Hover is `--blue-800` `#006699`.
 - **Rules**: `--rule` `#e5e5e5` for structural hairlines, `--rule-soft`
-  `#eaeaea` for the lighter underline beneath section headings.
+  `#eaeaea` for the lighter one beneath `.spec__title` and the label columns.
+  It was named for the underline beneath section headings, which it no longer
+  draws on screen (§1); print still asks it for that.
 - **Muted text**: the theme's `#777` was darkened to `#6b6b6b`, the smallest
   change that clears AA at 12px.
 
@@ -973,8 +1056,41 @@ it rather than invent a sixth shape.
 
 **`.perf` is the fifth, and it is the one that lives inside a record.** A
 contest result's score and team size, on Awards. It takes the idiom at its
-smallest: a 7rem label, `--text-md`, and **no hairline between rows**, because
-a rule inside a bulleted record draws a table inside a bullet. Its left inset
+smallest: `--text-md`, **no hairline between rows** (a rule inside a bulleted
+record draws a table inside a bullet), and **no left inset of its own**,
+because `.entries` already carries the 1.4em that makes the bullet gutter.
+
+**Its pairs sit side by side, not stacked**, on `.specs`' own
+`repeat(auto-fit, minmax(14rem, 1fr))` (§10.1). A contest carries two
+measurements and both are short: the widest cell is the French
+`Problemes 11 / 26 resolus` at 224px against the 290px each column gets, so
+stacked they left most of a 589px strip empty and read as the opening of a
+longer list. The outer grid and the inner rows collapse **together** at 600px,
+because auto-fit alone still fits two 14rem tracks at that width and would
+stack the labels inside columns that had not collapsed: two columns of
+label-over-value, which is neither layout.
+
+**Going sideways cost it two things it had been given while stacked, and this
+is the general lesson.** A fixed 7rem label track is what a label column needs
+when its labels *share* one column and align down it. Side by side each label
+sits alone in its own cell, so the track became air: `Team` used 37px of 112px
+and its figure sat 75px away, while the two pairs were only 20px apart, so the
+gap inside a pair beat the gap between pairs and the eye read four things
+instead of two. The label sizes to its content now, at 16px inside a pair
+against 32px between them. **When a label column turns through ninety degrees,
+re-derive its track and its gaps; they were solving a problem it no longer
+has.**
+
+**Its ink is `.spec__row`'s, and briefly was not.** `dt` in `--color-text` at
+regular weight, `dd` in `--color-heading` **bold, unit included**, exactly as
+`.spec` renders `20 h`, for the reason that component's own comment gives:
+*the reader is scanning the figures, so the label recedes and the value carries
+the weight.* It had shipped with a third recipe, a muted label against a
+heading-ink value with a `<b>` inside that was heading ink too, so a figure and
+its unit differed by weight alone and one two-word cell carried three inks. The
+`<b>` is gone from the renderer as well: emphasising the numerator and not the
+unit would have been [`awards.md`](awards.md) rule 4 broken, styling part of a
+value rather than the whole category. Its left inset
 is `.points`', so a record's measurements and a record's bullets hang off one
 edge. What it replaced was four facts welded into a prose sentence in the data
 ([`awards.md`](awards.md), the performance spec); what it is *not* is two more
@@ -1005,8 +1121,8 @@ has one.** `.result` is 13rem and `.skill` is 15rem, each sized to what it
 holds, and neither is stacked against another label column. What the other
 three do share, and what `.contact-list` alone was opting out of, is the top
 edge rule with a `:first-child` reset: ruling on the bottom left a hairline
-under each block's last row, a row's height above the next section heading and
-its own underline.
+under each block's last row, a row's height above the next section heading,
+which in those days carried an underline of its own.
 
 **Values in this idiom are set flush left.** `.contact-list__value` was the
 one exception, set right, which held only while nothing wrapped: capped at the
@@ -1058,11 +1174,27 @@ existed, and the values come from `meta_label`, the function that renders the
 tags on the records below, so a card cannot say *Quarter-finalist* while the
 entry it links to says something else.
 
-**Two columns, not four.** `18rem` against the ~764px content column fits
-exactly two, so four scopes read as 2×2 and collapse to one column on a phone
-with no breakpoint of their own. A narrower `minmax` to force one row of four
-was measured and declined: at `11rem` the fit is exact to the pixel, and a
-grid that is exact to the pixel becomes 3+1 the moment anything moves.
+**Four columns, and the measurement that said two was stale.** This paragraph
+used to read *two columns, not four*, and it declined a narrower `minmax`
+because at `11rem` the fit against a ~764px content column was exact to the
+pixel, which is the width a grid turns into 3+1 at the first thing that moves.
+That number was measured before the page context rail brought
+`--container-wide` with it. The document column is 908px now, not 764px, and
+the argument does not survive the extra 144px: four `12rem` tracks and their
+three `--space-5` gutters come to 828px, so the row seats four with 80px in
+hand rather than none.
+
+So the summary carries `.entries--grid--compact`, which lowers the track
+minimum to `12rem` for this one grid. Four cards above 1240px, three between
+1024px and 1240px, two on tablet, one on a phone: `auto-fit` still does the
+stepping, and nothing is pinned to the number of scopes, which matters because
+`awards.md` rule 5 lets a scope render no card at all. **The base `18rem` is
+untouched**, because it was chosen for the cell that needs it, the
+certifications card listing `Microsoft Certified: Fabric Analytics Engineer
+Associate`, and a scope card holding two short lines is not that cell. What
+the change actually recovers is air: at `18rem` two cards stretched to ~440px
+apiece and spent the remainder on nothing, which is the same emptiness the
+`.awards-stats` table below charges the old box for.
 
 **It replaced `.awards-stats`**, a bordered box that sat in the same place and
 is deleted along with its section of the stylesheet. The box is the shape a
@@ -1238,7 +1370,7 @@ Every page is the same stack:
 
 ```
 page-header   h1 + optional lede (§11.1) + optional summary grid (§9.4)
-block         h2 (underlined) + optional intro (§11.1)
+block         h2 + optional intro (§11.1)
               + entries or skills          
               + optional note                                        ← repeated
 ```

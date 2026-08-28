@@ -126,7 +126,9 @@
      without dragging that with it.
 
      Split, and given a display step. The steps are now 1.08, 1.08, 1.14, 1.06,
-     1.18, 1.20, 1.67. DESIGN.md section 1 carries the ramp and the references
+     1.18, 1.60, 2.00, and the top two are the andrewng.org proportion: its
+     title is exactly twice its section heading, and nothing but size tells the
+     two ranks apart. DESIGN.md section 1 carries the ramp and the references
      it was measured against. */
   --text-xs:   0.75rem;     /* 12px: tags */
   --text-sm:   0.8125rem;   /* 13px: dates, footnotes, "last update" */
@@ -134,10 +136,14 @@
   --text-base: 1rem;        /* 16px: body copy, navigation */
   --text-lg:   1.0625rem;   /* 17px: record titles (h3) */
   --text-xl:   1.25rem;     /* 20px: the brand-bar name, the page lede */
-  --text-2xl:  1.5rem;      /* 24px: section headings (h2) */
-  --text-3xl:  2.5rem;      /* 40px: page title (h1), and nothing else */
+  --text-2xl:  2rem;        /* 32px: section headings (h2) */
+  --text-3xl:  4rem;        /* 64px: page title (h1), and nothing else */
 
   --leading-tight: 1.2;
+  /* The display pair only. andrewng.org sets every heading at 1.15, and at
+     64px the difference from 1.2 is three pixels of line box that a title
+     one word long never spends. It matters on the two-word ones. */
+  --leading-display: 1.15;
   --leading-snug:  1.45;
   --leading-normal: 1.6;
 
@@ -145,10 +151,12 @@
   --weight-bold:    700;
 
   /* --- Palette (primitives) ---------------------------------------------- */
-  /* The original theme's greys, kept exactly: a stepped ramp where each
-     heading level sits one notch lighter than the one above it. */
-  --ink-900: light-dark(#222222, #e9ebed);   /* h1, h4, strong */
-  --ink-800: light-dark(#393939, #dcdfe2);   /* h2 */
+  /* The original theme's greys, one step short of the ramp they arrived as.
+     It descended a notch per heading level, and the second step (#393939, the
+     one the page title sat on) is gone: h1 and h2 are one treatment now and
+     share the darkest ink, so the token behind that step had no consumer left
+     and the audit said so. Section 04 carries the argument. */
+  --ink-900: light-dark(#222222, #e9ebed);   /* h1, h2, h4, strong */
   --ink-700: light-dark(#494949, #ccd0d4);   /* h3, secondary prose */
   --ink-600: light-dark(#373737, #c3c7cc);   /* body */
   --ink-500: light-dark(#676767, #9aa0a6);   /* meta */
@@ -170,7 +178,6 @@
   --color-surface:       var(--paper-soft);
   --color-text:          var(--ink-600);
   --color-heading:       var(--ink-900);
-  --color-heading-2:     var(--ink-800);
   --color-heading-3:     var(--ink-700);
   --color-secondary:     var(--ink-500);
   --color-muted:         var(--ink-400);
@@ -328,8 +335,8 @@ body {
    was a paragraph in a bold class. The tags now match the structure the rail
    has always parsed out of it:
 
-     h1  page title        25px   .page-title
-     h2  section heading   19px   .block__title
+     h1  page title        64px   .page-title
+     h2  section heading   32px   .block__title
      h3  record title      17px   .entry__title, .issuer, .skill__name
      h4  group title       16px   .entry__group-title
 
@@ -348,23 +355,38 @@ h1, h2, h3, h4, h5, h6 {
   line-height: var(--leading-tight);
 }
 
-h2, h4, h5, h6 { color: var(--color-heading-3); }
+h4, h5, h6 { color: var(--color-heading-3); }
 
-/* The one heading that is not bold. At 40px the size is the whole signal, and
-   bold on top of it is the combination that reads as a landing page rather
-   than as a document: Tufte CSS sets its 48px h1 in weight 400 for the same
-   reason. Section headings stay bold, so the two ranks are told apart by two
-   different devices instead of competing on one.
+/* The display pair, and they are one treatment at two sizes. This is
+   andrewng.org's heading rule, which is four declarations shared by h1 and h2
+   and then a font-size each:
+
+     font-weight: 400   letter-spacing: -0.02em   line-height: 1.15
+     one colour, the darkest ink on the page, darker than the body text
+
+   Weight 400 on a 64px title is the older half of the argument: bold on top of
+   that size is the combination that reads as a landing page rather than as a
+   document, and Tufte CSS sets its 48px h1 at 400 for the same reason. What is
+   new is that the section heading joins it. It was 700, untracked, and one
+   notch lighter than the title, which meant the two ranks were separated three
+   times over (size, weight, colour) and the second one was shouting to be told
+   apart from records it is already twice the size of.
+
+   So the ranks are now separated by size alone, 64 : 32, which is exactly the
+   reference's ratio, and the stepped colour ramp stops at h3: a title and a
+   section heading are the same voice at two volumes.
 
    The negative tracking is the site's existing principle pointed the other
    way. The two letter-spacing rules already here are both positive, on 12px
    tags and 10px diagram labels, because small type wants opening up; large
-   type wants closing, and 40px at default tracking sets loose. */
-h1 {
-  font-size: var(--text-3xl);
+   type wants closing, and neither of these sizes sets tight on its own. */
+h1, h2 {
+  color: var(--color-heading);
   font-weight: var(--weight-regular);
   letter-spacing: -0.02em;
+  line-height: var(--leading-display);
 }
+h1 { font-size: var(--text-3xl); }
 h2 { font-size: var(--text-2xl); }
 h3 { font-size: var(--text-lg); }
 h4 { font-size: var(--text-base); }
@@ -951,15 +973,24 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
    section heading. The four pages with no lede felt it most. */
 .page-header { margin-bottom: var(--space-7); }
 
-/* No margin override any more. `h1` already carries the site's default
-   `--space-5`, and this reduced it to `--space-3` because a 25px title did not
-   need 20px under it. A 40px one does: 12px is a quarter of its own line box,
-   and on Awards that put the title 12px above a card grid. Deleting the
-   override is the fix, rather than choosing a new number. */
-.page-title { color: var(--color-heading-2); }
+/* No rule of its own on screen any more, and the second override to go the
+   same way. The margin one went first: it reduced the site default to 12px,
+   which was right for a 25px title and a quarter of a 40px one's line box. The
+   colour one goes now, because pinning the title to a second heading ink was
+   what kept it one notch lighter than the darkest, and the reference sets every
+   heading in one colour. That ink had exactly one consumer, so the token and
+   the `--ink-800` step behind it went with the override rather than sitting in
+   the palette unread. `h1` above already carries both defaults, so
+   `.page-title` is a hook for the page context rail and for print, and states
+   nothing the element does not.
 
-/* 20px, up from 17px. Under a 40px title a 17px lede is a 2.35 drop and reads
-   as body copy that happens to be first; at 20px it is a rank of its own. */
+   This also closes the last item typography-options.md left open: the title
+   dropped from weight 700 to 400 and lost optical weight it could buy back by
+   darkening, and now has. */
+
+/* 20px. Under a 64px title a 20px lede is a 3.2 drop, which is a rank of its
+   own by a wide margin; it was 17px under a 25px title and read as body copy
+   that happened to be first. */
 .page-lede {
   max-width: var(--measure);
   color: var(--color-heading-3);
@@ -973,14 +1004,28 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 /* A block is one section of the document, introduced by an h3 with the light
    underline the original used on its Projects page: applied everywhere now,
    so the pages finally share one section treatment. */
-.block { margin-bottom: var(--space-6); }
+/* 60px between sections, up from 32px, and the two changes are one change.
+   The hairline under the section heading is gone (below), so the boundary it
+   drew has to be drawn by space instead: 32px of it under a block's last
+   record was enough while a rule announced the next heading, and is not enough
+   when nothing does. The reference separates its sections the same way, with
+   space and nothing else, at 56px on a phone and 96px on a laptop. */
+.block { margin-bottom: var(--space-8); }
 .block:last-child { margin-bottom: 0; }
 
-.block__title {
-  margin-bottom: var(--space-4);
-  padding-bottom: var(--space-1);
-  border-bottom: 1px solid var(--color-border-soft);
-}
+/* The underline is gone, and this is the one place the site's own founding
+   line ("hairlines for structure") was overruled on purpose. It was drawn when
+   the section heading was 19px and bold: at that size a heading needs help to
+   stop being a bold paragraph, and the rule was the help. At 32px it is twice
+   the size of the record titles beneath it and nearly twice the body, so the
+   rule had stopped separating anything and had become the decoration Principle
+   1 spends the rest of this file avoiding.
+
+   What it cost is real and is paid above, not here: the space between blocks
+   went from 32px to 60px in the same edit. Print keeps the rule, because
+   there the heading is 13pt against a 10.5pt body and the size argument does
+   not hold. See section 21. */
+.block__title { margin-bottom: var(--space-5); }
 
 .block__intro {
   margin-bottom: var(--space-5);
@@ -1017,6 +1062,17 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
   list-style: none;
   padding-left: 0;
   margin-bottom: var(--space-5);
+}
+
+/* Awards' scope summary, and only it. Four cards of two short lines each do
+   not need the 18rem a certifications card does, and at 18rem they never fit:
+   the document column is 908px at full width, so auto-fit laid two cards out
+   at 440px apiece and spent the rest on air. 12rem seats all four above
+   1240px, three between 1024px and 1240px, two on tablet. The base minimum
+   stays where it is because it was chosen for the card that needs it, the one
+   listing `Microsoft Certified: Fabric Analytics Engineer Associate`. */
+.entries--grid--compact {
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
 }
 
 .entries--grid > .entry {
@@ -1265,22 +1321,51 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
    and awards.md rule 3 picks categories for the reader rather than for
    symmetry. Two more chips on a row that already carries five is the wall
    skills.md rejected. */
+/* Two columns, not two stacked rows. A contest carries exactly two
+   measurements and they are short: the widest cell is the French
+   `Problemes 11 / 26 resolus` at 224px, against the 284px each column gets
+   inside the measure. Stacked, they left most of a 589px strip empty and read
+   as the start of a longer list that never came.
+
+   `repeat(auto-fit, minmax(...))` is `.specs`' formula (section 13), which is
+   the site's existing answer to "set these side by side", and it is what keeps
+   the strip honest if a third measurement is ever added: the track count
+   follows the content instead of being hardcoded to two. */
+/* No left inset. `.entries` already carries the 1.4em that makes the bullet
+   gutter, so `.entry__title`, `.entry__period` and `.tag-list` all start flush
+   at the record's edge; this had a second 1.4em copied from `.points`, which
+   earns it by being a <ul> that draws its own markers. A <dl> draws none, so
+   the strip alone sat 22px in with nothing in the gutter. */
 .perf {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  column-gap: var(--space-6);
   max-width: var(--measure);
   margin: var(--space-3) 0 0;
-  padding-left: 1.4em;
 }
 
+/* The label sizes to itself. A fixed track is what a label column needs when
+   its labels share one column and align down it; these do not, each sits alone
+   in its own cell, and 7rem left `Team` 75px of air before its figure while the
+   two pairs were only 20px apart. The gap inside a pair has to be smaller than
+   the gap between pairs or the eye reads four things instead of two: 16px
+   against 32px. */
 .perf__row {
   display: grid;
-  grid-template-columns: 7rem 1fr;
-  gap: var(--space-1) var(--space-4);
+  grid-template-columns: auto 1fr;
+  gap: var(--space-4);
   align-items: baseline;
-  padding: var(--space-1) 0;
 }
 
+/* `.spec__row`'s weighting, and its reason, quoted there: "the reader is
+   scanning the figures, so the label recedes and the value carries the weight."
+   This had invented a third recipe, muted label against heading value with a
+   <b> inside it that was heading ink too, so a figure and its unit differed by
+   weight alone and one two-word cell carried three inks. The whole value is
+   bold now, unit included, exactly as `.spec` renders `20 h`, and the <b> is
+   gone from the renderer. */
 .perf__row > dt {
-  color: var(--color-muted);
+  color: var(--color-text);
   font-size: var(--text-md);
 }
 
@@ -1288,10 +1373,16 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
   margin: 0;
   color: var(--color-heading);
   font-size: var(--text-md);
+  font-weight: var(--weight-bold);
   line-height: var(--leading-snug);
 }
 
+/* The outer grid and the inner rows collapse together. Left to auto-fit alone,
+   a 600px viewport still has room for two 14rem tracks, so the rows would
+   stack their labels while the columns stayed side by side: two columns of
+   label-over-value, which is neither of the two layouts. */
 @media (max-width: 600px) {
+  .perf { grid-template-columns: 1fr; }
   .perf__row { grid-template-columns: 1fr; }
   .perf__row > dt { font-weight: var(--weight-bold); }
 }
@@ -1328,8 +1419,10 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 
 /* A <p>, not a heading: .entry__group-title sets the precedent: subdivisions
    inside a block stay out of the document outline (§11 of DESIGN.md). The
-   hairline is the same one .block__title uses, which is what separates the
-   columns without a border, a rule or a card. */
+   hairline is what separates the columns without a border, a rule or a card.
+   It used to be the same one .block__title carried, and is now the only one of
+   the pair left: the section heading gave its underline up when it went to
+   32px, and a 14px column label has no such size to fall back on. */
 .spec__title {
   margin: 0 0 var(--space-2);
   padding-bottom: var(--space-1);
@@ -1997,9 +2090,15 @@ a.tag.link-external::after { margin-left: 0; }
   :root { --gutter: var(--space-4); }
 
   /* The display step comes down with the column. Only the top two tokens move:
-     a 40px title is sized against a 908px column and there is no longer one.
-     Everything 20px and below is already sized for reading and stays put. */
-  :root { --text-3xl: 2rem; --text-2xl: 1.375rem; }   /* 32px / 22px */
+     a 64px title is sized against a 908px column and there is no longer one.
+     Everything 20px and below is already sized for reading and stays put.
+
+     The reference drops its own title from 72px to 48px at exactly this
+     breakpoint and does not drop its section heading as far, which is why the
+     ratio loosens from 2.00 to 1.71 here and to 1.67 below: at weight 400 with
+     no rule under it, a section heading needs to stay clear of the 16px body,
+     and 24px is the floor that keeps it clear. */
+  :root { --text-3xl: 3rem; --text-2xl: 1.75rem; }    /* 48px / 28px */
 
   /* The skill's label column stops earning its width: a 15rem column beside a
      flowing chip run leaves the chips about nine characters wide. It stacks,
@@ -2020,7 +2119,7 @@ a.tag.link-external::after { margin-left: 0; }
 
 /* --- ≤480px: navigation scrolls ----------------------------------------- */
 @media (max-width: 480px) {
-  :root { --text-3xl: 1.75rem; --text-2xl: 1.25rem; } /* 28px / 20px */
+  :root { --text-3xl: 2.5rem; --text-2xl: 1.5rem; }   /* 40px / 24px */
 
   .nav__list {
     flex-wrap: nowrap;
@@ -2091,7 +2190,6 @@ a.tag.link-external::after { margin-left: 0; }
     --color-border-soft: #ccc;
     --color-text: #000;
     --color-heading: #000;
-    --color-heading-2: #000;
     --color-heading-3: #000;
     --color-link: #000;
   }
@@ -2126,14 +2224,28 @@ a.tag.link-external::after { margin-left: 0; }
   a { text-decoration: none; }
 
   /* Print does not inherit the screen ramp, deliberately. The tokens are in
-     rem, and print does not override the root, so a 40px title would set at
-     30pt on a document whose entire reason for printing is that it doubles as
+     rem, and print does not override the root, so a 64px title would set at
+     48pt on a document whose entire reason for printing is that it doubles as
      a CV with a page budget the screen does not have. Sized in points against
      the 10.5pt body instead: 1.9 and 1.24, close to what the old 25px and 19px
-     headings actually printed at. The h1 keeps its weight and loses its
-     tracking, which was an optical correction for 40px and not for 20pt. */
+     headings actually printed at. Both keep weight 400 on screen and lose
+     their tracking here, which was an optical correction for 64px and 32px and
+     is not one for 20pt and 13pt.
+
+     The section heading is the one thing print does not follow the screen on.
+     Its underline was dropped because 32px separates a section on its own;
+     13pt against a 10.5pt body does not, and neither does 60px of white on a
+     page being rationed. So in print the heading takes its weight and its
+     hairline back, and the space between blocks comes down to match. */
   h1, .page-title { font-size: 20pt; letter-spacing: 0; }
-  h2, .block__title { font-size: 13pt; }
+  h2, .block__title { font-size: 13pt; letter-spacing: 0; }
+  .block { margin-bottom: var(--space-6); }
+  .block__title {
+    margin-bottom: var(--space-3);
+    padding-bottom: var(--space-1);
+    border-bottom: 1px solid var(--color-border-soft);
+    font-weight: var(--weight-bold);
+  }
   .page-lede { font-size: 12pt; }
   .site-header__name { font-size: 14pt; }
 
