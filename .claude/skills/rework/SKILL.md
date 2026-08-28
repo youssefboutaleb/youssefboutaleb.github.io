@@ -385,6 +385,79 @@ Append here every pass. This is the part that makes the file worth keeping.
     out of line with every other line in the record. Before borrowing a value,
     read what pays for it.
 
+36. **Content that outgrows its model presents as a pile of unrelated
+    formatting faults.** The Awards hackathon looked like six separate
+    problems: bold used two ways, tools buried in prose, a consequence in a
+    trailing clause, a hand-written link, a redundant chip, dead fields. All
+    six were one fact, that a record describing something *built* was being
+    rendered by a model designed for records that are entirely metadata and
+    carry no prose. Count the symptoms before fixing any of them: six on one
+    record is not six bugs, it is the wrong component.
+37. **Check what the site already assigns a device to before using it a second
+    way.** `<b>` on this site means *this is the bullet's topic*, which is what
+    Projects does with it. The Awards record had started using it for tool
+    names, so one page carried two meanings for one device and four tool names
+    sat at title ink. The site's device for a tool is the outlined
+    `.tag--stack` chip, and `CLAUDE.md` section 6 says so in one sentence. A
+    grep for the existing use is faster than an argument about the new one.
+38. **When a file changes under you mid-pass, finish your scope and put the
+    collision in writing.** Half of this page was concurrently rebuilt while
+    it was being audited: the `.perf` component was deleted and its two
+    measurements became chips, reversing a decision documented at length in
+    `awards.md` and in the CSS comment above the rule. Reverting it silently
+    would have been the same failure in the other direction. The work that did
+    not depend on it was finished, the consequences were listed in the options
+    document (a guard that no longer runs, a comment above no rule, a section
+    of `awards.md` describing a component the page does not render), and the
+    decision went to the author. Do not adopt an undiscussed reversal by
+    building on top of it, and do not undo one by hand.
+
+39. **Lesson 38's other half: the author says which way, and then it is a
+    restore, not a revert.** The `.perf` deletion was correctly left alone and
+    written up. When the author called it, the work was to put the component
+    back *verbatim from the commit that shipped it*, not to rebuild it from
+    the description in the options document. `git show HEAD:path` and a
+    string splice restore the rules and their three explanatory comments
+    together; retyping them would have been lesson 33 in CSS.
+40. **When you undo part of a pass, check what else that edit touched.** The
+    same edit that removed `.perf` had deleted a page lede and added
+    `text-overflow: ellipsis` to a summary card. The ellipsis was reported in
+    the options document as something to "look at on a screen"; one
+    measurement said the French `Quart de finaliste sur 200 equipes` was 214px
+    inside 200px of card and was clipped in production. **A defect you deferred
+    for lack of a screen is usually a defect you deferred for lack of a
+    measurement.**
+41. **Sharpening prose can delete a rank.** Three Awards bullets were rewritten
+    from verb-first sentences into topic-led ones, and every one of them got
+    better. What went with the old first clause was the only statement of what
+    the product was and who it was for, because that framing had been squatting
+    inside a bullet for want of a slot. `render_award` turned out to be the one
+    record renderer of nine that never emitted `.entry__summary`. Before
+    tightening a record's bullets, check whether the renderer offers the rank
+    above them; if it does not, that is the finding.
+
+42. **Name a new field after the consumer that already reads it.** The
+    workshop parts were going to be a `parts` field until a grep showed
+    `cite_index` already walks `record["groups"]`, which is what makes a bullet
+    citable from Home. A second name for the same shape would have rendered
+    identically and quietly made those bullets uncitable. Before naming
+    anything, grep for the functions that will consume it: this site's
+    machinery is generic more often than it looks.
+43. **A filter that decides what renders needs a guard, because its failure is
+    silence.** Splitting Workshops into two blocks made `block` the field that
+    decides whether a record exists on the site at all. A record omitting it
+    renders on no page, keeps a valid id, and produces no dead link for
+    `check.py` to find, because nothing links to something that is not there.
+    Every other guard in `tools/` was written after the failure shipped;
+    `check_workshop_block` is one written in the same pass as the mechanism,
+    which is cheaper and should be the habit.
+44. **A promotion's reasoning can expire while the promotion stays right.**
+    `workshops.md` justified moving the pitch into a `.page-lede` with
+    *Workshops has one block*, which this pass made false. The lede is still
+    correct, for a better reason: it states what is true of all four records
+    and of neither block alone. When a change falsifies a document's argument,
+    check whether the decision or only the argument has to move.
+
 ---
 
 ## Upgrading this file

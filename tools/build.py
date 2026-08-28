@@ -632,7 +632,26 @@ def disambiguate(node: TocNode) -> None:
 # how a page ends up rendering empty or meaningless dimensions. Two models may
 # share a category name only if they mean the same thing by it.
 MODELS = {
-    "awards": ("placement", "distinction", "type", "scope", "scale", "duration", "track"),
+    # `type` was here and is not any more. The two blocks on Awards are a
+    # filter on that field in build(), so every record inside a block carried a
+    # chip repeating the heading three lines above it: `Competitive
+    # Programming` on all seven, `Hackathon` on the one. awards.md logged this
+    # as a known tension and noted research.md had already resolved the same
+    # case the other way, keeping the type in the block heading and out of the
+    # model. It is resolved that way here too. The field stays in the data,
+    # because build() still filters on it; what goes is the chip, and with it
+    # the widest chip on the page at 181px.
+    #
+    # `stack` arrives, and last, which is the condition render_meta states for
+    # it: a run whose length varies has to sit after every category that is
+    # read positionally. The hackathon is the one record on this page that
+    # built something, and its tools were four <b> spans inside the prose,
+    # which is the device Projects uses for a bullet's *topic*. CLAUDE.md
+    # section 6: tools are outlined chips on Career, Projects and Home alike,
+    # and one vocabulary for "a thing this was built with" is the whole point
+    # of that sentence. A competition carries no `stack` and renders one tag
+    # fewer, which is awards.md rule 5.
+    "awards": ("placement", "distinction", "type", "scope", "scale", "duration", "track", "stack"),
     "workshops": ("format", "mode", "duration", "audience", "scale", "host"),
     # `workload` was here and is not any more. The specs panel at the top of
     # Teaching states "32 h per course" and breaks it into 20 lecture, 8 lab
@@ -1168,16 +1187,53 @@ def render_award(record: dict) -> str:
         year = record["year"]
         dateline.append(f'<time datetime="{year}">{year}</time>')
 
+    # The dataset the work ran on, as a utility tag rather than a hand-written
+    # anchor inside a sentence. DESIGN.md section 7.2 already names "a dataset"
+    # as a `.tag--artifact` case, and this one was a raw <a> in the middle of
+    # the first bullet, carrying its own target and rel and *not* the
+    # link-external marker the teammate link two bullets down did carry: one
+    # record, two inline links, two treatments.
+    #
+    # The noun is a chrome string and the name is a record field, which is the
+    # split awards.md rule 7 asks for. Written as `Dataset ({name})` it was an
+    # English word emitted from a renderer with no `tr()` around it, so the
+    # French page would have said `Dataset` in a chip beside `48 h` and
+    # `Quart de finaliste`, which is the failure CLAUDE.md section 9 lists as
+    # "a record field a renderer reads directly instead of through t()".
+    extra_tags = []
+    if record.get("performance"):
+        perf = record["performance"]
+        solved = ACTIVE.number(perf["solved"])
+        problems = ACTIVE.number(perf["problems"])
+        team_count = ACTIVE.number(perf["team"])
+        solved_text = tr("perf.solved", "solved")
+        team_label = tr("perf.team", "Team")
+        extra_tags.append(
+            f'<li class="tag tag--problems"><b>{solved} / {problems}</b> {solved_text}</li>'
+        )
+        extra_tags.append(
+            f'<li class="tag tag--team">{team_label} <b>{team_count}</b></li>'
+        )
+    if record.get("dataset"):
+        name = t(record, "dataset_label")
+        label = tr("tag.dataset", "{name} dataset").replace("{name}", name)
+        extra_tags.append(
+            f'<li><a class="tag tag--artifact link-external"'
+            f' href="{record["dataset"]}" target="_blank" rel="noopener">'
+            f"{label}</a></li>"
+        )
     parts = [
         f'<h3 class="entry__title">{title}</h3>',
         f'<p class="entry__period">{" &middot; ".join(dateline)}</p>',
-        render_meta(record, "awards"),
+        render_meta(record, "awards", extra=tuple(extra_tags)),
     ]
-    # A competition carries a performance spec and no bullets; a hackathon
-    # carries bullets and no spec, because there is no problem count to state
-    # and what was built is the substance (awards.md, the bullet rules). A
-    # record carrying both would be saying one thing twice.
-    parts.append(render_performance(record))
+    # The framing sentences, in the slot DESIGN.md section 9 fixes for them:
+    # what and when, then the scan line, then the framing, then the evidence.
+    # This renderer was the only one of nine that skipped the rank, which is
+    # why the hackathon's context had nowhere to go but into its bullets, and
+    # then out of them when the bullets were sharpened.
+    if t(record, "summary"):
+        parts.append(f'<p class="entry__summary">{t(record, "summary")}</p>')
     if t(record, "points"):
         parts.append(render_points(t(record, "points")))
 
@@ -1240,16 +1296,35 @@ def render_awards_summary(awards: list[dict]) -> str:
     The fix is the one DESIGN.md section 9.3 made for Impact in Numbers, for
     the same reason: **put the figure in the slot the title had.** The scope
     was never the interesting half of a scope card, because the reader can see
-    four cards and knows they are scopes; the result is. So the result leads at
-    title weight, the scope and the records that earned it fall to the
-    provenance line, and the chips go entirely.
+    four cards and knows they are scopes; the result is. So the result carries
+    title weight and the chips go entirely.
 
-    `.result__figure` and `.result__source` are borrowed, not reinvented. They
-    are element classes meaning *the figure* and *where this came from*, which
-    is exactly what these two lines are, and they already carry the right
-    weights. Only `.result`'s two-column grid is Home's, and a grid property on
-    a child of `.entries--grid > .entry` is inert, so nothing of that comes
-    with them.
+    **One fact per line, and that is a measurement rather than a preference.**
+    The card ran two lines until the page context rail and the type scale
+    caught up with it: at a 12rem track the text measure is 192px, and
+    `643rd Place of 7,094 teams` needs about 215px at 17px, so the line broke
+    wherever it landed and dropped `teams` on its own. French was worse, and
+    the comment beside `.entries--grid--compact` in `main.css` had already
+    recorded `Quart de finaliste sur 200 equipes` running 214px. A card whose
+    whole job is to state one result cannot state it in orphans, so the
+    sentence is now four short lines, each holding one fact: the scope, the
+    result, the field size, the record.
+
+    **The scope leads, and it is a label rather than a title.** It answers
+    *which reach is this card* before the reader spends attention on the
+    figure, and it is set at `.result__source`'s size and colour, so the 17px
+    result underneath still carries every bit of the weight section 9.3 gave
+    it. What was rejected above was a scope in the *title slot* with the
+    result demoted to a chip, and that is not what a quiet label line above
+    the figure does.
+
+    The four classes are borrowed, not reinvented. `.result__figure` and
+    `.result__source` mean *the figure* and *where this came from*, which is
+    exactly what those two lines are; `.result__scope` and `.result__scale`
+    extend the same component the way `.result__consequence` already does,
+    which is to say Home uses some of it and this block uses the rest. Only
+    `.result`'s two-column grid is Home's, and a grid property on a child of
+    `.entries--grid > .entry` is inert, so nothing of that comes with them.
 
     **The medal disc is deliberately not here** and stays on the record. It
     exists to be recognised before the label is read (awards.md rule 4), which
@@ -1262,6 +1337,7 @@ def render_awards_summary(awards: list[dict]) -> str:
             continue
         best = min(group, key=placement_rank)
         distinction = best.get("distinction")
+        scale = ""
         if distinction:
             cited = [a for a in group if a.get("distinction") == distinction]
             label = tr(f"tag.distinction.{distinction}", distinction)
@@ -1278,23 +1354,58 @@ def render_awards_summary(awards: list[dict]) -> str:
             figure = f"<b>{label}</b>"
             if best.get("scale"):
                 _, size = meta_label("scale", best["scale"])
-                figure += f' {tr("scale.of", "of")} {size}'
+                scale = f'{tr("scale.of", "of")} {size}'
         records = f' {SEPARATOR} '.join(
             f'<a href="#{record["id"]}">'
             f'{t(record, "short") or t(record, "title")}</a>'
             for record in cited
         )
         scope_label = tr(f"tag.scope.{scope}", scope)
-        parts = [
-            f'<p class="result__figure">{figure}</p>',
-            f'<p class="result__source">{scope_label} {SEPARATOR} {records}</p>',
-        ]
+        # One fact per line, in reading order: which reach, what result, at
+        # what field size, and where to check it. A card with no `scale`
+        # renders three lines rather than four, which is rule 5 again: the
+        # National card states two finals and there is no field size that
+        # belongs to both records, so none is invented to square the shape.
+        parts = [f'<p class="result__scope">{scope_label}</p>']
+        parts.append(f'<p class="result__figure">{figure}</p>')
+        if scale:
+            parts.append(f'<p class="result__scale">{scale}</p>')
+        parts.append(f'<p class="result__source">{records}</p>')
         cards.append(
             '<li class="entry">\n'
             + "\n".join(indent(part, 2) for part in parts)
             + "\n</li>"
         )
     return "\n".join(cards)
+
+
+# The two sections on Workshops, and the only values `block` may take. Held
+# here rather than in the fragment because the fragment places a rendered
+# block by name and cannot see a record that reached neither.
+WORKSHOP_BLOCKS = ("hardware", "algorithms")
+
+
+def check_workshop_block(record: dict) -> None:
+    """Every workshop names the section it renders in, or it renders nowhere.
+
+    The page is two blocks filtered on `block`, so a record that omits the
+    field or misspells it is not a record with a missing tag: it is a record
+    that quietly leaves the site. Nothing downstream would have said so. The
+    entry ids stay valid, `check.py` finds no dead link because nothing links
+    to it, and the page simply comes back one workshop shorter.
+
+    workshops.md carries which subject belongs in which block. The values live
+    in WORKSHOP_BLOCKS above and never render, which is why they are not in
+    that document's vocabulary tables.
+    """
+    if record.get("block") not in WORKSHOP_BLOCKS:
+        raise ValueError(
+            f'{record["id"]}: a workshop needs `block` set to one of '
+            + " or ".join(repr(name) for name in WORKSHOP_BLOCKS)
+            + f', not {record.get("block")!r}. The page filters its two '
+            "sections on this field, so a record without it renders on no "
+            "page at all. workshops.md, the page structure."
+        )
 
 
 def render_workshop(record: dict) -> str:
@@ -1337,6 +1448,15 @@ def render_workshop(record: dict) -> str:
         parts.append(f'<p class="entry__summary">{t(record, "summary")}</p>')
     if t(record, "points"):
         parts.append(render_points(t(record, "points")))
+    # A session delivered in parts renders them as `.entry__group`, the same
+    # shape Career gives a role's workstreams and Teaching gives a module. The
+    # three bullets this replaced carried the structure inside their own text
+    # (`<b>Part 1.a: Efficient data &amp; code execution:</b> ...`), so one
+    # bullet held two bold spans and two colons, and the record was flat while
+    # its own prose said it was not. The group title states the part; the
+    # bullet keeps `<b>` for its topic, which is the one job that device has.
+    for group in t(record, "groups", []) or []:
+        parts.append(render_group(group["title"], group["points"]))
 
     body = "\n".join(indent(part, 2) for part in parts if part)
     ws_id = record["id"]
@@ -1454,9 +1574,18 @@ def render_publication(record: dict, site: dict = None) -> str:
             citation += f' &middot; <i>{t(record, "venue")}</i>'
     parts.append(f'<p class="entry__meta">{citation}</p>')
 
+    extra_tags = []
+    if record.get("dataset"):
+        d_url = record["dataset"]
+        d_label = record.get("dataset_label", "Dataset")
+        extra_tags.append(
+            f'<li><a class="tag tag--artifact link-external" href="{d_url}"'
+            f' target="_blank" rel="noopener">Dataset ({d_label})</a></li>'
+        )
+
     position = author_position(record)
     parts.append(render_meta({**record, "authorship": position} if position else record,
-                             "research"))
+                             "research", extra=tuple(extra_tags)))
 
     if t(record, "summary"):
         parts.append(f'<p class="entry__summary">{t(record, "summary")}</p>')
@@ -3073,7 +3202,16 @@ def page_blocks(site: dict) -> dict:
     awards = with_ids(json.loads((DATA / "awards.json").read_text(encoding="utf-8")), "award")
     competitions = [a for a in awards if a.get("type") == "Competitive Programming"]
     hackathons = [a for a in awards if a.get("type") == "Hackathon"]
+    # The Workshops split is a filter on `block`, following Projects rather
+    # than Awards: `block` is not a metadata category and never renders, so no
+    # record carries a chip restating the heading it sits under. The two
+    # blocks are the descent the page lede already claims, hardware down to
+    # algorithms, which reverse chronology happens to render: see workshops.md.
     workshops = with_ids(json.loads((DATA / "workshops.json").read_text(encoding="utf-8")), "ws")
+    for workshop in workshops:
+        check_workshop_block(workshop)
+    hardware_workshops = [w for w in workshops if w["block"] == "hardware"]
+    algorithm_workshops = [w for w in workshops if w["block"] == "algorithms"]
     courses = sorted(
         with_ids(json.loads((DATA / "teaching.json").read_text(encoding="utf-8")), "course"),
         key=course_sort_key,
@@ -3150,7 +3288,10 @@ def page_blocks(site: dict) -> dict:
         "build.awards": indent("\n".join(render_award(a) for a in awards), 4),
         "build.competitions": indent("\n".join(render_award(a) for a in competitions), 4),
         "build.hackathons": indent("\n".join(render_award(a) for a in hackathons), 4),
-        "build.workshops": indent("\n".join(render_workshop(w) for w in workshops), 4),
+        "build.workshops_hardware": indent(
+            "\n".join(render_workshop(w) for w in hardware_workshops), 4),
+        "build.workshops_algorithms": indent(
+            "\n".join(render_workshop(w) for w in algorithm_workshops), 4),
         "build.courses": indent("\n".join(render_course(c) for c in courses), 4),
         "build.publications": indent("\n".join(render_publication(p, site) for p in publications), 4),
         "build.articles": indent("\n".join(render_article(a) for a in articles), 4),

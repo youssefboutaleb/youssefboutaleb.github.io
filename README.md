@@ -184,9 +184,52 @@ rebuild: the page never lists entries by hand:
   "type": "Competitive Programming",
   "scope": "Regional",
   "scale": { "count": 86, "unit": "teams" },
-  "points": ["Solved 8 problems"]
+  "duration": 4,
+  "performance": { "solved": 8, "problems": 8, "team": 2 }
 }
 ```
+
+`type` is still required and is still **not** a tag. It is what `build()`
+filters the two blocks on, and it stopped rendering when the chip it produced
+turned out to repeat the block heading directly above it.
+
+A hackathon is the one record here that has bullets, because it has no problem
+count to state and something built instead. It takes three more fields that a
+contest does not:
+
+```json
+{
+  "title": "A2SV (Africa to Silicon Valley) GenAI Hackathon",
+  "type": "Hackathon",
+  "placement": "Quarter-finalist",
+  "scope": "African",
+  "scale": { "count": 200, "unit": "teams" },
+  "duration": 48,
+  "track": "GenAI for Healthcare",
+  "stack": ["FastAPI", "Pydantic", "Jinja2"],
+  "dataset": "https://www.kaggle.com/datasets/…",
+  "dataset_label": "Stroke Prediction",
+  "summary": "Clinical records are written for clinicians. We built a service …",
+  "points": [
+    "<b>The contract:</b> one row of patient data in, one HTML page out …",
+    {
+      "point": "<b>Validation and fallback:</b> every response was validated …",
+      "impact": "unvalidated model output never reached a patient-facing page."
+    }
+  ]
+}
+```
+
+`stack` is a list and renders one outlined chip per tool, the same treatment
+Career and Projects give it, so a tool name never goes in a sentence. `dataset`
+plus `dataset_label` render one `.tag--artifact` link; the word *dataset*
+itself is a chrome string, so do not write it into the label. `summary` is one
+or two framing sentences and renders between the tags and the bullets, like
+every other record type on the site: it says what was built and who for, and
+the bullets say how, so a summary that restates a bullet has taken the
+bullet's job. A bullet becomes an object when it ends in a consequence, and the
+`impact` half renders on its own `.point__impact` line:
+[DESIGN.md §9.2](DESIGN.md).
 
 `placement` is a plain integer where there is a rank (`1` renders as `1st Place`
 with a gold medal; `2` silver, `3` bronze) or a string otherwise (`"Finalist"`).
@@ -200,9 +243,10 @@ this record shows in the page context rail, for a title too long to sit in a
 heading, which is right nearly always. It exists as data because the rail's
 parser used to hold the abbreviations itself, as literal string replacements
 naming two specific awards, so renaming either one here silently stopped
-shortening it. The four metadata tags always render in
-the order `placement → type → scope → scale`, defined once as
-`MODELS["awards"]` in `tools/build.py`; see [DESIGN.md §7](DESIGN.md) for the
+shortening it. The metadata tags always render in the order
+`placement → distinction → scope → scale → duration → track → stack`, defined
+once as `MODELS["awards"]` in `tools/build.py`, with `stack` last because it is
+the one category whose chip count varies; see [DESIGN.md §7](DESIGN.md) for the
 colour rules.
 
 **The cards at the top of the page follow on their own.** They show the best
@@ -223,21 +267,39 @@ Same shape, a different model. Append a record to `src/data/workshops.json`:
 ```json
 {
   "title": "Introduction to Competitive Programming",
+  "block": "algorithms",
   "year": "2023",
   "format": "Workshop",
   "mode": "On-site",
+  "duration": 4,
   "audience": "Engineering Students",
+  "scale": { "count": 40, "unit": "participants" },
   "host": "IEEE Student Branch ENIS",
   "summary": "An entry point into contest-style problem solving …",
   "points": ["Complexity analysis first: reading a problem's constraints …"]
 }
 ```
 
-The four tags render in the order `format → mode → audience → host`, from
+The six tags render in the order
+`format → mode → duration → audience → scale → host`, from
 `MODELS["workshops"]`. Optional `repo` adds a GitHub icon-link to the title and
-`slides` appends a download tag after the metadata. The permitted value for
-each category, and the editorial rules for the bullets, are in
-[workshops.md](workshops.md).
+`slides` appends a download tag after the metadata.
+
+**`block` chooses the section**, `hardware` or `algorithms`, and never renders:
+it is the Projects convention, not the Awards one, so no record carries a chip
+restating the heading it sits under. A session delivered in parts replaces
+`points` with `groups`, the same `[{"title", "points"}]` shape a job's
+disciplines use:
+
+```json
+"groups": [
+  { "title": "Part 1: Efficient execution and parallel compute",
+    "points": ["<b>Data &amp; code execution:</b> CPU instruction pipelining …"] }
+]
+```
+
+The permitted value for each category, which block a subject belongs in, and
+the editorial rules for the bullets, are in [workshops.md](workshops.md).
 
 ### Adding a course
 

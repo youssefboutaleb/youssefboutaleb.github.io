@@ -122,37 +122,56 @@ other three so it can be read the same way.
 
 ```
 Model:  awards
-Order:  placement → distinction → type → scope → scale → duration → track
+Order:  placement → distinction → scope → scale → duration → track → stack
 
   placement    where the entry finished          1, 2, 13, "Quarter-finalist"
   distinction  notable stage or honor            "National Finalist"
-  type         what kind of event it was         "Competitive Programming", "Hackathon"
   scope        how far the field reached         "Regional", "National",
                                                  "African", "International"
   scale        how large the field was           "7,094 teams", "86 teams", "200 teams"
   duration     how long the event lasted         4, 5, 24, 48  (integer hours)
   track        event focus / topic area          "GenAI for Healthcare"
+  stack        what the record was built with    ["FastAPI", "Pydantic", "Jinja2"]
+
+Appended after the model's tags, as a utility tag:
+
+  dataset          the data the work ran on      a URL
+  dataset_label    what that data is called      "Stroke Prediction"
 
 Beside the tags, not among them:
+
+  summary      one or two framing sentences    "Clinical records are written
+                                                for clinicians. ..."
 
   performance  the score and the team size       {"solved": 8, "problems": 8, "team": 2}
 ```
 
 The order is defined once, in `MODELS["awards"]` in `tools/build.py`.
 
-**`placement` first**, because it is the primary ranking metric. **`distinction` second**, highlighting stage honors like *National Finalist*. **`type` third**, distinguishing programming contests from hackathons. **`scope` fourth**, as the qualifier on how far that result reaches. **`scale` fifth, and quiet**: field size legibility. **`duration` and `track`** provide situational context for hackathons.
+**`placement` first**, because it is the primary ranking metric. **`distinction`
+second**, highlighting stage honors like *National Finalist*. **`scope` third**,
+as the qualifier on how far that result reaches. **`scale` fourth, and quiet**:
+field size legibility. **`duration` and `track`** provide situational context
+for hackathons. **`stack` last, and it has to be**: it renders one chip per
+tool, so it is the one category whose length varies, and `render_meta` states
+the condition plainly, that a run of variable length sits after every category
+read positionally.
+
+**`type` is not in the model any more.** See [One model, two blocks](#one-model-two-blocks).
 
 ### Vocabulary
 
 | Category | Shape and permitted values |
 |---|---|
 | `placement` | Integer, or a string for a stage rather than a rank. The renderer turns `1` into `1st Place` and `1432` into `1,432nd Place`; `"Quarter-finalist"` passes through |
-| `type` | `Competitive Programming` · `Hackathon` |
 | `scope` | `Regional` · `National` · `African` · `International` |
 | `scale` | `{"count": 7094, "unit": "teams"}` → `7,094 teams` |
 | `duration` | Integer hours. `4` → `4 h`. **Never a string**: `"48h"` was the shape once, and `meta_label` spaces the unit so that `2h` and `20 h` cannot coexist |
 | `track` | `"GenAI for Healthcare"` |
+| `stack` | A list of tool names, one outlined chip each: `["FastAPI", "Pydantic", "Jinja2"]`. The site-wide `.tag--stack` treatment Career and Projects use, so *a thing this was built with* looks the same everywhere ([`CLAUDE.md`](CLAUDE.md) §6). Kept out of the overlay by `*.stack` in the `keep` list: a tool's name is its name in both languages |
+| `dataset` | A URL, with `dataset_label` naming the data. Not a category and not in the model: it is an artefact of the work rather than a dimension of it, so it renders as a `.tag--artifact` appended after the model's tags, exactly as Projects appends its slides link. The noun comes from the `tag.dataset` chrome string, never stored beside the name, so the French reads *Jeu de données Prédiction AVC* with no second field to keep in agreement |
 | `performance` | `{"solved": 8, "problems": 8, "team": 2}` → a `.perf` strip, not a tag |
+| `summary` | One or two sentences of framing, rendered as `.entry__summary` between the tags and the bullets. A hackathon field: a competition has no bullets for it to introduce |
 
 `venue` is not a category. It renders as the `.entry__role` qualifier after the
 title (*TCPC 23) Tunisian Collegiate Programming Contest*, because it
@@ -177,20 +196,28 @@ prototyping, product design, and fast technical delivery*), which is the fact
 the two blocks exist to separate. These two lines are the reference examples
 for the site-wide intro rule; see below and [`DESIGN.md`](DESIGN.md) §11.1.
 
-> **Known tension.** Because the split is on `type`, every record inside a
-> block now carries a `type` tag that repeats its heading. By the test in
-> [`teaching.md`](teaching.md) (*does this distinguish this record from its
-> neighbours?*) it no longer does, and [`research.md`](research.md) resolves
-> the same situation the other way, keeping the type in the block heading and
-> out of the model. Awards keeps the tag for now; if it goes, it goes from
-> `MODELS["awards"]` and nowhere else.
+**The tension that came of that is resolved, and `type` is gone.** Because the
+split is on `type`, every record inside a block carried a `type` tag that
+repeated its heading three lines above it. By the test in
+[`teaching.md`](teaching.md) (*does this distinguish this record from its
+neighbours?*) it did not, and [`research.md`](research.md) had already resolved
+the same situation the other way, keeping the type in the block heading and out
+of the model. It went from `MODELS["awards"]` and nowhere else: the **field
+stays in the data**, because `build()` still filters the two blocks on it, and
+what went is the chip.
+
+Measured on the shipped Noto Sans, `Competitive Programming` was 181px, the
+widest chip on the page, on all seven competition records, and it said nothing
+a reader had not read in the heading. The two `tag.type.*` strings left the
+French overlay with it, and the `.tag--type` rule left `main.css`, because a
+component nothing renders is what `check.py` fails the build on.
 
 ### The scope summary
 
 The page opens on a card per scope, on the grid that carries Career's
 certifications ([`DESIGN.md`](DESIGN.md) §9.4), and it is **derived, never
-written**. Each card leads with the result, and carries the scope and the
-record that earned it on a quiet provenance line beneath.
+written**. Each card states one fact per line, in reading order: the scope,
+the result, the field size it was won against, and the record that earned it.
 `render_awards_summary` takes the best record in each scope and applies one
 rule:
 
@@ -219,10 +246,32 @@ The fix is the one [`DESIGN.md`](DESIGN.md) §9.3 made for Impact in Numbers,
 for the same reason: *put the figure in the slot the title had.* The scope was
 never the interesting half of a scope card, because a reader looking at four
 cards can see they are scopes; the result is. So `.result__figure` carries the
-result at title weight, `.result__source` carries the scope and its records as
-provenance, and the chips are gone. Those two classes are borrowed rather than
-reinvented: they mean *the figure* and *where this came from*, which is what
-these two lines are, and only `.result`'s two-column grid belongs to Home.
+result at title weight and the chips are gone.
+
+**One fact per line, and the count of lines is a measurement.** The card ran
+two lines until the type scale caught up with it. At a `12rem` track the text
+measure inside a card is 192px, and *643rd Place of 7,094 teams* needs about
+215px at 17px, so the line broke wherever it landed and left *teams* standing
+on its own; *International &middot; IEEEXtreme 17.0* landed within a few
+pixels of the same limit and orphaned the version number. French was already
+worse, and the comment beside `.entries--grid--compact` in `main.css` had
+recorded *Quart de finaliste sur 200 equipes* running 214px before this. A
+card whose whole job is to state one result cannot state it in orphans, so the
+sentence became four short lines that each hold one fact.
+
+**The scope leads, and it is a label rather than a title.** It says which
+reach the card is about before the reader spends attention on the figure, and
+it is set at `.result__source`'s size and colour, so the result underneath
+keeps all of the weight §9.3 gave it. The rejected shape was a scope in the
+*title slot* with the result demoted to a chip, which is not what a quiet
+label line above the figure does.
+
+The four classes are borrowed rather than reinvented. `.result__figure` and
+`.result__source` mean *the figure* and *where this came from*, which is what
+those lines are; `.result__scope` and `.result__scale` extend the same
+component the way `.result__consequence` already does, which is to say Home
+renders some of it and this block renders the rest. Only `.result`'s
+two-column grid belongs to Home.
 
 **The medal disc is deliberately absent here** and stays on the record. Rule 4
 keeps it because it is recognised before the label is read, which is worth a
@@ -230,8 +279,10 @@ disc once and is a double-take twice.
 
 Three consequences, all of them rule 5 and rule 7 doing their job:
 
-- **A scope with no record renders no card.** Nothing is invented to square
-  the 2&times;2 shape.
+- **A scope with no record renders no card**, and neither does a missing
+  field size: the National card carries a distinction earned by two records,
+  no single `scale` belongs to both, so it renders three lines rather than
+  four. Nothing is invented to square the shape.
 - **`SCOPE_ORDER` in `tools/build.py` fixes the reading order**, weakest reach
   first. A new scope value is placed there deliberately, not wherever a sort
   puts it.
@@ -242,13 +293,17 @@ Three consequences, all of them rule 5 and rule 7 doing their job:
 
 **The four cards sit on one line, on a grid that is not counting them.** The
 summary is the only user of `.entries--grid--compact`, which lowers the track
-minimum from `18rem` to `12rem` and nothing else. At `18rem` only two tracks
+minimum from `18rem` to `9rem` and nothing else. At `18rem` only two tracks
 fitted the document column, so the four scopes read as a 2x2 block of cards
-stretched to twice the width their two lines need. The reasoning, including
-why the base grid keeps `18rem` for the certifications card and why this is a
-track minimum rather than a hardcoded four, is in [`DESIGN.md`](DESIGN.md)
-9.4. Rule 5 is the reason it matters: a scope with no record renders no card,
-so the row has to lay out three cards as readily as four.
+stretched to twice the width their lines need. `12rem` held the row only above
+1240px, which put the fourth card under the first at the width most readers
+open the page at; that minimum had been sized for a card of two long lines,
+and the longest line on the card is now *of 7,094 teams* at 14px. The
+reasoning, including why the base grid keeps `18rem` for the certifications
+card and why this is a track minimum rather than a hardcoded four, is in
+[`DESIGN.md`](DESIGN.md) 9.4. Rule 5 is the reason it matters: a scope with no
+record renders no card, so the row has to lay out three cards as readily as
+four.
 
 The cards replaced `.awards-stats`, a bordered box that hand-formatted its own
 labels; the full list of what that cost is in [`DESIGN.md`](DESIGN.md) §9.4.
@@ -318,15 +373,51 @@ A row that already carries five chips does not need seven.
    `points`, because that is a record saying one thing twice, which is how the
    sentence got there in the first place.
 2. **A hackathon is the exception, and says what was built.** There is no
-   problem count to state, so the bullets carry the artefact, architecture
-   ownership and model details, which is the substance a placement leaves
+   problem count to state, so the bullets carry the artefact, the architecture
+   and who owned which half of it, which is the substance a placement leaves
    unexplained.
+
+   **It opens with a `summary`, and that is what the bullets are allowed to
+   be sharp against.** Tightening the three bullets into *the contract*,
+   *validation and fallback* and *ownership* made each of them a better
+   sentence and cost the record the only thing that had ever said what the
+   product was or who it was for: the retired first bullet opened *"Delivered
+   an MVP transforming complex clinical diagnosis and medication data into
+   patient-accessible HTML summaries"*, and nothing replaced it. That is a
+   rank error, not a bullet error. `.entry__summary` is the slot
+   [`DESIGN.md`](DESIGN.md) §9 fixes for framing, between the scan line and
+   the evidence, and `render_award` was the only one of nine record renderers
+   that never emitted it. **The summary names the product and its reader; the
+   bullets say how it was built.** A summary that restates a bullet has taken
+   the bullet's job.
+
+   **Each bullet opens with its topic in bold, then a colon.** That is the
+   device Projects already uses (*"`<b>Security &amp; CSP hardening:</b>`"*),
+   and it is what gives three dense bullets an entry point. It also frees the
+   `<b>` span for the one job it should be doing: before this, four **tool
+   names** were bold inside the prose, so one page had bold meaning *this is
+   the bullet's topic* on Projects and *this is a tool* on Awards, and the four
+   tools competed with the record title for the darkest ink in the block.
+
+   **A bullet that ends in a consequence hands it to `.point__impact`.**
+   [`DESIGN.md`](DESIGN.md) §9.2 exists for exactly the sentence shape the
+   validation bullet had, a consequence arriving in a trailing clause where
+   neither reader finds it.
 3. **Never restate a tag.** The field size, the scope and the rank are already
    on screen. A bullet reading "competed against 86 teams nationally" is a
    third copy of two facts. The hackathon's first bullet opened *"Delivered an
    MVP in 48h"* beside its own `48 h` tag, which was this rule being broken by
    the one record still allowed to have bullets; the duration is gone from the
    sentence and stays in the tag.
+
+   **The rule now covers the tools and the dataset too**, because they are
+   tags. `FastAPI`, `Pydantic`, `Jinja2`, `Hugging Face Inference API` and
+   `Falcon` are five `stack` chips, so the bullets name none of them and read
+   as architecture rather than as a list of imports. The Kaggle set was a
+   hand-written `<a>` in the middle of the first sentence, carrying its own
+   `target` and `rel` and **not** the `link-external` marker the teammate link
+   two bullets below it did carry: one record, two inline links, two
+   treatments. It is a `.tag--artifact` now and the sentence is clean.
 
 ---
 

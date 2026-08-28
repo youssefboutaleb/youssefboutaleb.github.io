@@ -26,7 +26,7 @@
     "last_updated": "août 2026",
     "resume": "data/Youssef_BOUTALEB_cv_fr.pdf",
     "location": "Sfax, Tunisie",
-    "contact_invitation": "Ouvert aux postes d'ingénierie des données, et aux échanges sur les pipelines, l'intégration et l'observabilité.",
+    "contact_invitation": "Disponible pour des postes en ingénierie des données, création de pipelines fiables, intégrations robustes et observabilité globale.",
     "portrait_alt": "Portrait de Youssef Boutaleb",
     "availability": "Titulaire d'un titre de séjour UE. Ouvert à la relocalisation au sein de l'UE et aux postes en télétravail."
   },
@@ -126,6 +126,7 @@
     "tag.audience.Engineering Students": "Étudiants ingénieurs",
     "tag.audience.Engineers &amp; Executives": "Ingénieurs et dirigeants",
     "tag.authorship.Second Author": "Deuxième auteur",
+    "tag.dataset": "Jeu de données {name}",
     "tag.distinction.National Finalist": "Finaliste national",
     "tag.domain.Luxury E-commerce &amp; Retail": "E-commerce et retail de luxe",
     "tag.domain.Time-Series Sensor Data (Energy Research)": "Séries temporelles de capteurs (recherche énergie)",
@@ -171,10 +172,15 @@
     "writing.reach_note": "Chiffres d'audience relevés sur Medium, {when}."
   },
   "records": {
+    "award-a2sv-africa-to-silicon-valley-genai-hackathon.dataset_label": "Prédiction AVC",
+    "award-a2sv-africa-to-silicon-valley-genai-hackathon.summary": "Les dossiers cliniques sont rédigés pour les cliniciens. Nous avons construit un service qui transforme le diagnostic et l'historique de traitement d'un patient en une page qu'il peut lire sans en consulter un.",
     "award-a2sv-africa-to-silicon-valley-genai-hackathon.points": [
-      "MVP livré, transformant des données complexes de diagnostic clinique et de médication en résumés HTML accessibles aux patients",
-      "Conception du service FastAPI et des gabarits Jinja2, consommant des schémas JSON structurés validés contre les sorties du LLM",
-      "Intégration avec l'API Hugging Face Inference (Falcon) ; en binôme avec Mohamed Brahim, qui a mené le pipeline GenAI et le pitch"
+      "<b>Le contrat :</b> une ligne de données patient en entrée, une page HTML en langage clair en sortie, les facteurs de risque et les recommandations arrivant sous forme de champs JSON structurés que le gabarit plaçait, plutôt que de la prose qu'il aurait fallu analyser.",
+      {
+        "point": "<b>Validation et repli :</b> la forme était imposée plutôt que supposée, donc chaque réponse était validée contre le schéma, une réponse non conforme était relancée, et les relances épuisées basculaient sur un rendu de secours.",
+        "impact": "aucune sortie de modèle non validée n'a atteint une page destinée au patient."
+      },
+      "<b>Répartition :</b> le travail s'est séparé sur ce contrat. <a class=\"link-external\" href=\"https://tn.linkedin.com/in/mohamed-brahim-b4366b225\" target=\"_blank\" rel=\"noopener\">Mohamed Brahim</a> a pris en charge la chaîne de prompts et l'appel au modèle, et j'ai pris en charge le service, le schéma et le rendu de l'autre côté."
     ],
     "vol-tunisian-red-crescent.organisation": "Croissant-Rouge tunisien",
     "vol-tunisian-red-crescent.branch": "Comité local de Houmt Souk, Djerba",
@@ -419,10 +425,20 @@
     "yolov8-fastapi-gradio.summary": "Pipeline de données de vision par ordinateur de bout en bout : de l'annotation du jeu de données sur Roboflow et de l'entraînement parallèle sur TPU x2 Kaggle (DataParallel) à l'inférence FastAPI conteneurisée et au service Gradio sur Hugging Face.",
     "datadog-log4j2-mulesoft.summary": "Architecture de streaming de logs sans agent : configuration d'un appender HTTP Log4j2 asynchrone qui poste les événements JSONLayout directement vers l'API Send Logs de Datadog, sans bloquer les threads d'exécution.",
     "ws-introduction-to-cs-fundamentals-hardware.summary": "Série d'ateliers en deux parties, animée pour <b><a href=\"https://www.linkedin.com/company/olivesoft/posts/?feedView=all\" target=\"_blank\" rel=\"noopener\">OLIVE-LEARN</a></b> (le programme de formation interne d'OLIVESOFT), retraçant le mouvement des données depuis les architectures matérielles parallèles jusqu'aux portes logiques.",
-    "ws-introduction-to-cs-fundamentals-hardware.points": [
-      "<b>Partie 1.a : exécution efficace des données et du code :</b> pipeline d'instructions du CPU, hiérarchie mémoire (caches L1/L2/L3), et comment le DMA, les cartes réseau et les APU déchargent le cœur principal du déplacement des données.",
-      "<b>Partie 1.b : calcul parallèle et liaisons Python :</b> modèles d'exécution SIMD, SIMT et MIMD, en montrant comment du code Python de haut niveau (vectorisation NumPy, threads GPU PyTorch) cible le matériel vectoriel sous-jacent.",
-      "<b>Partie 2 : calcul au niveau du circuit :</b> stockage des données et arithmétique construits depuis les bascules SR/D jusqu'aux registres 4 bits, aux additionneurs et à une unité arithmétique et logique."
+    "ws-introduction-to-cs-fundamentals-hardware.groups": [
+      {
+        "title": "Partie 1 : exécution efficace et calcul parallèle",
+        "points": [
+          "<b>Exécution des données et du code :</b> pipeline d'instructions du CPU, hiérarchie mémoire (caches L1/L2/L3), et comment le DMA, les cartes réseau et les APU déchargent le cœur principal du déplacement des données.",
+          "<b>Calcul parallèle et liaisons Python :</b> modèles d'exécution SIMD, SIMT et MIMD, en montrant comment du code Python de haut niveau (vectorisation NumPy, threads GPU PyTorch) cible le matériel vectoriel sous-jacent."
+        ]
+      },
+      {
+        "title": "Partie 2 : calcul au niveau du circuit",
+        "points": [
+          "Stockage des données et arithmétique construits depuis les bascules SR/D jusqu'aux registres 4 bits, aux additionneurs et à une unité arithmétique et logique."
+        ]
+      }
     ],
     "ws-assembly-programming-workshop.summary": "Un atelier pratique sur l'exécution matérielle et la manipulation de données de bas niveau, montrant l'écart de performance entre Python de haut niveau et l'assembleur sur machine nue.",
     "ws-assembly-programming-workshop.points": [

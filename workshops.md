@@ -8,6 +8,39 @@ treatments in [`DESIGN.md`](DESIGN.md) §7.1. Neither of those is restated here.
 
 ---
 
+## The page: two blocks, and the descent between them
+
+The page carried one section, headed *Workshops Delivered*, which restated the
+`h1` three lines above it and told the reader nothing. It is two now:
+
+| Block | Holds | Says |
+|---|---|---|
+| **Hardware & Execution** | CS Fundamentals (2026), Assembly (2023) | What the machine does with the code |
+| **Algorithms & Language** | Competitive Programming (2023), Python (2022) | What the code should say in the first place |
+
+**The order was already right and was invisible.** The page lede claims a
+descent, *from memory hierarchies and CPU instruction pipelines down to
+cache-efficient data structures and algorithms*, and reverse chronology happens
+to render exactly that: hardware, assembly, algorithms, language. Nothing told
+the reader the order meant anything, so four sessions read as four unrelated
+events. The blocks name the two halves of the descent, and newest-first
+survives inside each of them.
+
+**The split is a filter on `block`, and `block` never renders.** That is the
+Projects convention rather than the Awards one, and the reason is recorded in
+`MODELS` in `tools/build.py`: Awards filtered on `type`, which was also a tag,
+so every record carried a chip repeating the heading three lines above it.
+`block` is not a metadata category, has no `.tag--block` rule, and appears in
+no vocabulary table here. A new value is a new section in the fragment, and a
+subject that fits neither block is a question about the page, not a field.
+
+**Each block gets one `block__intro`**, which is the pitch rank
+[`DESIGN.md`](DESIGN.md) §11.1 owns, and the page keeps its `.page-lede` above
+both. The two ranks now say different things: the lede states the descent, and
+each intro pitches one half of it.
+
+---
+
 ## The model
 
 ```
@@ -79,11 +112,16 @@ next record does not invent a synonym under time pressure.
   sentence carries it (*Teaching how data moves through hardware...*), which is
   as much as a fact true of every record on a personal portfolio needs.
 
-  **That sentence is a `.page-lede` now, not a `block__intro`**, and this
-  paragraph quoted a wording it had already stopped using. Workshops has one
-  block, so its pitch was always the page's pitch sitting one heading too low;
-  it moved into the page header and the block opens straight onto its records.
+  **That sentence is a `.page-lede`, not a `block__intro`**, and this
+  paragraph quoted a wording it had already stopped using. It moved up because
+  it speaks for every record on the page, which is what a lede does.
   [`DESIGN.md`](DESIGN.md) §11.1 owns the rule that separates the two ranks.
+
+  The reasoning recorded here was *Workshops has one block, so its pitch was
+  always the page's pitch sitting one heading too low*. The promotion was right
+  and that argument for it is now spent: the page has two blocks, each with a
+  pitch of its own, and the lede outranks both because the descent it states is
+  true of all four records and of neither block alone.
 - **Subject.** *Assembly*, *Python*, *Competitive Programming* are already in
   the entry titles. A tag repeating the title is noise; per
   [`awards.md`](awards.md) rule 1, technical depth is substance and belongs in
@@ -93,16 +131,58 @@ next record does not invent a synonym under time pressure.
 
 ## Outside the model
 
-Two things a workshop carries that are not dimensions of it, and so are not
+Three things a workshop carries that are not dimensions of it, and so are not
 sequenced among the tags:
 
 - **A repository link** renders as an `.icon-link` inside `.entry__title`,
   because it points at the thing the title names.
-- **A slide deck** renders as a `.tag--critical` utility tag appended *after*
-  the model's four. It is an artefact, not a property of the session; appending
-  it keeps the four metadata positions readable positionally.
+- **A slide deck** renders as a `.tag--artifact` utility tag appended *after*
+  the model's six. It is an artefact, not a property of the session; appending
+  it keeps the six metadata positions readable positionally. This paragraph
+  said `.tag--critical` and *four* until the blocks pass corrected it: crimson
+  was retired for the reason the comment above the rule in `main.css` gives,
+  and the model has carried six categories since `duration` and `scale` joined
+  it.
+- **Parts.** A session delivered in more than one sitting replaces `points`
+  with `groups`, the `[{"title", "points"}]` shape a job's disciplines and a
+  course's syllabus modules already use, and `render_group` draws it.
 
-Both come from the data (`repo`, `slides`), never from hand-written markup.
+The first two come from the data (`repo`, `slides`), never from hand-written
+markup; the third is the data's own shape.
+
+### Why parts are a component and not a bullet convention
+
+The series had been numbering itself inside its own prose:
+
+```
+<b>Part 1.a: Efficient data &amp; code execution:</b> CPU instruction pipelining …
+<b>Part 1.b: Parallel compute &amp; Python bindings:</b> SIMD, SIMT, and MIMD …
+<b>Part 2: Circuit-level computation:</b> data storage and arithmetic …
+```
+
+One bullet, two bold spans, two colons, and `<b>` doing two jobs at once: on
+this site it means *this is the bullet's topic* ([`CLAUDE.md`](CLAUDE.md) §6),
+and here it was also carrying the structure. The record was flat while its own
+text insisted it was not. Split into two groups, the title states the part and
+the bullet keeps `<b>` for its topic:
+
+```
+Part 1: Efficient execution and parallel compute
+  <b>Data &amp; code execution:</b> CPU instruction pipelining …
+  <b>Parallel compute &amp; Python bindings:</b> SIMD, SIMT, and MIMD …
+Part 2: Circuit-level computation
+  Data storage and arithmetic built up from SR/D latches …
+```
+
+**Part 2 carries no bold lead, and that is the rule, not an omission.** Its
+group title already names the topic, so a `<b>` beneath it would be the same
+restatement the old bullets were. A group whose title and whose single bullet
+would say the same thing states it once, in the title.
+
+**Only a record with real parts gets them.** The other three sessions ran once
+and stay flat. Groups are not a way to add rank to a thin record: a single
+group titled *Part 1* with nothing after it is a record pretending to be a
+series.
 
 ---
 
@@ -135,6 +215,14 @@ reader is trying to judge.
 
 1. Append a record to `src/data/workshops.json`. Fields in any order: the
    renderer sequences them. Omit a category you have no real value for.
+1. **Set `block`**, `hardware` or `algorithms`. `check_workshop_block` in
+   `tools/build.py` fails the build without it, because the page filters its
+   two sections on this field and a record that reached neither would leave
+   the site with nothing downstream to notice: the ids stay valid and
+   `check.py` finds no dead link, since nothing links to a record that is not
+   there. It is a filter, not a tag: no vocabulary table above and no
+   treatment in [`DESIGN.md`](DESIGN.md) §7.1, because it never reaches the
+   reader.
 2. Use a value from the vocabulary table above, or add the new value to that
    table in the same change.
 3. `python3 tools/build.py` then `python3 tools/check.py`. Never edit the root

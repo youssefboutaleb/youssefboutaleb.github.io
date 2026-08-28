@@ -85,7 +85,7 @@
   },
   {
     "title": "A2SV (Africa to Silicon Valley) GenAI Hackathon",
-    "short": "A2SV GenAI Hackathon",
+    "short": "A2SV GenAI",
     "location": "Online",
     "date": "2023-08",
     "year": "2023",
@@ -99,10 +99,23 @@
     },
     "duration": 48,
     "track": "GenAI for Healthcare",
+    "stack": [
+      "FastAPI",
+      "Pydantic",
+      "Jinja2",
+      "Hugging Face Inference API",
+      "Falcon"
+    ],
+    "dataset": "https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset",
+    "dataset_label": "Stroke Prediction",
+    "summary": "Clinical records are written for clinicians. We built a service that turns one patient's diagnosis and medication history into a page they can read without one.",
     "points": [
-      "Delivered an MVP transforming complex clinical diagnosis and medication data into patient-accessible HTML summaries",
-      "Designed the FastAPI service and Jinja2 templates, consuming structured JSON schemas validated against LLM outputs",
-      "Integrated with the Hugging Face Inference API (Falcon); collaborated with teammate Mohamed Brahim who led the GenAI pipeline and pitch"
+      "<b>The contract:</b> one row of patient data in, one plain-language HTML page out, with the risk factors and the advice arriving as structured JSON fields the template placed rather than prose it had to parse.",
+      {
+        "point": "<b>Validation and fallback:</b> the shape was enforced rather than trusted, so every response was validated against the schema, a response that did not fit was retried, and exhausted retries fell back to a safe rendering.",
+        "impact": "unvalidated model output never reached a patient-facing page."
+      },
+      "<b>Ownership:</b> the work split at that contract. <a class=\"link-external\" href=\"https://tn.linkedin.com/in/mohamed-brahim-b4366b225\" target=\"_blank\" rel=\"noopener\">Mohamed Brahim</a> owned the prompt chain and the model call, and I owned the service, the schema and the rendering on the other side of it."
     ]
   },
   {

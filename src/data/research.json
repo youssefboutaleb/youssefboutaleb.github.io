@@ -26,6 +26,8 @@
     "publisher": "Elsevier",
     "doi": "10.1016/j.cie.2025.111040",
     "url": "https://www.sciencedirect.com/science/article/abs/pii/S036083522500186X",
+    "dataset": "https://www.ausgrid.com.au/Shared-Cost-Data/Solar-home-electricity-data",
+    "dataset_label": "Ausgrid",
     "summary": "Decentralized energy data architecture combining blockchain immutability for smart-meter audit trails with unsupervised machine learning pipelines to detect consumption anomalies.",
     "points": [
       "<b>Data pipeline &amp; auditability:</b> ingests high-frequency smart-meter time-series into a decentralized ledger to ensure tamper-proof consumption records.",

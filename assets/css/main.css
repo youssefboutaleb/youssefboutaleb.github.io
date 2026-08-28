@@ -1064,15 +1064,39 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
   margin-bottom: var(--space-5);
 }
 
-/* Awards' scope summary, and only it. Four cards of two short lines each do
+/* Awards' scope summary, and only it. Four cards of four short lines each do
    not need the 18rem a certifications card does, and at 18rem they never fit:
    the document column is 908px at full width, so auto-fit laid two cards out
-   at 440px apiece and spent the rest on air. 12rem seats all four above
-   1240px, three between 1024px and 1240px, two on tablet. The base minimum
-   stays where it is because it was chosen for the card that needs it, the one
-   listing `Microsoft Certified: Fabric Analytics Engineer Associate`. */
+   at 440px apiece and spent the rest on air. The base minimum stays where it
+   is because it was chosen for the card that needs it, the one listing
+   `Microsoft Certified: Fabric Analytics Engineer Associate`.
+
+   9rem, and the number moved because the card did. At 12rem the four scopes
+   held one row only above 1240px and stepped to three, then two, on the way
+   down, which put the summary's fourth card under the first on the width most
+   readers open the page at. That minimum was sized for a card of two long
+   lines. The card is four short ones now (`render_awards_summary`), the
+   longest of them `of 7,094 teams` at 14px, so the track can come down to the
+   width the content actually needs and the row seats four from full width to
+   roughly 620px.
+
+   Still a minimum and not `repeat(4, 1fr)`: awards.md rule 5 lets a scope
+   render no card at all, and auto-fit collapses the empty track, so three
+   scopes lay out as three cards rather than as three cards and a hole. */
 .entries--grid--compact {
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--space-3);
+}
+
+/* Tighter than `.entries--grid > .entry`'s 12/16 by 4px on each side, which is
+   8px more room for the figure inside a 218px card. It buys the line back that
+   the alternative took by force: this pair once carried `white-space: nowrap`
+   and `text-overflow: ellipsis` as well, and at 13px in a 192px measure the
+   French `Quart de finaliste sur 200 equipes` ran 214px and rendered clipped.
+   A card whose whole job is to state a result may wrap; it may not truncate
+   one. */
+.entries--grid--compact > .entry {
+  padding: var(--space-3) var(--space-3);
 }
 
 .entries--grid > .entry {
@@ -1331,61 +1355,7 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
    the site's existing answer to "set these side by side", and it is what keeps
    the strip honest if a third measurement is ever added: the track count
    follows the content instead of being hardcoded to two. */
-/* No left inset. `.entries` already carries the 1.4em that makes the bullet
-   gutter, so `.entry__title`, `.entry__period` and `.tag-list` all start flush
-   at the record's edge; this had a second 1.4em copied from `.points`, which
-   earns it by being a <ul> that draws its own markers. A <dl> draws none, so
-   the strip alone sat 22px in with nothing in the gutter. */
-.perf {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-  column-gap: var(--space-6);
-  max-width: var(--measure);
-  margin: var(--space-3) 0 0;
-}
 
-/* The label sizes to itself. A fixed track is what a label column needs when
-   its labels share one column and align down it; these do not, each sits alone
-   in its own cell, and 7rem left `Team` 75px of air before its figure while the
-   two pairs were only 20px apart. The gap inside a pair has to be smaller than
-   the gap between pairs or the eye reads four things instead of two: 16px
-   against 32px. */
-.perf__row {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: var(--space-4);
-  align-items: baseline;
-}
-
-/* `.spec__row`'s weighting, and its reason, quoted there: "the reader is
-   scanning the figures, so the label recedes and the value carries the weight."
-   This had invented a third recipe, muted label against heading value with a
-   <b> inside it that was heading ink too, so a figure and its unit differed by
-   weight alone and one two-word cell carried three inks. The whole value is
-   bold now, unit included, exactly as `.spec` renders `20 h`, and the <b> is
-   gone from the renderer. */
-.perf__row > dt {
-  color: var(--color-text);
-  font-size: var(--text-md);
-}
-
-.perf__row > dd {
-  margin: 0;
-  color: var(--color-heading);
-  font-size: var(--text-md);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-snug);
-}
-
-/* The outer grid and the inner rows collapse together. Left to auto-fit alone,
-   a 600px viewport still has room for two 14rem tracks, so the rows would
-   stack their labels while the columns stayed side by side: two columns of
-   label-over-value, which is neither of the two layouts. */
-@media (max-width: 600px) {
-  .perf { grid-template-columns: 1fr; }
-  .perf__row { grid-template-columns: 1fr; }
-  .perf__row > dt { font-weight: var(--weight-bold); }
-}
 
 
 /* 13. COMPONENT: SPEC STRIP ================================================ */
@@ -1547,6 +1517,37 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
   font-size: var(--text-sm);
 }
 
+/* The two lines only Awards' scope cards use. The component is shared with
+   Home the way `.result__consequence` is: Home uses some of it, the summary
+   uses the rest, and neither renders every element.
+
+   `.result__scope` is the reach the card is about, and it sits above the
+   figure as a label rather than beside it as a title. It is set at
+   `.result__source`'s size and colour on purpose, so the two quiet lines
+   bracket the result and the 17px figure between them keeps every bit of the
+   weight DESIGN.md section 9.3 gave it.
+
+   `.result__scale` is the field size, one step above the label lines and one
+   below the figure, because `of 7,094 teams` is half of the result and not
+   provenance. It is the widest line on the card, which is what sets the 9rem
+   track minimum above. */
+.result__scope {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+}
+
+.result__scale {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: var(--text-md);
+  line-height: var(--leading-snug);
+}
+
+/* Provenance steps away from the result it came from. The other three lines
+   are one fact in three parts and stay set solid. */
+.entries--grid--compact .result__source { margin-top: var(--space-2); }
+
 
 /* 15. COMPONENT: SKILL ===================================================== */
 
@@ -1631,11 +1632,18 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 
      awards
      .tag--placement (1st Place, Finalist, 21st Place        (amber + medal)
-     .tag--type      Competitive Programming, Hackathon      (blue)
-     .tag--scope     Regional, National, African             (violet)
+     .tag--scope)    Regional, National, African             (violet)
      .tag--scale     86 teams, 300 participants              (grey)
-     .tag--duration  48h                                     (grey)
+     .tag--duration: 48 h                                    (grey)
      .tag--track     GenAI for Healthcare                    (grey)
+     .tag--stack     FastAPI, Pydantic, Jinja2               (outlined)
+
+   `.tag--type` was here and is gone. It rendered `Competitive Programming`
+   and `Hackathon`, which are the two block headings the filter in build()
+   produces, so every record repeated the h2 three lines above it and the
+   widest chip on the page said nothing a reader had not just read. MODELS in
+   tools/build.py carries the removal; research.md had resolved the same case
+   the same way already.
 
      workshops
      .tag--format    (Workshop, Workshop Series, Hands-on Lab (blue)
@@ -1766,6 +1774,8 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 .tag--distinction { background: var(--status-honor-bg);   color: var(--status-honor-fg);   border-color: var(--status-honor-br); }
 .tag--type        { background: var(--status-accent-bg);  color: var(--status-accent-fg);  border-color: var(--status-accent-br); }
 .tag--scope       { background: var(--status-scope-bg);   color: var(--status-scope-fg);   border-color: var(--status-scope-br); }
+.tag--problems    { background: var(--status-scope-bg);   color: var(--status-scope-fg);   border-color: var(--status-scope-br); }
+.tag--team        { background: var(--status-neutral-bg); color: var(--status-neutral-fg); border-color: var(--status-neutral-br); }
 
 .tag--format    { background: var(--status-accent-bg);  color: var(--status-accent-fg);  border-color: var(--status-accent-br); }
 .tag--mode      { background: var(--status-scope-bg);   color: var(--status-scope-fg);   border-color: var(--status-scope-br); }

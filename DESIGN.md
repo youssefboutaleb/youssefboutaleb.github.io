@@ -569,11 +569,24 @@ There is one model per record type. The nine in use today:
 |---|---|
 | `.tag--placement` | Amber (+ medal disc, below) |
 | `.tag--distinction` | Amber |
-| `.tag--type` | Blue |
 | `.tag--scope` | Violet |
 | `.tag--scale` | Grey, regular weight |
 | `.tag--duration` | Grey, regular weight |
 | `.tag--track` | Grey, regular weight |
+| `.tag--stack` | Outlined, regular weight: *the same rule as Career and Projects* |
+
+`.tag--type` was the eighth and is gone. It rendered `Competitive Programming`
+and `Hackathon`, which are the two block headings the page's own filter
+produces, so every record repeated the `h2` three lines above it; at 181px
+`Competitive Programming` was also the widest chip on the page. Removing it
+took the rule out of `main.css` with it, because a `.tag--*` rule with no
+markup is what `check.py` fails the build on. [`awards.md`](awards.md), *One
+model, two blocks*, carries the argument.
+
+`.tag--stack` arrives on this model for the record that built something: the
+hackathon's five tools were `<b>` spans inside its prose, which is the device
+Projects uses for a bullet's *topic*. One vocabulary for *a thing this was
+built with*, per [`CLAUDE.md`](CLAUDE.md) §6.
 
 **Workshops**: declared in [`workshops.md`](workshops.md)
 
@@ -908,8 +921,17 @@ the "label: values" content that is *not* records.
 
 Optional `.entry__group` subdivides a long record (Data Integration / Cloud &
 Security / Observability) and is emitted by one helper, `render_group`, shared
-by a job's disciplines and a course's syllabus modules. `.issuer` heads a
-credential group with its brand mark.
+by a job's disciplines, a course's syllabus modules and a workshop's parts.
+`.issuer` heads a credential group with its brand mark.
+
+**The workshop case is the one that arrived by conversion**, and it is the
+clearest statement of what the component is for. A two-part series carried its
+structure inside its own bullet text: `<b>Part 1.a: Efficient data &amp; code
+execution:</b>` opened a bullet with two bold spans and two colons, so the
+record was rendered flat while its own prose insisted it was not. The group
+title states the part and the bullet keeps `<b>` for its topic, which is the
+single job that device has on this site ([`CLAUDE.md`](CLAUDE.md) §6). A record
+whose bullets are numbering themselves is asking for this component.
 
 Entries are **never boxed**. A CV is a document, not a feed of cards.
 
@@ -1090,9 +1112,12 @@ heading-ink value with a `<b>` inside that was heading ink too, so a figure and
 its unit differed by weight alone and one two-word cell carried three inks. The
 `<b>` is gone from the renderer as well: emphasising the numerator and not the
 unit would have been [`awards.md`](awards.md) rule 4 broken, styling part of a
-value rather than the whole category. Its left inset
-is `.points`', so a record's measurements and a record's bullets hang off one
-edge. What it replaced was four facts welded into a prose sentence in the data
+value rather than the whole category. It has **no left inset**, as the
+paragraph above says: the sentence that used to stand here claimed it took
+`.points`' 1.4em, which was true of the first version and was removed in the
+same pass that turned it sideways, because a `<ul>` earns that inset by drawing
+markers into it and a `<dl>` draws none.
+What it replaced was four facts welded into a prose sentence in the data
 ([`awards.md`](awards.md), the performance spec); what it is *not* is two more
 chips, because a tag files a record under a category and a solve count is a
 measurement.
@@ -1146,12 +1171,12 @@ inside gains `--space-3`/`--space-4` of padding, `--color-surface`, a
 `--color-border-soft` hairline and `--radius-md`.
 
 ```
-┌────────────────────────────┐  ┌────────────────────────────┐
-│ Microsoft                  │  │ Regional                   │
-│ • Azure Database Admin…    │  │ [● 1st Place] [86 teams]   │
-│ • Fabric Data Engineer…    │  │ • Hello World v4.0         │
-│ • Fabric Analytics Eng…    │  └────────────────────────────┘
-└────────────────────────────┘
+┌────────────────────────────┐  ┌──────────────────┐
+│ Microsoft                  │  │ Regional         │
+│ • Azure Database Admin…    │  │ 1st Place        │
+│ • Fabric Data Engineer…    │  │ of 86 teams      │
+│ • Fabric Analytics Eng…    │  │ Hello World v4.0 │
+└────────────────────────────┘  └──────────────────┘
   Career, Certifications          Awards, the scope summary
 ```
 
@@ -1164,15 +1189,18 @@ boxing it would cut the thread. That is the whole test, and it is why Career's
 Experience and Awards' own eight records stay unboxed on the same pages that
 carry a grid.
 
-**The cell is always heading, then list.** Certifications put the issuer in
-`.issuer` (it has a logo, so it is a flex row) and its certificates in
-`.points`. The Awards summary puts the scope in `.entry__title` (no logo, so
-the plain heading) and the records that reached it in `.points`, with the
-result between them as the record's own `.tag--placement` and `.tag--scale`
-chips. **Nothing in the Awards cards is styled**: every class in them already
-existed, and the values come from `meta_label`, the function that renders the
-tags on the records below, so a card cannot say *Quarter-finalist* while the
-entry it links to says something else.
+**The two cells are not the same cell, and that is the point.** A
+certifications cell is a heading and a list: the issuer in `.issuer` (it has a
+logo, so it is a flex row) and its certificates in `.points`, because three
+certificates are a set to be counted. An Awards cell is one result stated one
+fact per line: the scope as a quiet label, the result at title weight, the
+field size beneath it, and the record that earned it as provenance. It carries
+no chips, because the record 300px below carries the same chips and a
+projection styled identically to its source reads as the page saying
+everything twice ([`awards.md`](awards.md), the scope summary). **Nothing in
+the Awards cards is written**: every value comes from `meta_label`, the
+function that renders the tags on the records below, so a card cannot say
+*Quarter-finalist* while the entry it links to says something else.
 
 **Four columns, and the measurement that said two was stale.** This paragraph
 used to read *two columns, not four*, and it declined a narrower `minmax`
@@ -1185,16 +1213,27 @@ three `--space-5` gutters come to 828px, so the row seats four with 80px in
 hand rather than none.
 
 So the summary carries `.entries--grid--compact`, which lowers the track
-minimum to `12rem` for this one grid. Four cards above 1240px, three between
-1024px and 1240px, two on tablet, one on a phone: `auto-fit` still does the
-stepping, and nothing is pinned to the number of scopes, which matters because
-`awards.md` rule 5 lets a scope render no card at all. **The base `18rem` is
-untouched**, because it was chosen for the cell that needs it, the
-certifications card listing `Microsoft Certified: Fabric Analytics Engineer
-Associate`, and a scope card holding two short lines is not that cell. What
-the change actually recovers is air: at `18rem` two cards stretched to ~440px
-apiece and spent the remainder on nothing, which is the same emptiness the
-`.awards-stats` table below charges the old box for.
+minimum for this one grid. **The base `18rem` is untouched**, because it was
+chosen for the cell that needs it, the certifications card listing `Microsoft
+Certified: Fabric Analytics Engineer Associate`, and a scope card holding four
+short lines is not that cell. What the change recovers is air: at `18rem` two
+cards stretched to ~440px apiece and spent the remainder on nothing, which is
+the same emptiness the `.awards-stats` table below charges the old box for.
+
+**The minimum is `9rem`, and it was `12rem` until the card changed shape.**
+`12rem` seated four cards only above 1240px and stepped to three below it,
+which put the fourth scope under the first at the width most readers open the
+page at. That number had been measured against a card of two long lines, and
+those lines were the problem the card was rebuilt to fix: 192px of measure
+against a 215px sentence, breaking wherever it landed and leaving *teams*
+standing on its own. Four short lines need far less width than one long one,
+so the track came down to what the content actually asks for, and the row
+seats four from full width to roughly 620px before stepping to one.
+
+**It is still a minimum and not `repeat(4, 1fr)`.** `awards.md` rule 5 lets a
+scope render no card at all, `auto-fit` collapses the empty track, and so
+three scopes lay out as three cards rather than as three cards and a hole.
+Nothing here is pinned to the number of scopes.
 
 **It replaced `.awards-stats`**, a bordered box that sat in the same place and
 is deleted along with its section of the stylesheet. The box is the shape a
