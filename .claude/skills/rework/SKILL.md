@@ -299,6 +299,78 @@ Append here every pass. This is the part that makes the file worth keeping.
     like with like, not to weaken the check. Likewise the new spelling audit
     reported the correct French `vectorisation` against the correct English
     `vectorization`, and had to be scoped to the source locale.
+23. **Sharing a component's name is not sharing its settings.** Contact was
+    given `section.block` and `h2.block__title` in an earlier pass and the
+    finding was recorded as closed. Its channel list still carried no measure
+    cap, ruled its rows on the wrong edge, right-aligned its values and used a
+    different label width and row padding from the label column stacked 40px
+    above it on the same page. Renaming a component to the shared name fixes
+    the vocabulary and touches none of the numbers. After adopting a shared
+    component, diff its declarations against the thing it now claims to be.
+24. **Measure the labels before proposing to align the columns.** The obvious
+    fix for two label widths on one page is to pull the wider one down to the
+    narrower. `fontTools` on the shipped font said `Consulting & services` is
+    141px and the French `Telephone / WhatsApp` is 150px against a 120px
+    column, so the reconciliation had to go the other way and cost a change to
+    Home. That reversal is a question for the author, and it only exists if the
+    measurement happens before the option list, not after.
+25. **The reference's structure can be right and its content wrong for you.**
+    andrewng.org routes each purpose to the address that serves it, which is
+    the shape this page seemed to want. It works there because the five
+    purposes reach five different organisations. All three addresses here reach
+    one person, so the same structure would have invented a distinction and
+    delayed the recruiter. Lesson 5 said the literal reference is rarely the
+    right borrow; this is the version where the borrow is structurally sound
+    and still fails on the data.
+26. **The quality-bar table is a bug list nobody was reading.** This file has
+    cited *"the `h1` is 25px, the same size as the brand-bar name 40px above
+    it"* as its model of a real finding since it was written, and the h1 was
+    still 25px. An example good enough to teach with is usually a defect good
+    enough to fix. Read the examples in this file as a to-do list once.
+27. **Fetch the reference's numbers, do not infer them from the screenshot in
+    your head.** andrewng.org turned out to be 72px against a 14px body, a
+    ratio of 5.14, and Tufte CSS 48px against 21px, a ratio of 2.29. Those two
+    numbers are what turned "how big should the title be" from taste into a
+    decision, and neither was guessable. `curl` the page and `curl` the
+    stylesheet.
+28. **A token with two users cannot be raised.** The page title and the brand
+    bar shared `--text-2xl`, so every proposal that started "make the h1
+    bigger" was really "separate these two first". When a change to one value
+    seems to have an unreasonable blast radius, count the users of the token
+    before designing around it.
+29. **A rule that keeps needing an exception is usually a rank error.**
+    Teaching's `block__intro` stated an appointment, not a pitch, and two
+    passes narrowed the exception without removing it. The sentence was fine;
+    it was one rank too low. Moved into the page header as a `.page-lede` it
+    became simply correct and `DESIGN.md` lost its last declared exception.
+    Before bending a rule for a stubborn case, check whether the content is in
+    the wrong slot.
+30. **"Add X to every page" is a request to check what every page already
+    has.** Asked to apply page ledes to seven pages, the finding was that six
+    of them already opened with a sentence one heading down, and that a lede
+    had been *deliberately deleted* from the seventh for exactly that reason.
+    The answer was to promote three sentences and write none. Grep the thing
+    you are about to add before adding it: the site had already solved most of
+    it at a different rank.
+31. **When a model document contradicts itself, the page is already broken.**
+    `awards.md` rule 7 said to store raw facts and let the renderer label them;
+    its bullet rule three sections later mandated the hand-written string
+    `Solved 8 / 8 problems in 4h (Team of 2)`. The result was one page printing
+    `4h` in bullets and `48 h` in a tag, and the two languages disagreeing about
+    the format of the same figure. Read the whole model document before
+    proposing a change to one section of it: the rules that conflict are the
+    change.
+32. **Grep the codebase for the argument before writing it.** The comment on
+    `duration` in `meta_label` already said, in the author's words, exactly why
+    the awards bullets were wrong: *"a value formatted at the call site is a
+    value that drifts from every other call site."* Quoting the repository back
+    to itself is worth more than a fresh argument, because it shows the rule
+    was already agreed and only unenforced.
+33. **Parse the old prose, do not retype the numbers.** The seven welded
+    sentences were converted with a regex that pulled solved, total, hours and
+    team out of each string and failed loudly on anything that did not match.
+    Retyping 28 integers by hand out of a terminal is how a 6 becomes an 8 in
+    one record and nothing catches it.
 
 ---
 

@@ -71,21 +71,77 @@ synthesised fake. Emphasis comes from weight, colour and size.
 A second typeface was the single biggest thing that tipped an earlier draft out
 of register: a serif for titles reads as *magazine*, not as *academic page*.
 
-| Token | Size | Use |
-|---|---|---|
-| `--text-xs` | 12px | Tags |
-| `--text-sm` | 13px | Dates, "last update", footer |
-| `--text-md` | 14px | Contact rows, tag-adjacent meta |
-| `--text-base` | 16px | Body copy, navigation |
-| `--text-lg` | 17px | Page lede, entry titles |
-| `--text-xl` | 19px | Section headings (`h3`) |
-| `--text-2xl` | 25px | Page title (`h1`), the name in the brand bar |
+| Token | Size | Step | Use |
+|---|---|---|---|
+| `--text-xs` | 12px | | Tags |
+| `--text-sm` | 13px | 1.08 | Dates, "last update", footer |
+| `--text-md` | 14px | 1.08 | Contact rows, tag-adjacent meta |
+| `--text-base` | 16px | 1.14 | Body copy, navigation |
+| `--text-lg` | 17px | 1.06 | Record titles (`h3`) |
+| `--text-xl` | 20px | 1.18 | The name in the brand bar, the page lede |
+| `--text-2xl` | 24px | 1.20 | Section headings (`h2`) |
+| `--text-3xl` | 40px | 1.67 | Page title (`h1`), and nothing else |
 
-These are the original theme's proportions with **one change: body copy moved
-from 14px to 15px.** That step is the whole accessibility argument and costs
-nothing visually.
+The bottom of the scale is the original theme's, with **one change: body copy
+moved from 14px to 15px.** That step is the whole accessibility argument and
+costs nothing visually.
+
+**The top two steps are not the theme's, and the reason is arithmetic.** The
+scale ran 12, 13, 14, 16, 17, 19, 25, and four of its six steps were under 15%,
+at or below the increment Butterick calls the smallest that makes a visible
+difference. Five of the seven sizes sat between 12px and 17px, nothing existed
+above 25px, and **25px was the page title and the brand-bar name at once**, so
+the `h1` was exactly the size of the link 40px above it and could not be raised
+without dragging that link with it. The hierarchy was carried almost entirely
+by colour and weight, because size had almost nothing left to say.
+
+Split, and given a display step. `--text-2xl` moved down to the section
+headings, `--text-xl` moved down to the brand bar, and `--text-3xl` is new and
+has exactly one user.
+
+**Where the display size came from.** Measured against three references rather
+than chosen:
+
+| | Body | `h1` | `h2` | `h1` ÷ body | `h1` : `h2` |
+|---|---|---|---|---|---|
+| andrewng.org | 14px | 48 → 72px | 30 → 36px | 5.14 | 2.00 |
+| Tufte CSS | 21px | 48px | 33px | 2.29 | 1.45 |
+| **This site** | 16px | **40px** | **24px** | **2.50** | **1.67** |
+| This site, before | 16px | 25px | 19px | 1.56 | 1.32 |
+
+andrewng.org is a landing page of about 180 words where the type is the design,
+and 5.14 is a landing page's ratio. Tufte CSS is unambiguously a document and
+still sets 48px, which is the useful finding: **large type is not what makes a
+page stop being a document, the ratio is.** This sits between them and nearer
+Tufte.
+
+**The page title is the one heading that is not bold**, at weight 400. At 40px
+the size is the whole signal and bold on top of it is the combination that
+reads as a landing page; Tufte sets its 48px `h1` in 400 for the same reason.
+Section headings stay at 700, so the two ranks are separated by two different
+devices rather than competing on one.
+
+**It is also the one element with negative tracking**, at `-0.02em`. That is
+the site's existing principle pointed the other way: the only other
+letter-spacing rules here are *positive*, on 12px tags and 10px diagram labels,
+because small type wants opening up. Large type wants closing, and 40px at
+default tracking sets loose.
 
 Line height: 1.2 for headings, 1.45 for short-measure text, 1.6 for prose.
+
+**The display step comes down twice, and nothing else moves with it.** At
+≤720px `--text-3xl` is 32px and `--text-2xl` 22px; at ≤480px, 28px and 20px. A
+40px title is sized against a 908px column and below 720px there is not one.
+Everything 20px and below is sized for reading rather than for the column and
+stays where it is.
+
+**Print does not inherit this ramp, deliberately.** The tokens are in `rem` and
+the print stylesheet does not override the root, so a 40px title would set at
+30pt on a document whose entire reason for printing is that it doubles as a CV
+with a page budget the screen does not have. Print sizes in points against its
+10.5pt body: `h1` 20pt, `h2` 13pt, the lede 12pt, the brand-bar name 14pt, and
+the `h1`'s tracking is reset, because it was an optical correction for 40px and
+not for 20pt.
 
 **Prose is capped at `--measure` (74ch), and that cap is load-bearing.** The
 column is 1100px wide; at 15px, an uncapped line runs to roughly 110 characters,
@@ -100,18 +156,31 @@ records still use the full width. Every prose container carries it: `.prose`,
 The theme's signature is a *stepped* grey ramp: each heading level one notch
 lighter than the one above:
 
-| Level | Element | Size | Colour | Role |
-|---|---|---|---|---|
-| Page title | `h1` `.page-title` | 25px | `#393939` | One per page |
-| Section | `h2` `.block__title` | 19px | `#494949` | Underlined |
-| Record | `h3` `.entry__title`, `.issuer`, `.skill__name` | 17px | `#222222` | One per record |
-| Group | `h4` `.entry__group-title` | 16px | `#494949` | A part of a record |
-| Body / `strong` | | 16px | `#373737` / `#222222` | |
+| Level | Element | Size | Weight | Colour | Role |
+|---|---|---|---|---|---|
+| Page title | `h1` `.page-title` | 40px | **400** | `#393939` | One per page |
+| Section | `h2` `.block__title` | 24px | 700 | `#494949` | Underlined |
+| Lede | `.page-lede` | 20px | 400 | `#494949` | Home, Contact, Teaching, Workshops (§11.1) |
+| Record | `h3` `.entry__title`, `.issuer`, `.skill__name` | 17px | 700 | `#222222` | One per record |
+| Group | `h4` `.entry__group-title` | 16px | 700 | `#494949` | A part of a record |
+| Body / `strong` | | 16px | 400 / 700 | `#373737` / `#222222` | |
 
 Note that body text and a record title are *darker* than the section heading
 above them. That is not a mistake; it is the original ramp and it is why the
 page reads calm rather than shouty. It is also why the ramp is stated by role
 here rather than assumed to descend with the tag number.
+
+**The weight column is not decoration in this table.** It is the only place the
+ramp does not descend with the size, and the exception is the top row: the
+largest thing on the page is the lightest heading on it. That is what keeps a
+40px title from reading as a shout, and it is why `h1` overrides the shared
+`h1..h6` weight rather than inheriting it.
+
+**`.page-title` no longer overrides its bottom margin.** It used to reduce the
+site's default `--space-5` to `--space-3`, which was right for 25px and wrong
+for 40px: 12px is a quarter of the title's own line box, and on Awards it put
+the title 12px above a card grid. The override is deleted rather than retuned,
+so the title takes the same default every other block-level element does.
 
 **The tags used to say something different from the page.** `h2` was defined
 at 25px and used on exactly one page, every other page ran `h1` straight to
@@ -675,6 +744,15 @@ Links get colour plus an underline on hover, **never a weight change**. The
 original's `a:hover { font-weight: bold }` reflowed the sentence under the
 cursor.
 
+**Colour is the rest state, not the hover state.** `a` and `.entry__title a`
+are `--color-link` before anything touches them, and the underline is what
+hover adds. `.contact-list__link` was the one component that opted out, painting
+its value in `--color-heading` so that six rows on the page whose entire job is
+to be acted on looked exactly like the two rows that are statements. It follows
+the rule now, and gets a second thing for free: three blocks share one
+component there, and the ink is what separates an address a reader can act on
+from a description of the work being accepted.
+
 There are no buttons in the content flow. The CV is a plain link under a
 "Downloadables" heading, as it was.
 
@@ -893,12 +971,49 @@ more true here.
 fixed thing and a long flowing thing side by side", and a fifth case should use
 it rather than invent a sixth shape.
 
+**`.perf` is the fifth, and it is the one that lives inside a record.** A
+contest result's score and team size, on Awards. It takes the idiom at its
+smallest: a 7rem label, `--text-md`, and **no hairline between rows**, because
+a rule inside a bulleted record draws a table inside a bullet. Its left inset
+is `.points`', so a record's measurements and a record's bullets hang off one
+edge. What it replaced was four facts welded into a prose sentence in the data
+([`awards.md`](awards.md), the performance spec); what it is *not* is two more
+chips, because a tag files a record under a category and a solve count is a
+measurement.
+
 **`.hero-facts` is the one that travels.** It renders in Home's hero and in
 Contact's page header, carrying the same `availability` sentence in both, which
 is the point: a reader who met the shape on the front page meets it again where
 the decision gets made. Its stylesheet section is headed `(HOME ONLY)` for
 `.hero-header`, which is true, and said the same of `.hero-facts`, which was
 never enforced by a single selector.
+
+**Travelling made two of the four meet, and they did not agree.** Contact
+stacks `.hero-facts` and `.contact-list` about 40px apart, and they were set
+differently on four counts: `.contact-list` carried no measure cap and ran the
+full 908px content column while the strip above it stopped at 611px, ruled its
+rows on the bottom edge instead of the top, used `--space-4` of row padding
+against the strip's `--space-3`, and set a 10rem label column against the
+strip's 7.5rem. Reconciled at **10rem**, which is the width the
+content forces (`Consulting & services` measures 141px and the French
+`Telephone / WhatsApp` 150px, so 7.5rem was not a width the two could meet
+at): both cap at `--measure`, both rule on the top edge with the first row
+reset, and both collapse to one track at 600px.
+
+**The rule is that columns sharing a page share a width, not that the idiom
+has one.** `.result` is 13rem and `.skill` is 15rem, each sized to what it
+holds, and neither is stacked against another label column. What the other
+three do share, and what `.contact-list` alone was opting out of, is the top
+edge rule with a `:first-child` reset: ruling on the bottom left a hairline
+under each block's last row, a row's height above the next section heading and
+its own underline.
+
+**Values in this idiom are set flush left.** `.contact-list__value` was the
+one exception, set right, which held only while nothing wrapped: capped at the
+measure the value column is 435px and the consulting sentence is 520px, so it
+wraps, and a wrapped value set right sets ragged against the label it answers.
+The availability sentence one block above it wraps the same way and has always
+been left.
 
 **A record in a reading list is never boxed**, and neither is this. That
 sentence used to read *entries are never boxed*, flatly, and it was never
@@ -1122,15 +1237,18 @@ place to park things that failed to earn a block.
 Every page is the same stack:
 
 ```
-page-header   h1 + optional lede + optional summary grid (§9.4)
-block         h2 (underlined) + optional intro
+page-header   h1 + optional lede (§11.1) + optional summary grid (§9.4)
+block         h2 (underlined) + optional intro (§11.1)
               + entries or skills          
               + optional note                                        ← repeated
 ```
 
 Each page has exactly one `<h1>`: its own title. The site name in the brand bar
-is a link styled to the `h1`'s size, not a heading, so every page gets a unique
-document outline. Enforced by `tools/check.py`.
+is a link, not a heading, so every page gets a unique document outline.
+Enforced by `tools/check.py`. It **used to be styled to the `h1`'s size**, and
+that sentence stood here while the two shared `--text-2xl`: one rank spelled
+twice, with the page's own title no larger than the site's name 40px above it.
+The brand bar is `--text-xl` now and the title is `--text-3xl` (§1).
 
 ### 11.1 Section intros: one line, and it is the pitch
 
@@ -1174,21 +1292,48 @@ Rules:
    the point; "leveraged", "demonstrated" and "consistent track record of" are
    the register this whole site exists to avoid.
 
-**The one exception** is Teaching, and it is now an exception on one count
-rather than two. Its intro was a `ul.points.block__intro` of four labelled
-facts; the three that are specifications (workload, language, assessment)
-moved out into a `.specs` strip (§10.1) below the intro, and the appointment
-stayed behind as a single prose line. So the *shape* rule is no longer broken:
-the intro is one sentence again.
+**There is no exception any more, and the way it went is the rule.** Teaching
+was the one: its intro stated an appointment, *University Lecturer at IHEC
+Sfax, on the M.Sc. Data Science programme*, where every other block on the site
+opens with a pitch. Two passes had already narrowed it, moving the workload,
+language and assessment facts out into a `.specs` strip (§10.1) so the shape
+rule was satisfied and only rule 5's spirit was still broken.
 
-What is still broken is rule 5's spirit. That sentence states an appointment:
-*University Lecturer at IHEC Sfax, on the M.Sc. Data Science programme*, where
-every other block on the site opens with a pitch. Constants true of every
-record on a page have to be said once somewhere, and a reader scans them
-positionally exactly as they scan the tags on the records below: the same
-argument §9 makes for tags. [`teaching.md`](teaching.md) owns the reasoning.
+The sentence never needed rewriting. **It was one rank too low.** A constant
+true of every record on the page is what a page lede is for, and saying it
+under a section heading was what made it look like a broken intro. Moved into
+the page header it is simply correct, and the block opens straight onto its
+strip.
 
-A second such exception needs the same argument made in writing first.
+### The two ranks, and the test between them
+
+| | `.page-lede` | `block__intro` |
+|---|---|---|
+| Speaks for | the whole page | one block |
+| May state | a constant true of every record on the page | a pitch for the records directly below |
+| Size | 20px, in the page header | 15px, under the section heading |
+| How many | at most one | one per block |
+
+**The test is one question: would the sentence still be true and still be the
+point if a second block were added to the page?** Teaching's appointment
+survives that; *Engineering background plus competitive programming edge* does
+not, because Awards' second block is Hackathons and that line is Competitions'.
+
+**A page gets a lede only when it has something to say that the blocks cannot,
+and never both.** A lede above a first block whose intro says the same thing is
+two openings competing to introduce one page, which is the surface Career's
+lede was deleted for (`src/pages/career.html`, and
+[`career-experience-options.md`](career-experience-options.md)) and the same
+surface Home's rebuild removed. That is why four of the eight pages have a lede
+and four do not: Home and Contact carry a page-level statement, Teaching and
+Workshops each have one block whose pitch *is* the page's, and Career,
+Projects, Research and Awards open on block-specific pitches that no single
+line above them could replace without repeating one of them.
+
+**Writing a new lede is the author's, not an agent's.** A lede asserts
+something about the person, which [`CLAUDE.md`](CLAUDE.md) §10 reserves. What
+an agent may do is what was done here: notice a sentence sitting at the wrong
+rank and move it.
 
 ### 11.2 `block__note`: the dated footnote
 
@@ -1314,9 +1459,9 @@ keep the navigation usable once eight items stop fitting.
 |---|---|
 | >960px | The column is centred and capped at 1100px |
 | ≤960px | The cap is released and the column takes the viewport; footer centres |
-| ≤720px | Padding tightens; nav items shrink-wrap |
-| ≤600px | Home's hero stacks: portrait above the bio, centred; the brand bar stacks |
-| ≤480px | Navigation scrolls horizontally, bleeding to the viewport edges so the affordance is visible; the portrait steps to 140 x 170; type steps down |
+| ≤720px | Padding tightens; nav items shrink-wrap; `--text-3xl` steps to 32px and `--text-2xl` to 22px |
+| ≤600px | Home's hero stacks: portrait above the bio, centred; the brand bar stacks; every label column collapses to one track, its label going bold (`.hero-facts`, `.contact-list`, `.perf`) |
+| ≤480px | Navigation scrolls horizontally, bleeding to the viewport edges so the affordance is visible; the portrait steps to 140 x 170; `--text-3xl` steps to 28px and `--text-2xl` to 20px |
 
 Prose stays readable at every one of these without a rule of its own, because
 `--measure` is in `ch` and therefore already relative to the type size (§1).

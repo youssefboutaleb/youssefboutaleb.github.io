@@ -1078,6 +1078,71 @@ def entry_li(record: dict, entry_id: str, body: str) -> str:
     return f'<li {attributes}>\n{body}\n</li>'
 
 
+# The performance spec on a contest record.
+#
+# These four facts used to be one hand-written sentence, `Solved 8 / 8 problems
+# in 4h (Team of 2)`, in seven records, hand-translated into French seven more
+# times. awards.md rule 7 says to store the raw fact and let the renderer
+# produce the label, and the bullet rule three sections below it said to write
+# that exact string, so the document contradicted itself and the page paid:
+# the bullets spelled the hour unit `4h` while the hackathon's `duration` tag,
+# produced by meta_label, spelled it `48 h`. One page, one unit, two spellings,
+# which is precisely what the comment on `duration` in meta_label says must not
+# happen. The French overlay had quietly corrected it to `4 h`, so the two
+# languages disagreed about the format of the same figure.
+#
+# `duration` goes through the tag now, like every other duration on the site.
+# What is left is a score and a team size, and those are measurements rather
+# than filing categories, so they render as a label column instead of as chips:
+# a tag says "this record is filed under X", which a solve count is not.
+#
+# The emphasis is on the whole figure and never on part of one, so 8 / 8 and
+# 11 / 26 are set identically. awards.md rule 4: the treatment belongs to the
+# category, never to the value.
+def check_award_shape(record: dict) -> None:
+    """A contest states its score; a hackathon states what it built. Not both.
+
+    The two blocks on Awards are one model filtered on `type`, and the bullet
+    rules distinguish them: a competition has a problem count and nothing else
+    worth saying, a hackathon has no problem count and says what was delivered.
+    A record carrying `performance` and `points` at once is a record saying one
+    thing twice, which is how the hand-written sentence got there in the first
+    place. awards.md, the bullet rules.
+    """
+    if record.get("performance") and record.get("points"):
+        raise ValueError(
+            f'{record["id"]}: an award carries `performance` or `points`, never '
+            "both. The score, the duration and the team size are fields and the "
+            "renderer labels them; bullets are for a hackathon, which has no "
+            "problem count to state. awards.md, the bullet rules."
+        )
+
+
+def render_performance(record: dict) -> str:
+    """A contest result's score and team size, as a label column."""
+    check_award_shape(record)
+    perf = record.get("performance")
+    if not perf:
+        return ""
+    solved = ACTIVE.number(perf["solved"])
+    problems = ACTIVE.number(perf["problems"])
+    rows = [
+        (
+            tr("perf.problems", "Problems"),
+            f'<b>{solved} / {problems}</b> {tr("perf.solved", "solved")}',
+        ),
+        (tr("perf.team", "Team"), f'<b>{ACTIVE.number(perf["team"])}</b>'),
+    ]
+    body = "\n".join(
+        f'  <div class="perf__row">\n'
+        f"    <dt>{label}</dt>\n"
+        f"    <dd>{value}</dd>\n"
+        f"  </div>"
+        for label, value in rows
+    )
+    return f'<dl class="perf">\n{body}\n</dl>'
+
+
 def render_award(record: dict) -> str:
     """One award as the site-wide .entry record."""
     title = t(record, "title")
@@ -1104,6 +1169,11 @@ def render_award(record: dict) -> str:
         f'<p class="entry__period">{" &middot; ".join(dateline)}</p>',
         render_meta(record, "awards"),
     ]
+    # A competition carries a performance spec and no bullets; a hackathon
+    # carries bullets and no spec, because there is no problem count to state
+    # and what was built is the substance (awards.md, the bullet rules). A
+    # record carrying both would be saying one thing twice.
+    parts.append(render_performance(record))
     if t(record, "points"):
         parts.append(render_points(t(record, "points")))
 

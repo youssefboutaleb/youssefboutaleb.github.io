@@ -262,3 +262,19 @@ this direction and not the other.
    table in the same change.
 4. `python3 tools/build.py` then `python3 tools/check.py`. Never edit the root
    `projects.html`; it is build output.
+
+## The page lede
+
+> *The same debugging instinct, applied to someone else's codebase and to whole
+> pipelines of my own.*
+
+Projects has two blocks and each carries its own pitch, so nothing could be
+promoted and this line was written with the author. It is derived from
+[`CLAUDE.md`](CLAUDE.md) §3, which says open source is *"the same debugging
+instinct, applied to somebody else's codebase, and submitted back"*, and it
+adds the half that sentence does not cover: the applied work is the author's
+own, end to end.
+
+**It must keep clearing the lede test** ([`DESIGN.md`](DESIGN.md) §11.1): it
+speaks for both blocks, and it repeats neither intro. A third block on this
+page is the moment to re-read it.

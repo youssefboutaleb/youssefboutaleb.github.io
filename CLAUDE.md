@@ -199,8 +199,15 @@ for *a thing this was built with*: [`skills.md`](skills.md) and
 ### The one prose rule
 
 **A `block__intro` is a single punchy line, and it is a pitch.** One sentence,
-no run-up, no mechanics, no second paragraph. Full rule, rationale and the one
-declared exception (Teaching) in [`DESIGN.md`](DESIGN.md) §11.1.
+no run-up, no mechanics, no second paragraph. Full rule and rationale in
+[`DESIGN.md`](DESIGN.md) §11.1, along with the test that separates it from a
+`.page-lede`, which is the rank above it and speaks for the whole page.
+
+**There is no longer a declared exception.** Teaching was it, and the fix was
+not a rewrite: its sentence stated an appointment true of every course on the
+page, which is a lede's job, and it was sitting one rank too low. Moving it up
+retired the exception. Before proposing to bend the intro rule again, check
+whether the sentence is simply at the wrong rank.
 
 Reference examples, from Awards:
 
@@ -212,6 +219,7 @@ Reference examples, from Awards:
 
 | | Says | Where |
 |---|---|---|
+| **Page statement** | A constant true of every record on the page, or what the page as a whole is for | `.page-lede`: at most one, in the page header |
 | **Pitch** | Why this work exists, what it shows about the person | `block__intro`: one line per block |
 | **Capability** | What I can do, and the records that prove it | `.skill` rows, from `src/data/skills.json` |
 | **Evidence** | What was built, where, when, with what result | `.entry` records, from `src/data/` |
@@ -351,6 +359,7 @@ What the build refuses to produce, today:
 | A citation pointing at a page or anchor that does not exist | A skill or an impact line citing proof the site does not carry |
 | A Impact in Numbers figure absent from the bullet it cites | A bullet edited and its figure on Home left behind |
 | An impact record with both `cite` and `evidence`, or neither | Two hand-written copies of one sentence, drifting apart |
+| An award record with both `performance` and `points` | A contest stating its score as fields and as a sentence, which is how `4h` and `48 h` came to share a page |
 | Two bullets sharing an id | A citation landing on the wrong evidence |
 | A `result` written beside `upstream_prs` | Home calling a pull request *submitted* while Projects calls it *accepted* |
 | A built page that has drifted from its source | A hand-edit to a generated file surviving a rebuild |

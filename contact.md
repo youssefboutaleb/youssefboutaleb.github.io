@@ -28,23 +28,49 @@ Contact runs `section.block` and `h2.block__title` like every other page.
 
 It did not. It had `.contact-section` and `.contact-section__title`, which were
 those two components under private names, and the title hardcoded
-`font-size: var(--text-xl)` so that an `h2` would render at the size the rest
-of the site gets from its section heading. One visual rank spelled two ways,
+`font-size: var(--text-xl)`, 19px at the time, so that an `h2` would render at
+the size the rest of the site gets from its section heading. (Both numbers have
+since moved: [`DESIGN.md`](DESIGN.md) §1.) One visual rank spelled two ways,
 with the stylesheet correcting the difference so that nothing, and nobody,
 could see it was there. Both classes are deleted.
 
 **`.contact-list` stays, and is the one genuinely local component.** A quiet
-label naming a channel, its actionable address on the right edge. It is the
-label-column idiom [`DESIGN.md`](DESIGN.md) §11 names and three other blocks
-use. Keep it; do not reinvent it as a definition list, because these are
-choices a reader acts on rather than terms being defined.
+label naming a channel, its address beside it. It is the label-column idiom
+[`DESIGN.md`](DESIGN.md) §11 names and three other blocks use. Keep it; do not
+reinvent it as a definition list, because these are choices a reader acts on
+rather than terms being defined.
+
+**Being the site's component was not the same as being set like one.** Sharing
+a name with `section.block` fixed the vocabulary and left the settings alone,
+and this page stacks `.hero-facts` and `.contact-list` about 40px apart, so
+every divergence between them was visible in one glance. There were four:
+
+| | Was | Is |
+|---|---|---|
+| Measure cap | None: rows ran the full 908px content column while the strip above stopped at 611px, so the page had two right edges | `max-width: var(--measure)`, one right edge |
+| Value alignment | `text-align: right`, the only right-set value in the idiom | Flush left, like every other one |
+| Row rule | `border-bottom`, leaving a hairline under each block's last row a row's height above the next heading's underline | `border-top` with the first row reset, like `.hero-facts`, `.skill` and `.result` |
+| Rhythm | 10rem label and `--space-4` padding against the strip's 7.5rem and `--space-3` | 10rem and `--space-3` on both, collapsing together at 600px |
+
+**The label column was reconciled upward, not down.** 7.5rem is 120px and
+`Consulting & services` measures 141px, the French `Telephone / WhatsApp`
+150px, so the strip is what moved. That widens Home's hero strip by 40px too,
+which the author approved: its rows are all short and the only value long
+enough to notice is the availability sentence, which wrapped to two lines
+before and after.
+
+**Right-aligning held only while nothing wrapped.** Capped at the measure the
+value column is 435px and the consulting sentence measures 520px, so it wraps,
+and a wrapped value set right sets ragged against the label it is answering.
+The availability sentence one block above wraps identically and has always
+been set left.
 
 ## 3. Nothing on this page is typed twice
 
 | Row | Source |
 |---|---|
 | Availability, Based in, in the page header | `availability` and `location` in `src/site.json`, via `render_contact_facts` |
-| The invitation, as `block__intro` | `contact_invitation` in [`src/site.json`](src/site.json) |
+| The invitation, as `.page-lede` | `contact_invitation` in [`src/site.json`](src/site.json) |
 | Primary email, Academic email, Phone / WhatsApp | `contact[]` in `src/site.json`, via `render_contact_channels` |
 | LinkedIn, GitHub, Medium | `socials[]` in `src/site.json`, via `render_contact_socials` |
 | Opportunities & Services | Written in the fragment. See §5 |
@@ -144,11 +170,51 @@ three wordings is that three places each held a copy. Do not join them, shorten
 them, or move either into the `block__intro`: an intro is one line and a pitch
 ([`DESIGN.md`](DESIGN.md) §11.1), and this is neither.
 
-## 7. What is still open
+## 7. The order of the blocks
+
+```
+Contact Details            invitation, then the three addresses
+Connect                    the three profiles
+Opportunities & Services   what work is being accepted
+```
+
+**It used to read actionable, inert, actionable.** Opportunities sat between
+the two channel lists, so the statement of what work is accepted split the
+addresses from the profiles, and a reader who wanted the second list had to
+read past a block that asks nothing of them to reach it.
+
+Nothing here changed except the order. The reasoning:
+
+- **A recruiter still meets the address first**, which is the whole point of
+  §1. Leading with Opportunities was the other candidate, and it is
+  andrewng.org's shape, but his routing block *is* the address list: each
+  purpose carries the email that serves it. Ours cannot do that, because all
+  three addresses reach the same person, so a purpose-first block here is two
+  rows of delay in front of the thing the reader came for.
+- **The two lists a reader can act on now sit together**, which is also what
+  the ink says: `.contact-list__link` paints its value in `--color-link` and
+  the Opportunities rows are not links and stay in heading ink. One component
+  renders all three blocks and the colour is what separates an address from a
+  statement, so the two blue blocks being adjacent is the page agreeing with
+  itself.
+- **The page closes on the offer** rather than on a handle list.
+
+§5 governs the consulting row itself and is untouched by this: moving a block
+is not removing one.
+
+## 8. What is still open
 
 **There is no closing route to this page.** Nothing on the site links here
 except the navigation. Home ends on its longest block with no next step, and
-the invitation sentence now renders here and nowhere else. A closing line on
+the invitation sentence now renders here and nowhere else.
+
+**The invitation moved up to the page header.** It was the `block__intro` of
+Contact Details, which made it read as an introduction to three email
+addresses; it speaks for the whole page, because Connect and Opportunities are
+equally what it invites. It is a `.page-lede` now, above the fact strip, and
+Contact Details opens straight onto its rows. The rule that separates the two
+ranks is [`DESIGN.md`](DESIGN.md) §11.1. Nothing was written: the sentence is
+still `contact_invitation` in `src/site.json`, verbatim, in both languages. A closing line on
 Home was proposed and deliberately not built: it would be a new element on the
 front page and [`DESIGN.md`](DESIGN.md) Principle 1 deserves an argument for
 it, made in writing first.

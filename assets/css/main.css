@@ -115,15 +115,27 @@
                'Liberation Mono', 'Courier New', monospace;
 
   /* --- Type scale -------------------------------------------------------- */
-  /* The original theme's proportions, with body raised 14px → 15px. That one
-     step is the whole accessibility argument, and it costs nothing visually. */
+  /* The original theme's proportions at the bottom, with body raised 14px to
+     15px, which was the whole accessibility argument and cost nothing. The top
+     two steps are not the theme's, and the reason is arithmetic: the scale ran
+     12, 13, 14, 16, 17, 19, 25 and four of its six steps were under 15%, at or
+     below the increment Butterick calls the smallest that makes a visible
+     difference. Five of seven sizes sat between 12px and 17px, nothing existed
+     above 25px, and 25px was the page title *and* the brand-bar name, so the
+     h1 was the same size as the link 40px above it and could not be raised
+     without dragging that with it.
+
+     Split, and given a display step. The steps are now 1.08, 1.08, 1.14, 1.06,
+     1.18, 1.20, 1.67. DESIGN.md section 1 carries the ramp and the references
+     it was measured against. */
   --text-xs:   0.75rem;     /* 12px: tags */
   --text-sm:   0.8125rem;   /* 13px: dates, footnotes, "last update" */
   --text-md:   0.875rem;    /* 14px: contact rows, tag-adjacent meta */
-  --text-base: 1rem;        /* 16px: body copy */
-  --text-lg:   1.0625rem;   /* 17px: navigation, page lede, entry titles */
-  --text-xl:   1.1875rem;   /* 19px: section headings (h3) */
-  --text-2xl:  1.5625rem;   /* 25px: page title (h1) */
+  --text-base: 1rem;        /* 16px: body copy, navigation */
+  --text-lg:   1.0625rem;   /* 17px: record titles (h3) */
+  --text-xl:   1.25rem;     /* 20px: the brand-bar name, the page lede */
+  --text-2xl:  1.5rem;      /* 24px: section headings (h2) */
+  --text-3xl:  2.5rem;      /* 40px: page title (h1), and nothing else */
 
   --leading-tight: 1.2;
   --leading-snug:  1.45;
@@ -338,8 +350,22 @@ h1, h2, h3, h4, h5, h6 {
 
 h2, h4, h5, h6 { color: var(--color-heading-3); }
 
-h1 { font-size: var(--text-2xl); }
-h2 { font-size: var(--text-xl); }
+/* The one heading that is not bold. At 40px the size is the whole signal, and
+   bold on top of it is the combination that reads as a landing page rather
+   than as a document: Tufte CSS sets its 48px h1 in weight 400 for the same
+   reason. Section headings stay bold, so the two ranks are told apart by two
+   different devices instead of competing on one.
+
+   The negative tracking is the site's existing principle pointed the other
+   way. The two letter-spacing rules already here are both positive, on 12px
+   tags and 10px diagram labels, because small type wants opening up; large
+   type wants closing, and 40px at default tracking sets loose. */
+h1 {
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-regular);
+  letter-spacing: -0.02em;
+}
+h2 { font-size: var(--text-2xl); }
 h3 { font-size: var(--text-lg); }
 h4 { font-size: var(--text-base); }
 
@@ -493,9 +519,12 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
   margin-bottom: var(--space-3);
 }
 
+/* 20px, and it used to be 25px, which was also the h1's size. A page title and
+   the site's name are not the same rank, and for as long as they shared a
+   token neither could move without the other. */
 .site-header__name {
   color: var(--color-heading);
-  font-size: var(--text-2xl);
+  font-size: var(--text-xl);
   font-weight: var(--weight-bold);
   line-height: var(--leading-tight);
 }
@@ -776,7 +805,8 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
    coupled to the hero: no selector nests it under .hero-header. Contact's page
    header carries it too, holding the same availability sentence Home does,
    because that is a fact about the person rather than a row in the channel
-   list it used to sit in. The name is kept: renaming a component to widen its
+   list it used to sit in. It shares its label width with that channel list,
+   which is the paragraph above `.hero-facts__row`. The name is kept: renaming a component to widen its
    scope costs every reference in five documents and buys a word.
 
    This header said HOME ONLY of both for as long as it was true of one. */
@@ -823,7 +853,16 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 
    The hairlines are the ones .skill uses between its rows, which is the
    closest analogue on the site: a label column of heterogeneous rows that
-   have to read as one table. */
+   have to read as one table.
+
+   The column is 10rem and used to be 7.5rem. Contact stacks this strip and
+   `.contact-list` 40px apart and the two label columns did not line up; 7.5rem
+   is not the width they can meet at, because `Consulting & services` measures
+   141px and the French `Telephone / WhatsApp` measures 150px. So this one
+   widened. The rows it carries are all short (`Availability` 71px, `Certified`
+   and `Based in` 56px, `Languages` 72px), and the only value long enough to
+   care about the 40px it costs is the availability sentence, which wraps to
+   two lines either way. */
 .hero-facts {
   max-width: var(--measure);
   margin: var(--space-4) 0 0;
@@ -831,7 +870,7 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 
 .hero-facts__row {
   display: grid;
-  grid-template-columns: 7.5rem 1fr;
+  grid-template-columns: 10rem 1fr;
   gap: var(--space-1) var(--space-4);
   align-items: baseline;
   padding: var(--space-3) 0;
@@ -888,8 +927,9 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
     align-items: center;
     text-align: center;
   }
-  /* The label columns collapse: at this width 7.5rem of label leaves the
-     value nothing, and the hero is centred here anyway. */
+  /* The label columns collapse: at this width 10rem of label leaves the value
+     nothing, and the hero is centred here anyway. Contact's channel rows are
+     the same column and collapse at the same width, in section 12. */
   .hero-facts { text-align: left; }
   .hero-facts__row,
   .hero-facts__lang { grid-template-columns: 1fr; }
@@ -904,14 +944,26 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 
 /* 09. COMPONENT: PAGE HEADER =============================================== */
 
-.page-header { margin-bottom: var(--space-5); }
+/* --space-7, which DESIGN.md section 3 calls the separation between sections,
+   and the page header is one. It was --space-5, and that 20px was collapsing
+   with the title's own 20px rather than adding to it, because this element
+   carries no padding or border to stop it: a 40px title sat 20px above a 24px
+   section heading. The four pages with no lede felt it most. */
+.page-header { margin-bottom: var(--space-7); }
 
-.page-title { margin-bottom: var(--space-3); color: var(--color-heading-2); }
+/* No margin override any more. `h1` already carries the site's default
+   `--space-5`, and this reduced it to `--space-3` because a 25px title did not
+   need 20px under it. A 40px one does: 12px is a quarter of its own line box,
+   and on Awards that put the title 12px above a card grid. Deleting the
+   override is the fix, rather than choosing a new number. */
+.page-title { color: var(--color-heading-2); }
 
+/* 20px, up from 17px. Under a 40px title a 17px lede is a 2.35 drop and reads
+   as body copy that happens to be first; at 20px it is a rank of its own. */
 .page-lede {
   max-width: var(--measure);
   color: var(--color-heading-3);
-  font-size: var(--text-lg);
+  font-size: var(--text-xl);
   line-height: var(--leading-snug);
 }
 
@@ -1107,7 +1159,7 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 /* 12. COMPONENT: CONTACT CHANNELS ========================================== */
 
 /* Contact details are choices, not a definition list: a quiet label identifies
-   the channel while the right edge carries its actionable address or handle.
+   the channel and the value beside it is the address to act on.
 
    `.contact-section` and `.contact-section__title` used to open this file's
    section and are gone. They were `section.block` and `h2.block__title` under
@@ -1117,22 +1169,32 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
    vocabulary for a component that already existed, and a heading level nothing
    could see was wrong because the CSS was correcting it.
 
-   What is left is the part that is genuinely its own: a channel list. */
+   What is left is the part that is genuinely its own: a channel list. It is
+   set as `.hero-facts` is set, because Contact stacks the two of them 40px
+   apart and they were diverging on four counts at once: the measure cap, the
+   label width, the rule, and the row rhythm. All four are reconciled below and
+   `.hero-facts` moved to this label width to meet it (section 08). */
 .contact-list {
+  max-width: var(--measure);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.contact-list__item { border-bottom: 1px solid var(--color-border); }
+/* Ruled on the top edge with the first row reset, which is how every label
+   column on the site is ruled (`.hero-facts__row`, `.skill`). Ruling on the
+   bottom put a hairline under each block's last row, a row's height above the
+   next section heading and its own underline, three times down the page. */
+.contact-list__item { border-top: 1px solid var(--color-border-soft); }
+.contact-list__item:first-child { border-top: 0; }
 
 .contact-list__link,
 .contact-list__row {
   display: grid;
   grid-template-columns: 10rem 1fr;
-  gap: var(--space-4);
+  gap: var(--space-1) var(--space-4);
   align-items: baseline;
-  padding: var(--space-4) 0;
+  padding: var(--space-3) 0;
 }
 
 .contact-list__link { text-decoration: none; }
@@ -1142,25 +1204,96 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
   font-size: var(--text-md);
 }
 
+/* Flush left, not right. The consulting value is 79 characters and its French
+   counterpart is longer still, so both wrap inside the measure, and a wrapped
+   value set right sets ragged against the label column it is answering. The
+   availability sentence in the header wraps the same way and has always been
+   set left. */
 .contact-list__value {
   color: var(--color-heading);
   font-size: var(--text-md);
-  text-align: right;
+  line-height: var(--leading-snug);
   overflow-wrap: anywhere;
 }
 
+/* Blue at rest, which is what every other content link on the site does
+   (`a`, `.entry__title a`), and which this component alone used to opt out of
+   by painting its value in heading ink. This is the page whose whole job is to
+   be acted on, so a row that can be clicked has to say so before it is hovered.
+
+   It also sorts the page for free: the three blocks share one component, and
+   the ink is what separates an address you can act on from the statement of
+   what work is being accepted, which is not a link and is not painted as one. */
+.contact-list__link .contact-list__value { color: var(--color-link); }
+
 .contact-list__link:hover .contact-list__value {
   color: var(--color-link-hover);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
 }
 
-@media (max-width: 480px) {
+/* Collapses with `.hero-facts` at the same width and for the same reason: at
+   600px the 10rem label leaves the value nothing. */
+@media (max-width: 600px) {
   .contact-list__link,
   .contact-list__row {
     grid-template-columns: 1fr;
     gap: var(--space-1);
   }
 
-  .contact-list__value { text-align: left; }
+  .contact-list__label { font-weight: var(--weight-bold); }
+}
+
+
+/* COMPONENT: PERFORMANCE SPEC --------------------------------------------- */
+
+/* A contest result's score and team size, inside the record. It used to be one
+   hand-written sentence in the data: `Solved 8 / 8 problems in 4h (Team of 2)`,
+   four facts welded into prose in seven records and hand-translated seven more
+   times, spelling the hour unit `4h` while the tag beside it spelled the same
+   unit `48 h`. The facts are fields now and the hours are a tag; awards.md
+   rule 7 and the `duration` comment in `meta_label` both said so already.
+
+   The label column again, which is the sixth user of the idiom (DESIGN.md
+   section 10.2). Narrower than the others at 7rem, and with no hairline
+   between rows, because this one lives *inside* a record rather than standing
+   as a block of its own: rules here would draw a table inside a bullet. The
+   left inset is `.points`', so a record's spec and a record's bullets hang off
+   the same edge.
+
+   Not chips. A tag files a record under a category; a score is a measurement,
+   and awards.md rule 3 picks categories for the reader rather than for
+   symmetry. Two more chips on a row that already carries five is the wall
+   skills.md rejected. */
+.perf {
+  max-width: var(--measure);
+  margin: var(--space-3) 0 0;
+  padding-left: 1.4em;
+}
+
+.perf__row {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  gap: var(--space-1) var(--space-4);
+  align-items: baseline;
+  padding: var(--space-1) 0;
+}
+
+.perf__row > dt {
+  color: var(--color-muted);
+  font-size: var(--text-md);
+}
+
+.perf__row > dd {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: var(--text-md);
+  line-height: var(--leading-snug);
+}
+
+@media (max-width: 600px) {
+  .perf__row { grid-template-columns: 1fr; }
+  .perf__row > dt { font-weight: var(--weight-bold); }
 }
 
 
@@ -1863,6 +1996,11 @@ a.tag.link-external::after { margin-left: 0; }
 @media (max-width: 720px) {
   :root { --gutter: var(--space-4); }
 
+  /* The display step comes down with the column. Only the top two tokens move:
+     a 40px title is sized against a 908px column and there is no longer one.
+     Everything 20px and below is already sized for reading and stays put. */
+  :root { --text-3xl: 2rem; --text-2xl: 1.375rem; }   /* 32px / 22px */
+
   /* The skill's label column stops earning its width: a 15rem column beside a
      flowing chip run leaves the chips about nine characters wide. It stacks,
      and the hairline between rows keeps the records separable without it. */
@@ -1882,7 +2020,7 @@ a.tag.link-external::after { margin-left: 0; }
 
 /* --- ≤480px: navigation scrolls ----------------------------------------- */
 @media (max-width: 480px) {
-  :root { --text-2xl: 1.375rem; }
+  :root { --text-3xl: 1.75rem; --text-2xl: 1.25rem; } /* 28px / 20px */
 
   .nav__list {
     flex-wrap: nowrap;
@@ -1986,6 +2124,19 @@ a.tag.link-external::after { margin-left: 0; }
   .hero-header__portrait { display: none; }
 
   a { text-decoration: none; }
+
+  /* Print does not inherit the screen ramp, deliberately. The tokens are in
+     rem, and print does not override the root, so a 40px title would set at
+     30pt on a document whose entire reason for printing is that it doubles as
+     a CV with a page budget the screen does not have. Sized in points against
+     the 10.5pt body instead: 1.9 and 1.24, close to what the old 25px and 19px
+     headings actually printed at. The h1 keeps its weight and loses its
+     tracking, which was an optical correction for 40px and not for 20pt. */
+  h1, .page-title { font-size: 20pt; letter-spacing: 0; }
+  h2, .block__title { font-size: 13pt; }
+  .page-lede { font-size: 12pt; }
+  .site-header__name { font-size: 14pt; }
+
   .entry, .block, .skill { page-break-inside: avoid; }
   .block__title, .page-title { page-break-after: avoid; }
   .tag { border-color: #999; }

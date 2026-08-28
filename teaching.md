@@ -182,7 +182,7 @@ reordered syllabus ends up with two Module 3s.
    (a `url` key, a `citation`), because everywhere else the renderer knows what
    is being linked. Here it is prose, so it is written in the prose, plain
    `target="_blank" rel="noopener"` with no `link-external` class, matching the
-   links already in `block__intro`. Add one only where a number would otherwise
+   links already in the `.page-lede`. Add one only where a number would otherwise
    be unverifiable, never as a reading list.
 9. **Do not write a module number into a point.** Module numbers are produced
    by the renderer precisely so a reordered syllabus cannot break them, and a
@@ -287,8 +287,8 @@ It is stored under a sibling `capstone` key, not appended to `syllabus`:
 }
 ```
 
-The reason is the same one that keeps module numbers out of the data. The block
-intro states *5 modules (4 hours each)* plus a separate project session; a
+The reason is the same one that keeps module numbers out of the data. The
+`.specs` strip states *5 modules x 4 h* plus a separate project session; a
 `Module 6` in the outline would contradict the hours it is counted in, and the
 contradiction would be invisible to anyone editing the JSON. The renderer knows
 which group is which, so it cannot drift.
@@ -302,12 +302,12 @@ besides the data flow**, and **what was submitted and defended**.
 
 The appointment is one job with three courses under it, so anything constant
 across all three is stated **once, in the appointment layer above the
-records** (the intro sentence or the `.specs` strip) and never as a tag
+records** (the page lede or the `.specs` strip) and never as a tag
 repeated three times:
 
 - **Institution and programme.** IHEC Sfax and [*M.Sc. Data Science*](https://ihecsf.rnu.tn/fr/article/765/master-professionnel-en-data-science-for-business-amp-economics) were on
   every entry of an earlier version of this page. Three identical tags
-  discriminate nothing; the intro carries them, with the link.
+  discriminate nothing; the page lede carries them, with the link.
 - **Appointment and dates.** *University Lecturer, September 2024 -
   May 2026* is the frame around all three records, not a property of any one.
 - **Mode.** All three were taught on-site. Unlike Workshops, where mode varies
@@ -328,15 +328,20 @@ belongs to the page, not to the records.
 
 ### What the appointment layer therefore carries
 
-**This is the site's one exception to the intro rule**
-([`DESIGN.md`](DESIGN.md) §11.1), and it is an exception on the same argument
-§9 of that document makes for tags: these are constants true of every course on
-the page, and a reader scans them positionally rather than reading them.
+**It used to be the site's one exception to the intro rule**
+([`DESIGN.md`](DESIGN.md) §11.1). It is not any more, and nothing about the
+sentence changed: it moved up one rank. An intro is a pitch for the block below
+it, and this was never a pitch, which is exactly what the exception admitted.
+A **page lede** is the rank for a constant true of every record on the page, so
+the sentence now renders in the page header as `.page-lede` and the block opens
+straight onto its `.specs` strip. The exception is retired rather than
+tolerated, and the reasoning §9 of that document makes for tags still holds:
+these are constants a reader scans positionally.
 
 They are split by **kind of fact**, across two components:
 
 ```
-block__intro   the appointment, who, where, on what programme, in what mode
+page-lede      the appointment, who, where, on what programme, in what mode
 specs          the specification, three columns (DESIGN.md §10.1):
 
   Workload             Language & Tooling      Assessment
@@ -404,7 +409,9 @@ a second `.block`, rather than a footnote on one record.
    `teaching.html`; it is build output.
 
 If the appointment changes (a new institution, a different programme) the
-intro sentence in `src/pages/teaching.html` is what changes; if the hours,
-languages or grade weights change, the `.specs` strip beside it does. A second
-appointment means a second `.block` with its own intro and its own strip, not a
-new category.
+`.page-lede` in `src/pages/teaching.html` is what changes, along with its French
+counterpart in the same pass; if the hours, languages or grade weights change,
+the `.specs` strip below it does. A second appointment means a second `.block`
+with its own intro and its own strip, not a new category, and at that point the
+lede stops being able to speak for the whole page and the appointment sentence
+comes back down into the block that owns it.

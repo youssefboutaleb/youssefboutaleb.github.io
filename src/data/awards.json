@@ -12,9 +12,12 @@
       "count": 86,
       "unit": "teams"
     },
-    "points": [
-      "Solved 8 / 8 problems in 4h (Team of 2)"
-    ]
+    "duration": 4,
+    "performance": {
+      "solved": 8,
+      "problems": 8,
+      "team": 2
+    }
   },
   {
     "title": "Hello World v3.0",
@@ -29,9 +32,12 @@
       "count": 52,
       "unit": "teams"
     },
-    "points": [
-      "Solved 6 / 8 problems in 4h (Team of 2)"
-    ]
+    "duration": 4,
+    "performance": {
+      "solved": 6,
+      "problems": 8,
+      "team": 2
+    }
   },
   {
     "id": "award-tcpc-23",
@@ -49,9 +55,12 @@
       "count": 90,
       "unit": "teams"
     },
-    "points": [
-      "Solved 10 / 14 problems in 5h (Team of 3)"
-    ]
+    "duration": 5,
+    "performance": {
+      "solved": 10,
+      "problems": 14,
+      "team": 3
+    }
   },
   {
     "title": "IEEEXtreme Programming Competition 17.0",
@@ -67,9 +76,12 @@
       "count": 7094,
       "unit": "teams"
     },
-    "points": [
-      "Solved 11 / 26 problems in 24h (Team of 2)"
-    ]
+    "duration": 24,
+    "performance": {
+      "solved": 11,
+      "problems": 26,
+      "team": 2
+    }
   },
   {
     "title": "A2SV (Africa to Silicon Valley) GenAI Hackathon",
@@ -88,7 +100,7 @@
     "duration": 48,
     "track": "GenAI for Healthcare",
     "points": [
-      "Delivered an MVP in 48h transforming complex clinical diagnosis and medication data into patient-accessible HTML summaries",
+      "Delivered an MVP transforming complex clinical diagnosis and medication data into patient-accessible HTML summaries",
       "Designed the FastAPI service and Jinja2 templates, consuming structured JSON schemas validated against LLM outputs",
       "Integrated with the Hugging Face Inference API (Falcon); collaborated with teammate Mohamed Brahim who led the GenAI pipeline and pitch"
     ]
@@ -109,9 +121,12 @@
       "count": 80,
       "unit": "teams"
     },
-    "points": [
-      "Solved 8 / 14 problems in 5h (Team of 3)"
-    ]
+    "duration": 5,
+    "performance": {
+      "solved": 8,
+      "problems": 14,
+      "team": 3
+    }
   },
   {
     "title": "IEEEXtreme Programming Competition 16.0",
@@ -127,9 +142,12 @@
       "count": 6376,
       "unit": "teams"
     },
-    "points": [
-      "Solved 8 / 26 problems in 24h (Team of 2)"
-    ]
+    "duration": 24,
+    "performance": {
+      "solved": 8,
+      "problems": 26,
+      "team": 2
+    }
   },
   {
     "title": "Hello World v2.0",
@@ -144,8 +162,11 @@
       "count": 21,
       "unit": "teams"
     },
-    "points": [
-      "Solved 5 / 8 problems in 4h (Team of 2)"
-    ]
+    "duration": 4,
+    "performance": {
+      "solved": 5,
+      "problems": 8,
+      "team": 2
+    }
   }
 ]

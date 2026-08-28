@@ -24,6 +24,7 @@ award) is the same component:
 Title: Qualifier              identity
 Period                         when
 [ metadata tags ]              the facts, in a fixed order   ← this document
+Label      figure              a measurement, where there is one
 - point                        what was actually done
 - point
 ```
@@ -31,6 +32,11 @@ Period                         when
 The tags carry **metadata**; the bullets carry **substance**. A fact stated by
 a tag is never repeated in a bullet. That split is what makes an entry
 skimmable in a few seconds and readable in full if the reader chooses.
+
+**The third layer is newer and is the one this page needed.** A tag files a
+record under a category and a bullet says what was done, and a *measurement* is
+neither: `8 / 8` is not a filing category and it is not a sentence. Awards is
+the only user today, through `.perf` (see the performance spec, below).
 
 ---
 
@@ -124,8 +130,12 @@ Order:  placement → distinction → type → scope → scale → duration → 
   scope        how far the field reached         "Regional", "National",
                                                  "African", "International"
   scale        how large the field was           "7,094 teams", "86 teams", "200 teams"
-  duration     how long the event lasted         "48h"
+  duration     how long the event lasted         4, 5, 24, 48  (integer hours)
   track        event focus / topic area          "GenAI for Healthcare"
+
+Beside the tags, not among them:
+
+  performance  the score and the team size       {"solved": 8, "problems": 8, "team": 2}
 ```
 
 The order is defined once, in `MODELS["awards"]` in `tools/build.py`.
@@ -140,8 +150,9 @@ The order is defined once, in `MODELS["awards"]` in `tools/build.py`.
 | `type` | `Competitive Programming` · `Hackathon` |
 | `scope` | `Regional` · `National` · `African` · `International` |
 | `scale` | `{"count": 7094, "unit": "teams"}` → `7,094 teams` |
-| `duration` | `"48h"` |
+| `duration` | Integer hours. `4` → `4 h`. **Never a string**: `"48h"` was the shape once, and `meta_label` spaces the unit so that `2h` and `20 h` cannot coexist |
 | `track` | `"GenAI for Healthcare"` |
+| `performance` | `{"solved": 8, "problems": 8, "team": 2}` → a `.perf` strip, not a tag |
 
 `venue` is not a category. It renders as the `.entry__role` qualifier after the
 title (*TCPC 23) Tunisian Collegiate Programming Contest*, because it
@@ -247,20 +258,65 @@ Eight results, newest first, in `src/data/awards.json`:
 | IEEEXtreme Programming Competition 16.0 | 2022 | 1,432nd | International | 6,376 teams |
 | Hello World v2.0: Sfax | 2022 | 7th | Regional | 21 teams |
 
+### The performance spec, and the sentence it replaced
+
+A contest result is almost entirely metadata, so a competition record has **no
+bullets at all**. Its four facts are fields:
+
+```json
+"duration": 4,
+"performance": { "solved": 8, "problems": 8, "team": 2 }
+```
+
+`duration` becomes a tag through `meta_label` like every other duration on the
+site; `performance` becomes a `.perf` label column under the tags, rendered by
+`render_performance`.
+
+**This document used to mandate the opposite, and that is the finding.** Rule 1
+here read *"State the score, duration, and team size. `Solved 8 / 8 problems in
+4h (Team of 2)` is the whole bullet"*, while rule 7 above says *"Store the raw
+fact and let the renderer produce the label. Hand-written labels are how `1st
+Place`, `1st place` and `First` end up on the same page."* One document, two
+rules, pointing opposite ways, and the page paid for it:
+
+| | |
+|---|---|
+| Seven records | carried four facts welded into one prose sentence |
+| Seven French strings | hand-translated the same sentence again |
+| The hour unit | printed `4h` in the bullets and `48 h` in the hackathon's `duration` tag, on the same page |
+| The two languages | disagreed: the French overlay had quietly corrected it to `4 h` |
+
+`tools/build.py` already carried the argument, in the comment on `duration` in
+`meta_label`: *"Stored as a number, spaced here, so `2h` and `20 h` cannot
+coexist... A value formatted at the call site is a value that drifts from every
+other call site."* The bullets were that call site.
+
+Deriving the strip from fields also removed seven translated strings from the
+overlay: the French now comes from `perf.problems`, `perf.solved`, `perf.team`
+and the locale's own number format, so a new contest is translated the moment
+it is added.
+
+**A measurement is not a tag.** These could have been two more chip categories,
+and were not: a tag says *this record is filed under X*, which a solve count is
+not, and rule 3 below picks categories for the reader rather than for symmetry.
+A row that already carries five chips does not need seven.
+
 ### Editorial rules for the bullets
 
-A contest result is almost entirely metadata, so the bullets are thin by
-design and there is exactly one thing worth saying in them.
-
-1. **State the score, duration, and team size.** `Solved 8 / 8 problems in 4h (Team of 2)` is the whole
-   bullet. It carries the score context, total problems, time constraint, and team size.
+1. **A competition has none.** Its score, duration and team size are fields.
+   `tools/build.py` fails the build on a record carrying both `performance` and
+   `points`, because that is a record saying one thing twice, which is how the
+   sentence got there in the first place.
 2. **A hackathon is the exception, and says what was built.** There is no
-   problem count to state, so the bullets carry the artefact, architecture ownership,
-   and model details (*Team of 2, built an MVP in 48h...*), which is the substance a
-   placement leaves unexplained.
+   problem count to state, so the bullets carry the artefact, architecture
+   ownership and model details, which is the substance a placement leaves
+   unexplained.
 3. **Never restate a tag.** The field size, the scope and the rank are already
    on screen. A bullet reading "competed against 86 teams nationally" is a
-   third copy of two facts.
+   third copy of two facts. The hackathon's first bullet opened *"Delivered an
+   MVP in 48h"* beside its own `48 h` tag, which was this rule being broken by
+   the one record still allowed to have bullets; the duration is gone from the
+   sentence and stays in the tag.
 
 ---
 
@@ -366,3 +422,18 @@ rule. This document names the categories; `DESIGN.md` styles them.
 
 Read `DESIGN.md` before adding a component. Read this before adding a page of
 records.
+
+## The page lede
+
+> *Where the algorithmic reflex was built, and put under a clock.*
+
+[`CLAUDE.md`](CLAUDE.md) §3: *"Competitions are where the algorithmic reflex
+was built."* The second clause reaches the Hackathons block, which is also a
+clock, so the line clears the lede test in [`DESIGN.md`](DESIGN.md) §11.1: it
+speaks for both blocks and repeats neither intro.
+
+**It names no figure, deliberately.** The scope summary sits directly beneath
+it and the performance spec sits on every record; a lede quoting `8 / 8` or
+`86 teams` would be the third copy of a fact, which is rule 3 one rank higher
+up the page.
+

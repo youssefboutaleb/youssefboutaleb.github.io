@@ -209,3 +209,17 @@ Adding a *category* is a larger change: declare it here, add it to
 `MODELS["research"]` in `tools/build.py`, give it one `.tag--<category>` rule
 in `main.css`, and add its row to `DESIGN.md` §7.1. It must not share a
 treatment with the other three.
+
+## The page lede
+
+> *What pipelines have to feed, and what bad data costs downstream.*
+
+[`CLAUDE.md`](CLAUDE.md) §3, near enough verbatim: *"ML and research taught
+what pipelines have to feed, and what bad data costs downstream."* That
+sentence is the argument for a data engineering site carrying a research page
+at all, which is exactly a lede's job and not an intro's, and neither block
+intro says it.
+
+**It must keep clearing the lede test** ([`DESIGN.md`](DESIGN.md) §11.1): it
+speaks for the papers and for the technical articles, and it repeats neither
+intro.

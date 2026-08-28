@@ -1,139 +1,102 @@
-# Awards: the page header summary
+# Awards: the performance spec
 
-The strip under *Honors & Awards* was rebuilt. This is the record of what it
-was, what it is, and what was decided but not built.
+The record of the pass that turned `Solved 8 / 8 problems in 4h (Team of 2)`
+into fields, and gave the page a lede.
 
 ---
 
-## Before and after
+## The finding
 
-| | Before (`.awards-stats`) | After (`.entries--grid`) |
+The request was to remove a sentence. The cause was that **`awards.md`
+contradicted itself**, and the page had been paying for it in both languages.
+
+| | |
+|---|---|
+| **Rule 7** | *"Store the raw fact and let the renderer produce the label. Hand-written labels are how `1st Place`, `1st place` and `First` end up on the same page."* |
+| **Bullet rule 1** | *"State the score, duration, and team size. `Solved 8 / 8 problems in 4h (Team of 2)` is the whole bullet."* |
+
+One document, two rules, pointing opposite ways. What it produced:
+
+- **Four facts welded into prose** in seven records: solved, total, hours, team.
+- **Seven more hand-written strings in French**, translating the same sentence.
+- **Two spellings of one unit on one page.** The bullets printed `4h`, `5h`,
+  `24h`; the hackathon's `duration` tag printed `48 h`.
+- **The two languages disagreeing about the format of a figure.** The French
+  overlay had quietly corrected it to `4 h`, so English was the one that was
+  wrong by its own renderer.
+
+**The argument was already in the codebase.** `tools/build.py`, on `duration`
+in `meta_label`:
+
+> *"Stored as a number, spaced here, so `2h` and `20 h` cannot coexist. They
+> did... A value formatted at the call site is a value that drifts from every
+> other call site."*
+
+The awards bullets were that call site, still drifting, on a model whose
+`MODELS["awards"]` tuple had carried a `duration` field the whole time.
+
+## What shipped
+
+| | Before | After |
 |---|---|---|
-| Component | Bespoke, invented for this header | The card grid Career's certifications use, [`DESIGN.md`](DESIGN.md) §9.4 |
-| CSS | 25 lines, three rules, one filled surface | None. Nothing new was styled |
-| Placement | Inside `.page-header`, which §11 said held an `h1` and a lede | Same place, and §11 now admits a summary grid |
-| Shape | One wrapped run of middot-separated items in a bordered box | Four cards, 2×2: scope, the result as chips, the record that proves it |
-| Covers | The Competitions block | Every scope on the page, hackathon included |
-| Labels | Hand-formatted strings | `meta_label` output, the same function the tags below use |
-| French | Three chrome strings rendering in English | Translates with the tag vocabulary |
-| Widest claim | *13,999+ Teams Competed* | Gone, see below |
+| The four facts | one prose sentence per record | `"duration": 4` and `"performance": {"solved": 8, "problems": 8, "team": 2}` |
+| Hours | `4h` in bullets, `48 h` in a tag | `4 h` everywhere, through `meta_label` |
+| Rendering | `.points` bullet | `duration` tag + a `.perf` label column |
+| French | 7 hand-translated sentences | 3 chrome strings, and the locale's own number format |
+| Hackathon bullet | *"Delivered an MVP in 48h..."* beside its own `48 h` tag | duration removed from the sentence, kept in the tag |
+| Awards lede | none | *Where the algorithmic reflex was built, and put under a clock.* |
 
-Rendered:
+**A new guard.** `check_award_shape` fails the build on a record carrying both
+`performance` and `points`, because that is a record stating one thing twice,
+which is how the sentence got there. Added to [`CLAUDE.md`](CLAUDE.md) §9's
+table.
 
-```
-┌────────────────────────────┐  ┌────────────────────────────┐
-│ Regional                   │  │ National                   │
-│ [● 1st Place] [86 teams]   │  │ [2× National Finalist]     │
-│ • Hello World v4.0         │  │ • TCPC 23                  │
-└────────────────────────────┘  │ • TCPC 22                  │
-┌────────────────────────────┐  └────────────────────────────┘
-│ African                    │  ┌────────────────────────────┐
-│ [Quarter-finalist][200 t…] │  │ International              │
-│ • A2SV GenAI Hackathon     │  │ [643rd Place][7,094 teams] │
-└────────────────────────────┘  │ • IEEEXtreme 17.0          │
-                                └────────────────────────────┘
-```
+**Not chips, and that was the design decision.** The score could have been two
+more tag categories and was not: a tag says *this record is filed under X*,
+which a solve count is not, and `awards.md` rule 3 picks categories for the
+reader rather than for symmetry. Seven chips on a row is the wall
+[`skills.md`](skills.md) rejected. `.perf` is the fifth user of the
+label-column idiom and the first to live *inside* a record, so it takes the
+idiom at its smallest: a 7rem label, `--text-md`, and no hairline between rows,
+because a rule inside a bulleted record draws a table inside a bullet.
 
-Structurally identical to a certifications card: heading, then a `.points`
-list of what the cell contains. The only addition is the tag list between
-them, and its chips are the record's own.
+## The three ledes
 
-## What was wrong, and why it was one thing
+Written with the author, not promoted, because all three pages carry
+block-specific pitches that nothing could be lifted from.
 
-Eight symptoms, one cause: **a shape was invented where §9.3 had already named
-the one to reuse.** Everything else followed. The box (the only filled surface
-outside `.entries--grid`), the ~415px of text floating in a ~764px bordered
-element, the fused *1st Place Regional* against `awards.md` rule 4, the
-`f"{gold_count}st Place Regional"` that would have printed *2st* on a second
-gold, the three chrome strings nobody added to `fr.json`, the absent
-hackathon, and the fact that no document on the site described any of it.
-Repairing any one of them would have left the other seven. The full table is
-in [`DESIGN.md`](DESIGN.md) §10.2.
+| Page | Lede | Derived from |
+|---|---|---|
+| Projects | *The same debugging instinct, applied to someone else's codebase and to whole pipelines of my own.* | [`CLAUDE.md`](CLAUDE.md) §3 on open source, plus the half it does not cover |
+| Research | *What pipelines have to feed, and what bad data costs downstream.* | [`CLAUDE.md`](CLAUDE.md) §3, near verbatim |
+| Awards | *Where the algorithmic reflex was built, and put under a clock.* | [`CLAUDE.md`](CLAUDE.md) §3 on competitions; the second clause reaches Hackathons |
 
-## Decisions
+All eight pages now have a lede except Career, which keeps its Summary as its
+only opening by the decision recorded in
+[`career-experience-options.md`](career-experience-options.md).
 
-**The African result is *Quarter-finalist*, and stays that way.** The author
-was asked directly whether the A2SV stage in `awards.json` was wrong. It is
-not. *African Finalist* would have been a stronger and different claim, and
-[`CLAUDE.md`](CLAUDE.md) §5 makes honest placement the site's credibility
-argument, so it was put to the author rather than upgraded.
+## Decided against
 
-**The National row says *2&times; National Finalist*, not *13th Place*.** The
-rule is written down in [`awards.md`](awards.md#the-scope-summary): a row
-shows the best record's `distinction` when it has one, counted if the scope
-has more than one, and its `placement` and `scale` otherwise. The placements
-are on the two records the row links to.
+- **A solve-rate meter.** A hairline bar showing 8/8 against 11/26 would spare
+  the reader the division, and it was put to the author beside the chosen
+  option. It costs a second drawn element on a site that rations them to one
+  ([`DESIGN.md`](DESIGN.md) §1.1), and it needs the written argument the
+  diagram and the theme switch each got. Not built. Still the most interesting
+  thing left on this page.
+- **Score and team as tags.** See above.
+- **Giving the hackathon a `performance` block.** Its team size is inferable
+  from *"collaborated with teammate Mohamed Brahim"*, and inferring a figure is
+  not the same as being told one. `render_performance` requires the full block
+  and will raise rather than half-render, which is the loud failure the site
+  prefers.
 
-**The International row says *643rd Place &middot; 7,094 teams* deliberately.**
-A summary in which every figure is maximally flattering is one nobody
-believes, and it is the honest row that makes the *1st Place* above it worth
-reading.
+## Still open
 
-## Retired, and why
-
-**The medal disc survived.** It is `meta_label`'s, awarded to placements 1 to
-3, and it now arrives inside the Regional card's `.tag--placement` chip
-automatically instead of being pasted in beside a hardcoded label.
-
-***13,999+ Teams Competed* is gone and should not come back.** It summed every
-field size on the page. 13,470 of those 13,999 were the two IEEEXtreme fields,
-so the largest and boldest number on the page was 96% carried by the 643rd and
-1,432nd placements. It also counted the author's own team eight times.
-
-**`tag.placement.Quarter-finalist` was added to `fr.json`.** It was missing
-before this change: the tag on the record itself had been falling through to
-English on `fr/awards.html` all along. The strip only made it visible.
-
-## Second pass: from a fact strip to cards
-
-The first build of this used `.hero-facts`, the label-column strip from Home.
-The author asked for cards like the certifications boxes instead, and they
-were right. Recording the reversal rather than quietly overwriting it:
-
-- **`.hero-facts` was the wrong reuse and the reasoning that picked it was
-  half right.** §9.3 does say a fifth case of "a short fixed thing beside a
-  long flowing one" takes the label-column idiom. A scope summary is not that
-  case: the four scopes are a **set to be counted**, not a column of labels
-  with prose beside them, and §9.4 now carries the test that separates them.
-- **A card holds more with less.** The strip had to join two records with a
-  middot on the National row (*TCPC 23 · TCPC 22*); the card lists them as two
-  bullets, which is what `.points` is for and what the certifications cards
-  already do with three Microsoft certificates.
-- **The result became chips instead of running text.** `[● 1st Place]
-  [86 teams]` are the record's own `.tag--placement` and `.tag--scale`, so the
-  card and the entry it links to now render the identical markup from the
-  identical call.
-- **Still zero new CSS.** Both passes composed from existing parts; the second
-  simply picked the right ones.
-
-## Corrections to earlier claims in this pass
-
-- **I cited DESIGN.md §9.3's *"entries are still never boxed"* against the old
-  box, and that rule was already false when I quoted it.** `.entries--grid`
-  has boxed Career's credential cards all along. The old strip was wrong for
-  six other reasons, none of them the box. §9.3 now reads *a record in a
-  reading list is never boxed* and points at §9.4 for the distinction it was
-  actually reaching for: a record you **read** is a bulleted item, a record
-  you **count** is a cell in a grid.
-- **`.entries--grid` was undocumented**, which is why the rule above could
-  stay wrong. §9.4 exists now and covers both users.
-- The first pass's preview drew the record name as a third column, and
-  `.hero-facts` is a two-column grid. Moot: the cards carry it as a `.points`
-  bullet, which is what the approved preview showed.
-- The first pass rendered the International row as *643rd Place &middot; 7,094
-  teams*, not the preview's *643rd of 7,094 teams*, so that both scopes spoke
-  one vocabulary. The cards keep that, as two chips.
-
-## Still open, and author-led
-
-- **`aria-label` on the card tag lists** reuses `MODEL_LABELS["awards"]`, so a
-  screen reader hears *Achievement details* four times in the header and again
-  on each of the eight records. Accurate, repetitive, and worth a look.
-- **`awards.summary_label` was added to `fr.json` and then deleted** in the
-  same session, when the wrapper moved into the fragment and the renderer
-  stopped emitting an `aria-label` of its own. Mentioned so nobody goes
-  looking for it.
-- **Sixty-three untranslated French record fields** on this page and others,
-  which the build reports on every run. Unchanged by this pass.
-- **The two French `block__intro` lines on this page are still literal
-  drafts**, flagged in the fragment itself, and need the author's voice.
+- **The scope summary mixes two components.** `render_awards_summary` puts
+  `.result__figure` and `.result__source` inside `.entry` cards in an
+  `.entries--grid`. It works and it is documented in `awards.md`, but it is one
+  component wearing another's classes, which is the shape that produced every
+  other finding in this file. Not touched in this pass.
+- **Nothing has been seen rendered.** The markup, the data and the build output
+  are verified; how the `.perf` strip sits under a five-chip tag row is
+  reasoned from the CSS.

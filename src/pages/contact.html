@@ -19,6 +19,11 @@ schema_type: ContactPage
      CLAUDE.md 4: never paraphrase a residence status. -->
 <header class="page-header">
   <h1 class="page-title">Contact</h1>
+  <!-- The invitation, promoted out of Contact Details. It is the one sentence
+       on this site that asks the reader to do something, and it speaks for the
+       page rather than for the channel list: Connect and Opportunities are
+       equally what it invites. contact.md 3 and 7. -->
+  <p class="page-lede">{{ site.contact_invitation }}</p>
 {{ build.contact_facts }}
 </header>
 
@@ -39,19 +44,28 @@ schema_type: ContactPage
      model. -->
 <section class="block" aria-labelledby="direct-contact">
   <h2 class="block__title" id="direct-contact">Contact Details</h2>
-  <!-- The one sentence on this site that asks the reader to do something. It
-       sat unused in src/site.json since the day it was written, on the page
-       whose whole job it is. -->
-  <p class="block__intro">{{ site.contact_invitation }}</p>
   <ul class="contact-list">
 {{ build.contact_channels }}
   </ul>
 </section>
 
-<!-- The consulting row is deliberate and was restored by the author after being
-     removed. contact.md 5 carries the decision and the tension it accepts with
-     CLAUDE.md section 3. Do not remove it again on section 3's authority: that
-     argument has been made and answered. -->
+<section class="block" aria-labelledby="connect">
+  <h2 class="block__title" id="connect">Connect</h2>
+  <ul class="contact-list">
+{{ build.contact_socials }}
+  </ul>
+</section>
+
+<!-- Last, and this is a change of order rather than of content. The page used
+     to read actionable, inert, actionable, with the statement of what work is
+     accepted wedged between the addresses and the profiles. The two lists a
+     reader can act on sit together now, a recruiter still meets the address
+     first, and the page closes on the offer instead of on a handle list.
+
+     The consulting row is deliberate and was restored by the author after
+     being removed. contact.md 5 carries the decision and the tension it
+     accepts with CLAUDE.md section 3. Do not remove it again on section 3's
+     authority: that argument has been made and answered. -->
 <section class="block" aria-labelledby="opportunities-services">
   <h2 class="block__title" id="opportunities-services">Opportunities &amp; Services</h2>
   <ul class="contact-list">
@@ -67,12 +81,5 @@ schema_type: ContactPage
         <span class="contact-list__value">Cloud data platforms, reliable ETL/ELT pipelines, warehousing, and data quality</span>
       </div>
     </li>
-  </ul>
-</section>
-
-<section class="block" aria-labelledby="connect">
-  <h2 class="block__title" id="connect">Connect</h2>
-  <ul class="contact-list">
-{{ build.contact_socials }}
   </ul>
 </section>

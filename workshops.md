@@ -75,9 +75,15 @@ next record does not invent a synonym under time pressure.
 ### What is *not* in the model
 
 - **Role.** Every record on this page was designed and delivered by the site's
-  author, so an `Instructor` tag on all four discriminates nothing. The block
-  intro carries it in the first person (*Happy to share what I know*) which
-  is as much as a fact true of every record on a personal portfolio needs.
+  author, so an `Instructor` tag on all four discriminates nothing. The opening
+  sentence carries it (*Teaching how data moves through hardware...*), which is
+  as much as a fact true of every record on a personal portfolio needs.
+
+  **That sentence is a `.page-lede` now, not a `block__intro`**, and this
+  paragraph quoted a wording it had already stopped using. Workshops has one
+  block, so its pitch was always the page's pitch sitting one heading too low;
+  it moved into the page header and the block opens straight onto its records.
+  [`DESIGN.md`](DESIGN.md) §11.1 owns the rule that separates the two ranks.
 - **Subject.** *Assembly*, *Python*, *Competitive Programming* are already in
   the entry titles. A tag repeating the title is noise; per
   [`awards.md`](awards.md) rule 1, technical depth is substance and belongs in
