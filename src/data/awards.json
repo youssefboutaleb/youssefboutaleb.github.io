@@ -104,7 +104,7 @@
       "Pydantic",
       "Jinja2",
       "Hugging Face Inference API",
-      "Falcon"
+      "Falcon 7B"
     ],
     "dataset": "https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset",
     "dataset_label": "Stroke Prediction",

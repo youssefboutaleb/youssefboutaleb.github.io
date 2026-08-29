@@ -22,7 +22,7 @@
   <link rel="alternate" hreflang="x-default" href="https://youssefboutaleb.github.io/research.html">
   <link rel="icon" type="image/svg+xml" href="images/icons/icon.svg">
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Noto-Sans-regular/Noto-Sans-regular.woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=b8aec60f55ff">
+  <link rel="stylesheet" href="assets/css/main.css?v=7f7f664a6db5">
 
   <script>
     // Before first paint, or the pinned theme flashes the other one on every
@@ -143,8 +143,8 @@
           <p class="block__intro">
             Applied machine learning and anomaly detection systems taken from raw data pipelines to peer-reviewed publication.
           </p>
-          <ul class="entries">
-            <li class="entry" id="pub-secure-and-transparent-energy-management-using-blockchain-and-machine-learning-anomaly-detection-a-case-study-of-the-ausgrid-dataset">
+          <ul class="entries entries--offprint">
+                <li class="entry" id="pub-secure-and-transparent-energy-management-using-blockchain-and-machine-learning-anomaly-detection-a-case-study-of-the-ausgrid-dataset">
               <h3 class="entry__title"><a class="link-external" href="https://doi.org/10.1016/j.cie.2025.111040" target="_blank" rel="noopener">Secure and transparent energy management using blockchain and machine learning anomaly detection: A case study of the Ausgrid dataset</a></h3>
               <p class="entry__period"><time datetime="2025">2025</time></p>
               <p class="entry__meta"><a href="https://scholar.google.com/citations?user=XTaxAz8AAAAJ&amp;hl=en" target="_blank" rel="noopener" title="Google Scholar profile">N. Moumni</a>, <a href="https://scholar.google.com/citations?user=mAUhy6QAAAAJ" target="_blank" rel="noopener" title="Google Scholar profile"><b>Y. Boutaleb</b></a>, <a href="https://scholar.google.com/citations?user=cDtJ8FcAAAAJ&amp;hl=fr" target="_blank" rel="noopener" title="Google Scholar profile">F. Chaabane</a>, and <a href="https://scholar.google.com/citations?user=gAUXwRwAAAAJ&amp;hl=en" target="_blank" rel="noopener" title="Google Scholar profile">F. Drira</a> &middot; <i>Computers &amp; Industrial Engineering</i></p>
@@ -178,52 +178,42 @@
           </ul>
         </section>
 
-          <figure class="diagram" id="ausgrid_pipeline">
-            <svg class="diagram__svg" viewBox="0 0 808 98" role="img" aria-labelledby="ausgrid_pipeline-title ausgrid_pipeline-desc">
-              <title id="ausgrid_pipeline-title">Ausgrid smart-meter anomaly detection pipeline</title>
-              <desc id="ausgrid_pipeline-desc">Smart-meter time-series is ingested at 30-minute intervals, hashed into a blockchain audit trail so a reading cannot be altered without evidence, then passed to an unsupervised anomaly engine whose output is grid anomaly alerts for power theft and sensor faults.</desc>
-              <text class="diagram__lane" x="86" y="22" text-anchor="middle">Ingestion</text>
-              <text class="diagram__lane" x="298" y="22" text-anchor="middle">Verification</text>
-              <text class="diagram__lane" x="510" y="22" text-anchor="middle">Analytics</text>
-              <text class="diagram__lane" x="722" y="22" text-anchor="middle">Output</text>
-              <path class="diagram__edge" d="M160 60 C192 60 192 60 224 60"/>
-              <path class="diagram__edge" d="M372 60 C404 60 404 60 436 60"/>
-              <path class="diagram__edge" d="M584 60 C616 60 616 60 648 60"/>
-              <g class="diagram__node"><rect x="12" y="34" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="86" y="58">Smart-meter</tspan><tspan x="86" y="70">time-series</tspan></text></g>
-              <g class="diagram__node"><rect x="224" y="34" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="298" y="58">Blockchain audit</tspan><tspan x="298" y="70">trail</tspan></text></g>
-              <g class="diagram__node"><rect x="436" y="34" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="510" y="58">Unsupervised anomaly</tspan><tspan x="510" y="70">engine</tspan></text></g>
-              <g class="diagram__node"><rect x="648" y="34" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="722" y="64">Grid anomaly alerts</tspan></text></g>
-            </svg>
-            <figcaption class="diagram__caption">300 residential solar and grid feeds, at 30-minute intervals.</figcaption>
-          </figure>
         <section class="block" aria-labelledby="technical-articles">
           <h2 class="block__title" id="technical-articles">Technical Articles</h2>
           <p class="block__intro">
-            Hands-on technical guides covering model serving pipelines, log stream aggregation, and production observability.
+            The explanation I wanted when I was building it.
           </p>
-          <ul class="entries">
-            <li class="entry" id="datadog-log4j2-mulesoft">
+          <ul class="entries entries--grid entries--article">
+                <li class="entry" id="datadog-log4j2-mulesoft">
               <h3 class="entry__title"><a class="link-external" href="https://medium.com/@youssefboutaleb.info/simplify-your-log-management-configuring-datadog-integration-with-log4j2-in-mulesoft-44e83b56e0c4" target="_blank" rel="noopener">Simplify Your Log Management: Configuring DataDog Integration with Log4j2 In Mulesoft</a></h3>
               <p class="entry__period"><time datetime="2024">2024</time></p>
+              <ul class="points">
+                <li>A Log4j2 HTTP appender POSTs JSONLayout events straight to Datadog's Send Logs API.</li>
+                <li>No agent on the host, and no collector in between.</li>
+                <li>The appender is asynchronous, so logging never blocks a Mule execution thread.</li>
+              </ul>
               <ul class="tag-list" aria-label="Article details">
                 <li class="tag tag--format">Configuration Guide</li>
                 <li class="tag tag--reach">723 views &middot; 424 reads</li>
                 <li class="tag tag--platform">Medium</li>
               </ul>
-              <p class="entry__summary">Agentless log streaming architecture: configuring an asynchronous Log4j2 HTTP appender to POST JSONLayout events directly to Datadog's Send Logs API without blocking execution threads.</p>
             </li>
             <li class="entry" id="yolov8-fastapi-gradio">
               <h3 class="entry__title"><a class="link-external" href="https://medium.com/@youssefboutaleb.info/developingyolov8-custom-object-detection-with-fastapi-and-gradio-e9314fad0782" target="_blank" rel="noopener">Developing a Custom YOLOv8 Model for Number Detection on Meters Using FastAPI and Gradio</a></h3>
               <p class="entry__period"><time datetime="2023">2023</time></p>
+              <ul class="points">
+                <li>Annotates the meter dataset in Roboflow and trains YOLOv8 from it.</li>
+                <li>Trains across Kaggle's two TPUs with DataParallel.</li>
+                <li>Serves the weights twice: a containerized FastAPI endpoint, and a Gradio app on Hugging Face.</li>
+              </ul>
               <ul class="tag-list" aria-label="Article details">
                 <li class="tag tag--format">Walkthrough</li>
                 <li class="tag tag--reach">3K views &middot; 1.5K reads</li>
                 <li class="tag tag--platform">Medium</li>
               </ul>
-              <p class="entry__summary">End-to-end computer vision data pipeline: from Roboflow dataset annotation and Kaggle TPU x2 parallel training (DataParallel) to containerized FastAPI inference and Hugging Face Gradio serving.</p>
             </li>
           </ul>
-          <p class="block__note">Reach figures read from Medium, Aug 2026.</p>
+
         </section>
       </main>
     </div>

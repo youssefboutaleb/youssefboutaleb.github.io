@@ -11,7 +11,11 @@
     },
     "platform": "Medium",
     "url": "https://medium.com/@youssefboutaleb.info/developingyolov8-custom-object-detection-with-fastapi-and-gradio-e9314fad0782",
-    "summary": "End-to-end computer vision data pipeline: from Roboflow dataset annotation and Kaggle TPU x2 parallel training (DataParallel) to containerized FastAPI inference and Hugging Face Gradio serving."
+    "points": [
+      "Annotates the meter dataset in Roboflow and trains YOLOv8 from it.",
+      "Trains across Kaggle's two TPUs with DataParallel.",
+      "Serves the weights twice: a containerized FastAPI endpoint, and a Gradio app on Hugging Face."
+    ]
   },
   {
     "id": "datadog-log4j2-mulesoft",
@@ -25,6 +29,10 @@
     },
     "platform": "Medium",
     "url": "https://medium.com/@youssefboutaleb.info/simplify-your-log-management-configuring-datadog-integration-with-log4j2-in-mulesoft-44e83b56e0c4",
-    "summary": "Agentless log streaming architecture: configuring an asynchronous Log4j2 HTTP appender to POST JSONLayout events directly to Datadog's Send Logs API without blocking execution threads."
+    "points": [
+      "A Log4j2 HTTP appender POSTs JSONLayout events straight to Datadog's Send Logs API.",
+      "No agent on the host, and no collector in between.",
+      "The appender is asynchronous, so logging never blocks a Mule execution thread."
+    ]
   }
 ]

@@ -135,6 +135,24 @@ the title clickable.
 
 ---
 
+## The rank a paper takes
+
+The block renders on `.entries--offprint`, which is a **rank and not a
+component**: [`DESIGN.md`](DESIGN.md) §9.5 owns it and the reasoning is not
+repeated here. What matters to this model is the one thing the rank changes
+about the citation.
+
+**The citation line hangs.** `.entry__meta` takes a `1.4em` hanging indent in
+this block, so the four linked authors and the italic journal wrapping to a
+second line set under the first author rather than under the title. Everything
+above about author formatting is unchanged by it; the indent is what makes the
+run read as one line of bibliography instead of as two statements.
+
+**The title steps to 20px, and it is still an `h3`.** The outline is unchanged,
+the order in §9 is unchanged, and no part of the record is added or removed.
+A paper states exactly what it stated before, at the rank the block earns for
+being the one place on this site that carries peer review.
+
 ## What is deliberately not in the model
 
 - **The journal.** *Computers & Industrial Engineering* is already in the

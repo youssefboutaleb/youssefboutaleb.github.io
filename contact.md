@@ -54,10 +54,19 @@ every divergence between them was visible in one glance. There were four:
 
 **The label column was reconciled upward, not down.** 7.5rem is 120px and
 `Consulting & services` measures 141px, the French `Telephone / WhatsApp`
-150px, so the strip is what moved. That widens Home's hero strip by 40px too,
-which the author approved: its rows are all short and the only value long
-enough to notice is the availability sentence, which wrapped to two lines
-before and after.
+150px, so the strip is what moved. The reconciliation is **10rem, and it is
+this page's**: it is the width `.hero-facts` and `.contact-list` can meet at
+when they are stacked 40px apart, which happens here and nowhere else.
+
+**It no longer travels to Home, and that is the rule working rather than
+breaking.** This paragraph used to end by noting that the change widened Home's
+hero strip by 40px as a side effect. Home has since put its own label columns
+on `--spine` (13rem), so the strip there takes the width of the `.result` and
+`.skill` rows it is read above, and the override is scoped to
+`.hero-header__content > .hero-facts`. [`DESIGN.md`](DESIGN.md) §10.2 states
+the principle both pages are obeying: **columns sharing a page share a width,
+not the idiom.** Do not "reunify" these two numbers. They are answers to two
+different questions.
 
 **Right-aligning held only while nothing wrapped.** Capped at the measure the
 value column is 435px and the consulting sentence measures 520px, so it wraps,
@@ -70,7 +79,6 @@ been set left.
 | Row | Source |
 |---|---|
 | Availability, Based in, in the page header | `availability` and `location` in `src/site.json`, via `render_contact_facts` |
-| The invitation, as `.page-lede` | `contact_invitation` in [`src/site.json`](src/site.json) |
 | Primary email, Academic email, Phone / WhatsApp | `contact[]` in `src/site.json`, via `render_contact_channels` |
 | LinkedIn, GitHub, Medium | `socials[]` in `src/site.json`, via `render_contact_socials` |
 | Opportunities & Services | Written in the fragment. See §5 |
@@ -161,6 +169,8 @@ The four arrangements, because the sequence is the argument:
 renders this exact sentence in, so a reader who saw it on the front page meets
 the same shape where the decision gets made, and [`DESIGN.md`](DESIGN.md) §11
 asks a fifth label-column case to use the idiom rather than invent a sixth.
+The *shape* is what carries across, not the track: Home sets its labels on
+`--spine` and this page on 10rem, each matching what it is stacked against.
 Nothing in its stylesheet was coupled to the hero; only the section header
 claimed so, and that comment is corrected.
 

@@ -285,6 +285,12 @@ The six tags render in the order
 `MODELS["workshops"]`. Optional `repo` adds a GitHub icon-link to the title and
 `slides` appends a download tag after the metadata.
 
+**Three of the six are required**, and not because the model says so: `scale`,
+`duration` and `host` are what the page header's cards total, one card per host
+(`60 participants &middot; 1 session &middot; 4 h` for Securinets ENIS), so a record without
+one stops the build rather than shrinking a figure nothing would have flagged.
+A host nothing has used yet is simply a fourth card.
+
 **`block` chooses the section**, `hardware` or `algorithms`, and never renders:
 it is the Projects convention, not the Awards one, so no record carries a chip
 restating the heading it sits under. A session delivered in parts replaces
@@ -338,7 +344,7 @@ claims. Full rationale in [teaching.md](teaching.md).
 
 ### Adding a project
 
-`src/data/projects.json`, rendering `upstream → kind → stack`:
+`src/data/projects.json`, rendering `kind → upstream → stack`:
 
 ```json
 {
@@ -359,7 +365,10 @@ record here repeats the heading it sits under. `upstream` was the first of the
 site's two categories whose value carries a link (`accreditation` on Education
 is the other): `meta_url` builds the pull request
 address from the stored repo and number, and the tag *is* the link, keeping its
-category's amber. That amber is deliberate: `state` is stored raw and
+category's amber. It is a scan-line chip and not a footer link, because an
+acceptance is a standing rather than a place to go and look, which is the one
+thing the proof footer holds: [projects.md](projects.md), *Why `upstream` is a
+category and not an artefact*. That amber is deliberate: `state` is stored raw and
 `UPSTREAM_STATES` turns `open` into `Submitted upstream` and `merged` into
 `Accepted upstream`, both in the same colour, because the treatment says *this
 is an upstream status* and never *this one is the good one*. `stack` is a list rendered as
@@ -409,12 +418,22 @@ Self-published writing is a *second block* on the same page, on its own model.
   "title": "Simplify Your Log Management: Configuring DataDog Integration with Log4j2 In Mulesoft",
   "year": 2024,
   "format": "Configuration Guide",
-  "reach": { "views": 723, "reads": 424 },
+  "reach": { "views": 723, "reads": 424, "as_of": "2026-08" },
   "platform": "Medium",
   "url": "https://medium.com/@youssefboutaleb.info/simplify-your-log-management-…",
-  "summary": "Ships logs without installing the DataDog agent: a Log4j2 HTTP appender …"
+  "points": [
+    "A Log4j2 HTTP appender POSTs JSONLayout events straight to Datadog's Send Logs API.",
+    "No agent on the host, and no collector in between.",
+    "The appender is asynchronous, so logging never blocks a Mule execution thread."
+  ]
 }
 ```
+
+Two or three `points`, one fact each, and no `<b>Label:</b>` lead-in: these
+render inside a card roughly 280px wide, where the bold label Projects uses
+would spend the first line by itself. A `summary` still renders if a record
+carries one, above the bullets, for an article that needs a hook before its
+mechanics. No record does today. [writing.md](writing.md), Editorial rules.
 
 It does not borrow the paper model, because all three of that model's
 categories degrade on a Medium post: `status` would put the same word
@@ -432,9 +451,10 @@ same category Workshops declares, reused rather than renamed.
 reads alone hides the ratio it should be judged against. `abbreviate` prints
 large figures the way Medium reports them (`3000` → `3K`), so the page never
 claims more precision than its source gave it. The counts are hand-copied and
-nothing refreshes them, so a `block__note` beneath the records carries an
-explicit *as of* date; the figures and that date must move in the same change
-or neither. A record
+nothing refreshes them, so the object also carries an `as_of`: the two figures
+and their date live in one place and therefore cannot be edited apart, and
+`check_reach` refuses a `reach` without one. The date is not printed; it is
+what makes the figure beside it uneditable on its own. A record
 carries both numbers or omits `reach` entirely. Full rationale in
 [writing.md](writing.md).
 
@@ -854,8 +874,8 @@ It also owns the site's one editorial rule about prose: **a `block__intro` is a
 single punchy line, and it is a pitch** ([DESIGN.md](DESIGN.md) §11.1). How a
 block works (where its links point, what its tags mean, which records it
 filters in) belongs in the model document for that page, not in the first line
-a reader sees. Figures that need an *as of* date go in a `block__note` beneath
-the records instead (§11.2). Teaching is the single declared exception: its
+a reader sees. A `block__note` beneath the records (§11.2) is where provenance
+goes when a block needs to print it, and no block does today. Teaching is the single declared exception: its
 intro states an appointment rather than making a pitch, and the specifications
 that used to sit in it are a `.specs` strip beneath (§10.1).
 

@@ -26,7 +26,6 @@
     "last_updated": "août 2026",
     "resume": "data/Youssef_BOUTALEB_cv_fr.pdf",
     "location": "Sfax, Tunisie",
-    "contact_invitation": "Disponible pour des postes en ingénierie des données, création de pipelines fiables, intégrations robustes et observabilité globale.",
     "portrait_alt": "Portrait de Youssef Boutaleb",
     "availability": "Titulaire d'un titre de séjour UE. Ouvert à la relocalisation au sein de l'UE et aux postes en télétravail."
   },
@@ -56,8 +55,14 @@
     "facts.languages": "Langues",
     "label.evidence": "Preuves",
     "label.impact": "Impact :",
+    "label.project_links": "Liens du projet",
     "label.tools": "Outils",
+    "label.what_was_built": "Ce qui a été construit",
+    "link.article_on": "Article sur {platform}",
+    "link.demo": "Démonstration en direct sur Hugging Face",
     "link.repo": "Dépôt GitHub",
+    "link.slides": "Diapositives (.pptx)",
+    "link.slides_title": "Voir les diapositives dans PowerPoint Online",
     "link.workshop_repo": "Supports de l'atelier sur GitHub",
     "model_label.awards": "Détails de la distinction",
     "model_label.education": "Détails du programme",
@@ -106,6 +111,7 @@
     "perf.problems": "Problèmes",
     "perf.solved": "résolus",
     "perf.team": "Équipe",
+    "perf.team_of": "Équipe de {count}",
     "placement.pattern": "{ordinal} place",
     "proof.Published in English": "Publié en anglais",
     "proof.Taught in English": "Enseigné en anglais",
@@ -165,10 +171,16 @@
     "unit.months": "mois",
     "unit.participants": "participants",
     "unit.pipelines": "pipelines",
+    "unit.reads": "lectures",
+    "unit.session": "session",
+    "unit.sessions": "sessions",
     "unit.students": "étudiants",
     "unit.teams": "équipes",
+    "unit.views": "vues",
     "unit.year": "an",
     "unit.years": "ans",
+    "upstream.merged": "Contribution acceptée en amont",
+    "upstream.open": "Contribution soumise en amont",
     "writing.reach_note": "Chiffres d'audience relevés sur Medium, {when}."
   },
   "records": {
@@ -422,8 +434,6 @@
       "<b>Fusion de flux de capteurs multimodaux :</b> synchronise la télémétrie de mouvement IMU avec des modèles de détection visuelle sur des cibles embarquées à ressources contraintes.",
       "<b>Consensus à double vérification :</b> exige l'accord des canaux inertiel et visuel avant d'enregistrer une anomalie de chaussée, éliminant les faux positifs dus au bruit d'un capteur isolé."
     ],
-    "yolov8-fastapi-gradio.summary": "Pipeline de données de vision par ordinateur de bout en bout : de l'annotation du jeu de données sur Roboflow et de l'entraînement parallèle sur TPU x2 Kaggle (DataParallel) à l'inférence FastAPI conteneurisée et au service Gradio sur Hugging Face.",
-    "datadog-log4j2-mulesoft.summary": "Architecture de streaming de logs sans agent : configuration d'un appender HTTP Log4j2 asynchrone qui poste les événements JSONLayout directement vers l'API Send Logs de Datadog, sans bloquer les threads d'exécution.",
     "ws-introduction-to-cs-fundamentals-hardware.summary": "Série d'ateliers en deux parties, animée pour <b><a href=\"https://www.linkedin.com/company/olivesoft/posts/?feedView=all\" target=\"_blank\" rel=\"noopener\">OLIVE-LEARN</a></b> (le programme de formation interne d'OLIVESOFT), retraçant le mouvement des données depuis les architectures matérielles parallèles jusqu'aux portes logiques.",
     "ws-introduction-to-cs-fundamentals-hardware.groups": [
       {
@@ -940,46 +950,15 @@
         ]
       }
     ],
-    "ausgrid_pipeline.title": "Pipeline de détection d'anomalies sur compteurs communicants Ausgrid",
-    "ausgrid_pipeline.desc": "Les séries temporelles des compteurs communicants sont ingérées par intervalles de 30 minutes, puis hachées dans une piste d'audit blockchain pour qu'un relevé ne puisse pas être modifié sans laisser de trace, avant d'être passées à un moteur d'anomalies non supervisé dont la sortie alimente des alertes d'anomalie réseau, vol d'électricité et défaillance de capteur.",
-    "ausgrid_pipeline.caption": "300 flux résidentiels solaires et réseau, par intervalles de 30 minutes.",
-    "ausgrid_pipeline.layers": [
-      {
-        "label": "Ingestion",
-        "nodes": [
-          {
-            "id": "meters",
-            "label": "Séries temporelles des compteurs"
-          }
-        ]
-      },
-      {
-        "label": "Vérification",
-        "nodes": [
-          {
-            "id": "chain",
-            "label": "Piste d'audit blockchain"
-          }
-        ]
-      },
-      {
-        "label": "Analyse",
-        "nodes": [
-          {
-            "id": "engine",
-            "label": "Moteur d'anomalies non supervisé"
-          }
-        ]
-      },
-      {
-        "label": "Sortie",
-        "nodes": [
-          {
-            "id": "alerts",
-            "label": "Alertes d'anomalie réseau"
-          }
-        ]
-      }
+    "datadog-log4j2-mulesoft.points": [
+      "Un appender HTTP Log4j2 poste les événements JSONLayout directement vers l'API Send Logs de Datadog.",
+      "Aucun agent sur l'hôte, et aucun collecteur intermédiaire.",
+      "L'appender est asynchrone, donc la journalisation ne bloque jamais un thread d'exécution Mule."
+    ],
+    "yolov8-fastapi-gradio.points": [
+      "Annote le jeu de données de compteurs sur Roboflow et y entraîne YOLOv8.",
+      "Entraîne sur les deux TPU de Kaggle avec DataParallel.",
+      "Sert les poids deux fois : un point de terminaison FastAPI conteneurisé, et une application Gradio sur Hugging Face."
     ]
   },
   "ordinal": {

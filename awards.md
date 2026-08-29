@@ -412,7 +412,7 @@ A row that already carries five chips does not need seven.
 
    **The rule now covers the tools and the dataset too**, because they are
    tags. `FastAPI`, `Pydantic`, `Jinja2`, `Hugging Face Inference API` and
-   `Falcon` are five `stack` chips, so the bullets name none of them and read
+   `Falcon 7B` are five `stack` chips, so the bullets name none of them and read
    as architecture rather than as a list of imports. The Kaggle set was a
    hand-written `<a>` in the middle of the first sentence, carrying its own
    `target` and `rel` and **not** the `link-external` marker the teammate link

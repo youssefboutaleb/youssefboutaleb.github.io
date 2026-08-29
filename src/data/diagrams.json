@@ -42,42 +42,5 @@
       ["adf", "ddog"], ["lake", "ddog"],
       ["lake", "biz"]
     ]
-  },
-  {
-    "id": "ausgrid_pipeline",
-    "title": "Ausgrid smart-meter anomaly detection pipeline",
-    "desc": "Smart-meter time-series is ingested at 30-minute intervals, hashed into a blockchain audit trail so a reading cannot be altered without evidence, then passed to an unsupervised anomaly engine whose output is grid anomaly alerts for power theft and sensor faults.",
-    "caption": "300 residential solar and grid feeds, at 30-minute intervals.",
-    "layers": [
-      {
-        "label": "Ingestion",
-        "nodes": [
-          { "id": "meters", "label": "Smart-meter time-series" }
-        ]
-      },
-      {
-        "label": "Verification",
-        "nodes": [
-          { "id": "chain", "label": "Blockchain audit trail" }
-        ]
-      },
-      {
-        "label": "Analytics",
-        "nodes": [
-          { "id": "engine", "label": "Unsupervised anomaly engine" }
-        ]
-      },
-      {
-        "label": "Output",
-        "nodes": [
-          { "id": "alerts", "label": "Grid anomaly alerts" }
-        ]
-      }
-    ],
-    "edges": [
-      ["meters", "chain"],
-      ["chain", "engine"],
-      ["engine", "alerts"]
-    ]
   }
 ]

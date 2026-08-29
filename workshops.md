@@ -41,6 +41,85 @@ each intro pitches one half of it.
 
 ---
 
+## The page header: who asked for these sessions, and how big they were
+
+One thing stands above the first heading, and it is not written: three cards
+derived from `src/data/workshops.json`, one per organisation that invited him.
+
+**Why the page needed a summary.** Every record states its own attendance and
+its own duration, in grey chips at positions five and three of six, and nothing
+stated the page. A recruiter asking *how much of this is there, and who asked
+for it* had to add four chips up and read four hosts off four records.
+
+**The card is Awards' scope card, reused whole** ([`DESIGN.md`](DESIGN.md)
+§9.4): the same grid, the same `.entry`, the same four lines in the same ranks.
+
+| Line | Class | Holds |
+|---|---|---|
+| Label | `.result__scope` | the host |
+| Figure | `.result__figure` | the head count across that host's sessions |
+| Qualifier | `.result__scale` | how many sessions, and how many hours |
+| Provenance | `.result__source` | the sessions themselves, as anchors |
+
+```
+OLIVESOFT              Securinets ENIS         IEEE Student Branch ENIS
+30 participants        60 participants         52 participants
+1 session &middot; 2 h            1 session &middot; 4 h            2 sessions &middot; 6 h
+Introduction to CS     Assembly Programming    Introduction to Competitive
+Fundamentals           Workshop                Programming
+(Hardware)                                     Introduction to Python
+```
+
+**A host that ran more than one session lists them one to a line**, on
+`.result__source--stacked`, and not joined with `&middot;`. The middot is the
+peer separator for *short* peers ([`CLAUDE.md`](CLAUDE.md) §6), and two
+forty-character workshop titles in a 271px track are not that: joined, the pair
+wrapped mid-title. The line break separates them and no punctuation has to,
+which is the call [`DESIGN.md`](DESIGN.md) §10.2 already makes for
+`.hero-facts`. Awards' cards keep the middot, because `TCPC 23 &middot; TCPC 22`
+is exactly the case it is for.
+
+**Nothing in a card is written.** The head count sums `scale.count`, the hours
+sum `duration`, the session count is the group size, the label is `host` and
+the links are the records' own ids and titles. A card cannot say *60* while the
+record below says something else, and `check.py` fails the build on a card
+pointing at a record that is not there.
+
+**Why the grouping is the host and not the total.** This was the choice, and
+the argument against a row of totals is the one [`CLAUDE.md`](CLAUDE.md) §10
+already made when it deleted the Domains block: **a card carries a citation or
+it is a keyword.** `142 participants` cannot point at one record; *60
+participants at Securinets ENIS* points at exactly one. The totals are still
+there for anyone adding three cards up, and the grouping answers the question
+the chips never did, which is that one of the three hosts is a company.
+
+**Newest host first**, which is the order the records are already in. A summary
+that re-sorted its source would be a second reading order to keep in agreement
+with the first.
+
+**Two guards, both of them the [`DESIGN.md`](DESIGN.md) §9.4 lesson applied.**
+That is where a summary box summed every field size on the Awards page into one
+number 96% carried by two bad placements:
+
+1. **A record missing `scale.count`, `duration` or `host` stops the build**,
+   because a sum that silently skips a record is invented precision, not the
+   honest omission [`awards.md`](awards.md) rule 5 permits.
+2. **So does a page stating two different `scale` units**, since one figure
+   cannot carry both.
+
+**A three-column `.specs` strip stood here for one revision**, stating the
+page's constants (142 participants, 12 h, 4 sessions, 3 hosts) in Teaching's
+component. It was replaced on the author's call, and the reason is the one
+above: a spec row states a figure and cannot carry the link that makes it
+checkable.
+
+**A diagram stood beneath it too, and was deleted.** It drew the five layers
+this page teaches as a downward stack, and the author's verdict was that it did
+not earn 380px at the top of the page. [`diagrams.md`](diagrams.md) §8 keeps
+the reasoning, because the shape will look tempting again.
+
+---
+
 ## The model
 
 ```
@@ -214,7 +293,11 @@ reader is trying to judge.
 ## Adding a workshop
 
 1. Append a record to `src/data/workshops.json`. Fields in any order: the
-   renderer sequences them. Omit a category you have no real value for.
+   renderer sequences them. Omit a category you have no real value for, with
+   three exceptions: `scale`, `duration` and `host` are what the host cards
+   total, so a record without them stops the build rather than quietly
+   shrinking a figure in the page header. A new `host` is a fourth card, with
+   no other change.
 1. **Set `block`**, `hardware` or `algorithms`. `check_workshop_block` in
    `tools/build.py` fails the build without it, because the page filters its
    two sections on this field and a record that reached neither would leave

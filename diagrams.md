@@ -102,6 +102,7 @@ The `caption` is different and is for everyone: the one thing about the diagram
 a reader should take away that the boxes cannot say. A refresh interval, a
 volume, the failure mode the shape is designed around.
 
+
 ## 6. Theme, print and width
 
 **One palette, inherited.** Strokes and text are `currentColor` and the only
@@ -115,6 +116,13 @@ its shape. `page-break-inside: avoid`, and the overflow container is released.
 of `32rem`: a four-layer flow is about 900 user units, and a phone scaling that
 to fit would render an 11px label at roughly 4px. Wide content scrolls in its
 own container and the body never scrolls sideways.
+
+**And narrow diagrams do not exist.** An `<svg>` carrying a viewBox and no
+width stretches to its container, so the user units are not pixels: they are a
+ratio the browser scales to the document column. A drawing declared at 500
+units renders at 908px and its 11px type comes out at 20px. Size the geometry
+to the column, near 900 units wide, and the type lands where the stylesheet
+says it should.
 
 ## 7. Adding one
 
@@ -137,9 +145,17 @@ own container and the body never scrolls sideways.
 | Diagram | Page | What it adds to the prose |
 |---|---|---|
 | `jq_platform` | Career, under Experience | The four sources and the two ingestion paths are spread across three groups of one record; the picture is what puts them in one shape, and shows the live Quarkus path running beside the scheduled jobs rather than after them |
-| `ausgrid_pipeline` | Research, under Journal Articles | The bullets say what each stage does; the drawing says the ledger sits *between* ingestion and analysis rather than beside them, which is the whole claim of the paper |
 
 Both sit under the block rather than inside a record, because a diagram is
 about a block: it draws what several records or several groups of one record
 share, and a `<figure>` nested in an `<li class="entry">` would say it belongs
 to one of them.
+
+**A third was built for Workshops and deleted**, and what it cost is worth
+keeping. It drew the page's five teaching layers as a downward stack, which
+needed a second orientation in the renderer, a `note` field, a CSS rule, and
+380px at the top of the page. The author's verdict was that it did not earn
+that, and the lesson is about §1's test rather than about stacks: **a diagram
+that is accurate, prints, and restates what the page already says in words is
+still decoration.** The question is not *is this true* but *does a reader learn
+something here that the prose leaves open*.

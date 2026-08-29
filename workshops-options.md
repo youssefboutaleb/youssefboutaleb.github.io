@@ -120,3 +120,118 @@ site went wrong.
   Machine* / *The Program*) was offered and declined; it remains available.
 - **A fifth workshop needs a block**, and the build now says so out loud. A
   subject that fits neither is a question about the page, not a new field.
+
+---
+
+# Workshops: the page header pass
+
+Three things were built above the first heading and **one is on the page**: a
+grid of host cards. A stack diagram and a spec strip were built first and both
+were replaced on the author's verdict. All three are recorded, because the two
+that went are the more useful half.
+
+## Before and after
+
+| | Before | After |
+|---|---|---|
+| Page header | `h1` and a lede | `h1`, the lede, three host cards |
+| The page's scale | 24 chips, four of which held the numbers | `30`, `60`, `52` participants, per host, each linking to its sessions |
+| Who invited him | Readable off four records, one chip at a time | Three cards, one per organisation |
+| A workshop missing `scale`, `duration` or `host` | Rendered a record with a gap | Fails the build: a figure would have silently shrunk |
+| A page mixing two `scale` units | Two units, two chips, no total | Fails the build: one figure cannot carry both |
+
+Unchanged, deliberately: every record, every tag, every bullet, both block
+headings, both intros and the lede. Nothing in `src/data/workshops.json` moved.
+
+## What is on the page
+
+The card is Awards' scope card reused whole, which is the finding worth
+keeping: it needed **no new component, no new class and no new CSS**.
+
+```
+OLIVESOFT              Securinets ENIS         IEEE Student Branch ENIS
+30 participants        60 participants         52 participants
+1 session &middot; 2 h            1 session &middot; 4 h            2 sessions &middot; 6 h
+Introduction to CS     Assembly Programming    Introduction to Competitive
+Fundamentals           Workshop                Programming
+(Hardware)                                     Introduction to Python
+```
+
+`render_workshops_hosts` in `tools/build.py`, one template key
+(`build.workshops_hosts`), placed inside an `.entries--grid--compact` list in
+both fragments' `page-header`. Every value is computed: the head count sums
+`scale.count`, the hours sum `duration`, the label is `host`, and the links are
+the records' own ids and titles, so `check.py` fails on a card pointing at a
+record that is not there. Two French chrome strings (`unit.session`,
+`unit.sessions`); the host names do not translate and the audience keys the
+strip needed are gone.
+
+**Measured, not eyeballed:** at a 908px column the three tracks give each card
+271px of text. Every line fits on one except two record titles, which wrap to a
+second line, and that is the same latitude Awards' cards take. That measurement
+is also the argument for stacking the links rather than joining them: the pair
+runs 407px against a 271px track, so a middot between them put the break
+mid-title.
+
+## The two that went, and why
+
+**The stack diagram.** Five layers read downward, each with the session that
+taught it beside it. It cost a second orientation in the renderer, a `note`
+field, a CSS rule and about 380px at the top of the page. It was accurate, it
+printed and it was translated; the author's verdict was that it was not good
+enough to look at and not useful enough to keep. Everything it added is gone,
+not staged: the record, both placements, the French overlay, `stack_diagram`,
+`diagram_figure`, four geometry constants and `.diagram__note`.
+`render_diagram` is byte-identical to what it was, and so is the output of the
+other two diagrams, which was checked.
+
+**The spec strip.** Three columns stating the page's constants (142
+participants, 12 h, 4 sessions, 3 hosts) on Teaching's component. Correct, and
+replaced, and the argument that replaced it is the reusable one: **a card
+carries a citation and a spec row cannot.** `142 participants` points at no
+record; *60 participants at Securinets ENIS* points at exactly one. That is
+[`CLAUDE.md`](CLAUDE.md) §10's Domains argument arriving at a different
+component.
+
+**One change from those two passes was kept**, because it is a fix rather than
+a feature: `wrap_label` counted an HTML entity as its characters, so `&amp;`
+measured five glyphs wide and broke a label early. It measures the rendered
+glyph now, and no existing diagram's output changed.
+
+**The lesson about [`diagrams.md`](diagrams.md) §1's test** is recorded there
+and in [`DESIGN.md`](DESIGN.md) §1.1: a diagram that is true, prints, and
+restates what the page already says in words is still decoration. Being able to
+answer *could a reader learn something here the prose leaves open* in theory is
+not the same as the picture being worth the space.
+
+## Decisions, and who made them
+
+| Decision | Made by | Note |
+|---|---|---|
+| Delete the diagram | Author | Explicit |
+| Cards instead of the strip, Awards style | Author | Explicit |
+| Group by host, not by measurement or audience | Author | Chosen from four costed options |
+| Newest host first | Here | The order the records are already in |
+| The head count is the figure, sessions and hours the qualifier | Here | Awards' ranks, applied to what this page measures |
+| A host's sessions stack, one to a line | Author | `.result__source--stacked`, one new CSS rule. The middot stays on Awards, where the peers are short |
+
+## Found on the way, not fixed here
+
+- **The spelling audit cannot tell a vocabulary term from prose.** It counts
+  `"@type":"Organization"` in every page's JSON-LD as an American spelling, so
+  the word *organisation* is unusable anywhere on the site. The fix, when
+  someone wants it, is to skip `application/ld+json` blocks in
+  `tools/check.py`, not to change the word.
+- **`.perf` is documented and does not exist.** [`DESIGN.md`](DESIGN.md) §9.3
+  describes it in detail as the fifth user of the label-column idiom, with an
+  account of turning it sideways and re-deriving its track.
+  `render_performance` in `tools/build.py` is never called, `main.css` has no
+  `.perf` rule, and `awards.html` renders `tag--problems` and `tag--team` chips
+  instead. One of the two is wrong and it is the author's call which.
+
+## Still open, and author-led
+
+- **What the cards dropped.** The audience split (112 students against 30
+  professionals), the span (2022-2026) and the sittings count are no longer
+  stated anywhere on the page. The audience split is the one with a claim
+  attached to it, and it survives as a chip on every record.

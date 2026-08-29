@@ -13,6 +13,14 @@ nav: workshops
     Teaching how data moves across the stack: from memory hierarchies and CPU instruction pipelines down to
     cache-efficient data structures and algorithms.
   </p>
+  <!-- One card per host, derived from src/data/workshops.json by
+       render_workshops_hosts and citing the records below by anchor. The card
+       is Awards' scope card: the same grid, the same .entry, the same four
+       lines in the same ranks. It holds no prose and no figure of its own, and
+       nothing in it is styled. workshops.md, the host cards. -->
+  <ul class="entries entries--grid entries--grid--compact">
+{{ build.workshops_hosts }}
+  </ul>
 </header>
 
 <!-- Two blocks, not one, and the order inside them is still newest first. The

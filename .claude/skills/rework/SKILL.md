@@ -458,6 +458,39 @@ Append here every pass. This is the part that makes the file worth keeping.
     and of neither block alone. When a change falsifies a document's argument,
     check whether the decision or only the argument has to move.
 
+45. **Measure the edge the reader actually sees.** Home's misalignment was
+    reported as "four different label columns", and every one of those columns
+    already started at x = 0. What was ragged was the *second* edge, where each
+    flowing column began: 200, 240, 228, 260. The fix happened to be the same,
+    but the diagnosis would have sent the next person to the wrong side of the
+    grid. When a layout looks *almost* aligned, find the edge that varies
+    before naming the cause.
+46. **An option round can be internally inconsistent, and building it
+    literally is not neutrality.** The author chose the site's ordinary heading
+    grammar in one question (which deletes `.block--casebook`) and a rule ramp
+    whose strong step is the block boundary in the next (a rule that lived only
+    inside `.block--casebook`). Obeying both as written would have silently
+    deleted the thing the second answer selected. Phase 7 already says to
+    resolve a collision visibly; the addition is that **the collision can be
+    between two of your own questions**, so read the chosen set against itself
+    before the first edit.
+47. **A component nobody wrote down is a component nobody re-measured.**
+    `.block--casebook` appeared in no model document, and it was putting a 32px
+    heading in a 208px box where five of the site's six section headings did
+    not fit, in both languages, at every width. That is the third undocumented
+    component found wrong on measurements, after `hero-header__headline` and
+    Contact's private classes. `grep` the documents for a component's name
+    early: silence is the strongest available signal that it has never been
+    checked.
+48. **Two numbers in a document you are about to cite are worth re-deriving.**
+    `DESIGN.md` §1 gave the French `h1` as 453px and I quoted it as a live
+    constraint through a whole option round; the shipped face measures 435px.
+    Nothing turned on it this time. The same section's responsive table also
+    had four stale type steps and was missing its largest breakpoint entirely.
+    Lesson 11 says check the repository before quoting a document at the
+    author; this is its arithmetic half, and `fontTools` answers it in a
+    minute.
+
 ---
 
 ## Upgrading this file

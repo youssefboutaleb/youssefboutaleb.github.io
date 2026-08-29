@@ -17,34 +17,38 @@ nav: research
   <p class="block__intro">
     Applied machine learning and anomaly detection systems taken from raw data pipelines to peer-reviewed publication.
   </p>
-  <ul class="entries">
+  <!-- `entries--offprint` is the rank, not a component: a paper keeps every
+       part `.entry` gives every other record and takes the next step up the
+       type scale for its title, air between records, and a hanging indent on
+       the citation line. DESIGN.md 9.5, research.md. -->
+  <ul class="entries entries--offprint">
     <!-- Records live in src/data/research.json; tag order and colour come
          from MODELS in tools/build.py, and the newest-first ordering from
          publication_sort_key. Never hand-write entries here. -->
-{{ build.publications }}
+    {{ build.publications }}
   </ul>
 </section>
 
-<!-- The pipeline behind the Ausgrid paper, drawn under Publications. The
-     bullets say what each stage does; the diagram says what order they run
-     in and that the ledger sits between ingestion and analysis rather than
-     beside them. diagrams.md. -->
-{{ build.diagram.ausgrid_pipeline }}
 <section class="block" aria-labelledby="technical-articles">
   <h2 class="block__title" id="technical-articles">Technical Articles</h2>
+  <!-- A pitch, not a description: DESIGN.md 11.1. The line it replaced listed
+       the two records' topics, which the bullets under it now say better and
+       in more detail. This one says why the writing exists, which is CLAUDE.md
+       3's thread stated as a pitch: teaching forced the systems to be
+       explained clearly to people who will ask why. -->
   <p class="block__intro">
-    Hands-on technical guides covering model serving pipelines, log stream aggregation, and production observability.
+    The explanation I wanted when I was building it.
   </p>
-  <ul class="entries">
+  <!-- The card grid, DESIGN.md 9.4: a set to be counted, not a sequence to be
+       read, which is the test that component sets. `entries--article` is what
+       a box lets the record do that a reading column cannot, DESIGN.md 9.6:
+       head, body, foot, with the chips pinned to the bottom edge. It is also
+       where the page changes register, from the clinical half of CLAUDE.md 6
+       to the warm one, and the column breaks exactly once, here. -->
+  <ul class="entries entries--grid entries--article">
     <!-- Records live in src/data/writing.json, on their own model, see
          writing.md for why these do not share the paper model above. -->
-{{ build.articles }}
+    {{ build.articles }}
   </ul>
-  <!-- The provenance line writing.md has always required and the site has
-       never rendered: the reach figures are hand-copied from Medium and
-       nothing keeps them current, so they say when they were read. Generated
-       from `as_of` on the records, which the build now refuses to go without.
-       It sits under the records because provenance is a footnote, where a
-       block__intro is one line and a pitch (DESIGN.md 11.1). -->
-{{ build.reach_note }}
+
 </section>

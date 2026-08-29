@@ -269,6 +269,26 @@
   --container-wide: 1240px;
   --rail-width: 240px;
 
+  /* The label track every two-column record on Home hangs off, so the page has
+     one vertical edge instead of four. It had four: the portrait's track ended
+     at 180 and its text began at 200, the block heading's at 208 and 240, the
+     result figure's at 208 and 228, the skill name's at 240 and 260. Nothing
+     was misaligned by enough to look deliberate, and everything was misaligned
+     by enough to see.
+
+     13rem with a --space-6 gutter puts every flowing column at x = 240. That
+     width is not free and it is not arbitrary: the widest result figure
+     ("150+ jobs under alerting") is 194px, so the figures still set on one
+     line, and the flowing column that is left at the widest container is 668px
+     against a 652px --measure, so prose keeps its full line. A wider spine
+     starts eating the measure; a narrower one wraps the figures.
+
+     Capability names wrap at any width worth having (English wraps 3 of 10 at
+     15rem and 7 of 10 here, French 6 and 9), so the 15rem .skill used to set
+     was not buying what it looked like it was buying. It was buying the one
+     column that agreed with nothing else on the page. */
+  --spine: 13rem;
+
   /* --- Border radius ----------------------------------------------------- */
   --radius-sm:   3px;   /* tags */
   --radius-md:   5px;   /* code blocks, images */
@@ -288,7 +308,6 @@
   --icon-plate-pad:  light-dark(0px, 1px);
 
   --icon-xs: 12px;
-  --icon-sm: 15px;
   --icon-md: 18px;
 
   /* --- Breakpoints (reference only; CSS cannot use vars in media queries) --
@@ -838,9 +857,10 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 }
 
 .hero-header__content {
-  display: flex;
+  display: grid;
+  grid-template-columns: var(--spine) minmax(0, 1fr);
   align-items: flex-start;
-  gap: var(--space-5);
+  gap: var(--space-6);
   margin-bottom: var(--space-4);
 }
 
@@ -850,10 +870,16 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
    and the crop is a presentation decision.
 
    `object-position` is 60% and not centre because the subject sits right of
-   centre in the source: a centred crop puts the near hand on the frame edge. */
+   centre in the source: a centred crop puts the near hand on the frame edge.
+
+   It fills `--spine` rather than sitting 28px inside it. The portrait is what
+   makes the page's one vertical edge visible in the first screen, and an image
+   narrower than the track it heads would draw that edge in the one place a
+   reader is looking hardest. The source is 800 x 800, so 208 x 260 costs no
+   resolution, and the frame is a true 4:5 now where 180 x 220 was 0.818. */
 .hero-header__portrait {
-  width: 180px;
-  height: 220px;
+  width: 208px;
+  height: 260px;
   flex-shrink: 0;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -861,7 +887,7 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
   object-position: 60% center;
 }
 
-.hero-header__bio { flex: 1; }
+.hero-header__bio { min-width: 0; }
 
 /* The facts a recruiter filters on: mobility, credentials, languages. Set as
    a label column rather than three sentences with a bold word at the front,
@@ -888,6 +914,39 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 .hero-facts {
   max-width: var(--measure);
   margin: var(--space-4) 0 0;
+}
+
+/* On Home the strip runs the full width of the header and hangs its labels on
+   `--spine`, so `Availability`, `Certified` and `Languages` sit in the same
+   track as the portrait above them and every result and capability below, and
+   their values begin at the one x the page uses.
+
+   It used to become a third column above 1280px, 14rem wide with a left rule,
+   which made the recruiter facts the only right-hand element on the site and
+   put them outside the alignment on the one viewport wide enough to show it.
+   The three-track hero is gone with it: the first screen is a little taller
+   above 1280px and reads in one direction instead of two.
+
+   The cap is the spine plus its gutter plus the measure, not the measure
+   alone. `.hero-facts` is a shared component and capping the strip at 74ch
+   while a 13rem label eats the first third of it would have left the
+   availability sentence a 412px column: the measure belongs to the values. */
+.hero-header__content > .hero-facts {
+  grid-column: 1 / -1;
+  max-width: calc(var(--spine) + var(--space-6) + var(--measure));
+  margin-top: 0;
+}
+
+/* Home only. Contact carries the same component at 10rem, which is the width
+   it and `.contact-list` were measured to meet at, and that pairing is not
+   this page's to move. Held in a min-width query rather than won on
+   specificity: the 600px collapse below has to beat it, and two rules of equal
+   weight racing on source order is not a mechanism to rely on. */
+@media (min-width: 601px) {
+  .hero-header__content > .hero-facts .hero-facts__row {
+    grid-template-columns: var(--spine) 1fr;
+    column-gap: var(--space-6);
+  }
 }
 
 .hero-facts__row {
@@ -945,9 +1004,15 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 
 @media (max-width: 600px) {
   .hero-header__content {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     align-items: center;
+    justify-items: center;
     text-align: center;
+  }
+  .hero-header__bio,
+  .hero-header__content > .hero-facts {
+    grid-column: 1;
+    width: 100%;
   }
   /* The label columns collapse: at this width 10rem of label leaves the value
      nothing, and the hero is centred here anyway. Contact's channel rows are
@@ -1033,6 +1098,28 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
   color: var(--color-heading-3);
 }
 
+/* The strong step of the page's rule ramp: a block that opens on a hairline.
+   Home's three blocks take it, so the boundary between sections is drawn at
+   `--color-border` while the record rows inside them are drawn at
+   `--color-border-soft` (sections 13 and 15). One weight used to do both jobs
+   and a reader got fifteen equal divisions on a page with three sections.
+
+   It was `.block--casebook`, and it was a two-column grid: the `h2` sat in a
+   13rem side head with the pitch line beside it. That layout asked a 32px
+   display rank to live in a 208px box, and two of the three English headings
+   did not fit it. `Impact in Numbers` is 279px and `Skills & Evidence` 237px,
+   so both wrapped at every width from 768px up, and the French wrapped all
+   three (`Compétences et preuves` is 358px). The headings are back in the
+   site's ordinary grammar, `h2` then pitch then records, and what is left of
+   the component is the one thing it was doing that nothing else did.
+
+   Renamed with the layout it lost. A modifier called `casebook` describing a
+   border is how a stylesheet starts documenting a page that is not there. */
+.block--ruled {
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+}
+
 /* The footnote a block earns when its figures come from somewhere that does
    not refresh them: provenance and an "as of" date, set below the records
    rather than above them so the intro stays one line. */
@@ -1107,6 +1194,78 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
   border-radius: var(--radius-md);
 }
 
+/* Research's Technical Articles, and nothing else on the site. The card grid
+   above says what earns a box; this says what a box lets a record do that a
+   reading column cannot, which is have a foot.
+
+   The card reads head, body, foot: what the piece is, what it shows, and the
+   evidence that anybody read it. Before this it was four flat rows in source
+   order, title, year, chips, one sentence, with nothing saying which of them
+   was the claim and which was the proof. The chips now render last
+   (`render_article`), the hairline closes the head, and the bullets sit
+   between.
+
+   Nothing about the chip row itself changed. `platform` still takes the quiet
+   grey terminal position that `publisher` takes one block above it, which is
+   the parallel writing.md rests its whole argument on: a reader scanning the
+   page reads Elsevier in one block and Medium in the other, same slot, same
+   colour. Only the row's place in the card moved. */
+.entries--article > .entry {
+  display: flex;
+  flex-direction: column;
+}
+
+/* The hairline that closes the head. It is `--color-border-soft`, the same
+   rule `.entry__group--capstone` uses to separate a course's capstone from its
+   modules: one weight of divider on the site, not two. */
+.entries--article .entry__period {
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+/* Bullets in a 288px track, not in a 74ch column. The inset comes in from
+   1.4em because at this measure the site's reading indent spends a tenth of
+   the line on nothing, and the type steps to 14px for the same reason the
+   `.entry__context` line does: it is the body of a card rather than the body
+   of the page. */
+.entries--article .points {
+  margin-top: var(--space-3);
+  padding-left: 1.1em;
+  font-size: var(--text-md);
+  line-height: var(--leading-normal);
+}
+
+/* The foot. `margin-top: auto` is the whole reason the card is a flex column:
+   it pins the chip row to the bottom edge, so two cards whose bullets run to
+   different lengths still line their evidence up across the row. Without it
+   the reach figure floats at whatever height the prose above it happened to
+   end, which is the thing a grid is supposed to fix. */
+.entries--article .tag-list {
+  margin-top: auto;
+  padding-top: var(--space-4);
+}
+
+/* Research's Publications block, and nothing else on the site. A peer-reviewed
+   paper is the highest-credibility record here and was set at exactly the rank
+   of a Medium walkthrough one block below it: same 17px title, same period
+   line, same chip row, so nothing in the geometry said one of them cleared
+   peer review. This gives it the rank its content already has out of steps the
+   scale already holds, rather than a component of its own. DESIGN.md 9.5. */
+.entries--offprint > .entry { margin-bottom: var(--space-6); }
+
+.entries--offprint .entry__title { font-size: var(--text-xl); }
+
+/* The citation set as a citation. A run of four linked authors and an italic
+   journal wraps at this measure, and a hanging indent puts the second line
+   under the first author instead of under the title, which is what tells the
+   eye the whole run is one line of bibliography. 1.4em is the inset `.entries`
+   and `.points` already use, so the citation hangs on the site's one indent. */
+.entries--offprint .entry__meta {
+  margin-top: var(--space-2);
+  padding-left: 1.4em;
+  text-indent: -1.4em;
+}
+
 .entry { margin-bottom: var(--space-5); }
 .entry > :first-child { margin-top: 0; }
 .entry:last-child { margin-bottom: 0; }
@@ -1168,6 +1327,36 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
   max-width: var(--measure);
 }
 
+/* Performance strip inside a record: contest results (Awards).
+   Compact flex layout sitting beneath the tag row.
+   DESIGN.md section 10.2: dt in text-muted at regular weight,
+   dd in heading colour bold. Pairs sit side-by-side. */
+.perf {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  font-size: var(--text-sm);
+}
+
+.perf__row {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.perf__row > dt {
+  color: var(--color-muted);
+  font-weight: var(--weight-regular);
+}
+
+.perf__row > dd {
+  margin: 0;
+  color: var(--color-heading);
+  font-weight: var(--weight-bold);
+}
+
 .entry__group { margin-top: var(--space-3); }
 
 .entry__group--capstone {
@@ -1181,6 +1370,38 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
   padding-left: var(--space-3);
   border-left: 2px solid var(--color-border-soft);
 }
+
+/* Projects turn their existing detail bullets into a named case-file section.
+   The left rule is the site's established device for a group that belongs to
+   the record above it; it supplies hierarchy without turning the dossier into
+   a card. The proof footer below deliberately closes the dossier with a
+   horizontal rule, so technical detail and material a reader can inspect are
+   separate kinds of information. */
+.entry__group--project {
+  margin-top: var(--space-4);
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--color-border-soft);
+}
+.entry__group--project .points { margin-top: var(--space-2); }
+
+/* The dossier's foot, and it holds artefacts only: the repository, a demo, a
+   slide deck, a write-up. Places a reader can go and look. The upstream
+   standing used to sit in this row as a peer of the repository link and is now
+   a metadata chip in the scan line, where every other record on the site
+   states its standing (MODELS in tools/build.py carries the reversal).
+
+   `.entry__proof-label` is gone with it. It rendered "Project proof" as a
+   visible line on all four records, identical every time, spending ~25px of
+   vertical each to name the rank this hairline already draws. The string is
+   still the list's aria-label, which is the job it was doing that the reader
+   could not see. */
+.entry__proof {
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.entry__proof .tag-list { margin-top: 0; }
 
 /* A company with several positions states the shared company context once and
    ties the progression to it with one unbroken vertical connector: the same
@@ -1479,10 +1700,10 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 
 .result {
   display: grid;
-  grid-template-columns: 13rem 1fr;
-  gap: var(--space-2) var(--space-5);
+  grid-template-columns: var(--spine) 1fr;
+  gap: var(--space-2) var(--space-6);
   padding: var(--space-4) 0;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border-soft);
 }
 .result:first-child { padding-top: var(--space-3); border-top: 0; }
 
@@ -1548,6 +1769,15 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
    are one fact in three parts and stay set solid. */
 .entries--grid--compact .result__source { margin-top: var(--space-2); }
 
+/* Workshops' cards close on the sessions a host ran, and a host may have run
+   more than one. They stack instead of sharing a line: `&middot;` is the peer
+   separator for short peers (CLAUDE.md section 6), and two forty-character
+   titles in a 271px track are not short, so joined they wrapped mid-title. The
+   break separates them and no punctuation has to, which is the call DESIGN.md
+   section 10.2 already makes for `.hero-facts`. Awards' cards keep the middot,
+   because `TCPC 23 &middot; TCPC 22` is exactly the case it is for. */
+.result__source--stacked a { display: block; }
+
 
 /* 15. COMPONENT: SKILL ===================================================== */
 
@@ -1573,11 +1803,11 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
 
 .skill {
   display: grid;
-  grid-template-columns: 15rem 1fr;
-  gap: var(--space-2) var(--space-5);
+  grid-template-columns: var(--spine) 1fr;
+  gap: var(--space-2) var(--space-6);
   align-items: baseline;
   padding: var(--space-4) 0;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border-soft);
 }
 .skill:first-child { padding-top: var(--space-3); border-top: 0; }
 .skill:last-child { padding-bottom: 0; }
@@ -1772,10 +2002,7 @@ th { color: var(--color-heading-3); font-weight: var(--weight-bold); }
    that is what lets a tag list be read positionally. */
 .tag--placement   { background: var(--status-honor-bg);   color: var(--status-honor-fg);   border-color: var(--status-honor-br); }
 .tag--distinction { background: var(--status-honor-bg);   color: var(--status-honor-fg);   border-color: var(--status-honor-br); }
-.tag--type        { background: var(--status-accent-bg);  color: var(--status-accent-fg);  border-color: var(--status-accent-br); }
 .tag--scope       { background: var(--status-scope-bg);   color: var(--status-scope-fg);   border-color: var(--status-scope-br); }
-.tag--problems    { background: var(--status-scope-bg);   color: var(--status-scope-fg);   border-color: var(--status-scope-br); }
-.tag--team        { background: var(--status-neutral-bg); color: var(--status-neutral-fg); border-color: var(--status-neutral-br); }
 
 .tag--format    { background: var(--status-accent-bg);  color: var(--status-accent-fg);  border-color: var(--status-accent-br); }
 .tag--mode      { background: var(--status-scope-bg);   color: var(--status-scope-fg);   border-color: var(--status-scope-br); }
@@ -2020,29 +2247,12 @@ a.tag.link-external::after { margin-left: 0; }
 }
 
 .icon--xs { width: var(--icon-xs); height: var(--icon-xs); }
-.icon--sm { width: var(--icon-sm); height: var(--icon-sm); }
 .icon--md { width: var(--icon-md); height: var(--icon-md); }
 
 /* Brand logos are <img>, so the stylesheet cannot reach inside them. Two
    modifiers say what a mark is made of, and the dark rendering acts on that.
    They are emitted from tools/build.py, keyed by filename, so a logo declares
-   its own treatment once rather than every caller repeating it.
-
-   --mono  a single-colour black mark (GitHub, Anthropic). Inverting it gives
-           white, which is exactly the dark variant those brands publish. The
-           filter is doing colour substitution here, not an effect: there is
-           nothing else in the mark for it to touch.
-
-   --plate a coloured mark carrying black ink (OpenCV, whose wordmark path is
-           7,688 characters against roughly 600 for each of the three colour
-           circles: most of the logo would vanish). It cannot be inverted
-           without turning the red, green and blue discs cyan, magenta and
-           yellow, so it keeps its own colours and is given a ground to sit on.
-           This is the one fill DESIGN.md's out-of-scope list would otherwise
-           forbid, admitted because the alternative is a broken logo.
-
-   In the light rendering neither modifier does anything: the marks are already
-   correct on paper, which is why there is no rule for them outside this block. */
+   its own treatment once rather than every caller repeating it. */
 .icon--mono { filter: invert(var(--icon-invert)); }
 
 .icon--plate {
@@ -2051,17 +2261,6 @@ a.tag.link-external::after { margin-left: 0; }
   border-radius: 2px;
   box-sizing: content-box;
 }
-
-/* An icon-only link (repository, slides) sitting inside a heading. */
-.icon-link {
-  display: inline-flex;
-  padding: 0.1em;
-  margin-left: 0.15em;
-  border-radius: var(--radius-sm);
-  opacity: 0.7;
-  transition: opacity var(--duration) var(--ease);
-}
-.icon-link:hover { opacity: 1; }
 
 
 /* 18. COMPONENT: SITE FOOTER =============================================== */
@@ -2110,9 +2309,11 @@ a.tag.link-external::after { margin-left: 0; }
      and 24px is the floor that keeps it clear. */
   :root { --text-3xl: 3rem; --text-2xl: 1.75rem; }    /* 48px / 28px */
 
-  /* The skill's label column stops earning its width: a 15rem column beside a
-     flowing chip run leaves the chips about nine characters wide. It stacks,
-     and the hairline between rows keeps the records separable without it. */
+  /* The spine stops earning its width: a 13rem column beside a flowing chip
+     run leaves the chips about nine characters wide. It stacks, and the
+     hairline between rows keeps the records separable without it. There is no
+     alignment left to protect here, because the portrait has centred itself
+     and the fact strip has collapsed by this point too. */
   .skill {
     grid-template-columns: 1fr;
     gap: var(--space-2);
@@ -2144,7 +2345,7 @@ a.tag.link-external::after { margin-left: 0; }
   .nav__list::-webkit-scrollbar { display: none; }
   .nav__link { white-space: nowrap; }
 
-  .hero-header__portrait { width: 140px; height: 170px; }
+  .hero-header__portrait { width: 144px; height: 180px; }
 
   .entries, .points { padding-left: 1.1em; }
   .result { grid-template-columns: 1fr; gap: var(--space-1); }
@@ -2258,6 +2459,12 @@ a.tag.link-external::after { margin-left: 0; }
   }
   .page-lede { font-size: 12pt; }
   .site-header__name { font-size: 14pt; }
+
+  /* On screen the block boundary is a hairline and the section heading is not.
+     Print swaps both: the heading takes back its weight and its underline
+     (above), so a rule over the block as well would fence every section twice
+     on the medium with the least room to spend on furniture. */
+  .block--ruled { padding-top: 0; border-top: 0; }
 
   .entry, .block, .skill { page-break-inside: avoid; }
   .block__title, .page-title { page-break-after: avoid; }

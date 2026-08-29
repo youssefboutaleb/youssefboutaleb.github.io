@@ -193,12 +193,22 @@ column and stays where it is.
 
 **The Home hero is the one place the size had to be checked rather than
 chosen**, because it is the only `h1` that is not alone in a full-width header:
-it sits beside the 180px portrait. Measured from the shipped face at weight
-400, `Ingénieur Data` (the longer of the two) is 453px at 64px, against a bio
-column of 492px at a 1024px viewport and 489px at 721px. It holds one line at
-every width, with about 36px to spare at the tightest. **72px, the reference's
-own number, is what this ruled out**: the same string is 510px and wraps across
-most laptop widths.
+it sits beside the portrait, in the track `--spine` leaves it (§4). Measured
+from the shipped face at weight 400, `Ingénieur Data` (the longer of the two)
+is **435px** at 64px. The bio column is 668px at the widest container and
+narrows to **452px** at a 1024px viewport, which is where the rail is present
+and the container has not finished widening to absorb it. It holds one line at
+every width, with about 17px to spare at the tightest. **72px, the reference's
+own number, is what this ruled out**: the same string is 489px and wraps.
+
+**Two of those numbers used to be different, and the correction matters more
+than the change did.** This paragraph read *453px against a bio column of 492px
+and 489px*, measured when the portrait track was 180px. The 453 was never right
+(the shipped face gives 435), the 492 was, and the spine has since cost the bio
+40px. The margin got smaller and the claim got true, which is the opposite of
+what usually happens when a layout tightens under a documented measurement: the
+document was carrying a figure nobody had re-derived. Re-measure with
+`fontTools` against `assets/fonts/`, do not scale the old number.
 
 **Print does not inherit this ramp, deliberately.** The tokens are in `rem` and
 the print stylesheet does not override the root, so a 64px title would set at
@@ -235,6 +245,7 @@ it is now a pair rather than two steps (§1):
 | Page title | `h1` `.page-title` | 64px | **400** | `#222222` | One per page |
 | Section | `h2` `.block__title` | 32px | **400** | `#222222` | One treatment with the title, at half the size |
 | Lede | `.page-lede` | 20px | 400 | `#494949` | Home, Contact, Teaching, Workshops (§11.1) |
+| Paper | `h3` `.entry__title` inside `.entries--offprint` | 20px | 700 | `#222222` | Research's Publications block, and only it (§9.5) |
 | Record | `h3` `.entry__title`, `.issuer`, `.skill__name` | 17px | 700 | `#222222` | One per record |
 | Group | `h4` `.entry__group-title` | 16px | 700 | `#494949` | A part of a record |
 | Body / `strong` | | 16px | 400 / 700 | `#373737` / `#222222` | |
@@ -243,6 +254,16 @@ Note that body text and a record title are *darker* than the section heading
 above them. That is not a mistake; it is the original ramp and it is why the
 page reads calm rather than shouty. It is also why the ramp is stated by role
 here rather than assumed to descend with the tag number.
+
+**The Paper row is the one rank set by what a record is, not by its element.**
+Every other row in this table is an element or a component; that one is an
+`.entry__title` that happens to be a paper, and it takes the lede's step
+because a peer-reviewed article is the highest-credibility record the site
+carries and was set at exactly the rank of the Medium post one block below it.
+The argument is §9.5's. It is stated as its own row rather than as a
+parenthesis on the Record row because a reader checking what 20px means on
+this site should find both users of it in the same column, and because the
+next component that wants a rank of its own should have to add a row here.
 
 **The weight column is not decoration in this table.** It is the only place the
 ramp does not descend with the size, and the exception is the top two rows: the
@@ -289,8 +310,19 @@ Mermaid was the alternative and was rejected for the reasons
 carrying one, nothing where scripts are blocked, an empty box in print. An
 element that disappears on paper fails Principle 1 on its own terms.
 
-`src/data/diagrams.json` is empty and its classes sit in `STAGED_CSS`. That is
-the correct state: [`CLAUDE.md`](CLAUDE.md) M1 reserves the content.
+**Two diagrams exist**, and the paragraph that stood here said the file was
+empty and the classes were staged. Career carries the JACQUEMUS order path and
+Research the Ausgrid pipeline, both laid out left to right because a pipeline
+is a sequence. [`CLAUDE.md`](CLAUDE.md) M1 still reserves what a diagram may
+claim: the container is the system's, the content is the author's.
+
+**A third was built for Workshops and removed.** It drew the teaching stack as
+five layers read downward, which cost the renderer a second orientation and the
+page 380px of its header, and the author's verdict on it is the one that
+matters here: it did not earn the space. Recorded because the shape will look
+tempting again, and because the test in [`diagrams.md`](diagrams.md) §1 is
+harder to pass than it reads: a picture of what a page already says in words
+is decoration, however accurate it is.
 
 ## 2. Colour
 
@@ -408,6 +440,38 @@ not the site getting wider: it is most of what the rail takes back, so the
 records keep close to the width they had. The arithmetic is in the next
 section, because it is the whole argument for the rail being admissible.
 
+### `--spine`: the one vertical edge inside the column
+
+**Home is a two-column document, and the second column starts at one x.**
+`--spine` is 13rem and the gutter beside it is `--space-6`, so every flowing
+column on the page begins at 240px: the bio beside the portrait, the
+consequence beside a `.result` figure, the evidence beside a `.skill` name, and
+the value beside a `.hero-facts` label.
+
+**It is a token because it was four literals, and they nearly agreed.** The
+portrait's track ended at 180 and its text began at 200; the block heading's at
+208 and 240; the result figure's at 208 and 228; the skill name's at 240 and
+260. Four gutters inside 60px of each other, down one page. Nothing was off by
+enough to look intended, and everything was off by enough to see: the page read
+as *almost* aligned, which is worse than either alternative, because a reader
+cannot tell a system from an accident and stops trusting the ones that are real.
+
+**13rem is where the arithmetic lands, not a preference.** The widest
+`.result__figure` (*150+ jobs under alerting*) is 194px, so the figures still
+set on one line; the flowing column left at the widest container is 668px
+against a 652px `--measure`, so prose keeps its full line. A wider spine eats
+the measure and a narrower one wraps the figures.
+
+**What it does not buy is unwrapped capability names**, and that was the
+argument for the 15rem `.skill` used to set. Measured, English wraps 3 of 10
+names at 15rem and 7 of 10 at 13rem, and French wraps 6 and 9: they wrap at any
+width the column can afford, in both languages, so the extra 32px was buying
+the one track that agreed with nothing else on the page. A label column that
+wraps is a label column; a page with four gutters is a defect.
+
+The spine is Home's today. Any page that grows a second two-column record takes
+it rather than choosing its own width.
+
 ### The rail, and why it is gone
 
 The theme this site forked from put identity in a sticky 280px rail on the
@@ -488,9 +552,24 @@ first.
 
 **The system is flat, and now completely.** There is no shadow token. There
 was exactly one, `--shadow-portrait`, on exactly one element, and it went when
-the portrait stopped being a 130px round badge and became a 180 x 220
+the portrait stopped being a 130px round badge and became a 208 x 260
 photograph bounded by the same 1px hairline as everything else the system
 gives an edge to. Content is never lifted. Separation is a hairline.
+
+### The hairline has two weights, and they are a rank
+
+`--color-border` and `--color-border-soft` are not two shades of the same idea.
+**The strong rule closes a section; the soft rule separates two records inside
+one.** Home is where the distinction was first made to carry weight, because it
+is the page with the fewest sections and the most rows: three blocks holding
+fifteen ruled rows between them, every rule drawn at the same value, so a
+reader scanning it got fifteen equal divisions on a document with three parts.
+
+`.block--ruled` draws the strong one. `.result` and `.skill` draw the soft one,
+which is the rule `.hero-facts__row` had been drawing since it was written, so
+the change made Home agree with its own header rather than introducing
+anything. A component that rules its rows takes the soft weight unless it is
+ending a section.
 
 ## 6. Iconography
 
@@ -627,8 +706,8 @@ built with*, per [`CLAUDE.md`](CLAUDE.md) §6.
 
 | Variant | Colour |
 |---|---|
-| `.tag--upstream` | Amber, and carries a link to the pull request |
 | `.tag--kind` | Blue |
+| `.tag--upstream` | Amber: *the same rule that puts `status` in amber on Research*, and carries a link to the pull request |
 | `.tag--stack` | Outlined, regular weight, one chip per tool |
 
 **Skills**: declared in [`skills.md`](skills.md)
@@ -865,6 +944,7 @@ item**, exactly as the original CV pages were written by hand:
   One or two framing sentences.   .entry__summary  (optional)
   - point                         .points
   - point
+  [artefact links]                .entry__proof    (Projects dossiers only)
 ```
 
 **That order is fixed for every record on the site**, and it is the order the
@@ -878,10 +958,18 @@ summary between the dateline and the tags, which put the page's densest
 paragraph in front of its fastest layer on the page a recruiter opens first.
 Six renderers against one settled it and Experience moved.
 
-The only sanctioned insertion is Research's citation line
+The sanctioned insertions are Research's citation line
 (`.entry__meta`), which sits between the period and the tags because a paper's
 authors and venue are part of identifying it rather than commentary on it:
-[`research.md`](research.md) argues it.
+[`research.md`](research.md) argues it; and Projects' proof footer, which sits
+after the project's technical group because a repository, demo, article, or
+slide deck is a **place a reader can go and look** rather than a fact about the
+record. [`projects.md`](projects.md) carries that exception, and the line it
+draws is now sharp: the upstream pull request used to render in that footer and
+does not, because an acceptance is a standing rather than a destination, and
+every other record on the site states its standing in the scan line. It carries
+no visible label either; the hairline draws the rank, and the deleted `Project
+proof` line named the component instead of saying anything about the record.
 
 The period line is **never italic**. A smaller size and the muted ink already
 say *secondary*, and a third de-emphasis signal on top of those buries a fact
@@ -924,6 +1012,15 @@ Security / Observability) and is emitted by one helper, `render_group`, shared
 by a job's disciplines, a course's syllabus modules and a workshop's parts.
 `.issuer` heads a credential group with its brand mark.
 
+**Projects use that group as a dossier detail.** Their unchanged technical
+bullets sit below a `What was built` label on the same left rule that says the
+details belong to the record above. A final `.entry__proof` hairline closes the
+dossier and holds only artefacts a reader can open. It is not a card footer:
+the record has no surface or border around it, the rule separates two kinds of
+information rather than drawing a box, and the footer carries no heading of its
+own, because the only thing a label there could say is what the hairline has
+already said.
+
 **The workshop case is the one that arrived by conversion**, and it is the
 clearest statement of what the component is for. A two-part series carried its
 structure inside its own bullet text: `<b>Part 1.a: Efficient data &amp; code
@@ -943,11 +1040,11 @@ job held, a paper published, a contest entered. A skill is a **claim about
 capability**, which is the one assertion a portfolio cannot be trusted on, so
 the component is built so the claim cannot appear without its proof:
 
-**It is the one two-column record on the site.** A fixed 15rem label column
+**It is the one two-column record on the site.** A `--spine` label column (§4)
 holds what the capability *is*; the right column flows and holds the proof:
 
 ```
-.skill__head (15rem)        .skill__proof (flows)
+.skill__head (--spine)      .skill__proof (flows)
 ──────────────────────────────────────────────────────────────────────
 Data pipeline engineering   (Talend) (MuleSoft) (Apache Airflow)
 Production-proven           [Azure Data Factory & Fabric at JACQUEMUS]
@@ -961,8 +1058,15 @@ The split exists because the block could not be read without it. Capability,
 tools and forty citations all ran from one left edge, so the ranking the block
 computes for itself was invisible: nothing lined up well enough to look ordered.
 A fixed label column is the same device `.contact-list` uses (§11), for the same
-reason. It collapses to one column at ≤720px, where 15rem beside a chip run
+reason. It collapses to one column at ≤720px, where the spine beside a chip run
 would leave the chips about nine characters wide.
+
+**The column was 15rem and is now `--spine`.** It was the widest of the four
+label tracks on Home and the only one nothing else agreed with. The 32px it
+gave up does not cost what it looks like: capability names wrap at both widths
+in both languages (§4 carries the counts), so what the wider column was buying
+was a longer first line on three rows out of ten, at the price of the page's
+alignment.
 
 **It is not boxed and it is not a table.** §9 above: a CV is a document, not a
 feed of cards. And a true five-column proof matrix (production / certification /
@@ -1047,8 +1151,11 @@ result__figure     pipelines.
                    JACQUEMUS · Career                                   result__source
 ```
 
-The figure sits in a fixed 13rem column at `--text-lg` in heading ink, which is
-**the slot and the size `.entry__title` had**. The consequence flows beside it
+The figure sits in the `--spine` column (§4) at `--text-lg` in heading ink,
+which is **the slot and the size `.entry__title` had**. Every figure the block
+carries fits it on one line; the widest, *150+ jobs under alerting*, is 194px
+against 208px, and that measurement is one of the two that set the spine's
+width. The consequence flows beside it
 at body size, capped to the measure. The provenance line closes it at
 `--text-sm` in muted ink.
 
@@ -1142,8 +1249,25 @@ at): both cap at `--measure`, both rule on the top edge with the first row
 reset, and both collapse to one track at 600px.
 
 **The rule is that columns sharing a page share a width, not that the idiom
-has one.** `.result` is 13rem and `.skill` is 15rem, each sized to what it
-holds, and neither is stacked against another label column. What the other
+has one.** It is now stated twice on one site, in two widths, and the second
+statement is what proves it is a rule rather than a number.
+
+On **Contact**, `.hero-facts` is stacked 40px above `.contact-list`, so it
+takes that pairing's width: **10rem**, forced by `Consulting & services` and
+the French `Telephone / WhatsApp`.
+
+On **Home**, the same component is stacked above `.result` and `.skill`, so it
+takes theirs: **`--spine`**, 13rem, which is why `Availability`, `Certified`
+and `Languages` begin their values at the same x as every figure and capability
+below them (§4). The override is scoped to `.hero-header__content > .hero-facts`
+and held in a `min-width: 601px` query, so the 600px collapse both pages share
+still wins without a specificity race.
+
+**One component, two widths, and neither is drift**: each is the width of the
+column it is read beside. A third page adopting `.hero-facts` measures what it
+sits next to before choosing.
+
+What the other
 three do share, and what `.contact-list` alone was opting out of, is the top
 edge rule with a `:first-child` reset: ruling on the bottom left a hairline
 under each block's last row, a row's height above the next section heading,
@@ -1171,13 +1295,14 @@ inside gains `--space-3`/`--space-4` of padding, `--color-surface`, a
 `--color-border-soft` hairline and `--radius-md`.
 
 ```
-┌────────────────────────────┐  ┌──────────────────┐
-│ Microsoft                  │  │ Regional         │
-│ • Azure Database Admin…    │  │ 1st Place        │
-│ • Fabric Data Engineer…    │  │ of 86 teams      │
-│ • Fabric Analytics Eng…    │  │ Hello World v4.0 │
-└────────────────────────────┘  └──────────────────┘
-  Career, Certifications          Awards, the scope summary
+┌────────────────────────────┐  ┌──────────────────┐  ┌───────────────────────┐
+│ Microsoft                  │  │ Regional         │  │ Custom YOLOv8 for…    │
+│ • Azure Database Admin…    │  │ 1st Place        │  │ 2023                  │
+│ • Fabric Data Engineer…    │  │ of 86 teams      │  │ ───────────────────── │
+│ • Fabric Analytics Eng…    │  │ Hello World v4.0 │  │ • Annotates the meter…│
+└────────────────────────────┘  └──────────────────┘  └───────────────────────┘
+  Career, Certifications          Awards, the scope       Research, Technical
+                                  summary                 Articles
 ```
 
 **What earns a box.** A cell whose records are a **set to be counted, not a
@@ -1189,12 +1314,56 @@ boxing it would cut the thread. That is the whole test, and it is why Career's
 Experience and Awards' own eight records stay unboxed on the same pages that
 carry a grid.
 
-**The two cells are not the same cell, and that is the point.** A
+**Technical Articles is the case that tested the word *counted*.** Two Medium
+posts are read, in the ordinary sense that a reader opens one and reads it, so
+the test looks as though it should refuse them. It does not, because the test
+is about the *list* and not about the thing at the end of the link: nobody
+reads a list of two articles top to bottom to see how the second follows from
+the first. They scan it to see what is there and whether the reach figure is
+worth a click, which is a set being counted.
+
+**The shape of the record was read as evidence for that, and it has since
+changed.** An article used to carry a title, a year, three chips and one
+sentence and **no `.points`**, so it was the only record on the page with
+nothing to read in order. In the reading column that did not make it look
+different from a paper; it made it look like a paper that had run out of
+content, which is the defect the grid actually fixes. It carries three bullets
+now ([`writing.md`](writing.md)), and the verdict is unchanged, because the
+test above is about the *list*: the empty array was corroboration, not the
+reason. What the box then turned out to be good for is in §9.6.
+
+**It is also where the page changes register**, from the clinical half of
+[`CLAUDE.md`](CLAUDE.md) §6 to the warm one, and the grid is what makes that
+visible: Research's column breaks exactly once, on the line the voice map
+already draws. That is a second reason and not the first. A block does not earn
+a box by being a different register; it earns it on the test above, and this
+one passes before the register is mentioned.
+
+**It takes the base `18rem`, not `--compact`.** The compact track was cut for a
+card of four short lines; an article card holds a wrapping title of eighty-odd
+characters and three bullets under it. Two tracks and one `--space-5` gutter in
+the 908px column give a card 444px, about 410px of measure inside the padding,
+which the title fills in two lines and each bullet in one or two. That is the
+opposite of the failure `.awards-stats` is charged with below, where a visibly
+bordered element was half empty.
+
+**The four cells are not the same cell, and that is the point.** A
 certifications cell is a heading and a list: the issuer in `.issuer` (it has a
 logo, so it is a flex row) and its certificates in `.points`, because three
 certificates are a set to be counted. An Awards cell is one result stated one
 fact per line: the scope as a quiet label, the result at title weight, the
-field size beneath it, and the record that earned it as provenance. It carries
+field size beneath it, and the record that earned it as provenance. **A
+Workshops cell is the Awards cell, reused whole**: the host in `.result__scope`,
+the head count at title weight, the sessions and hours in `.result__scale`, and
+the sessions themselves as links in `.result__source`, one to a line on
+`.result__source--stacked` because two forty-character titles are not the short
+peers `&middot;` exists for. That it needed no new
+line and no new class is the argument for the component: *a set of things each
+carrying one figure and one citation* turned out to describe three different
+pages. **An article cell is none of those three**: it is the plain `.entry`
+the reading column renders, boxed, plus four rules that give the box a foot
+(§9.6). It invents no cell language of its own, and the four rules move parts
+the record already had rather than adding any. The Awards cell carries
 no chips, because the record 300px below carries the same chips and a
 projection styled identically to its source reads as the page saying
 everything twice ([`awards.md`](awards.md), the scope summary). **Nothing in
@@ -1252,6 +1421,128 @@ of the reasons is *it was boxed*:
 
 Every one of those followed from hand-writing a component instead of composing
 one out of the parts already on the page.
+
+### 9.5 `.entries--offprint`: the rank a paper takes
+
+Research's Publications block, and nothing else on the site. It is **a rank,
+not a component**: a paper keeps every part `.entry` gives every other record,
+in the same fixed order §9 sets, and changes three measurements.
+
+```
+Secure and transparent energy management using blockchain      20px, was 17px
+and machine learning anomaly detection…
+2025
+N. Moumni, Y. Boutaleb, F. Chaabane, and F. Drira ·            hanging indent
+    Computers & Industrial Engineering
+[ Published ] [ Second Author ] [ Elsevier ] [ Dataset ]
+Decentralized energy data architecture combining…
+- Data pipeline & auditability: …
+                                                               32px, was 20px
+Dual verification-based multimodal approach…
+```
+
+**What it fixes.** The site's highest-credibility record was set at exactly the
+rank of the Medium post one block below it: same 17px title, same period line,
+same chip row. A recruiter scanning for seconds ([`CLAUDE.md`](CLAUDE.md) §2)
+got no signal from the geometry that one of the four records on the page had
+cleared peer review and the others had not. Principle 3 is credibility before
+persuasion, and this is that principle done in type rather than in prose.
+
+**The title takes `--text-xl`, which the scale already held.** No new step, no
+new size: 20px is the lede's step and the brand-bar name's, and it lands the
+page's ramp on 32 / 20 / 16 where the block ran 32 / 17 / 16. §1's heading ramp
+carries the row, and this is the one rank on the site set by what a record *is*
+rather than by its element.
+
+**The citation gets a hanging indent, not a box or a rule.** At the measure the
+four linked authors and the italic journal wrap, and wrapped flush left the
+second line sets under the title and reads as a new statement. Hung on the
+`1.4em` that `.entries` and `.points` already use, the run reads as one line of
+bibliography, which is what it is. The site has one indent; this is it, used a
+third time rather than a fourth value invented.
+
+**Per-record rhythm goes to `--space-6`.** Two papers rather than five records
+in the block, each now carrying a 20px title, so `--space-5` put the second
+title close enough to the first record's last bullet to read as part of it.
+
+**What it deliberately does not do.** No border, no surface, no left rule, no
+second colour: §9's *entries are never boxed* holds, and §9.4's grid is the one
+exception, which this is not. Nothing here is a new component, a new token or a
+new treatment. If a future block wants a rank of its own it adds a row to §1's
+ramp and an argument here, and *the records on this page feel important* is not
+one: **the argument has to be that the reader is currently being told something
+false by the geometry.** That was true here, twice over, because the two blocks
+sat on one page and looked identical.
+
+### 9.6 `.entries--article`: the card that has a foot
+
+Research's Technical Articles, and nothing else on the site. §9.4 says what
+earns a box; this says what a box lets a record do that a reading column
+cannot, which is have a foot.
+
+```
+Simplify Your Log Management: Configuring
+DataDog Integration with Log4j2 In Mulesoft
+2024
+------------------------------------------  head closed by a hairline
+- A Log4j2 HTTP appender POSTs JSONLayout
+  events straight to the Send Logs API.
+- No agent on the host, and no collector
+  in between.
+- The appender is asynchronous, so logging
+  never blocks a Mule execution thread.
+                                            body, then the space auto takes
+[ Configuration Guide ] [ 723 views ...     foot, pinned to the bottom edge
+[ Medium ]
+```
+
+**What it fixes.** The card was four flat rows in the order §9 sets: title,
+year, chips, one sentence. Nothing in it said which row was the claim and
+which was the proof, and the reach figure, the only external evidence this
+block has, sat as the middle of three identical chips. Four rows is not a
+hierarchy; it is a list of four things that happen to be in a box.
+
+**It is four rules and no new part.** The `.entry` is a flex column, the
+period takes a `--color-border-soft` bottom rule, the bullets step to 14px on
+a `1.1em` inset, and the tag list takes `margin-top: auto`. Nothing is added
+to the record, nothing is removed from it, and no new token, colour or
+component appears. `render_article` moves the chip row to the end of `parts`
+and changes nothing else.
+
+**`margin-top: auto` is the whole reason it is a flex column.** It pins the
+chip row to the bottom edge of the card, so two cards whose bullets run to
+different lengths still line their evidence up across the row. Without it the
+reach figure floats at whatever height the prose above it happened to end,
+which is the thing a grid is supposed to fix and the thing an `auto-fit` row of
+equal-height cards makes worse: the cards were already the same height, and the
+content inside them was not.
+
+**The chips render last here and first everywhere else, and the row itself is
+untouched.** §9 fixes the order of a record's parts, and this is the one place
+that order changes, on the ground that a box has a foot and a reading column
+does not. What does *not* change is the row's contents or its treatment:
+`platform` still takes the quiet grey terminal position that `publisher` takes
+one block above it, which is the parallel [`writing.md`](writing.md) rests its
+whole argument on. A reader scanning the page reads **Elsevier** in one block
+and **Medium** in the other, same slot, same colour. Moving the row down the
+card leaves that intact; dissolving the row into a bespoke footer would not
+have, which is why the alternative was declined.
+
+**The bullets step to `--text-md` and inset `1.1em`.** The site has one reading
+indent, `1.4em`, used by `.entries`, `.points` and the offprint citation, and
+this is the one measure where it is wrong: at roughly 280px of card, `1.4em`
+spends a tenth of every line on nothing. The type step is the same reasoning
+`.entry__context` already carries: 14px is the body of a card, 15px is the body
+of the page.
+
+**What it deliberately does not do.** No second surface inside the card, no
+uppercase eyebrow above the title, no bespoke footer row replacing the chips,
+and no reach figure promoted to a `.result`-style number. Each of those was on
+the table and each one buys hierarchy by spending the tag vocabulary, and the
+tag vocabulary is what makes the two blocks on this page comparable at a
+glance. **The rank a component earns is paid for out of space and order, not
+out of a new language**, which is §9.5's rule stated a second time on the other
+half of the same page.
 
 ## 10. The rule that emptied a component
 
@@ -1361,6 +1652,13 @@ Reach for it only when a block has **several constants of different kinds** to
 state at once. One or two labelled facts are a sentence, or a `.hero-facts`
 row if the page is Home (§10.2).
 
+**Teaching is still its only user, and Workshops was briefly the second.** A
+three-column strip stated that page's constants for one revision and became the
+card grid in §9.4 instead, on the author's call. The reason is worth keeping
+where the next person will look for it: a `.spec` row states a figure and
+nothing else, and every figure on that page belongs to a host who invited him.
+A card can carry the link; a spec row cannot.
+
 
 ### 10.2 `.hero-facts`: the fact strip
 
@@ -1408,11 +1706,16 @@ place to park things that failed to earn a block.
 Every page is the same stack:
 
 ```
-page-header   h1 + optional lede (§11.1) + optional summary grid (§9.4)
+page-header   h1 + optional lede (§11.1)
+              + optional page summary: a card grid (§9.4) or a spec strip (§10.1)
 block         h2 + optional intro (§11.1)
               + entries or skills          
               + optional note                                        ← repeated
 ```
+
+A page summary is **derived from the records below it**, never written: it
+states what the page's records add up to, and every figure in it comes from the
+fields those records render from.
 
 Each page has exactly one `<h1>`: its own title. The site name in the brand bar
 is a link, not a heading, so every page gets a unique document outline.
@@ -1511,9 +1814,16 @@ rank and move it.
 Some figures come from a source that does not refresh them. A note in
 `--text-sm` muted ink, placed **after** the records, carries their provenance
 and an explicit *as of* date, so the intro is not forced to hold a disclaimer.
-Research → Technical Articles is the only user today: Medium's view and read
-counts are hand-copied, and the counts and that date move in one change or
-neither does ([`writing.md`](writing.md)).
+
+**It has no user, and it is staged rather than deleted.** Research → Technical
+Articles was the one candidate: Medium's view and read counts are hand-copied,
+and the note reading *Reach figures read from Medium, August 2026* was built
+and then withdrawn on the author's call, because a footnote dating two chips is
+a maintenance promise made in front of the reader. The discipline it existed to
+enforce did not go with it: `as_of` is still required on every `reach` and
+`check_reach` is still fatal, so the date is kept where it does the work, in
+the record ([`writing.md`](writing.md)). The component stays in `STAGED_CSS`
+because the next hand-copied figure on this site will want it.
 
 A note is for provenance and dating. It is not an overflow bin for the
 sentences the intro rule removed.
@@ -1590,8 +1900,8 @@ nowhere else. The nesting device is now the same 2px left hairline
 book, and that was **the only `<svg>` on any page of this site**: §17's icons
 are all `<img>` of a real brand mark, sized by a token, carrying something a
 word could not. This one was `aria-hidden`, drew the three words next to it,
-sat at a hardcoded `16px` that is on none of `--icon-xs` (12), `--icon-sm`
-(15) or `--icon-md` (18), and was painted `--color-muted` beside a
+sat at a hardcoded `16px` that is on none of `--icon-xs` (12) or `--icon-md`
+(18), and was painted `--color-muted` beside a
 `--color-heading` label, so the largest object in the header was also the
 palest. Keeping it meant maintaining an icon vocabulary of one.
 
@@ -1628,11 +1938,29 @@ keep the navigation usable once eight items stop fitting.
 
 | Breakpoint | Change |
 |---|---|
+| ≥1024px | The cap goes to `--container-wide` (1240px) and `.page-body` becomes a grid: the page context rail takes a sticky 240px left track (§4) |
 | >960px | The column is centred and capped at 1100px |
+| ≥601px | Home's fact strip hangs its labels on `--spine`; below this the collapse row takes over (§10.2) |
 | ≤960px | The cap is released and the column takes the viewport; footer centres |
-| ≤720px | Padding tightens; nav items shrink-wrap; `--text-3xl` steps to 32px and `--text-2xl` to 22px |
+| ≤720px | Padding tightens; nav items shrink-wrap; `--text-3xl` steps to 48px and `--text-2xl` to 28px; `.skill` collapses to one track |
 | ≤600px | Home's hero stacks: portrait above the bio, centred; the brand bar stacks; every label column collapses to one track, its label going bold (`.hero-facts`, `.contact-list`, `.perf`) |
-| ≤480px | Navigation scrolls horizontally, bleeding to the viewport edges so the affordance is visible; the portrait steps to 140 x 170; `--text-3xl` steps to 28px and `--text-2xl` to 20px |
+| ≤480px | Navigation scrolls horizontally, bleeding to the viewport edges so the affordance is visible; the portrait steps to 144 x 180; `.result` collapses to one track; `--text-3xl` steps to 40px and `--text-2xl` to 24px |
+
+**Four of those numbers were wrong before this table was last read.** It gave
+the ≤720px steps as 32px and 22px and the ≤480px steps as 28px and 20px, which
+were the values from before §1's display pair was rebuilt; the stylesheet has
+said 48/28 and 40/24 since. The `≥1024px` row was missing entirely, so the
+breakpoint that introduces the rail and widens the container, the largest
+structural change on the list, was the one it did not mention. Read this table
+against `main.css`'s `@media` blocks before trusting a row: there are seven,
+and they are the whole set.
+
+**One breakpoint left the file rather than joining it.** A `min-width: 1280px`
+query used to give Home's hero a third track, moving the fact strip into a
+14rem right-hand column with a left rule. It was the only right-aligned element
+on the site, and it put the recruiter facts outside the spine on the one
+viewport wide enough for the alignment to be visible. The strip runs full width
+at every size now.
 
 Prose stays readable at every one of these without a rule of its own, because
 `--measure` is in `ch` and therefore already relative to the type size (§1).

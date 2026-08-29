@@ -22,7 +22,7 @@
   <link rel="alternate" hreflang="x-default" href="https://youssefboutaleb.github.io/research.html">
   <link rel="icon" type="image/svg+xml" href="../images/icons/icon.svg">
   <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/Noto-Sans-regular/Noto-Sans-regular.woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/css/main.css?v=b8aec60f55ff">
+  <link rel="stylesheet" href="../assets/css/main.css?v=7f7f664a6db5">
 
   <script>
     // Before first paint, or the pinned theme flashes the other one on every
@@ -143,7 +143,7 @@
           <p class="block__intro">
             Apprentissage automatique appliqué et systèmes de détection d'anomalies, menés des pipelines de données brutes jusqu'à la publication évaluée par les pairs.
           </p>
-          <ul class="entries">
+          <ul class="entries entries--offprint">
             <li class="entry" id="pub-secure-and-transparent-energy-management-using-blockchain-and-machine-learning-anomaly-detection-a-case-study-of-the-ausgrid-dataset">
               <h3 class="entry__title"><a class="link-external" href="https://doi.org/10.1016/j.cie.2025.111040" target="_blank" rel="noopener">Secure and transparent energy management using blockchain and machine learning anomaly detection: A case study of the Ausgrid dataset</a></h3>
               <p class="entry__period"><time datetime="2025">2025</time></p>
@@ -178,52 +178,42 @@
           </ul>
         </section>
 
-          <figure class="diagram" id="ausgrid_pipeline">
-            <svg class="diagram__svg" viewBox="0 0 808 98" role="img" aria-labelledby="ausgrid_pipeline-title ausgrid_pipeline-desc">
-              <title id="ausgrid_pipeline-title">Pipeline de détection d'anomalies sur compteurs communicants Ausgrid</title>
-              <desc id="ausgrid_pipeline-desc">Les séries temporelles des compteurs communicants sont ingérées par intervalles de 30 minutes, puis hachées dans une piste d'audit blockchain pour qu'un relevé ne puisse pas être modifié sans laisser de trace, avant d'être passées à un moteur d'anomalies non supervisé dont la sortie alimente des alertes d'anomalie réseau, vol d'électricité et défaillance de capteur.</desc>
-              <text class="diagram__lane" x="86" y="22" text-anchor="middle">Ingestion</text>
-              <text class="diagram__lane" x="298" y="22" text-anchor="middle">Vérification</text>
-              <text class="diagram__lane" x="510" y="22" text-anchor="middle">Analyse</text>
-              <text class="diagram__lane" x="722" y="22" text-anchor="middle">Sortie</text>
-              <path class="diagram__edge" d="M160 60 C192 60 192 60 224 60"/>
-              <path class="diagram__edge" d="M372 60 C404 60 404 60 436 60"/>
-              <path class="diagram__edge" d="M584 60 C616 60 616 60 648 60"/>
-              <g class="diagram__node"><rect x="12" y="34" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="86" y="58">Séries temporelles</tspan><tspan x="86" y="70">des compteurs</tspan></text></g>
-              <g class="diagram__node"><rect x="224" y="34" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="298" y="58">Piste d'audit</tspan><tspan x="298" y="70">blockchain</tspan></text></g>
-              <g class="diagram__node"><rect x="436" y="34" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="510" y="58">Moteur d'anomalies</tspan><tspan x="510" y="70">non supervisé</tspan></text></g>
-              <g class="diagram__node"><rect x="648" y="34" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="722" y="58">Alertes d'anomalie</tspan><tspan x="722" y="70">réseau</tspan></text></g>
-            </svg>
-            <figcaption class="diagram__caption">300 flux résidentiels solaires et réseau, par intervalles de 30 minutes.</figcaption>
-          </figure>
         <section class="block" aria-labelledby="technical-articles">
           <h2 class="block__title" id="technical-articles">Articles techniques</h2>
           <p class="block__intro">
-            Guides techniques pratiques sur les pipelines de mise en production de modèles, l'agrégation de flux de logs et l'observabilité en production.
+            L'explication que j'aurais voulu trouver au moment de le construire.
           </p>
-          <ul class="entries">
+          <ul class="entries entries--grid entries--article">
             <li class="entry" id="datadog-log4j2-mulesoft">
               <h3 class="entry__title"><a class="link-external" href="https://medium.com/@youssefboutaleb.info/simplify-your-log-management-configuring-datadog-integration-with-log4j2-in-mulesoft-44e83b56e0c4" target="_blank" rel="noopener">Simplify Your Log Management: Configuring DataDog Integration with Log4j2 In Mulesoft</a></h3>
               <p class="entry__period"><time datetime="2024">2024</time></p>
+              <ul class="points">
+                <li>Un appender HTTP Log4j2 poste les événements JSONLayout directement vers l'API Send Logs de Datadog.</li>
+                <li>Aucun agent sur l'hôte, et aucun collecteur intermédiaire.</li>
+                <li>L'appender est asynchrone, donc la journalisation ne bloque jamais un thread d'exécution Mule.</li>
+              </ul>
               <ul class="tag-list" aria-label="Détails de l'article">
                 <li class="tag tag--format">Guide de configuration</li>
-                <li class="tag tag--reach">723 views &middot; 424 reads</li>
+                <li class="tag tag--reach">723 vues &middot; 424 lectures</li>
                 <li class="tag tag--platform">Medium</li>
               </ul>
-              <p class="entry__summary">Architecture de streaming de logs sans agent : configuration d'un appender HTTP Log4j2 asynchrone qui poste les événements JSONLayout directement vers l'API Send Logs de Datadog, sans bloquer les threads d'exécution.</p>
             </li>
             <li class="entry" id="yolov8-fastapi-gradio">
               <h3 class="entry__title"><a class="link-external" href="https://medium.com/@youssefboutaleb.info/developingyolov8-custom-object-detection-with-fastapi-and-gradio-e9314fad0782" target="_blank" rel="noopener">Developing a Custom YOLOv8 Model for Number Detection on Meters Using FastAPI and Gradio</a></h3>
               <p class="entry__period"><time datetime="2023">2023</time></p>
+              <ul class="points">
+                <li>Annote le jeu de données de compteurs sur Roboflow et y entraîne YOLOv8.</li>
+                <li>Entraîne sur les deux TPU de Kaggle avec DataParallel.</li>
+                <li>Sert les poids deux fois : un point de terminaison FastAPI conteneurisé, et une application Gradio sur Hugging Face.</li>
+              </ul>
               <ul class="tag-list" aria-label="Détails de l'article">
                 <li class="tag tag--format">Tutoriel guidé</li>
-                <li class="tag tag--reach">3K views &middot; 1.5K reads</li>
+                <li class="tag tag--reach">3K vues &middot; 1.5K lectures</li>
                 <li class="tag tag--platform">Medium</li>
               </ul>
-              <p class="entry__summary">Pipeline de données de vision par ordinateur de bout en bout : de l'annotation du jeu de données sur Roboflow et de l'entraînement parallèle sur TPU x2 Kaggle (DataParallel) à l'inférence FastAPI conteneurisée et au service Gradio sur Hugging Face.</p>
             </li>
           </ul>
-          <p class="block__note">Chiffres d'audience relevés sur Medium, août 2026.</p>
+
         </section>
       </main>
     </div>

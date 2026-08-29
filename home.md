@@ -64,13 +64,7 @@ Skills & Evidence what I can do, and what proves it            ← citations
 The closing       the invitation, and where to take it         ← projection
 ```
 
-**The closing is a projection, which is the only reason it is allowed.** It is
-the fifth block and the one exception to the shape of the other four: no
-heading, no records, one line and a link. The line is not written on Home. It
-is `contact_invitation` in `src/site.json`, which already renders as Contact's
-own intro, so the two pages share a sentence rather than keeping two in
-agreement, which is the same mechanism Impact in Numbers uses and the same
-reason `availability` has one owner ([`CLAUDE.md`](CLAUDE.md) §4).
+**The closing block was removed per author directive.** Home ends on Skills & Evidence, keeping navigation explicit via the main header.
 
 It takes `data-toc-skip` and is absent from the rail on purpose. The rail is a
 contents page, and *Get in touch* is not a section of the document: it is the
@@ -106,6 +100,53 @@ higher buries everything underneath it.
 That argument was written for Currently and stopped one block short. It is more
 true of Impact in Numbers than of any other block on the page, which is why
 Impact in Numbers is now third.
+
+---
+
+## How the page is set
+
+Two rules, and they are the whole of Home's geometry. Both are owned by
+[`DESIGN.md`](DESIGN.md); they are repeated here because Home is the page that
+has to hold them and the page where they were first broken.
+
+### One vertical edge
+
+**Every flowing column on Home begins at the same x.** The label track is
+`--spine` (13rem) and the gutter is `--space-6`, so the bio beside the
+portrait, the value beside a fact label, the consequence beside a result figure
+and the evidence beside a capability name all start at 240px.
+
+It had four gutters, at 200, 240, 228 and 260. The page read as *almost*
+aligned, which is the worst of the three possible states: a reader cannot tell
+a system from an accident, and the ones that are real stop being believed.
+[`DESIGN.md`](DESIGN.md) §4 carries the arithmetic that fixes the width, and it
+is arithmetic rather than taste in both directions. A wider spine eats
+`--measure`; a narrower one wraps the result figures.
+
+**Adding a two-column record to Home means taking the spine**, not choosing a
+width for it. If the content genuinely cannot live in 13rem, that is a finding
+about the content and it comes here before it goes into the stylesheet.
+
+### Two hairline weights
+
+**The strong rule closes a block; the soft rule separates two records inside
+one.** `.block--ruled` opens each of the three sections at `--color-border`,
+and `.result`, `.skill` and `.hero-facts__row` separate their rows at
+`--color-border-soft`.
+
+One weight used to do both jobs, so a page with three sections and fifteen
+ruled rows drew sixteen identical divisions and ranked none of them. Home is
+where this had to be settled because Home has the fewest sections and the most
+rows on the site.
+
+**`.block--ruled` is what is left of `.block--casebook`**, which was a
+two-column grid putting the `h2` in a 13rem side head with the pitch beside it.
+It asked a 32px display rank to live in a 208px box: *Impact in Numbers* is
+279px and *Skills & Evidence* 237px, so both wrapped at every width from 768px
+up, and all three French headings wrapped. The headings are back in the site's
+ordinary grammar (`h2`, then pitch, then records), and the modifier kept only
+the border, which is the one thing it was doing that nothing else did. It was
+renamed with the layout it lost.
 
 ---
 
@@ -227,6 +268,18 @@ label column ([`DESIGN.md`](DESIGN.md) §10.2). They are one kind of fact, and
 it is the kind the first reader of [`CLAUDE.md`](CLAUDE.md) §2 filters on.
 Nothing else belongs in it. A fact a recruiter does not filter on is a record,
 and records go in blocks with a citation.
+
+**It runs the full width of the header and its labels sit on `--spine`**, so
+the three of them line up with the portrait above and with every figure and
+capability below ([`DESIGN.md`](DESIGN.md) §4). Above 1280px it used to become
+a third column instead, 14rem wide with a left rule. That made the recruiter
+facts the only right-hand element on the site, and it broke the alignment on
+the one viewport wide enough to show it, which is the wrong trade in both
+directions: the widest screen is where a reader can see the page has a system,
+and it was the screen where the page did not have one.
+
+The first screen is a little taller for it. That is the cost, it was taken
+knowingly, and it buys a header that reads in one direction.
 
 **Two of the three arrived here, for the same reason stated twice.**
 

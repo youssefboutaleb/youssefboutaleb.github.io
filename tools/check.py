@@ -167,6 +167,13 @@ STAGED_CSS = {
     # MEDALS in build.py emits medal--bronze for any third place. The rule is
     # reachable; the data has no third place yet.
     "medal--bronze",
+    # `reach_note` in build.py renders this and nothing calls it: the note
+    # dating Technical Articles' two Medium figures was built and withdrawn,
+    # because a footnote dating two chips is a maintenance promise made in
+    # front of the reader. `as_of` is still required and `check_reach` is still
+    # fatal, so the rule the note stood for is enforced in the data instead.
+    # writing.md, Refreshing the figures; DESIGN.md 11.2.
+    "block__note",
 }
 
 # Words this repository spells two ways. British and American forms are both

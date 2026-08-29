@@ -22,7 +22,7 @@
   <link rel="alternate" hreflang="x-default" href="https://youssefboutaleb.github.io/projects.html">
   <link rel="icon" type="image/svg+xml" href="images/icons/icon.svg">
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Noto-Sans-regular/Noto-Sans-regular.woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=b8aec60f55ff">
+  <link rel="stylesheet" href="assets/css/main.css?v=7f7f664a6db5">
 
   <script>
     // Before first paint, or the pinned theme flashes the other one on every
@@ -145,40 +145,52 @@
           </p>
           <ul class="entries">
             <li class="entry" id="proj-kanboard-plugin-drawio-integration">
-              <h3 class="entry__title">Kanboard Plugin: Draw.io Integration
-                <a class="icon-link" href="https://github.com/youssefboutaleb/kanboard-plugin-drawio" target="_blank" rel="noopener" title="GitHub repository"><img class="icon icon--sm icon--mono" src="images/icons/github.svg" alt="GitHub repository" width="15" height="15"></a>
-              </h3>
+              <h3 class="entry__title">Kanboard Plugin: Draw.io Integration</h3>
               <p class="entry__period"><time datetime="2026">2026</time></p>
               <ul class="tag-list" aria-label="Project details">
-                <li><a class="tag tag--upstream link-external" href="https://github.com/kanboard/website/pull/586" target="_blank" rel="noopener">Accepted upstream &middot; PR #586</a></li>
                 <li class="tag tag--kind">Kanboard Plugin</li>
+                <li><a class="tag tag--upstream link-external" href="https://github.com/kanboard/website/pull/586" target="_blank" rel="noopener">Accepted upstream &middot; PR #586</a></li>
                 <li class="tag tag--stack">PHP</li>
                 <li class="tag tag--stack">JavaScript</li>
               </ul>
               <p class="entry__summary">Embeds <b>diagrams.net</b> into Kanboard Markdown with live in-browser editing, full-screen diagram viewing, and Wiki.js interop, accepted into the official Kanboard plugin directory.</p>
-              <ul class="points">
-                <li><b>Embedded diagram architecture:</b> renders fenced diagram blocks natively as sandboxed image elements across task descriptions, comments, and swimlanes without database schema modifications.</li>
-                <li><b>Interoperability &amp; live editing:</b> integrates draw.io editor iframe messaging via postMessage with full-size diagram viewing and byte-for-byte Wiki.js format compatibility.</li>
-                <li><b>Security &amp; CSP hardening:</b> enforces image-mode SVG rendering to neutralize active scripts, pins iframe origins, and restricts Content Security Policy to same-origin contexts.</li>
-              </ul>
+              <div class="entry__group entry__group--project">
+                <h4 class="entry__group-title">What was built</h4>
+                <ul class="points">
+                  <li><b>Embedded diagram architecture:</b> renders fenced diagram blocks natively as sandboxed image elements across task descriptions, comments, and swimlanes without database schema modifications.</li>
+                  <li><b>Interoperability &amp; live editing:</b> integrates draw.io editor iframe messaging via postMessage with full-size diagram viewing and byte-for-byte Wiki.js format compatibility.</li>
+                  <li><b>Security &amp; CSP hardening:</b> enforces image-mode SVG rendering to neutralize active scripts, pins iframe origins, and restricts Content Security Policy to same-origin contexts.</li>
+                </ul>
+              </div>
+              <footer class="entry__proof">
+                <ul class="tag-list" aria-label="Project links">
+                  <li><a class="tag tag--artifact link-external" href="https://github.com/youssefboutaleb/kanboard-plugin-drawio" target="_blank" rel="noopener">GitHub repository</a></li>
+                </ul>
+              </footer>
             </li>
             <li class="entry" id="proj-kanboard-plugin-file-attachment-interaction">
-              <h3 class="entry__title">Kanboard Plugin: File Attachment Interaction
-                <a class="icon-link" href="https://github.com/youssefboutaleb/kanboard-file-attachment-interaction" target="_blank" rel="noopener" title="GitHub repository"><img class="icon icon--sm icon--mono" src="images/icons/github.svg" alt="GitHub repository" width="15" height="15"></a>
-              </h3>
+              <h3 class="entry__title">Kanboard Plugin: File Attachment Interaction</h3>
               <p class="entry__period"><time datetime="2026">2026</time></p>
               <ul class="tag-list" aria-label="Project details">
-                <li><a class="tag tag--upstream link-external" href="https://github.com/kanboard/website/pull/585" target="_blank" rel="noopener">Accepted upstream &middot; PR #585</a></li>
                 <li class="tag tag--kind">Kanboard Plugin</li>
+                <li><a class="tag tag--upstream link-external" href="https://github.com/kanboard/website/pull/585" target="_blank" rel="noopener">Accepted upstream &middot; PR #585</a></li>
                 <li class="tag tag--stack">PHP</li>
                 <li class="tag tag--stack">JavaScript</li>
               </ul>
               <p class="entry__summary">Enterprise attachment framework adding in-modal previews (Office, PDF, CSV, code), live grid/text editors, and version branching, accepted into the official Kanboard plugin directory.</p>
-              <ul class="points">
-                <li><b>Multi-format parsing engine:</b> parses Office OpenXML (Word, PowerPoint, Excel), PDFs, Markdown, and source code directly inside task modals using pure-PHP DOM traversal.</li>
-                <li><b>Interactive editing &amp; versioning:</b> provides in-browser spreadsheet grid editing, live text/code validation, and safe in-place updates or version branching for attachment revisions.</li>
-                <li><b>Defense-in-depth &amp; verification:</b> neutralizes XXE attacks via LIBXML_NONET, restricts PDF iframe streaming with frame-ancestors CSP, and maintains 770 automated tests at PHPStan Level 8.</li>
-              </ul>
+              <div class="entry__group entry__group--project">
+                <h4 class="entry__group-title">What was built</h4>
+                <ul class="points">
+                  <li><b>Multi-format parsing engine:</b> parses Office OpenXML (Word, PowerPoint, Excel), PDFs, Markdown, and source code directly inside task modals using pure-PHP DOM traversal.</li>
+                  <li><b>Interactive editing &amp; versioning:</b> provides in-browser spreadsheet grid editing, live text/code validation, and safe in-place updates or version branching for attachment revisions.</li>
+                  <li><b>Defense-in-depth &amp; verification:</b> neutralizes XXE attacks via LIBXML_NONET, restricts PDF iframe streaming with frame-ancestors CSP, and maintains 770 automated tests at PHPStan Level 8.</li>
+                </ul>
+              </div>
+              <footer class="entry__proof">
+                <ul class="tag-list" aria-label="Project links">
+                  <li><a class="tag tag--artifact link-external" href="https://github.com/youssefboutaleb/kanboard-file-attachment-interaction" target="_blank" rel="noopener">GitHub repository</a></li>
+                </ul>
+              </footer>
             </li>
           </ul>
         </section>
@@ -190,44 +202,56 @@
           </p>
           <ul class="entries">
             <li class="entry" id="proj-custom-yolov8-model-for-number-detection-on-meters">
-              <h3 class="entry__title">Custom YOLOv8 Model for Number Detection on Meters
-                <a class="icon-link" href="https://github.com/youssefboutaleb/yolov8_fastapi_gradio" target="_blank" rel="noopener" title="GitHub repository"><img class="icon icon--sm icon--mono" src="images/icons/github.svg" alt="GitHub repository" width="15" height="15"></a>
-              </h3>
+              <h3 class="entry__title">Custom YOLOv8 Model for Number Detection on Meters</h3>
               <p class="entry__period"><time datetime="2023">2023</time></p>
               <ul class="tag-list" aria-label="Project details">
-                <li><a class="tag tag--demo link-external" href="https://huggingface.co/spaces/youssefboutaleb/Yolov8_meter" target="_blank" rel="noopener">Live Demo on Hugging Face</a></li>
                 <li class="tag tag--kind">Notebook</li>
                 <li class="tag tag--stack">Python</li>
                 <li class="tag tag--stack">YOLOv8</li>
                 <li class="tag tag--stack">FastAPI</li>
                 <li class="tag tag--stack">Gradio</li>
-                <li><a class="tag tag--article link-external" href="https://medium.com/@youssefboutaleb.info/developingyolov8-custom-object-detection-with-fastapi-and-gradio-e9314fad0782" target="_blank" rel="noopener">Article on Medium</a></li>
               </ul>
               <p class="entry__summary">Automates digit reading from utility meter photographs, serving trained weights through a containerized FastAPI REST service and a Hugging Face Gradio space.</p>
-              <ul class="points">
-                <li><b>End-to-end vision pipeline:</b> annotates custom utility meter datasets on Roboflow and trains YOLOv8 object detection weights across 100-epoch iterations.</li>
-                <li><b>Parallel accelerator acceleration:</b> speeds up feature extraction and bounding-box regression using Kaggle dual-accelerator parallel execution with DataParallel.</li>
-                <li><b>Containerized REST &amp; Gradio serving:</b> packages trained weights into Dockerized FastAPI endpoints for automated image inference beside interactive Hugging Face Gradio spaces.</li>
-              </ul>
+              <div class="entry__group entry__group--project">
+                <h4 class="entry__group-title">What was built</h4>
+                <ul class="points">
+                  <li><b>End-to-end vision pipeline:</b> annotates custom utility meter datasets on Roboflow and trains YOLOv8 object detection weights across 100-epoch iterations.</li>
+                  <li><b>Parallel accelerator acceleration:</b> speeds up feature extraction and bounding-box regression using Kaggle dual-accelerator parallel execution with DataParallel.</li>
+                  <li><b>Containerized REST &amp; Gradio serving:</b> packages trained weights into Dockerized FastAPI endpoints for automated image inference beside interactive Hugging Face Gradio spaces.</li>
+                </ul>
+              </div>
+              <footer class="entry__proof">
+                <ul class="tag-list" aria-label="Project links">
+                  <li><a class="tag tag--artifact link-external" href="https://github.com/youssefboutaleb/yolov8_fastapi_gradio" target="_blank" rel="noopener">GitHub repository</a></li>
+                  <li><a class="tag tag--demo link-external" href="https://huggingface.co/spaces/youssefboutaleb/Yolov8_meter" target="_blank" rel="noopener">Live Demo on Hugging Face</a></li>
+                  <li><a class="tag tag--article link-external" href="https://medium.com/@youssefboutaleb.info/developingyolov8-custom-object-detection-with-fastapi-and-gradio-e9314fad0782" target="_blank" rel="noopener">Article on Medium</a></li>
+                </ul>
+              </footer>
             </li>
             <li class="entry" id="proj-image-colorization-with-deep-learning">
-              <h3 class="entry__title">Image Colorization with Deep Learning
-                <a class="icon-link" href="https://github.com/youssefboutaleb/colorizeblack-whitephotos" target="_blank" rel="noopener" title="GitHub repository"><img class="icon icon--sm icon--mono" src="images/icons/github.svg" alt="GitHub repository" width="15" height="15"></a>
-              </h3>
+              <h3 class="entry__title">Image Colorization with Deep Learning</h3>
               <p class="entry__period"><time datetime="2023">2023</time></p>
               <ul class="tag-list" aria-label="Project details">
                 <li class="tag tag--kind">Notebook</li>
                 <li class="tag tag--stack">Python</li>
                 <li class="tag tag--stack">TensorFlow</li>
                 <li class="tag tag--stack">Keras</li>
-                <li><a class="tag tag--artifact link-external" href="https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fraw.githubusercontent.com%2Fyoussefboutaleb%2Fcolorizeblack-whitephotos%2Fmain%2Fpresentation.pptx" target="_blank" rel="noopener" title="View slides in PowerPoint Online">Slides (.pptx)</a></li>
               </ul>
               <p class="entry__summary">Reconstructs plausible color for grayscale images across four progressive notebook models (from baseline convolutional networks to adversarial GANs) to evaluate structural and color fidelity.</p>
-              <ul class="points">
-                <li><b>Progressive model architecture:</b> implements four sequential neural architectures (from baseline convolutional networks to generative adversarial networks) to reconstruct grayscale photos.</li>
-                <li><b>Perceptual loss &amp; training:</b> optimizes generator networks using combined pixel loss and adversarial discriminator loss to balance structural consistency and vibrant colorization.</li>
-                <li><b>Fidelity evaluation:</b> evaluates color reconstruction across test datasets to measure structural similarity, chromatic accuracy, and visual artifact reduction.</li>
-              </ul>
+              <div class="entry__group entry__group--project">
+                <h4 class="entry__group-title">What was built</h4>
+                <ul class="points">
+                  <li><b>Progressive model architecture:</b> implements four sequential neural architectures (from baseline convolutional networks to generative adversarial networks) to reconstruct grayscale photos.</li>
+                  <li><b>Perceptual loss &amp; training:</b> optimizes generator networks using combined pixel loss and adversarial discriminator loss to balance structural consistency and vibrant colorization.</li>
+                  <li><b>Fidelity evaluation:</b> evaluates color reconstruction across test datasets to measure structural similarity, chromatic accuracy, and visual artifact reduction.</li>
+                </ul>
+              </div>
+              <footer class="entry__proof">
+                <ul class="tag-list" aria-label="Project links">
+                  <li><a class="tag tag--artifact link-external" href="https://github.com/youssefboutaleb/colorizeblack-whitephotos" target="_blank" rel="noopener">GitHub repository</a></li>
+                  <li><a class="tag tag--artifact link-external" href="https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fraw.githubusercontent.com%2Fyoussefboutaleb%2Fcolorizeblack-whitephotos%2Fmain%2Fpresentation.pptx" target="_blank" rel="noopener" title="View slides in PowerPoint Online">Slides (.pptx)</a></li>
+                </ul>
+              </footer>
             </li>
           </ul>
         </section>

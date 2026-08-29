@@ -15,10 +15,10 @@ models.
 
 ```
 Model:  projects
-Order:  upstream → kind → stack
+Order:  kind → upstream → stack
 
-  upstream  whether anyone else took it   "Submitted upstream · PR #586"
   kind      what the deliverable is       "Kanboard Plugin", "Notebook"
+  upstream  how it was received           "Accepted upstream · PR #586"
   stack     what it is built with         "Python" "YOLOv8" "FastAPI" "Gradio"
 ```
 
@@ -26,22 +26,25 @@ The order is defined once, in `MODELS["projects"]` in `tools/build.py`.
 
 ### Why these three, in this order
 
-A project list is read to answer three questions in sequence: *did this go
-anywhere beyond your own machine, what sort of thing is it, and what is it
-built with.*
+A project scan line answers three questions: *what sort of thing is it, how was
+it received, and what is it built with?* The separate proof footer answers the
+fourth: *where can I go and look?* It holds the repository first, then a live
+demo, article, or slide deck when those artefacts exist.
 
-**`upstream` first.** It is the altitude of the record, as `status` is on a
-paper and `placement` is on a contest. A plugin that has been submitted to the
-project it extends is a different claim from one that has not, and every line
-beneath is read in that light. Only a record that has actually been submitted
-carries it; per [`awards.md`](awards.md) rule 5 the others render one tag fewer
-rather than an invented one.
-
-**`kind` second.** It is the substance: it says what the reader will find on
+**`kind` first.** It is the substance: it says what the reader will find on
 the other end of the repository link, which the title usually does not. *Model
 & Service* and *Notebook* are the difference between something deployed and
 something that runs when you open it: the single most useful fact about an
 applied ML project, and invisible from a title.
+
+**`upstream` second, and it was in the footer until this pass.** The reversal
+is argued in full below, under *Why `upstream` is a category and not an
+artefact*. It sits after `kind` rather than before it, which is where
+[`research.md`](research.md) puts the equivalent `status`, for one reason:
+`kind` is carried by every project and `upstream` by two of four, and a
+category some records omit reads better after the one they all carry.
+[`awards.md`](awards.md) rule 5 governs the omission, exactly as it does for a
+contest that never published a rank.
 
 **`stack` last, and quiet.** Terminal in the order, exactly as `scale` on
 Awards, `host` on Workshops, `publisher` on Research and `platform` on Writing.
@@ -54,9 +57,10 @@ renders a chip per value; both are argued below.
 
 | Category | Shape and permitted values |
 |---|---|
-| `upstream` | `{ "repo": "kanboard/website", "pr": 586, "state": "open" }`: label and URL both derived |
 | `kind` | `Kanboard Plugin` · `Model &amp; Service` · `Notebook` |
+| `upstream` | `{ repo, pr, state }`, `state` being `open` or `merged`. The chip is the link to the pull request |
 | `stack` | A list of at most four tool names, one outlined chip each |
+| proof | Repository required; optional `demo`, `article`, and `slides` links in the dossier footer |
 
 `kind` names the deliverable, not the field. *Computer Vision* is a discipline
 and belongs in the summary; *Notebook* is what the repository actually contains.
@@ -71,7 +75,80 @@ over the claim.
 
 ---
 
-## `upstream` states the state, and the colour grades nothing
+## The proof footer
+
+Every project ends with a footer, separated from the technical detail by a
+hairline. It holds **artefacts, and only artefacts**: places a reader can go
+and look. The repository is required and comes first; optional links follow in
+a fixed order: live demo, article, slides.
+
+The word *artefact* is doing the work, and it is what the section below turns
+on. A repository, a Hugging Face space and a slide deck are destinations. An
+upstream acceptance is not a destination, it is a fact about how the work was
+received, and it used to render in this row as a peer of the repository link.
+It does not any more.
+
+### It carries no visible label
+
+The footer opened with a muted `Project proof` line until this pass. It
+rendered identically on all four records, spending roughly 25px of vertical
+each (a 17px line and an 8px margin, about 100px across the page) to name the
+rank the hairline directly above it already draws. Compare `What was built`
+one group up, which earns its line by naming what the bullets are.
+
+**A name survives as the list's `aria-label` and nowhere else.** Every tag list
+on the site carries one, so deleting the name outright would have left an
+unnamed list; what was deleted is the `<p>` a sighted reader did not need and
+the `.entry__proof-label` rule that styled it.
+
+**And the name changed with the row.** It is `Project links` now (French:
+*Liens du projet*), under the key `label.project_links`. `Project proof` was
+accurate while the row mixed an upstream acceptance with a repository; once
+`upstream` moved to the scan line, what is left is four kinds of destination,
+and calling them *proof* named the wrong half. That is the same rule the
+visible label failed: say something about the record, or say nothing.
+
+---
+
+## Why `upstream` is a category and not an artefact
+
+This reverses a documented decision, so both sides are kept.
+
+**The argument that put it in the footer**, recorded verbatim in
+`MODELS["projects"]` before this pass:
+
+> Upstream acceptance is proof of a project's adoption, not a dimension of the
+> deliverable. Projects therefore place it with the repository, demo and
+> write-up in their proof footer; the scan line answers only what the
+> deliverable is and what it is built with.
+
+**Why it lost.** `status` on [`research.md`](research.md) is not a dimension of
+the deliverable either. *Published* says nothing about what a paper **is**, only
+about how the outside world received it, and it sits at position 1 of that
+model rather than in a footer. By the line the paragraph above draws,
+`MODELS["research"]` would be `("authorship", "publisher")`.
+
+The stylesheet had already settled it, in its own words, above `.tag--upstream`
+in `main.css`:
+
+> `upstream` is amber because it is a status, and amber is what a status looks
+> like here: the same rule that puts Published and In Progress in one colour on
+> Research.
+
+Both categories resolve to the identical `--status-honor` triple. So the site
+had decided this tag belonged to the status family and left it filed with the
+artefacts, which is the contradiction the reader met on the page: the page's
+strongest fact, and the only external validation these four records carry, set
+at 12px below the bullets, under a chrome label, behind a link every record has.
+
+**Two documents never stopped describing it as a category.**
+[`README.md`](README.md) declared the model as `upstream → kind → stack` and
+[`DESIGN.md`](DESIGN.md) §7.1 listed `.tag--upstream` above `.tag--kind`, both
+throughout the period the tag rendered in the footer. Neither was propagated
+when it moved. They are aligned to the order actually built now, which puts
+`upstream` second.
+
+### `state` states the state, and the colour grades nothing
 
 `state` is stored raw and the wording comes from `UPSTREAM_STATES` in
 `tools/build.py`: [`awards.md`](awards.md) rule 7, the same mechanism that
@@ -82,10 +159,6 @@ turns `1` into `1st Place`:
 | `open` | `Submitted upstream · PR #586` |
 | `merged` | `Accepted upstream · PR #586` |
 
-The tag says this on sight, which is why the block intro no longer explains it.
-Mechanics live in this document; the intro is one line and it is a pitch
-([`DESIGN.md`](DESIGN.md) §11.1).
-
 Both take the **same amber**, because the treatment says *this tag is an
 upstream status* and never *this status is the good one*. This is the rule
 `status` proves on Research, applied to the page where it is easiest to break.
@@ -93,27 +166,36 @@ upstream status* and never *this status is the good one*. This is the rule
 > **What this replaced.** The hand-written version of this page rendered the
 > pull request as `Official Plugin PR #585` in the utility **success green**:
 > the colour `DESIGN.md` reserves for *verified / published / shipped*. Neither
-> pull request has been merged. The styling made a claim the work had not yet
-> earned, and it made it in a colour rather than in words, which is precisely
-> what rule 4 forbids. The tag now says which of the two states it is in, and
-> links to the pull request so the reader can check.
+> pull request had been merged at the time. The styling made a claim the work
+> had not yet earned, and it made it in a colour rather than in words, which is
+> precisely what rule 4 forbids. The tag says which of the two states it is in,
+> and links to the pull request so the reader can check. Both have since
+> merged, and the wording moved with the data because nothing about it was
+> hand-typed.
 
 Storing `state` by hand has the ordinary cost: nothing re-reads GitHub, so a
 merge upstream will not update this page. Flip `state` to `merged` in the same
 change that notices it. The failure mode is a record that undersells itself,
 which is the right direction for this particular field to fail in.
 
-### The link on the tag
+### The upstream link
 
-`upstream` was the first of the two categories on the site whose value carries
-a URL: [`career.md`](career.md)'s `accreditation` is the other, and follows
-this reasoning. The pull request *is* the evidence for the claim the tag makes,
-so the tag is the link; `meta_url` in `tools/build.py` builds the address from
-the stored repo and number, for the reason [`research.md`](research.md) builds
-a DOI link: the identifier is the durable fact and the URL is derived from it.
+The pull request *is* the evidence for the claim the tag makes, so the tag is
+the link; `meta_url` in `tools/build.py` builds the address from the stored repo
+and number, for the reason [`research.md`](research.md) builds a DOI link: the
+identifier is the durable fact and the URL is derived from it.
 
 A linked tag keeps its category's colour. The link is a route to the evidence,
-not a different kind of tag.
+not a different kind of tag. Moving the tag into the scan line changed nothing
+about that: `render_meta` derives the external marker from the address itself,
+so the chip still opens away from the site and still says so.
+
+**One thing this costs, stated plainly.** The two clickable pieces of evidence
+on a plugin record now sit apart: the pull request in the scan line, the
+repository about 200px below it in the footer. That is the price of the split,
+and it is paid because the two are different kinds of claim. A reader looking
+for *where do I check this* finds both; a reader scanning for seconds now
+reaches the one that matters without reading the bullets first.
 
 ---
 
@@ -169,9 +251,8 @@ Not their number. Two other things, and both still hold:
 | `.tag--accent` on the headline tool, `.tag--neutral` on the rest | Graded a value: *Talend is the important one* | Yes: [`awards.md`](awards.md) rule 4 |
 | Loose chips **instead of** categories | Nothing to read positionally, because nothing held a position | Yes: the five categories render first, in fixed order |
 
-Today's run is neither. Five fixed categories render first and in their
-declared order; the tools follow, all in one treatment, none ranked above
-another.
+Today's run is neither. The fixed `kind` category renders first, and the tools
+follow in one treatment, none ranked above another.
 
 ### The outline is what keeps them separable
 
@@ -207,8 +288,9 @@ it [`research.md`](research.md)'s way: a fact true of every record in a block
 belongs to the block.
 
 Both blocks render through `render_project` and the one `MODELS["projects"]`
-order, so a reader who learns the tag positions in the first block reads the
-second without relearning them.
+order. Their dossiers use the same sequence: scan line, summary, `What was
+built`, then proof. A reader who learns the first block reads the second
+without relearning it.
 
 ---
 
@@ -235,17 +317,28 @@ means **what the thing does for whoever uses it**, not the technique, which
 
 ---
 
-## The article cross-link
+## Dossier detail and proof links
+
+`points` now render inside the named `What was built` group. The existing
+bullets are unchanged; the group simply makes their technical role explicit
+and keeps them visually together with the project's summary. A project's
+repository, demo, write-up and slide deck remain links to the same sources, but
+render together in the proof footer instead of being scattered between the
+title and metadata line. The upstream pull request was in that run and is not
+any more: it is a standing, and it reads in the scan line with the rest of the
+record's metadata.
+
+### The article cross-link
 
 Where a project has a write-up on the Research page, the project record carries
 `"article": "<id>"` and `render_project` resolves it against
 `src/data/writing.json`. The URL is not repeated here: one address, one file,
 and a project can no longer point at something the Research page has changed.
 
-The article renders as a utility tag after the model's three, because it is an
-artefact of the work rather than a dimension of it: the same standing a slide
-deck has on a workshop. See [`writing.md`](writing.md) for why the link runs in
-this direction and not the other.
+The article renders in the proof footer, because it is an artefact of the work
+rather than a dimension of it; slides follow the same rule. See
+[`writing.md`](writing.md) for why the link runs in this direction and not the
+other.
 
 ---
 
@@ -256,8 +349,10 @@ this direction and not the other.
    records sharing a year keep their file order. Give it a `title`, `block`,
    `year`, `repo`, `kind`, `stack` and a `summary`.
 2. Add `upstream` only if it has actually been submitted somewhere, with the
-   real `state`. Add `article` only if a record in `writing.json` covers it,
-   by that record's `id`.
+   real `state`. It renders as a chip in the scan line, not in the footer.
+   Add `demo`, `article`, or `slides` only when they are genuine material a
+   reader can inspect; those render in the footer, and `article` names a record
+   in `writing.json`.
 3. Use a value from the vocabulary table above, or add the new value to that
    table in the same change.
 4. `python3 tools/build.py` then `python3 tools/check.py`. Never edit the root

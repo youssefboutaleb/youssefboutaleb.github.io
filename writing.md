@@ -56,7 +56,7 @@ The order is defined once, in `MODELS["writing"]` in `tools/build.py`.
 
 An article list is read to answer three questions in sequence: *what kind of
 thing is this, did anyone actually read it, and where does it live.* The title
-carries the subject and the summary carries the substance, so the model adds
+carries the subject and the bullets carry the substance, so the model adds
 nothing further.
 
 **`format` first.** It is the altitude of the record, as `status` is on a paper
@@ -122,10 +122,17 @@ the record, leave `reach` off it and let the writing stand on its own.
 
 - **The type.** *Technical Article* is what the block heading says.
 - **Peer-review status.** *Not peer reviewed* is true of every record in this
-  block, so it is stated once in the `block__note` beneath the records and
-  never as a tag. A per-record disclaimer would be both repetition and a
-  strange kind of apology; the block says it plainly once, below the work
-  rather than in front of it, and then lets the work stand.
+  block, so it is never a tag. A per-record disclaimer would be both repetition
+  and a strange kind of apology.
+
+  **This paragraph used to say the block stated it once in a `block__note`, and
+  the block never did.** No such note has ever been rendered on this page: the
+  sentence described a mechanism, the mechanism was not built, and the document
+  was the only place the claim existed. What actually states the distinction is
+  the layout, and that is the better answer anyway: the grey terminal chip says
+  *Medium* here and *Elsevier* one block above, in the same slot and the same
+  colour, and a reader who has read both blocks has been told which is which
+  without a line of disclaimer anywhere near a record.
 - **The stack.** *YOLOv8*, *FastAPI*, *Log4j2* are already in the titles. A tag
   repeating the title is noise: [`awards.md`](awards.md) rule 1.
 - **Claps.** Not tracked. They measure approval rather than reading, and
@@ -164,20 +171,24 @@ current. Two rules make that safe:
    so the figure and its date cannot be edited apart. `check_reach` in
    `tools/build.py` refuses a `reach` without one.
 
-   **This rule was written here, styled as `.block__note`, and built by
-   neither, for as long as the page existed.** Two hand-copied figures shipped
-   undated, one of them quoted on Home as a skill citation, on a site whose
-   third reader checks. `.block__note` sat in `main.css` with no user and was
-   reported as dead CSS on every run while [`CLAUDE.md`](CLAUDE.md) §6 named it
-   as the site's provenance mechanism. A rule nothing enforces is a rule the
-   repository has only promised.
+   Update `reach` on every record in one change, or update neither. A fresh
+   date over stale numbers is worse than the stale numbers alone, because it
+   converts an ageing fact into a false claim.
 
-   Update `reach` on every record in one change, or update neither. A fresh date over stale numbers is worse than the stale numbers
-   alone, because it converts an ageing fact into a false claim. The date sits
-   in the note and not in the intro because provenance is a footnote: the intro
-   is one line and it is a pitch ([`DESIGN.md`](DESIGN.md) §11.1), while a
-   hand-copied figure has to say when it was copied, and the two jobs do not
-   fit in one sentence.
+   **The date is not printed on the page, and this paragraph used to say it
+   was.** A `block__note` reading *Reach figures read from Medium, August 2026*
+   was built for exactly this and then withdrawn on the author's call: a
+   footnote dating two chips is a maintenance promise made in front of the
+   reader, and the block is two records that a recruiter scans in four seconds.
+   `as_of` stays required and `check_reach` stays fatal, so the discipline is
+   unchanged where it does the work, which is in the data: a figure cannot be
+   refreshed without its date, or dated without being refreshed, because both
+   live in the same object. What changed is that the date is now evidence for
+   whoever edits the record rather than a line on the page.
+
+   `.block__note` is back in `STAGED_CSS` with that as its reason. It is still
+   the site's provenance component ([`DESIGN.md`](DESIGN.md) §11.2) and it
+   still has no user.
 2. **Precision follows the source.** Medium reports large figures already
    rounded (*3K*, *1.5K*) so store the rounded expansion (`3000`) rather than
    an exact count nobody measured, and let `abbreviate` in `tools/build.py`
@@ -185,31 +196,85 @@ current. Two rules make that safe:
    comparable; rendering it abbreviated keeps the page from claiming three
    digits of accuracy it was never given.
 
-The date lives in the block intro rather than on each record because it is
-true of every record in the block: [`awards.md`](awards.md) rule 1, the same
-reason *not peer reviewed* is stated once in the block note instead of tagged four
-times down here.
+`as_of` sits on each record and not in one place for the block, which looks
+like a violation of [`awards.md`](awards.md) rule 1 and is not: the rule is
+about what a *record states to a reader*, and `as_of` states nothing to a
+reader. It is the field that makes the figure beside it uneditable on its own.
 
 ---
 
-## Editorial rules for the summary
+## Editorial rules for the bullets
 
 The tags carry metadata; the prose carries substance. On this block, substance
 means **the mechanism the article actually shows**: the decision or the wiring
 a reader would otherwise have to reconstruct from the code.
 
-1. **One sentence, and it is not the standfirst.** Say what the piece builds or
-   configures, and the choice that makes it worth reading.
+**An article carries `points` and no `summary`, and it used to be the other way
+round.** One sentence held the whole record, and on both records that sentence
+had become a toolchain flattened into prose: *"End-to-end computer vision data
+pipeline: from Roboflow dataset annotation and Kaggle TPU x2 parallel training
+(DataParallel) to containerized FastAPI inference and Hugging Face Gradio
+serving"* is twenty-seven words, one colon, one parenthetical and four tools,
+and it names the topic where rule 2 below asks for the mechanism. Nothing was
+wrong with the facts; they were wrong with the shape. Three bullets say the
+same four things and can be read in the four seconds a card gets.
+
+1. **Two or three bullets, and one fact each.** A bullet that needs a comma
+   splice is two bullets. The card is roughly 280px wide, so a bullet that runs
+   past two lines there is too long wherever it is read.
 2. **Name the mechanism, not the topic.** "An introduction to observability" is
-   a category. "A Log4j2 HTTP appender POSTs straight to the Send Logs API,
-   with no agent installed" is what the article shows.
+   a category. "A Log4j2 HTTP appender POSTs JSONLayout events straight to
+   Datadog's Send Logs API" is what the article shows.
 3. **Never restate the title.** The title is one row above and already carries
    the subject and the stack.
 4. **Claim only what the article supports**: [`research.md`](research.md)
    rule 4, and for the same reason: an entry written from the title alone
    invents the parts it does not know.
+5. **No bold lead-in label.** Projects writes its bullets as
+   `<b>Label:</b> sentence`, and that device belongs to a 74ch reading column
+   where a bullet runs two lines anyway. In a 280px card the label spends the
+   first line by itself and the reader gets a heading where they wanted a fact.
+   One vocabulary, two measures: the site's rule is *use the device that fits
+   the measure*, not *use the device the last page used*.
+6. **`summary` still renders if a record carries one**, above the bullets, and
+   no record does. It is there for an article that genuinely needs a hook
+   before its mechanics, not as a second place to put what a bullet says.
 
 ---
+
+## The block is a card grid, and the paper block above it is not
+
+The two blocks share `.entry` and now differ in shape, which is the honest
+rendering of what this document's first section argues: one page, two blocks,
+two models, two things.
+
+Articles render on `.entries--grid` ([`DESIGN.md`](DESIGN.md) §9.4). The test
+that component sets is *a set to be counted, not a sequence to be read*, and an
+article list passes it: nobody reads two posts top to bottom to see how the
+second follows from the first, they scan for what is there and whether the
+reach figure is worth a click.
+
+**What it fixes is a comparison this page was making by accident.** In one
+reading column, a `writing` record was a `research` record with the citation
+line and the bullets missing, so a Medium post did not look like a different
+kind of thing, it looked like a paper that had run out of content. §9.5 raised
+the papers; this gave the articles a shape of their own rather than a smaller
+share of the papers'.
+
+**The record has bullets now, and that does not reopen the test.**
+[`DESIGN.md`](DESIGN.md) §9.4 is explicit that the test is about the *list* and
+not about the record: nobody reads two articles top to bottom to see how the
+second follows from the first, whatever shape either one takes. The empty
+`points` array was evidence for the verdict, not the reason for it, and the
+verdict is unchanged. What did change is that the box is now doing something a
+reading column cannot, which is holding a foot: the chips render last, pinned
+to the bottom edge, so the card reads *what the piece is, what it shows, and
+the evidence anybody read it*. §9.6 owns that and it is not restated here.
+
+**Rule 5's consequence is unchanged and worth restating here.** An article with
+no `reach` yet renders a card with two chips instead of three. Nothing is
+invented to fill the cell, and `auto-fit` means a third article lays out as a
+third card rather than as a hole.
 
 ## The cross-link from Projects
 
@@ -233,12 +298,17 @@ article itself links to its own repository.
 
 1. Append a record to `src/data/writing.json`: position in the file does not
    matter, `publication_sort_key` orders it newest first. Give it a `title`
-   (the published title, verbatim), `year`, `format`, `platform`, `url` and a
-   `summary`. Add `reach` once the piece has figures worth reporting, as both
-   integers or not at all; a new article has none and simply omits it.
+   (the published title, verbatim), `year`, `format`, `platform`, `url` and two
+   or three `points`. Add `reach` once the piece has figures worth reporting,
+   as both integers **and** an `as_of`, or not at all; a new article has none
+   and simply omits it.
 2. Use a value from the vocabulary table above, or add the new value to that
    table in the same change.
 3. If it documents a project that has a Projects entry, add the link tag there
    too, per the section above.
-4. `python3 tools/build.py` then `python3 tools/check.py`. Never edit the root
+4. Translate it. `points` is a list and `t()` reports a list as missing, so the
+   French gap is visible on the next build; add `<id>.points` to
+   `records` in `src/i18n/fr.json` and re-stamp with
+   `python3 tools/build.py --sync`.
+5. `python3 tools/build.py` then `python3 tools/check.py`. Never edit the root
    `research.html`; it is build output.

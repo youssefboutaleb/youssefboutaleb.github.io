@@ -651,7 +651,7 @@ MODELS = {
     # and one vocabulary for "a thing this was built with" is the whole point
     # of that sentence. A competition carries no `stack` and renders one tag
     # fewer, which is awards.md rule 5.
-    "awards": ("placement", "distinction", "type", "scope", "scale", "duration", "track", "stack"),
+    "awards": ("placement", "distinction", "scope", "scale", "duration", "track", "stack"),
     "workshops": ("format", "mode", "duration", "audience", "scale", "host"),
     # `workload` was here and is not any more. The specs panel at the top of
     # Teaching states "32 h per course" and breaks it into 20 lecture, 8 lab
@@ -662,7 +662,33 @@ MODELS = {
     "teaching": ("level", "scale"),
     "research": ("status", "authorship", "publisher"),
     "writing": ("format", "reach", "platform"),
-    "projects": ("upstream", "kind", "stack"),
+    # `upstream` is back in the model, and the comment that removed it is kept
+    # below so the reversal is legible rather than silent. It read: "Upstream
+    # acceptance is proof of a project's adoption, not a dimension of the
+    # deliverable. Projects therefore place it with the repository, demo and
+    # write-up in their proof footer; the scan line answers only what the
+    # deliverable is and what it is built with."
+    #
+    # What that line missed is that `status` on Research is not a dimension of
+    # the deliverable either. `Published` says nothing about what a paper is,
+    # only how the outside world received it, and it sits at position 1 of that
+    # model. Both categories resolve to the same amber, and the comment above
+    # `.tag--upstream` in main.css says why in its own words: "amber is what a
+    # status looks like here: the same rule that puts Published and In Progress
+    # in one colour on Research." The stylesheet had already decided this tag
+    # belonged to that family; the model had it filed with the artefacts.
+    #
+    # So a project states its standing where every other record on the site
+    # states one, and the proof footer keeps what it is actually for: the
+    # repository, the demo, the slides and the write-up, which are places to
+    # look rather than facts about how the work was received.
+    #
+    # It sits after `kind` rather than before it, which is where Research puts
+    # `status`. `kind` is the substance (what the reader finds on the other end
+    # of the repository link) and it is the one category every project carries;
+    # `upstream` is carried by two of four, and a category present on some
+    # records reads better after the one present on all of them.
+    "projects": ("kind", "upstream", "stack"),
     "experience": ("domain", "engagement", "mode", "scale", "stack"),
     "education": ("programme", "focus", "accreditation"),
 }
@@ -789,6 +815,11 @@ AUTHOR_POSITIONS = {1: "First", 2: "Second", 3: "Third", 4: "Fourth", 5: "Fifth"
 UPSTREAM_STATES = {"open": "Submitted upstream", "merged": "Accepted upstream"}
 
 
+def upstream_label(state: str) -> str:
+    """The visible state of an upstream contribution, in the active language."""
+    return tr(f"upstream.{state}", UPSTREAM_STATES[state])
+
+
 def ordinal(number: int) -> str:
     """1 -> 1st, 2 -> 2nd, 21 -> 21st, 13 -> 13th, 1432 -> 1,432nd."""
     if 10 <= number % 100 <= 20:
@@ -868,11 +899,6 @@ def meta_label(field: str, value) -> tuple[str, str]:
             whole = figure(value["of"])
             joiner = tr("scale.of", "of")
             return "", f"<b>{count}</b> {joiner} <b>{whole}</b> {unit_text}"
-        # The figure is bold inside an otherwise regular-weight chip, the same
-        # emphasis every bullet on the site gives its numbers. It is a
-        # treatment of the same part of every scale value, never of one value
-        # over another, so awards.md rule 4 holds: 86 teams and 643rd of 7,094
-        # are emphasised identically.
         return "", f"<b>{count}</b> {unit_text}"
     if field == "duration" and isinstance(value, int):
         # Stored as a number, spaced here, so `2h` and `20 h` cannot coexist.
@@ -882,7 +908,7 @@ def meta_label(field: str, value) -> tuple[str, str]:
         # is a value that drifts from every other call site.
         return "", f"{ACTIVE.number(value)} {tr('unit.hours_short', 'h')}"
     if field == "upstream":
-        return "", f"{UPSTREAM_STATES[value['state']]} &middot; PR #{value['pr']}"
+        return "", f"{upstream_label(value['state'])} &middot; PR #{value['pr']}"
     if field == "accreditation":
         # The label is the accreditation's own name; the link beside it is the
         # body that grants it. Stored as a pair for the same reason `upstream`
@@ -893,8 +919,14 @@ def meta_label(field: str, value) -> tuple[str, str]:
         # Views alone counts everyone who opened the tab and reads alone hides
         # the ratio; it is the gap between them that says whether the piece
         # held up. A record carries both figures or neither: writing.md.
-        return "", (f"{abbreviate(value['views'])} views"
-                    f" &middot; {abbreviate(value['reads'])} reads")
+        #
+        # The two unit words go through `tr` like every other unit on the site.
+        # They did not, and this chip is now the foot of the card rather than
+        # a row in its middle, so `723 views &middot; 424 reads` was the last
+        # thing a French reader saw on the record and it was in English.
+        return "", (f"{abbreviate(value['views'])} {tr('unit.views', 'views')}"
+                    f" &middot; {abbreviate(value['reads'])}"
+                    f" {tr('unit.reads', 'reads')}")
     # Everything else is a plain stored word: "Hackathon", "Regional",
     # "On-site". These are the site's metadata vocabulary rather than prose,
     # so they are translated by value and not by record: one entry in the
@@ -1145,6 +1177,7 @@ def render_performance(record: dict) -> str:
         return ""
     solved = ACTIVE.number(perf["solved"])
     problems = ACTIVE.number(perf["problems"])
+    team_count = ACTIVE.number(perf["team"])
     # No <b> here. `.perf__row > dd` is bold in full, unit included, which is
     # how `.spec__row` renders `20 h`: the label recedes and the value carries
     # the weight. Emphasising only the numerator would also have been awards.md
@@ -1154,7 +1187,7 @@ def render_performance(record: dict) -> str:
             tr("perf.problems", "Problems"),
             f'{solved} / {problems} {tr("perf.solved", "solved")}',
         ),
-        (tr("perf.team", "Team"), ACTIVE.number(perf["team"])),
+        (tr("perf.team", "Team"), tr("perf.team_of", "Team of {count}").replace("{count}", str(team_count))),
     ]
     body = "\n".join(
         f'  <div class="perf__row">\n'
@@ -1187,33 +1220,7 @@ def render_award(record: dict) -> str:
         year = record["year"]
         dateline.append(f'<time datetime="{year}">{year}</time>')
 
-    # The dataset the work ran on, as a utility tag rather than a hand-written
-    # anchor inside a sentence. DESIGN.md section 7.2 already names "a dataset"
-    # as a `.tag--artifact` case, and this one was a raw <a> in the middle of
-    # the first bullet, carrying its own target and rel and *not* the
-    # link-external marker the teammate link two bullets down did carry: one
-    # record, two inline links, two treatments.
-    #
-    # The noun is a chrome string and the name is a record field, which is the
-    # split awards.md rule 7 asks for. Written as `Dataset ({name})` it was an
-    # English word emitted from a renderer with no `tr()` around it, so the
-    # French page would have said `Dataset` in a chip beside `48 h` and
-    # `Quart de finaliste`, which is the failure CLAUDE.md section 9 lists as
-    # "a record field a renderer reads directly instead of through t()".
     extra_tags = []
-    if record.get("performance"):
-        perf = record["performance"]
-        solved = ACTIVE.number(perf["solved"])
-        problems = ACTIVE.number(perf["problems"])
-        team_count = ACTIVE.number(perf["team"])
-        solved_text = tr("perf.solved", "solved")
-        team_label = tr("perf.team", "Team")
-        extra_tags.append(
-            f'<li class="tag tag--problems"><b>{solved} / {problems}</b> {solved_text}</li>'
-        )
-        extra_tags.append(
-            f'<li class="tag tag--team">{team_label} <b>{team_count}</b></li>'
-        )
     if record.get("dataset"):
         name = t(record, "dataset_label")
         label = tr("tag.dataset", "{name} dataset").replace("{name}", name)
@@ -1227,6 +1234,8 @@ def render_award(record: dict) -> str:
         f'<p class="entry__period">{" &middot; ".join(dateline)}</p>',
         render_meta(record, "awards", extra=tuple(extra_tags)),
     ]
+    if record.get("performance"):
+        parts.append(render_performance(record))
     # The framing sentences, in the slot DESIGN.md section 9 fixes for them:
     # what and when, then the scan line, then the framing, then the evidence.
     # This renderer was the only one of nine that skipped the rank, which is
@@ -1411,38 +1420,31 @@ def check_workshop_block(record: dict) -> None:
 def render_workshop(record: dict) -> str:
     """One workshop as the site-wide .entry record.
 
-    Two things sit deliberately outside the metadata model. A repository link
-    belongs to the title, because it points at the thing the title names. And
-    a slide deck is an artefact, not a dimension of the session, so it renders
-    as a utility tag appended after the model's four.
+    Artefacts (repository links and slide decks) render as utility tags appended
+    after the model's dimensions, matching Projects.
     """
     title = t(record, "title")
-    if record.get("repo"):
-        name = tr("link.workshop_repo", "Workshop materials on GitHub")
-        github_icon = asset("images/icons/github.svg")
-        title += (
-            f'\n  <a class="icon-link" href="{record["repo"]}" target="_blank"'
-            f' rel="noopener" title="{name}">'
-            f'<img class="{icon_classes("github.svg", "sm")}"'
-            f' src="{github_icon}" alt="{name}"'
-            f' width="15" height="15"></a>\n'
-        )
 
-    extra = ()
-    slides_icon = asset("images/icons/powerpoint.svg")
+    extra_tags = []
+    if record.get("repo"):
+        extra_tags.append(
+            f'<li><a class="tag tag--artifact link-external" href="{record["repo"]}"'
+            f' target="_blank" rel="noopener">{tr("link.repo", "GitHub repository")}</a></li>'
+        )
     if record.get("slides"):
-        extra = (
+        slides_icon = asset("images/icons/powerpoint.svg")
+        extra_tags.append(
             f'<li><a class="tag tag--artifact link-external" href="{record["slides"]}"'
             f' target="_blank" rel="noopener" title="View slides in PowerPoint Online">'
             f'<img class="icon icon--xs" src="{slides_icon}" alt=""'
-            f' width="12" height="12">Slides (.pptx)</a></li>',
+            f' width="12" height="12">Slides (.pptx)</a></li>'
         )
 
     year = record["year"]
     parts = [
         f'<h3 class="entry__title">{title}</h3>',
         f'<p class="entry__period"><time datetime="{year}">{year}</time></p>',
-        render_meta(record, "workshops", extra),
+        render_meta(record, "workshops", tuple(extra_tags)),
     ]
     if t(record, "summary"):
         parts.append(f'<p class="entry__summary">{t(record, "summary")}</p>')
@@ -1461,6 +1463,102 @@ def render_workshop(record: dict) -> str:
     body = "\n".join(indent(part, 2) for part in parts if part)
     ws_id = record["id"]
     return entry_li(record, ws_id, body)
+
+
+def render_workshops_hosts(workshops: list[dict]) -> str:
+    """The Workshops page's summary: one card per organisation that invited him.
+
+    A projection in the sense home.md gives the word, and the contract is
+    render_awards_summary's: the label, the figure, the qualifier and the link
+    all come from the fields the records below render from, so a card cannot
+    come to disagree with the page it summarises, and `check.py` fails the
+    build on a card pointing at a record that is not there.
+
+    **Why the page needed a summary.** Four records state their own attendance
+    and their own duration in grey 12px chips at positions five and three of
+    six, and nothing stated the page. A recruiter asking *how much of this is
+    there, and who asked for it* had to add four chips up and read four hosts
+    off four records.
+
+    **Why the grouping is the host and not the total.** A card carries a link
+    or it is a stat tile, and a stat tile with no citation is what CLAUDE.md
+    section 10 deleted the Domains block for. `142 participants` cannot point
+    at one record; `60 participants at Securinets ENIS` points at exactly one,
+    and the totals are still readable by adding three cards up. It also answers
+    the question the chips never did: one of the three hosts is a company, and
+    that is the difference between teaching students and being brought in by an
+    employer.
+
+    **What the card holds is Awards' four lines**, in Awards' order and ranks:
+    the host as a quiet label, the head count at title weight, the sessions and
+    hours beneath it, and the records themselves as provenance. Nothing here is
+    written and nothing is styled, per awards.md rule 4.
+
+    Newest host first, which is the order the records are already in: the page
+    reads newest first inside each block, and a summary that re-sorted its
+    source would be a second reading order to keep in agreement.
+    """
+    if not workshops:
+        return ""
+    for record in workshops:
+        scale = record.get("scale") or {}
+        missing = [
+            name for name, value in
+            (("scale.count", scale.get("count")), ("duration", record.get("duration")),
+             ("host", record.get("host")))
+            if not value
+        ]
+        if missing:
+            raise ValueError(
+                f'{record["id"]}: the host cards total ' + ", ".join(missing)
+                + " across the sessions one host ran, so a record missing one "
+                "would be dropped from a figure that still adds up on screen. "
+                "That is invented precision rather than the omission awards.md "
+                "rule 5 permits. State the field, or take the record off the "
+                "page. workshops.md, the host cards."
+            )
+    units = {w["scale"]["unit"] for w in workshops}
+    if len(units) > 1:
+        raise ValueError(
+            "a host card sums `scale.count` into one figure and prints one unit "
+            "after it, and this page states " + ", ".join(sorted(units))
+            + ". Two units summed into one number is a figure that means "
+            "nothing. workshops.md, the host cards."
+        )
+    unit = units.pop()
+
+    hosts: dict[str, list[dict]] = {}
+    for record in workshops:
+        hosts.setdefault(record["host"], []).append(record)
+
+    cards = []
+    for host, sessions in sorted(
+            hosts.items(), key=lambda pair: max(w["year"] for w in pair[1]),
+            reverse=True):
+        people = ACTIVE.number(sum(w["scale"]["count"] for w in sessions))
+        hours = ACTIVE.number(sum(w["duration"] for w in sessions))
+        count = len(sessions)
+        session_word = tr("unit.session" if count == 1 else "unit.sessions",
+                          "session" if count == 1 else "sessions")
+        # One session to a line, not `&middot;` joined. CLAUDE.md section 6
+        # gives the middot to short peers on one line, and two forty-character
+        # workshop titles in a 271px track are not that: joined, the pair wrapped
+        # mid-title. The line break is the separation, which is the same call
+        # DESIGN.md 10.2 makes for `.hero-facts`.
+        links = "\n    ".join(
+            f'<a href="#{w["id"]}">{t(w, "title")}</a>' for w in sessions)
+        cards.append(
+            '<li class="entry">\n'
+            f'  <p class="result__scope">{tr(f"tag.host.{host}", host)}</p>\n'
+            f'  <p class="result__figure"><b>{people} '
+            f'{tr(f"unit.{unit}", unit)}</b></p>\n'
+            f'  <p class="result__scale"><b>{count}</b> {session_word} '
+            f'&middot; <b>{hours}</b> {tr("unit.hours_short", "h")}</p>\n'
+            f'  <p class="result__source result__source--stacked">\n'
+            f"    {links}\n"
+            f"  </p>\n"
+            "</li>")
+    return "\n".join(cards)
 
 
 def publication_sort_key(record: dict) -> int:
@@ -1615,6 +1713,16 @@ def render_article(record: dict) -> str:
     The title carries the link for the same reason it does on a publication:
     the two blocks are read one after the other, and a trailing icon on one of
     them would break the column the eye is already following.
+
+    **The chips render last here, and everywhere else on the site they render
+    first.** This is the one record read inside a box (DESIGN.md 9.4), and a
+    box has a foot where a reading column does not. The card is therefore
+    ordered head, body, foot: what the piece is, what it shows, and the
+    evidence that anybody read it. `render_meta` is unchanged and the model
+    order inside the row is unchanged, so `platform` still takes the quiet grey
+    terminal position that `publisher` takes one block above it; only the row's
+    place in the card moved. `.entries--article` in `main.css` pins it to the
+    bottom edge so the two cards' chip rows line up whatever their bullets do.
     """
     title = t(record, "title")
     if record.get("url"):
@@ -1628,12 +1736,12 @@ def render_article(record: dict) -> str:
     parts = [
         f'<h3 class="entry__title">{title}</h3>',
         f'<p class="entry__period"><time datetime="{year}">{year}</time></p>',
-        render_meta(record, "writing"),
     ]
     if t(record, "summary"):
         parts.append(f'<p class="entry__summary">{t(record, "summary")}</p>')
     if t(record, "points"):
         parts.append(render_points(t(record, "points")))
+    parts.append(render_meta(record, "writing"))
 
     body = "\n".join(indent(part, 2) for part in parts if part)
     art_id = record["id"]
@@ -1649,13 +1757,17 @@ def reach_note(articles: list[dict]) -> str:
     number that says when it was read stays honest as it ages; a stale number
     that says nothing starts lying the moment it drifts.
 
-    The rule was written, the `.block__note` component was designed and styled
-    for it, and neither was ever built. Two hand-copied figures shipped undated
-    for as long as the page has existed, one of them quoted on Home as a skill
-    citation, on a site whose third reader checks. The rule is now a build
-    error rather than a paragraph: `check_reach` refuses a `reach` with no
-    `as_of`, so a figure cannot be refreshed without its date, or dated without
-    being refreshed, because both live in the same object.
+    **Nothing calls this, and the note is not on the page.** It was built and
+    then withdrawn on the author's call: a footnote dating two chips is a
+    maintenance promise made in front of the reader, and the block is two
+    records a recruiter scans in four seconds. It is kept, with `.block__note`
+    in `STAGED_CSS`, because restoring the line is then one placeholder in the
+    two research fragments rather than a rewrite.
+
+    What did not go with it is the discipline. `check_reach` refuses a `reach`
+    with no `as_of`, so a figure cannot be refreshed without its date, or dated
+    without being refreshed, because both live in the same object. The date is
+    now evidence for whoever edits the record rather than a line on the page.
 
     One note for the block, not one date per record. The date belongs to the
     reading, and the records were read in one sitting; per-record dates would
@@ -1695,62 +1807,84 @@ def project_sort_key(record: dict) -> int:
 
 
 def render_project(record: dict, articles: dict) -> str:
-    """One project as the site-wide .entry record.
+    """One project as a dossier: scan line, technical detail, then artefacts.
 
-    Two things sit outside the metadata model, on the same reasoning that
-    governs a workshop. The repository link belongs to the title, because it
-    points at the thing the title names. The write-up is an artefact of the
-    work rather than a dimension of it, so it renders as a utility tag after
-    the model's three.
-
-    That article is looked up by id in `writing.json` rather than repeated
-    here: it is one URL, so it is declared in one file, and a project can no
-    longer end up pointing at an address the Research page has since changed.
+    The scan line states what the deliverable is, how it was received and what
+    it is built with: `kind`, `upstream` and `stack`, rendered by `render_meta`
+    like every other record's. The footer holds only artefacts, which are
+    places a reader can go and look: the repository, a live demo, a slide deck
+    and a write-up. `upstream` used to sit down there with them and does not
+    any more, because a merged pull request is a standing rather than a place
+    (see MODELS). The article is still looked up by id in ``writing.json`` so
+    one URL remains declared in one file.
     """
     title = t(record, "title")
+    proof = []
     if record.get("repo"):
-        name = tr("link.repo", "GitHub repository")
-        github_icon = asset("images/icons/github.svg")
-        title += (
-            f'\n  <a class="icon-link" href="{record["repo"]}" target="_blank"'
-            f' rel="noopener" title="{name}">'
-            f'<img class="{icon_classes("github.svg", "sm")}"'
-            f' src="{github_icon}" alt="{name}"'
-            f' width="15" height="15"></a>\n'
+        proof.append(
+            f'<li><a class="tag tag--artifact link-external" href="{record["repo"]}"'
+            f' target="_blank" rel="noopener">{tr("link.repo", "GitHub repository")}</a></li>'
         )
-
-    extra_head = []
-    extra_tail = []
     if record.get("demo"):
         demo = record["demo"]
         demo_url = demo["url"] if isinstance(demo, dict) else demo
         demo_label = demo.get("label", "Live Demo on Hugging Face") if isinstance(demo, dict) else "Live Demo on Hugging Face"
-        extra_head.append(
+        demo_label = tr("link.demo", demo_label)
+        proof.append(
             f'<li><a class="tag tag--demo link-external" href="{demo_url}"'
             f' target="_blank" rel="noopener">{demo_label}</a></li>'
         )
     if record.get("slides"):
-        extra_tail.append(
+        proof.append(
             f'<li><a class="tag tag--artifact link-external" href="{record["slides"]}"'
-            f' target="_blank" rel="noopener" title="View slides in PowerPoint Online">Slides (.pptx)</a></li>'
+            f' target="_blank" rel="noopener" title="{tr("link.slides_title", "View slides in PowerPoint Online")}">'
+            f'{tr("link.slides", "Slides (.pptx)")}</a></li>'
         )
     if record.get("article"):
         article = articles[record["article"]]
-        extra_tail.append(
+        article_label = tr("link.article_on", "Article on {platform}").replace("{platform}", article["platform"])
+        proof.append(
             f'<li><a class="tag tag--article link-external" href="{article["url"]}"'
-            f' target="_blank" rel="noopener">Article on {article["platform"]}</a></li>'
+            f' target="_blank" rel="noopener">{article_label}</a></li>'
         )
 
     year = record["year"]
     parts = [
         f'<h3 class="entry__title">{title}</h3>',
         f'<p class="entry__period"><time datetime="{year}">{year}</time></p>',
-        render_meta(record, "projects", extra=tuple(extra_tail), extra_head=tuple(extra_head)),
+        render_meta(record, "projects"),
     ]
     if t(record, "summary"):
         parts.append(f'<p class="entry__summary">{t(record, "summary")}</p>')
     if t(record, "points"):
-        parts.append(render_points(t(record, "points")))
+        parts.append(render_group(
+            tr("label.what_was_built", "What was built"),
+            t(record, "points"),
+            modifier="entry__group--project",
+        ))
+    if proof:
+        proof_items = "\n".join(f"    {item}" for item in proof)
+        # The label survives as the list's accessible name and nothing else. It
+        # rendered as a visible `<p>` on all four records, identical every
+        # time, naming the rank the hairline directly above it already draws,
+        # at roughly 25px of vertical apiece. `What was built` earns its line
+        # by naming what the bullets are; this one named the component. Every
+        # tag list on the site carries an aria-label, so the name is kept where
+        # it does work and dropped where it did not.
+        #
+        # It says `Project links` and not `Project proof`, because the row
+        # stopped being mixed proof when `upstream` moved to the scan line.
+        # What is left is four kinds of destination, and naming them for what
+        # they are is the same rule the visible label failed: say something
+        # about the record, or say nothing.
+        links_label = tr("label.project_links", "Project links")
+        parts.append(
+            '<footer class="entry__proof">\n'
+            f'  <ul class="tag-list" aria-label="{links_label}">\n'
+            f'{proof_items}\n'
+            '  </ul>\n'
+            '</footer>'
+        )
 
     body = "\n".join(indent(part, 2) for part in parts if part)
     proj_id = record["id"]
@@ -2330,7 +2464,7 @@ def upstream_result(pr_numbers: list[int], projects: list[dict]) -> str:
         )
     for state in ("open", "merged"):          # weakest first
         if state in states:
-            return UPSTREAM_STATES[state]
+            return upstream_label(state)
     raise KeyError(f"no upstream state for pull requests {pr_numbers}")
 
 
@@ -2805,7 +2939,10 @@ def wrap_label(text: str, width: int) -> list[str]:
     words, lines, line = text.split(), [], ""
     for word in words:
         candidate = f"{line} {word}".strip()
-        if len(candidate) * CHAR_W <= width - 16 or not line:
+        # An entity is one glyph. `&amp;` counted as five, so a label
+        # carrying one broke a line early with room to spare on it.
+        measured = len(re.sub(r"&[a-z]+;", "x", candidate))
+        if measured * CHAR_W <= width - 16 or not line:
             line = candidate
         else:
             lines.append(line)
@@ -3292,6 +3429,10 @@ def page_blocks(site: dict) -> dict:
             "\n".join(render_workshop(w) for w in hardware_workshops), 4),
         "build.workshops_algorithms": indent(
             "\n".join(render_workshop(w) for w in algorithm_workshops), 4),
+        # One card per host, computed from the same records the two keys above
+        # render. It sits in the page header, which is where Awards already
+        # puts a summary derived from its records.
+        "build.workshops_hosts": indent(render_workshops_hosts(workshops), 4),
         "build.courses": indent("\n".join(render_course(c) for c in courses), 4),
         "build.publications": indent("\n".join(render_publication(p, site) for p in publications), 4),
         "build.articles": indent("\n".join(render_article(a) for a in articles), 4),
