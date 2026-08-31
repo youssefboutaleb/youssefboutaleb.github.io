@@ -78,8 +78,7 @@ work, not the thread.
 
 Written for **France / EU**, **remote international**, and the **Gulf / MENA**.
 
-- **English only, for now.** A French version is planned (§8) and is not a
-  reason to write hedged or translatable English in the meantime.
+- **English and French.** All eight pages ship in both English and French overlays (§8). English is the primary source; French translations route through `t()` and are synchronized via `python3 tools/build.py --sync`.
 - **Tunisian context is not glossed.** *1st of 86 teams*, *national*,
   *international, 7,094 teams* are legible to a reader who has never heard of
   the contest or the school. The scope and scale tags already do this work,
@@ -119,9 +118,9 @@ damaged the site. Any proposal to reverse one goes to the author first.
 | Stuff keywords for the ATS | Writes for humans, accepts some filter loss | This site is read by people who chose to open it. Keyword padding would corrupt the prose for readers who matter, to satisfy a machine that was going to be bypassed anyway. |
 | Show only the wins | Shows in-progress papers, honest placements (643rd of 7,094), and capabilities with no production record at all | An engineer trusts a page that admits what has not landed yet. Selective reporting is the fastest way to lose the third reader. |
 
-The clearest current example is Home's Skills & Evidence. Two rows carry no
-production citation: Airflow is certified twice and taught, and Spark is taught
-only, and both say so. Leaving them out would make the block shorter and
+The clearest current example is Home's Skills & Evidence. One row carries no
+production citation: Airflow is certified twice and taught, and says so. (Spark
+previously sat here before being linked to production PySpark lakehouse operations and DP-700 certification). Leaving it out would make the block shorter and
 stronger-looking and would destroy it, because a matrix where everything is
 maximally proven is a matrix nobody believes. The Kanboard pull requests used to
 be the example here; they were shown while open, and they have since merged,
@@ -357,7 +356,7 @@ What the build refuses to produce, today:
 | The build fails on | So this cannot happen |
 |---|---|
 | A citation pointing at a page or anchor that does not exist | A skill or an impact line citing proof the site does not carry |
-| A Impact in Numbers figure absent from the bullet it cites | A bullet edited and its figure on Home left behind |
+| An Impact in Numbers figure absent from the bullet it cites | A bullet edited and its figure on Home left behind |
 | An impact record with both `cite` and `evidence`, or neither | Two hand-written copies of one sentence, drifting apart |
 | An award record with both `performance` and `points` | A contest stating its score as fields and as a sentence, which is how `4h` and `48 h` came to share a page |
 | Two bullets sharing an id | A citation landing on the wrong evidence |
@@ -376,6 +375,8 @@ What the build refuses to produce, today:
 | A page missing any `og:` or `twitter:` tag, or an `og:image` that is not the absolute portrait URL | One page out of sixteen silently sharing with no image, on the network nobody tests |
 | A workshop record whose `block` names neither section of its page | A record that renders on no page at all, with nothing downstream to notice |
 | A workshop missing a field its host card totals, or a page mixing two `scale` units under one figure | A summary quietly leaving a record out of a total that still adds up on screen |
+| A production citation in `skills.json` landing on a record rather than on the bullet that proves it | Four capabilities citing four different things and sending the reader to the top of one job record |
+| A tool named on Home that no other page carries, undeclared | Home originating facts about the work, in a hand-written array, on the page whose rule is that it may only restate |
 
 Every one of those was added *after* the failure it prevents actually shipped.
 That is the pattern to follow: when a claim goes wrong, the fix is a guard in
@@ -390,31 +391,17 @@ cannot carry is the one failure this site cannot recover from.
 
 ## 10. Working agreement
 
-**Pair-programming mode is the default, for every kind of change.**
+**The 4-Stage Collaborative Method is compulsory for all changes across the whole site.**
 
-Visual, structural, editorial, code, data or documentation: the sequence is
-the same, and it applies to the whole site, not to whichever section prompted
-it:
+Visual, structural, editorial, code, data or documentation: every pass follows this 4-stage sequence:
 
-1. **Analyse the existing implementation first.** Read the fragment, the data,
-   the CSS and the model document that owns the rule before forming an opinion.
-2. **Challenge constructively and present 2-3 concrete options**, each with its
-   trade-off: what it costs, what it gains, what it weakens.
-3. **Ask targeted clarifying questions early.** Probe for missing facts, exact
-   metrics, problem counts, or ambiguous data before committing to changes.
-4. **Discuss and align on architecture with the author.** The author chooses and
-   refines the direction.
-5. **Only then modify code or documentation.**
-6. **Work and close sections incrementally.** Complete one section end-to-end
-   (discuss architecture → clarify/fill missing facts → apply changes → rebuild & verify)
-   and close it cleanly before starting the next.
+1. **Stage 1: Investigation & Audit.** Inspect the fragment, the data (`src/data/*.json`), the CSS, markdowns, and the model document. Identify orphaned or outdated content before forming an opinion.
+2. **Stage 2: Technical Review & Analytics.** Analyze root causes, syntax, technical depth, and alignment with site guidelines.
+3. **Stage 3: Collaborative Options & Questions.** Present 2-3 concrete costed options and ask targeted clarifying questions to extract missing metrics, stack details, or scale figures.
+4. **Stage 4: Implementation & Verification.** Modify source files (`src/data/*.json`, `src/i18n/*.json`, `src/pages/*.html`, `.md`), re-stamp translation locks, and verify with `python3 tools/build.py --sync && python3 tools/check.py`.
 
-**The runnable form of this is [`.claude/skills/rework/SKILL.md`](.claude/skills/rework/SKILL.md).**
-This section says what the method is; that file says how to run it, phase by
-phase, and carries the lessons each pass has taught. Invoke it with `/rework`,
-or just follow it. When a pass teaches something worth not relearning, it goes
-in that file's **Lessons** section, not here: this document stays the argument,
-the skill stays the procedure.
+**The runnable form of this is [`.agents/skills/rework/SKILL.md`](.agents/skills/rework/SKILL.md), [`.claude/skills/rework/SKILL.md`](.claude/skills/rework/SKILL.md), and [`.agents/AGENTS.md`](.agents/AGENTS.md).**
+This section says what the method is; those files say how to run it across agent ecosystems, phase by phase, accumulating what each pass taught. Invoke it with `/rework`, or just follow it. When a pass teaches something worth not relearning, it goes in the skill's **Lessons** section, not here: this document stays the argument, the skill stays the procedure.
 
 Two things are unchanged by this:
 

@@ -3,7 +3,7 @@
 The model for [`src/data/diagrams.json`](src/data/diagrams.json) and
 `render_diagram` in [`tools/build.py`](tools/build.py).
 
-**`diagrams.json` holds two diagrams now**, and the rule that kept it empty
+**`diagrams.json` is empty now**, and the rule that kept it empty
 still stands: [`CLAUDE.md`](CLAUDE.md) §8/M1 says, in those words, *do not
 auto-generate this content*. What is built here is the container. An agent may
 extend the renderer, fix the geometry, and draw a diagram the author has

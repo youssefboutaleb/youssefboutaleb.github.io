@@ -113,15 +113,25 @@ has to hold them and the page where they were first broken.
 
 **Every flowing column on Home begins at the same x.** The label track is
 `--spine` (13rem) and the gutter is `--space-6`, so the bio beside the
-portrait, the value beside a fact label, the consequence beside a result figure
-and the evidence beside a capability name all start at 240px.
+portrait, the value beside a fact label and the capability name beside its
+evidence all start at 240px.
+
+**Impact in Numbers left the rule rather than breaking it.** It is a card grid
+now ([`DESIGN.md`](DESIGN.md) §9.4), so it has no label track to align: a card
+is a box with its own padding, and the two tracks it sets start at 0 and 464.
+The rule is about flowing columns that hang off a label, and the block no
+longer has one. What it does not license is a *second* label track at a
+different x, which is the failure the rule was written for.
 
 It had four gutters, at 200, 240, 228 and 260. The page read as *almost*
 aligned, which is the worst of the three possible states: a reader cannot tell
 a system from an accident, and the ones that are real stop being believed.
-[`DESIGN.md`](DESIGN.md) §4 carries the arithmetic that fixes the width, and it
-is arithmetic rather than taste in both directions. A wider spine eats
-`--measure`; a narrower one wraps the result figures.
+[`DESIGN.md`](DESIGN.md) §4 carries the arithmetic that fixes the width. A
+wider spine eats `--measure`. **Narrowing it was measured rather than
+reasoned about**, once the result figures that used to hold the track stopped
+using it: at 10rem the flowing column reaches 748px and the chip run in Skills
+& Evidence packs into 27 lines instead of 28, in both languages. One line,
+against seven of ten capability names that already wrap at 208px.
 
 **Adding a two-column record to Home means taking the spine**, not choosing a
 width for it. If the content genuinely cannot live in 13rem, that is a finding
@@ -131,8 +141,9 @@ about the content and it comes here before it goes into the stylesheet.
 
 **The strong rule closes a block; the soft rule separates two records inside
 one.** `.block--ruled` opens each of the three sections at `--color-border`,
-and `.result`, `.skill` and `.hero-facts__row` separate their rows at
-`--color-border-soft`.
+and `.skill` and `.hero-facts__row` separate their rows at
+`--color-border-soft`. The impact cards take the same soft value as their
+border, so the three weights on the page are still two.
 
 One weight used to do both jobs, so a page with three sections and fifteen
 ruled rows drew sixteen identical divisions and ranked none of them. Home is
@@ -329,10 +340,9 @@ sentence.
 ```
 Data Engineer · JACQUEMUS          Paris, France · Aug 2024 - Present (2 years)
 [Luxury E-commerce & Retail] [Permanent] [Remote] [150+ pipelines]
-[Azure Data Factory] [Azure Fabric] [Apache Spark] [Datadog]
-Order, customer, product and pricing data into a medallion lakehouse, on
-flows carrying roughly 800,000 events and records a day and order peaks
-near 5,000 an hour at sale events.
+[Azure Data Factory] [Microsoft Fabric] [Apache Spark] [Datadog]
+Order, customer, product and pricing data into a medallion lakehouse
+architecture.
 ```
 
 Three rules:
@@ -380,15 +390,50 @@ awards: the field did not demote it, it filed it.
 ### Impact in Numbers
 
 The block that quotes. Records: [`src/data/impact.json`](src/data/impact.json),
-rendered as `.result` ([`DESIGN.md`](DESIGN.md) §9.3).
+rendered as a card grid of `.result__*` parts ([`DESIGN.md`](DESIGN.md) §9.3
+and §9.4).
 
 ```
-€1,400 per month   A recurring monthly saving on the       result__figure
-                   platform budget, taken with no SLA      result__consequence
-                   impact on the morning reporting             ← quoted, not written
-                   pipelines.
-                   JACQUEMUS · Career                      result__source
++--------------------------------------------------------------+
+| €1,400                                          result__figure
+| per month                                       result__unit
+| A recurring monthly saving on the platform      result__consequence
+| budget, taken with no SLA impact on the             ← quoted, not written
+| morning reporting pipelines.
+| JACQUEMUS · Since 2024 · Career                 result__source
++--------------------------------------------------------------+
++-----------------------------+  +-----------------------------+
+| 150+                        |  | Zero                        |
+| jobs under alerting         |  | feedback data lost          |
+| ...                         |  | ...                         |
++-----------------------------+  +-----------------------------+
 ```
+
+**The lead record spans both columns**, and that is this section's third
+editorial rule rendering itself for the first time. *Order is the file order,
+and the file order is the argument* was true of the data and invisible on the
+page: five records set as five 112px rows, and nothing saying which one was
+chosen to open. The span is `:first-child`, never a flag on a record, because
+the lead is not a property a record can be given.
+
+**The value and the unit are two ranks, and they were one line.** `<b>value</b>
+unit`, both at `--text-lg`, separated by weight alone. Three things followed
+from that and they were one thing: the number sat at the rank
+`.entry__title` and `.skill__name` already hold, 1.06 times body, on the block
+whose title promises numbers; the five values never formed a column, because
+what filled the track was the pair, at 88, 141, 155, 188 and 194px; and
+[`DESIGN.md`](DESIGN.md) §9.3's guarantee that every figure fits the track on
+one line was measured in English only, while the French *Zero donnée d'avis
+perdue* ran 216.6px in a 208px track and wrapped.
+
+Split, the value takes `--text-xl` and the unit the muted line beneath it. The
+widest French cell is 143px of 208, the values start at one x and read down the
+spine as a column, and no component was invented: this is the rank Awards'
+scope cards already give the line under a figure. `result__unit` is
+deliberately not `result__scale`, which means *how large the field was* on five
+other models; [`DESIGN.md`](DESIGN.md) §7.1 lets two models share a name only
+where they mean the same thing by it, and *per month* and *of 7,094 teams* do
+not.
 
 Three parts, and only one of them is written by hand:
 
@@ -398,14 +443,16 @@ Three parts, and only one of them is written by hand:
 | Consequence | What changed | Quoted from the bullet's own `impact` line, through `cite` |
 | Provenance | Company (or the derived upstream state) and the page | Both derived from the same lookup as the sentence |
 
-**The figure leads, and that is the whole shape.** This block was an `.entry`
-until it was not, and the swap is worth understanding before anyone moves it
-back.
+**The figure leads, and that is the whole shape.** The block was an `.entry` in
+a reading column, then a `.result` row hanging off the spine, and it is an
+`.entry` again inside `.entries--grid`. That looks like a circle and is not
+one: what was wrong the first time was never the element, it was that a
+reading-column `.entry` demanded parts a pointer to a result does not have.
 
 `.entry` is the component for a dated record that lives on its own page: a job,
-a project, an award. It requires a title, a period and a body. A Selected
-Impact record has none of those. It is a pointer to a result. Forcing it into
-`.entry` produced every complaint the block attracted:
+a project, an award. It requires a title, a period and a body. An Impact in
+Numbers record has none of those. It is a pointer to a result. Forcing it into
+the *reading-column* `.entry` produced every complaint the block attracted:
 
 | `.entry` required | So the block invented | What it cost |
 |---|---|---|
@@ -420,8 +467,14 @@ whose entire subject is outcomes. [`DESIGN.md`](DESIGN.md) had already written
 the correct principle, for the teaching spec strip: *the reader is scanning the
 figures, so the label recedes and the value carries the weight.*
 
-`.result` gives the figure the slot and the size the title had. **`title` still
-exists on every record and no longer renders**: it is the record's handle, what
+In the grid none of those five costs is charged: `.entries--grid` drops the
+bullet and the title rank, the card states one record so no topic has to be
+invented for it, and the figure takes the top of the card at `--text-2xl`. That
+is the size the *unit* used to beat it at: at `--text-xl` the value was the
+narrower mark on four of five English rows, `2` measuring 11px of ink above
+*Kanboard plugins* at 117px.
+
+**`title` still exists on every record and no longer renders**: it is the record's handle, what
 a build error names and what tells a person editing `impact.json` which row
 they are in. `result` is gone, and with it the amber `tag--result`, the
 `tag--figure` and the `tag--source`: the `impact` metadata model no longer
@@ -458,9 +511,19 @@ Three things come out of that one id, and none of them can be typed:
    which is why the two share a sentence instead of paraphrasing each other.
    A bullet with no `impact` line renders its `point` text instead: still the
    source's own words, never a summary of them.
-2. **The period line.** Company and dates from the record the bullet lives on,
-   so a figure cannot be dated to one job and linked to another. It also dates
-   the claims honestly: *100x faster* is from 2022 and used to read as current.
+2. **The years.** Company and dates from the record the bullet lives on, so a
+   figure cannot be dated to one job and linked to another. It also dates the
+   claims honestly: *100x faster* is from 2022 and read as current.
+
+   **That sentence was written before the renderer did it, and stayed wrong for
+   as long as nobody re-read the page against this file.** `render_impact`
+   printed the company and the page label and no date at all, so the 2022
+   result sat between two current ones with nothing saying so, under a document
+   that claimed the opposite. It renders `Since 2024`, `2024` and `2022` now:
+   years, not the `month_year` range, because *Aug 2024 - Present* renders in
+   Currently one block above and a saving accrues across a job rather than in a
+   month. The aggregate record has no single owner, so it prints two parts
+   where the others print three rather than being given a year somebody picked.
 3. **The link.** `career.html#jq-finops`, which lands on the bullet rather than
    at the top of a long page. A bullet carries an `id` only where Home cites
    it, because an anchor nothing points at is a URL promise nobody meant to
@@ -486,8 +549,8 @@ projects an impact register, which is a Projects decision and not a Home one.
 
 1. **`figure` is the only claim typed on Home**, and `check_figure` lints it
    against the text it cites.
-2. **The first three lines are data engineering.** The block is called
-   *Selected*, which is an admission that it is curated; the curation is
+2. **The first three lines are data engineering.** The block is curated, and
+   the curation is
    allowed to leave out a good result, and is not allowed to make the site look
    like it belongs to a different engineer than [`CLAUDE.md`](CLAUDE.md) §3
    describes. It once held four lines of which two were not data engineering,

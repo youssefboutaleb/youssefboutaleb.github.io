@@ -160,10 +160,14 @@ def css_variable_audit() -> None:
 # tax, and five rules rotted here long enough for one of them, .block__note, to
 # be cited by CLAUDE.md as an implemented mechanism while rendering nowhere.
 STAGED_CSS = {
-    # The six diagram* names lived here while src/data/diagrams.json was empty.
-    # Career carries the JACQUEMUS order path and Research the Ausgrid pipeline
-    # now, so the rules are reached by markup and this list would be lying
-    # about them. See diagrams.md.
+    # The six diagram* names live here while src/data/diagrams.json is empty.
+    # See diagrams.md.
+    "diagram",
+    "diagram__caption",
+    "diagram__edge",
+    "diagram__lane",
+    "diagram__node",
+    "diagram__svg",
     # MEDALS in build.py emits medal--bronze for any third place. The rule is
     # reachable; the data has no third place yet.
     "medal--bronze",
@@ -235,6 +239,64 @@ def spelling_audit(pages: list[Path]) -> None:
                 f"both appear across the built pages. Pick one and change the "
                 f"{counts[minority]} instance(s) of '{minority}' in src/."
             )
+
+
+# Tools named on Home that no record on the site carries, and why each is
+# allowed to be. Same contract as STAGED_CSS above: an exception is declared
+# with its reason, so the list cannot grow without somebody writing one.
+TOOLS_WITHOUT_A_RECORD = {
+    # The delivery stack. It is how a team works rather than what a system was
+    # built with, so no record's `stack` is the right home for it and none
+    # claims it. Kept on the author's decision, declared here rather than
+    # quietly exempted, and it is the one part of this block that CLAUDE.md
+    # section 5 would call a keyword surface.
+    "Jira", "Confluence", "Postman", "Agile/Scrum",
+}
+
+
+def home_tools_audit(pages: list) -> None:
+    """Every tool named on Home appears on a record somewhere else.
+
+    home.md's one rule is that Home may restate a fact only if the restatement
+    is generated from the same data the original renders from, or is a link to
+    it, and its table files Skills & Evidence under *citation*. The tools line
+    cites nothing, which was read as harmless because tools were assumed to
+    summarise what the linked records already say.
+
+    Twelve of thirty-six did not: ActiveMQ, SFTP, IAM, Application Gateway,
+    SQL Server, Microsoft Fabric, "APM & distributed tracing", "log
+    management", and the four delivery names above appeared nowhere else on
+    the site. Home was originating facts about the work, in a hand-written
+    array, on the one page whose model document exists because facts
+    originating on Home is how it drifted twice.
+
+    Checked against the built pages rather than against `stack` arrays,
+    deliberately: seventeen legitimate tools are named in a bullet, a syllabus
+    module or a project body instead of a stack, and a rule that demanded a
+    stack entry would be demanding the wrong shape rather than the fact.
+    """
+    home = [p for p in pages if p.stem == "index"]
+    others = [p for p in pages if p.stem != "index"]
+    corpus = " ".join(p.read_text(encoding="utf-8") for p in others)
+    named = set()
+    for page in home:
+        text = page.read_text(encoding="utf-8")
+        block = text[text.find('id="skills"'):]
+        named.update(re.findall(r'<li class="tag tag--stack">(.*?)</li>', block))
+    orphans = sorted(t for t in named
+                     if t not in TOOLS_WITHOUT_A_RECORD and t not in corpus)
+    if orphans:
+        failures.append(
+            "home: " + ", ".join(orphans) + " " +
+            ("is" if len(orphans) == 1 else "are") +
+            " named in Skills & Evidence and on no record the site carries. "
+            "Put the tool on the record that used it, or declare it in "
+            "TOOLS_WITHOUT_A_RECORD in tools/check.py with the reason."
+        )
+    stale = sorted(TOOLS_WITHOUT_A_RECORD - named)
+    if stale:
+        notes.append("no longer on Home, drop from TOOLS_WITHOUT_A_RECORD: "
+                     + ", ".join(stale))
 
 
 def link_fanin_audit(page: str, links: list[tuple[str, str]]) -> None:
@@ -398,6 +460,7 @@ def main() -> int:
     dash_audit()
     spelling_audit(pages)
     metadata_audit(pages)
+    home_tools_audit(pages)
     used_classes: set[str] = set()
 
     for page in pages:

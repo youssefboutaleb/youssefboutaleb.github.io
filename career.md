@@ -136,10 +136,7 @@ It is on the page because the site is written for remote international hiring
 evidence that remote work has actually been done rather than a line in the rail
 saying it is acceptable.
 
-`Remote delivery` is the one value that is not a plain work arrangement. It
-describes the OLIVESOFT engagement precisely: on-site at a Tunisian delivery
-centre, shipping to a Paris consultancy's LVMH account. *On-site* would state
-only where the desk was and throw away the fact a reader is looking for.
+`On-site` describes the OLIVESOFT engagement at the Tunisian delivery centre, shipping integrations for the Paris consultancy's LVMH account.
 
 **`scale` fourth, and grey.** Reused from Awards, Workshops and Teaching
 unchanged: the size of the thing the record involved. This is the hiring
@@ -155,19 +152,7 @@ reverse, misstates a number the bullets below state exactly.
 
 `scale` may carry a scope and the system it sits inside, and the JACQUEMUS
 record does: `"count": 20, "of": 150` renders `20+ of 150+ pipelines`, and the
-first bullet says *20+ of a 150+ pipeline estate*. That is not the restatement
-rule 2 of §6 forbids. The figure states both the size of the platform, which
-is context, and the share of it that is this author's, which is the claim.
-Dropping either leaves a reader with the wrong picture, in opposite
-directions.
-
-**The tag used to say `150+ pipelines` alone, and the bullet was the only
-correction.** A reader who scans chips and stops, which is the first reader in
-[`CLAUDE.md`](CLAUDE.md) §2, took the estate for the scope and was over by a
-factor of seven before the bullet had a chance to say otherwise. `of` exists so
-the chip carries its own qualifier instead of depending on the line below it to
-supply one. A `scale` with a scope inside a larger system states both or it
-overstates.
+`scale` carries `"count": 20, "unit": "pipelines", "minimum": true`, rendering `20+ pipelines` to cleanly reflect the author's pipeline scope.
 
 ### Vocabulary
 
@@ -218,10 +203,7 @@ cannot wrap. What the old hand-written page did wrong was never the *number* of
 chips: it was grading one of them with `.tag--accent`, and rendering chips
 **instead of** categories rather than after them.
 
-`stack` names tools, not techniques. The OEM role reads `C++` alone: a
-Savitzky-Golay filter and a Random Forest classifier are things that were
-*built*, and they are named in the bullets that describe building them. A
-one-name stack is the honest rendering of a role that used one language.
+`stack` names tools, not techniques. The OEM Signal Processing Engineer role reads `C++` alone (a Savitzky-Golay filter is a technique named in the bullets), while the Machine Learning & Statistical Engineer role names its software tool stack (`C++`, `XGBoost`, `scikit-learn`, `NumPy`).
 
 ### A company with more than one role
 
@@ -693,6 +675,17 @@ architecture reads as a platform. The consumer teams are not lost, they move to
 the impact line of the bullet they actually explain (§6), which is where a
 consequence belongs.
 
+**The stack enumeration was cut from this record's summary, and the
+architecture took its place.** The JACQUEMUS `summary` ended on *"built and run
+on a modern Azure data stack (Fabric, Spark, Data Factory, Azure SQL, Data
+Lake, live Quarkus services, Datadog) whose FinOps I lead"*, which restated all
+four `stack` tags one row up and three nouns (Quarkus, Datadog, Data Factory)
+that each have a bullet of their own, all inside one sixty-word sentence. It
+now ends on the medallion lakehouse on Microsoft Fabric and the FinOps lead,
+split into a second sentence: the architecture sentence two asks for was the
+one fact the summary did not carry, and the tools were the one thing it carried
+twice.
+
 ---
 
 ## 6. Editorial rules for the bullets
@@ -794,7 +787,7 @@ length, which meant two blocks were competing to introduce one career: the
 lede spent 28 words on *sensor work first, luxury retail now*, and the first
 paragraph of the block then spent 66 words on *sensor work first, luxury
 retail now*. That is the surface Home's opening was merged to remove
-(`home-opening-options.md`), reproduced one page across, and rewording either
+(see [`home.md`](home.md)), reproduced one page across, and rewording either
 half would have left it standing. The page now opens on `h1` and the block,
 like every other page on the site.
 

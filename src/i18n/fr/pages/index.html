@@ -16,7 +16,7 @@ schema_type: ProfilePage
      citation or quotation. Those two paragraphs were the one restatement on
      the page that was hand-written on both sides, so nothing could catch them
      drifting. Merging is the fix that removes the surface rather than
-     patching it. home-opening-options.md carries the full finding. -->
+     patching it. home.md carries the full finding. -->
 <header class="page-header hero-header">
   <div class="hero-header__content">
     <img class="hero-header__portrait" src="{{ page.root }}{{ site.portrait }}" alt="{{ site.portrait_alt }}" width="208" height="260">
@@ -103,7 +103,7 @@ schema_type: ProfilePage
        the mechanism, which CLAUDE.md section 6 keeps off the page entirely.
        A block__intro is one line and it is a pitch. -->
   <p class="block__intro">Ce qui a changé parce que le travail a été livré.</p>
-  <ul class="results">
+  <ul class="entries entries--grid entries--impact">
 {{ build.impact }}
   </ul>
 </section>
@@ -112,12 +112,16 @@ schema_type: ProfilePage
      is a link to the record that proves the capability, so a claim here can
      be checked in one click rather than taken on trust. Records live in
      src/data/skills.json; the proof order and the derived standing come from
-     PROOF and standing() in tools/build.py. Never hand-write entries here. -->
+     PROOF and standing() in tools/build.py. Never hand-write entries here.
+
+     The <ul> used to be written here and is not any more. There is one list
+     per standing now, each headed by the band it holds, because the standing
+     was a caption on every row and seven of ten rows derived the same one.
+     render_skills owns how many lists there are, so the fragment cannot know.
+     skills.md carries the argument it overrules. -->
 <section class="block block--ruled" aria-labelledby="skills">
   <h2 class="block__title" id="skills">Compétences et preuves</h2>
   <p class="block__intro">Ce que je sais faire, et ce qui le prouve.</p>
 {{ build.proof_key }}
-  <ul class="skills">
 {{ build.skills }}
-  </ul>
 </section>

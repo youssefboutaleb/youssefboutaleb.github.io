@@ -120,8 +120,7 @@ work; the authors are the line beneath it.
 
 These are also the two mechanics the block intro used to describe. It no longer
 does: an author link and a title link announce themselves, and the intro is one
-line (*Applied machine learning taken all the way to peer-reviewed
-publication*) per [`DESIGN.md`](DESIGN.md) §11.1.
+line per [`DESIGN.md`](DESIGN.md) §11.1. The line itself is below.
 
 ### The link on the title
 
@@ -228,16 +227,84 @@ Adding a *category* is a larger change: declare it here, add it to
 in `main.css`, and add its row to `DESIGN.md` §7.1. It must not share a
 treatment with the other three.
 
-## The page lede
+## The block intro
 
-> *What pipelines have to feed, and what bad data costs downstream.*
+> *Detection systems for data that cannot be trusted at the source.*
 
-[`CLAUDE.md`](CLAUDE.md) §3, near enough verbatim: *"ML and research taught
-what pipelines have to feed, and what bad data costs downstream."* That
-sentence is the argument for a data engineering site carrying a research page
-at all, which is exactly a lede's job and not an intro's, and neither block
-intro says it.
+**It is a pitch, and the two lines before it were routes.** The first described
+the block's mechanics; the second, which stood until this pass, read *Applied
+machine learning and anomaly detection systems taken from raw data pipelines to
+peer-reviewed publication*, and every part of it was already on the page:
+*applied machine learning and anomaly detection* is paper one's own title and
+summary, which [`DESIGN.md`](DESIGN.md) §11.1 rule 3 keeps out of an intro;
+*raw data pipelines* is the page lede one heading above; and *peer-reviewed
+publication* is the `h2` 40px above it, which [`awards.md`](awards.md) rule 1
+forbids. At 114 characters it was twice the site's median intro and said
+nothing the reader had not already read.
 
-**It must keep clearing the lede test** ([`DESIGN.md`](DESIGN.md) §11.1): it
-speaks for the papers and for the technical articles, and it repeats neither
-intro.
+**How it survived is the part worth recording.** The commit that rewrote the
+*Technical Articles* intro from a list of its records' topics into a pitch left
+this one alone, so one page carried the defect and its fix in adjacent blocks,
+with the comment explaining the fix sitting forty lines below the block that
+still had it. **When a pass fixes one instance of a pattern, grep the page for
+the others before closing it.**
+
+**What the new line claims, and what carries it.** Both papers are about data
+that cannot be trusted where it is produced: the Ausgrid work catches power
+theft and sensor anomalies in smart-meter streams and puts the records on a
+tamper-proof ledger, and the pothole work requires the inertial and vision
+channels to agree before a hazard is reported. Neither the heading nor the lede
+says that, which is the test an intro has to pass.
+
+**It collided with the page lede, and the lede is what went.** That paragraph
+originally stood here arguing the two could share the theme, on the reasoning
+that the lede said what the research taught a data engineer while the intro
+said what the papers are for. The distinction is real on paper and does not
+survive being read: *what bad data costs downstream* sat 40px above *data that
+cannot be trusted at the source*, and a reader meets them as one claim made
+twice. The section below records what happened to the lede. **A distinction
+that needs a paragraph to defend is not visible at reading speed.**
+
+## The page has no lede, and it had one
+
+> ~~*What pipelines have to feed, and what bad data costs downstream.*~~
+
+It was [`CLAUDE.md`](CLAUDE.md) §3 near enough verbatim, *"ML and research
+taught what pipelines have to feed, and what bad data costs downstream"*, which
+is the argument for a data engineering site carrying a research page at all.
+Three things were wrong with it by the time it was read on the page.
+
+**The second clause became the block intro.** Once the publications intro said
+*data that cannot be trusted at the source*, the lede's *what bad data costs
+downstream* was the same claim one rank up, which [`DESIGN.md`](DESIGN.md)
+§11.1 calls two openings competing to introduce one page and is exactly why
+Career's lede was deleted.
+
+**The transplant dropped the verb.** §3's sentence is *ML and research
+**taught***, and a claim about what the work taught the person is what makes it
+an argument. Cut to *What pipelines have to feed*, it is two topic labels with
+no subject. Awards' lede is the same doctrine with its verb intact (*"The
+contest **teaches** you to read the constraints"*), which is what a borrowed
+sentence has to keep.
+
+**It covered the wrong half of the page.** Both clauses landed on the
+publications block; the YOLOv8 article got part of one, and the Datadog article
+got nothing. Awards, the site's other two-block page with a lede, gives a
+clause to each block.
+
+**Two rewrites were costed and the author took the deletion.** One restored the
+verb and cut the second clause (*Machine learning taught me what pipelines have
+to feed*); the other gave a clause to each block on what checks the work
+(*Research put in front of reviewers, and engineering put in front of
+readers*). Both were defensible and both were a sentence written to justify a
+slot. §11.1 says a page gets a lede only when it has something to say the
+blocks cannot: with both intros now carrying their own pitch, this page does
+not, and the header is an `h1` alone as on Career.
+
+**What this costs, stated rather than glossed.** Nothing on the page now says
+why a data engineering CV carries a research page. That argument lives in
+[`CLAUDE.md`](CLAUDE.md) §3 and is made by the records, and the alternative was
+a line above two blocks that already introduce themselves. If a third block
+ever lands here and no single intro speaks for the page, this is the section to
+reopen, and writing the sentence is the author's ([`DESIGN.md`](DESIGN.md)
+§11.1).

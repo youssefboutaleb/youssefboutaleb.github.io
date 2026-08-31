@@ -319,14 +319,10 @@ means **what the thing does for whoever uses it**, not the technique, which
 
 ## Dossier detail and proof links
 
-`points` now render inside the named `What was built` group. The existing
-bullets are unchanged; the group simply makes their technical role explicit
-and keeps them visually together with the project's summary. A project's
-repository, demo, write-up and slide deck remain links to the same sources, but
-render together in the proof footer instead of being scattered between the
-title and metadata line. The upstream pull request was in that run and is not
-any more: it is a standing, and it reads in the scan line with the rest of the
-record's metadata.
+`points` render inside the named `What was built` group. A project's
+repository, demo, write-up and slide deck links render together alongside `kind`,
+`upstream` and `stack` in the top metadata scan line tag list directly under the title
+and period, keeping all entry tags unified at the top.
 
 ### The article cross-link
 
@@ -335,9 +331,8 @@ Where a project has a write-up on the Research page, the project record carries
 `src/data/writing.json`. The URL is not repeated here: one address, one file,
 and a project can no longer point at something the Research page has changed.
 
-The article renders in the proof footer, because it is an artefact of the work
-rather than a dimension of it; slides follow the same rule. See
-[`writing.md`](writing.md) for why the link runs in this direction and not the
+The article tag renders in the top metadata tag list alongside repository and demo links.
+See [`writing.md`](writing.md) for why the link runs in this direction and not the
 other.
 
 ---
@@ -360,16 +355,54 @@ other.
 
 ## The page lede
 
-> *The same debugging instinct, applied to someone else's codebase and to whole
-> pipelines of my own.*
+> *The engineering I do when the requirements are mine to write.*
 
 Projects has two blocks and each carries its own pitch, so nothing could be
-promoted and this line was written with the author. It is derived from
-[`CLAUDE.md`](CLAUDE.md) §3, which says open source is *"the same debugging
-instinct, applied to somebody else's codebase, and submitted back"*, and it
-adds the half that sentence does not cover: the applied work is the author's
-own, end to end.
+promoted and this line was written with the author. It says the one thing
+neither intro covers: every record on this page was chosen rather than
+assigned, which is why a page of side work belongs on a CV at all.
+
+**It replaced a line derived from [`CLAUDE.md`](CLAUDE.md) §3**, *the same
+debugging instinct, applied to someone else's codebase and to whole pipelines
+of my own*. Two things retired it. The block intros were rewritten to carry
+concrete facts (an upstream acceptance, a served model), so a lede repeating
+the instinct sat above two sentences that had moved past it, and *whole
+pipelines of my own* described two notebooks, one of which is served. The §3
+sentence is still the source of the open source half of the argument; it is no
+longer quoted at the top of the page.
 
 **It must keep clearing the lede test** ([`DESIGN.md`](DESIGN.md) §11.1): it
 speaks for both blocks, and it repeats neither intro. A third block on this
 page is the moment to re-read it.
+
+## The block intros
+
+> *Built for an open source project, and accepted into its official plugin
+> directory.*
+>
+> *From raw dataset to live API: custom data pipelines and containerized
+> endpoints.*
+
+Both replaced sentences that named the category instead of pitching it:
+*tooling and workflow integrations built to document systems and streamline
+engineering workflows*, which said *workflow* twice and reached for the
+register [`CLAUDE.md`](CLAUDE.md) §6 bans, and *applied computer vision and
+model serving pipelines built for automated data ingestion and inference*,
+which restated `stack` and `kind` and claimed ingestion for a record that
+colorizes photographs.
+
+**Each now lands on the block's strongest checkable fact**, which is the
+[`DESIGN.md`](DESIGN.md) §11.1 job: the first on the upstream acceptance both
+plugin records carry, the second on the split between the model that reached a
+service and the one that stayed a notebook. The second states that asymmetry
+rather than averaging it, which is [`CLAUDE.md`](CLAUDE.md) §5's rule applied
+to the pitch layer: a block where every record looks maximally finished is a
+block nobody believes.
+
+**The cost is that both run close to the records below them.** The upstream
+acceptance is also an amber chip on both plugins, and *notebook* is the `kind`
+tag on both ML records. That is admissible where a summary restating a tag is
+not (rule 2 above), because the intro speaks for the block and the tag speaks
+for one record: the pitch is that *both* were accepted, which no single chip
+says. If a third open source record ever lands without an upstream acceptance,
+this sentence is wrong and goes first.

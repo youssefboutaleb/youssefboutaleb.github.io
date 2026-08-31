@@ -270,8 +270,10 @@ The four classes are borrowed rather than reinvented. `.result__figure` and
 `.result__source` mean *the figure* and *where this came from*, which is what
 those lines are; `.result__scope` and `.result__scale` extend the same
 component the way `.result__consequence` already does, which is to say Home
-renders some of it and this block renders the rest. Only `.result`'s
-two-column grid belongs to Home.
+renders some of it and this block renders the rest. **There is no `.result`
+container left to belong to anybody**: Home's row grid was retired when Impact
+in Numbers moved onto `.entries--grid`, which is the component these cards were
+already built on. The parts are all there is, and all three blocks share them.
 
 **The medal disc is deliberately absent here** and stays on the record. Rule 4
 keeps it because it is recognised before the label is read, which is worth a

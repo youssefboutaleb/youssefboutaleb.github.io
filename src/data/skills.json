@@ -10,12 +10,12 @@
     "evidence": {
       "production": [
         {
-          "text": "Azure Data Factory &amp; Fabric at JACQUEMUS",
-          "href": "career.html#exp-jacquemus"
+          "text": "Data pipelines at JACQUEMUS",
+          "href": "career.html#jq-pipelines"
         },
         {
           "text": "API-led integration at OLIVESOFT",
-          "href": "career.html#exp-olivesoft"
+          "href": "career.html#olivesoft-api-led"
         }
       ],
       "certification": [
@@ -48,9 +48,7 @@
     "name": "Observability &amp; incident response",
     "thread": "trunk",
     "tools": [
-      "Datadog",
-      "APM &amp; distributed tracing",
-      "log management"
+      "Datadog"
     ],
     "evidence": {
       "production": [
@@ -85,7 +83,7 @@
     "tools": [
       "MuleSoft API-led",
       "REST",
-      "ActiveMQ",
+      "Anypoint MQ",
       "SFTP"
     ],
     "evidence": {
@@ -95,8 +93,8 @@
           "href": "career.html#olivesoft-dlq"
         },
         {
-          "text": "Enterprise systems at JACQUEMUS",
-          "href": "career.html#exp-jacquemus"
+          "text": "Live API services at JACQUEMUS",
+          "href": "career.html#jq-api-services"
         }
       ],
       "certification": [
@@ -128,10 +126,6 @@
         {
           "text": "&euro;1,400/month saved",
           "href": "career.html#jq-finops"
-        },
-        {
-          "text": "Azure Data Lake &amp; SQL integration",
-          "href": "career.html#exp-jacquemus"
         }
       ],
       "certification": [
@@ -158,8 +152,8 @@
     "evidence": {
       "production": [
         {
-          "text": "Azure data platform",
-          "href": "career.html#exp-jacquemus"
+          "text": "Medallion lakehouse at JACQUEMUS",
+          "href": "career.html#jq-lakehouse"
         }
       ],
       "certification": [
@@ -198,7 +192,7 @@
       "production": [
         {
           "text": "Metal classifier at OEM",
-          "href": "career.html#exp-oem-engineering-sarl"
+          "href": "career.html#oem-classifier"
         }
       ],
       "taught": [
@@ -324,12 +318,29 @@
     "name": "Distributed processing",
     "thread": "trunk",
     "tools": [
-      "Apache Spark"
+      "Apache Spark",
+      "PySpark"
     ],
     "evidence": {
+      "production": [
+        {
+          "text": "PySpark notebooks at JACQUEMUS",
+          "href": "career.html#jq-lakehouse"
+        }
+      ],
+      "certification": [
+        {
+          "text": "Fabric Data Engineer (DP-700)",
+          "href": "career.html#cert-dp-700"
+        }
+      ],
       "taught": [
         {
-          "text": "Processing at Volume",
+          "text": "Data Engineering 1",
+          "href": "teaching.html#data-engineering-1-m4"
+        },
+        {
+          "text": "Data Engineering 2",
           "href": "teaching.html#data-engineering-2-m3"
         }
       ]

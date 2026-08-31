@@ -51,6 +51,7 @@
     "course.homework": "Devoir",
     "course.module": "Module",
     "date.present": "aujourd'hui",
+    "date.since": "Depuis",
     "facts.certified": "Certifié",
     "facts.languages": "Langues",
     "label.evidence": "Preuves",
@@ -125,10 +126,36 @@
     "research.as_of": "à jour en août 2026",
     "research.submitted_to": "Soumis à",
     "scale.of": "sur",
-    "standing.Applied &amp; studied": "Appliqué et étudié",
-    "standing.Production-proven": "Éprouvé en production",
-    "standing.Run in production": "Exploité en production",
-    "standing.Verified: not yet in production": "Vérifié : pas encore en production",
+    "label.evidence_key": "Légende des preuves :",
+    "badge.Applied &amp; academic projects": "Appliqué",
+    "badge.Applied Projects &amp; Coursework": "Appliqué",
+    "badge.Applied &amp; studied": "Appliqué",
+    "badge.Certified &amp; Taught (Pre-production)": "Certifié &amp; Enseigné",
+    "badge.Certified &amp; Taught (Pre-Production)": "Certifié &amp; Enseigné",
+    "badge.Externally verified (Pre-production)": "Vérifié",
+    "badge.In production": "Production",
+    "badge.In production, and verified outside it": "Prod &amp; Certifié",
+    "badge.Production Systems": "Production",
+    "badge.Production Systems &amp; Certified Proof": "Prod &amp; Certifié",
+    "badge.Production-Deployed": "Production",
+    "badge.Production-Deployed &amp; Certified": "Prod &amp; Certifié",
+    "badge.Production-deployed": "Production",
+    "badge.Production-deployed &amp; externally verified": "Prod &amp; Certifié",
+    "badge.Verified, not yet in production": "Vérifié",
+    "standing.Applied &amp; academic projects": "Projets appliqués et académiques",
+    "standing.Applied Projects &amp; Coursework": "Projets appliqués et travaux",
+    "standing.Certified &amp; Taught (Pre-production)": "Certifié et enseigné (Hors production)",
+    "standing.Certified &amp; Taught (Pre-Production)": "Certifié et enseigné (Hors production)",
+    "standing.Externally verified (Pre-production)": "Vérifié par ailleurs (Hors production)",
+    "standing.In production": "Exploité en production",
+    "standing.In production, and verified outside it": "Exploité en production et certifié",
+    "standing.Production Systems": "Systèmes en production",
+    "standing.Production Systems &amp; Certified Proof": "Systèmes en production et certifications",
+    "standing.Production-Deployed": "Déployé en production",
+    "standing.Production-Deployed &amp; Certified": "Déployé en production et certifié",
+    "standing.Production-deployed": "Déployé en production",
+    "standing.Production-deployed &amp; externally verified": "Déployé en production et certifié",
+    "standing.Verified, not yet in production": "Certifié et enseigné (Hors production)",
     "tag.audience.Engineering Students": "Étudiants ingénieurs",
     "tag.audience.Engineers &amp; Executives": "Ingénieurs et dirigeants",
     "tag.authorship.Second Author": "Deuxième auteur",
@@ -228,19 +255,28 @@
     "vol-jeunes-ingenieurs-de-djerba-jid-2022.location": "Djerba, Tunisie",
     "vol-jeunes-ingenieurs-de-djerba-jid-2023.location": "Djerba, Tunisie",
     "vol-tunisian-red-crescent.location": "Djerba, Tunisie",
-    "exp-jacquemus.context": "JACQUEMUS est une maison de mode de luxe française qui vend du prêt-à-porter, de la maroquinerie et des accessoires via son propre e-commerce, ses boutiques et ses partenaires grossistes, sur des flux de commandes culminant autour de 5 000 commandes par heure lors des opérations de soldes et une plateforme de données ingérant environ 800 000 événements et enregistrements par jour, sur plusieurs centaines de gigaoctets.",
-    "exp-jacquemus.summary": "Je travaille dans l'équipe Data Platform : je traite les données internes de commandes, clients, produits et tarifs par ETL et modélisation, j'intègre les systèmes externes qui gravitent autour (taux de change, e-mailing transactionnel, expédition et remboursements), et je fais atterrir l'ensemble dans une architecture lakehouse en médaillon.",
-    "exp-jacquemus.home_summary": "Données de commandes, clients, produits et tarifs vers un lakehouse en médaillon, sur des flux portant environ 800 000 événements et enregistrements par jour et des pics proches de 5 000 commandes par heure lors des soldes.",
+    "exp-jacquemus.context": "JACQUEMUS est une maison de mode de luxe française qui vend du prêt-à-porter, de la maroquinerie et des accessoires via son propre e-commerce, ses boutiques et ses partenaires grossistes.",
+    "exp-jacquemus.summary": "Au sein de l'équipe Data Platform, je suis responsable du parcours de commande retail de bout en bout sur l'OMS (order management system) et l'OCI (omnichannel inventory) pour les canaux e-commerce, boutique et grossiste. Je conçois et exploite les pipelines de données financières, produits, tarifs, entreposage et facturation sur un lakehouse en médaillon Microsoft Fabric, tout en dirigeant le FinOps et la gouvernance des coûts cloud.",
+    "exp-jacquemus.home_summary": "Données de commandes, clients, produits et tarifs vers une architecture lakehouse en médaillon.",
     "exp-jacquemus.groups": [
       {
         "title": "Ingénierie des données",
         "points": [
           {
-            "point": "Construction et maintenance de <b>20+ pipelines sur un parc de 150+</b>, couvrant Salesforce, ORLI/WMS, PostgreSQL, des API, des partages de fichiers, Azure Data Lake et Azure SQL.",
+            "id": "jq-pipelines",
+            "point": "Construction et maintenance de <b>plus de 20 pipelines d'entreprise</b> interconnectant Salesforce, ORLI/WMS, des API REST, des partages de fichiers SFTP, Azure Data Lake et Azure SQL (SQL Server).",
             "impact": "Les équipes analytics, logistique, reporting e-commerce et gestion des stocks travaillent à partir de ces flux : un pipeline bloqué retarde le reporting commercial du matin et la synchronisation des stocks."
           },
-          "Exploitation du parcours de commande retail sur des fréquences de rafraîchissement allant de <b>10 minutes</b> au quotidien et à l'hebdomadaire, avec des charges d'ingestion atteignant <b>150 Mo</b> par exécution.",
-          "Intégration de <b>services web Quarkus</b> en direct à côté des jobs planifiés, pour que les données qui ne peuvent pas attendre une fenêtre de rafraîchissement transitent par une API plutôt que par une table de batch."
+          {
+            "id": "jq-lakehouse",
+            "point": "Conception de la plateforme sur la <b>stack de données moderne sur Azure</b> : un <b>lakehouse en médaillon sur Microsoft Fabric</b>, orchestré avec <b>Fabric Data Factory</b> et transformé avec des <b>notebooks PySpark</b> pour structurer les données en couches Delta bronze, silver et gold.",
+            "impact": "Établit une source unique de vérité à l'échelle de l'entreprise avec des couches de données structurées, accélérant les analyses Power BI et le reporting interservices."
+          },
+          {
+            "id": "jq-api-services",
+            "point": "Intégration de <b>services web Quarkus REST en direct derrière Azure Application Gateway</b> aux côtés des travaux planifiés par lots pour les événements de commande et de stock en temps réel.",
+            "impact": "S'affranchit des fenêtres de rafraîchissement par lots pour la télémétrie prioritaire, transférant les données critiques via des points de terminaison API à faible latence."
+          }
         ]
       },
       {
@@ -248,8 +284,8 @@
         "points": [
           {
             "id": "jq-finops",
-            "point": "Réduction de <b>&euro;1,400 par mois</b> sur la facture d'infrastructure Azure, en automatisant l'extinction des environnements de développement par des runbooks <b>PowerShell</b> dans Azure Automation Accounts, en ajustant la taille de calcul à chaque environnement et en repensant les pools Spark partagés.",
-            "impact": "Une économie mensuelle récurrente sur le budget de la plateforme, obtenue sans impact SLA sur les pipelines de reporting du matin."
+            "point": "Réduction de <b>&euro;1,400 par mois</b> sur les dépenses d'infrastructure Azure en automatisant l'extinction des environnements de dev via des runbooks <b>PowerShell</b> (Azure Automation), en gérant les accès IAM, en ajustant le compute et en redimensionnant les pools Spark partagés.",
+            "impact": "Génère une économie mensuelle récurrente sur le budget plateforme, sans aucun impact SLA sur les pipelines de reporting du matin."
           }
         ]
       },
@@ -258,38 +294,43 @@
         "points": [
           {
             "id": "jq-observability",
-            "point": "Instrumentation des charges d'ingestion avec <b>Datadog APM et des tableaux de bord de supervision sur mesure</b>, sur Azure Data Factory, Fabric et les pools Spark.",
-            "impact": "Une couverture d'alerting sur l'ensemble du <b>parc de 150+ jobs</b> : une défaillance silencieuse d'un job ou d'une API remonte avant la fenêtre de reporting ouvrée, plutôt que par un signalement utilisateur."
+            "point": "Instrumentation des traitements d'ingestion avec <b>Datadog APM et des tableaux de bord sur mesure</b> sur Azure Data Factory, Microsoft Fabric et les pools d'exécution Spark.",
+            "impact": "Assure une couverture d'alerte sur l'ensemble du <b>parc de 150+ jobs</b>, détectant les défaillances silencieuses avant le début de la journée d'exploitation."
           },
           {
             "id": "jq-docs",
-            "point": "Rédaction des runbooks d'architecture de la plateforme, des procédures de reprise après sinistre et du playbook d'exploitation, pour le <b>parc de 150+ pipelines</b> et le parcours de commande retail.",
-            "impact": "L'équipe data et les ingénieurs d'astreinte reprennent une exécution en échec depuis le playbook plutôt qu'en escaladant vers la personne qui a construit le pipeline, ce qui raccourcit le temps de rétablissement pendant un incident."
+            "point": "Rédaction des runbooks d'architecture, des procédures de reprise d'activité (DRP) et du guide d'exploitation pour le <b>parc de 150+ pipelines</b> et le parcours de commande retail.",
+            "impact": "Permet aux ingénieurs d'astreinte de résoudre les pannes directement depuis les procédures d'exploitation, réduisant le temps moyen de rétablissement (MTTR) lors des incidents."
           }
         ]
       }
     ],
-    "exp-olivesoft.context": "OLIVESOFT est un cabinet de conseil data et Salesforce basé à Paris, qui délivre des prestations d'ingénierie des données, d'intégration et de BI pour plus de 20 clients, principalement dans le retail de luxe, run et supervision quotidiens des plateformes qu'il construit inclus.",
-    "exp-olivesoft.summary": "J'ai travaillé sur le compte Kenzo Paris / LVMH, en construisant le flux de données d'avis clients en production entre le service desk et la plateforme de feedback.",
+    "exp-olivesoft.context": "OLIVESOFT est un cabinet de conseil data basé à Paris, délivrant des services d'ingénierie des données, d'intégration et de BI à plus de 20 clients, principalement dans le retail de luxe, couvrant le conseil, la livraison de projets et le support opérationnel des plateformes.",
+    "exp-olivesoft.summary": "Conception et réalisation du pipeline d'intégration d'avis clients en production pour le compte Kenzo Paris / LVMH, en s'appuyant sur une architecture MuleSoft à 3 niveaux déployée sur CloudHub entre Salesforce Service Cloud et Diduenjoy.",
     "exp-olivesoft.points": [
       {
-        "point": "Construction d'une <b>intégration MuleSoft asynchrone pilotée par API</b> reliant Salesforce Service Cloud à Diduenjoy, de zéro, pour le compte Kenzo Paris / LVMH.",
-        "impact": "Découplage du travail des agents du service desk de la latence de l'API aval, supprimant les blocages d'agents quand la plateforme de feedback externe était lente ou indisponible."
+        "id": "olivesoft-api-led",
+        "point": "Architecture d'une connectivité <b>MuleSoft API-led à 3 niveaux</b> (System et Process APIs) sur <b>MuleSoft CloudHub</b>, utilisant <b>DataWeave 2.0</b> pour transformer les événements de commande Salesforce en payloads Diduenjoy.",
+        "impact": "Découplage du travail des agents et obtention d'un taux de réponse aux avis clients de 42 % dès le premier rapport mensuel, établissant un score NPS initial de 48 vers l'objectif de 55."
       },
       {
         "id": "olivesoft-dlq",
-        "point": "Mise en place de <b>contrats REST RAML, de politiques de rejeu automatiques et de files de rebut (DLQ)</b> pour absorber les défaillances passagères des endpoints.",
-        "impact": "Zero perte de données d'avis garantie pendant les indisponibilités aval, et un suivi fiable de la satisfaction client établi pour le compte."
+        "point": "Mise en place de <b>contrats REST RAML 1.0, de files Anypoint MQ et d'une politique de rejeu exponentiel à 5 tentatives</b> séparant les échecs temporaires de la redirection permanente vers les files de rebut (DLQ).",
+        "impact": "Zéro perte de données d'avis garantie lors des indisponibilités des API tierces, avec gestion automatisée des alertes de défaillance via CloudHub PaaS."
       }
     ],
-    "exp-regim-lab.context": "REGIM Lab (REsearch Groups in Intelligent Machines) est le laboratoire de recherche appliquée de l'École Nationale d'Ingénieurs de Sfax.",
-    "exp-regim-lab.summary": "J'ai travaillé sur un prototype de recherche et une étude de cas portant sur une gestion énergétique sûre et transparente, à partir du jeu de données public de compteurs communicants Ausgrid ; il ne s'agissait pas d'un déploiement en production.",
+    "exp-regim-lab.context": "REGIM-Lab (REsearch Groups in Intelligent Machines) est le laboratoire de recherche appliquée de l'École Nationale d'Ingénieurs de Sfax (ENIS), spécialisé dans les systèmes intelligents, l'apprentissage automatique et les architectures de données de capteurs.",
+    "exp-regim-lab.summary": "Conception et réalisation d'un prototype de recherche pour la supervision énergétique sécurisée et décentralisée, ingérant la télémétrie de compteurs communicants du jeu Ausgrid pour évaluer des modèles de détection d'anomalies par régression et enregistrer des pistes d'audit cryptographiques immuables.",
     "exp-regim-lab.points": [
-      "Ingestion de <b>télémétrie à intervalles de 30 minutes</b> sur les 300 foyers du jeu de données Ausgrid, vers une application web de supervision et un tableau de bord de revue pour les administrateurs.",
-      "Développement d'un <b>pipeline de détection d'anomalies par régression</b> pour investiguer les relevés bruités des compteurs, et stockage des empreintes cryptographiques des relevés via des <b>smart contracts Ethereum</b>, constituant une piste d'audit infalsifiable."
+      "Ingestion et prétraitement d'<b>une année de télémétrie à intervalles de 30 minutes (~5,2M d'enregistrements)</b> sur 300 foyers solaires avec <b>Pandas et NumPy</b>, restituant les métriques en direct via un <b>tableau de bord Flask, Jinja2 et JavaScript</b>.",
+      {
+        "id": "regim-publication",
+        "point": "Ingénierie de caractéristiques temporelles et évaluation de modèles de régression <b>Scikit-learn</b> pour isoler les anomalies, avec écriture d'empreintes cryptographiques sur des <b>smart contracts Solidity via Web3.py</b> sur un réseau de test Ganache local.",
+        "impact": "Constitue l'architecture de données de base et les évaluations empiriques d'un article de recherche publié dans <a href=\"research.html#pub-secure-and-transparent-energy-management-using-blockchain-and-machine-learning-anomaly-detection-a-case-study-of-the-ausgrid-dataset\">Computers &amp; Industrial Engineering (Elsevier, 2025)</a>."
+      }
     ],
     "exp-oem-engineering-sarl.context": "OEM ENGINEERING est une société canadienne d'ingénierie industrielle dont le siège est à Sherbrooke, au Québec, et le site d'ingénierie à Sfax, en Tunisie. Elle construit des systèmes de tri de matériaux à haute cadence qui identifient les alliages métalliques en ligne à partir de signaux de caméras proche infrarouge visible (VNIR).",
-    "exp-oem-engineering-sarl.summary": "J'ai travaillé sur la chaîne de traitement du signal et de classification qui porte la décision de tri, à travers deux postes.",
+    "exp-oem-engineering-sarl.summary": "Conception et réalisation de la chaîne de traitement du signal temps réel et de classification d'alliages en ligne à travers deux postes, combinant un filtrage C++ à haute cadence (~2 000 im/s) et des modèles spectraux XGBoost d'évaluation.",
     "exp-oem-engineering-sarl.roles": [
       {
         "role": "Machine Learning &amp; Statistical Engineer",
@@ -305,22 +346,23 @@
           "C++",
           "XGBoost",
           "scikit-learn",
-          "VNIR Spectroscopy"
+          "NumPy"
         ],
         "groups": [
           {
             "title": "Classification temps réel",
             "points": [
               {
-                "point": "Intégration de la <b>chaîne de filtrage Savitzky-Golay en C++</b> déployée dans la classification d'alliages en ligne, en soutenant environ <b>2 000 images par seconde</b> pour des décisions de tri en temps réel.",
-                "impact": "L'identification des alliages tourne à la vitesse nominale du convoyeur, qui est la contrainte que le système de tri doit tenir pour fonctionner en ligne."
+                "id": "oem-classifier",
+                "point": "Intégration de la <b>chaîne de filtrage Savitzky-Golay en C++</b> dans la classification d'alliages en ligne, en soutenant environ <b>2 000 images par seconde</b> (budget de latence &lt;0,5 ms par image) pour des décisions de tri en temps réel.",
+                "impact": "L'identification des alliages tourne à la vitesse nominale du convoyeur, respectant la contrainte stricte de débit matériel nécessaire au tri en ligne."
               }
             ]
           },
           {
             "title": "R&amp;D modèle",
             "points": [
-              "Construction d'un <b>modèle XGBoost de validation</b> hors ligne atteignant <b>94,7 % de justesse</b> sur des jeux de données spectrales ; maintenu hors production car son exécution plus lente ne tenait pas la contrainte temps réel du système."
+              "Développement de caractéristiques spectrales et évaluation de <b>modèles XGBoost hors ligne avec Scikit-learn et NumPy</b> sur un jeu de données de <b>~10 000+ échantillons spectraux VNIR</b>, atteignant <b>94,7 % de justesse</b> sur plusieurs classes d'alliages tout en conservant la séparation avec la production en raison des contraintes de latence."
             ]
           }
         ]
@@ -387,7 +429,7 @@
       "unit": "jobs sous alerte"
     },
     "impact-integration-resilience.figure": {
-      "value": "Zero",
+      "value": "Zéro",
       "unit": "donnée d'avis perdue"
     },
     "impact-signal-preprocessing.figure": {
@@ -654,12 +696,12 @@
     "skill-data-pipeline-engineering.evidence": {
       "production": [
         {
-          "text": "Azure Data Factory et Fabric chez JACQUEMUS",
-          "href": "career.html#exp-jacquemus"
+          "text": "Pipelines de données chez JACQUEMUS",
+          "href": "career.html#jq-pipelines"
         },
         {
           "text": "Intégration pilotée par API chez OLIVESOFT",
-          "href": "career.html#exp-olivesoft"
+          "href": "career.html#olivesoft-api-led"
         }
       ],
       "certification": [
@@ -720,8 +762,8 @@
           "href": "career.html#olivesoft-dlq"
         },
         {
-          "text": "Systèmes d'entreprise chez JACQUEMUS",
-          "href": "career.html#exp-jacquemus"
+          "text": "Services API temps réel chez JACQUEMUS",
+          "href": "career.html#jq-api-services"
         }
       ],
       "certification": [
@@ -742,10 +784,6 @@
         {
           "text": "&euro;1,400 par mois économisés",
           "href": "career.html#jq-finops"
-        },
-        {
-          "text": "Intégration Azure Data Lake et SQL",
-          "href": "career.html#exp-jacquemus"
         }
       ],
       "certification": [
@@ -762,8 +800,8 @@
     "skill-data-warehousing-amp-analytics.evidence": {
       "production": [
         {
-          "text": "Plateforme de données Azure",
-          "href": "career.html#exp-jacquemus"
+          "text": "Lakehouse en médaillon chez JACQUEMUS",
+          "href": "career.html#jq-lakehouse"
         }
       ],
       "certification": [
@@ -791,7 +829,7 @@
       "production": [
         {
           "text": "Classifieur de métaux chez OEM",
-          "href": "career.html#exp-oem-engineering-sarl"
+          "href": "career.html#oem-classifier"
         }
       ],
       "taught": [
@@ -882,74 +920,29 @@
       ]
     },
     "skill-distributed-processing.evidence": {
+      "production": [
+        {
+          "text": "Notebooks PySpark chez JACQUEMUS",
+          "href": "career.html#jq-lakehouse"
+        }
+      ],
+      "certification": [
+        {
+          "text": "Fabric Data Engineer (DP-700)",
+          "href": "career.html#cert-dp-700"
+        }
+      ],
       "taught": [
         {
-          "text": "Traitement à grande échelle",
+          "text": "Data Engineering 1",
+          "href": "teaching.html#data-engineering-1-m4"
+        },
+        {
+          "text": "Data Engineering 2",
           "href": "teaching.html#data-engineering-2-m3"
         }
       ]
     },
-    "jq_platform.title": "Plateforme de données commandes, clients, produits et tarifs de JACQUEMUS",
-    "jq_platform.desc": "Salesforce, ORLI/WMS, PostgreSQL et Azure SQL alimentent deux chemins d'ingestion : Azure Data Factory pour les jobs planifiés, et des services web Quarkus pour les données qui ne peuvent pas attendre une fenêtre de rafraîchissement. Les deux font atterrir un lakehouse en médaillon sur Azure Fabric, transformé avec Apache Spark, qui sert les équipes analytics, logistique, reporting e-commerce et gestion des stocks. Datadog APM instrumente aussi bien la partie ingestion que le lakehouse.",
-    "jq_platform.caption": "Rafraîchissement de 10 minutes au quotidien, sur des charges d'ingestion atteignant 150 Mo.",
-    "jq_platform.layers": [
-      {
-        "label": "Sources",
-        "nodes": [
-          {
-            "id": "sf",
-            "label": "Salesforce"
-          },
-          {
-            "id": "wms",
-            "label": "ORLI/WMS"
-          },
-          {
-            "id": "pg",
-            "label": "PostgreSQL"
-          },
-          {
-            "id": "asql",
-            "label": "Azure SQL"
-          }
-        ]
-      },
-      {
-        "label": "Ingestion",
-        "nodes": [
-          {
-            "id": "adf",
-            "label": "Azure Data Factory"
-          },
-          {
-            "id": "quarkus",
-            "label": "Services web Quarkus"
-          }
-        ]
-      },
-      {
-        "label": "Lakehouse",
-        "nodes": [
-          {
-            "id": "lake",
-            "label": "Lakehouse en médaillon (Fabric, Spark)"
-          }
-        ]
-      },
-      {
-        "label": "Restitution",
-        "nodes": [
-          {
-            "id": "ddog",
-            "label": "Datadog APM"
-          },
-          {
-            "id": "biz",
-            "label": "Analytique et reporting"
-          }
-        ]
-      }
-    ],
     "datadog-log4j2-mulesoft.points": [
       "Un appender HTTP Log4j2 poste les événements JSONLayout directement vers l'API Send Logs de Datadog.",
       "Aucun agent sur l'hôte, et aucun collecteur intermédiaire.",

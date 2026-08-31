@@ -1,17 +1,13 @@
 ---
 name: rework
-description: The working method for changing anything on this site: investigate the existing implementation, name the root cause, put 2-3 costed options and a recommendation to the author, ask with AskUserQuestion, then build, verify, propagate to the documents and record the outcome. Use for any visual, structural, editorial, data or copy change to a page, block or component, and whenever the author says a section is not good, not well designed, badly positioned, or asks to upgrade, rebuild, enhance or investigate one.
+description: The standardized 4-stage collaborative workflow for changing anything on this site: investigate existing implementation, analyze technical root causes, present 2-3 costed options and recommendations to the user, collect feedback via interactive questions modal, then edit sources, re-stamp translation locks (tools/build.py --sync), and verify via check.py.
 ---
 
 # Rework
 
-The executable form of [`CLAUDE.md`](../../../CLAUDE.md) §10. That section says
-what pair-programming mode is. This says how to run it, and it accumulates what
-each pass taught.
+The executable form of [`CLAUDE.md`](../../../CLAUDE.md) §10 and [`.agents/AGENTS.md`](../../../.agents/AGENTS.md). That section says what pair-programming mode is. This says how to run it across both `.agents/` and `.claude/` skill roots, accumulating what each pass taught.
 
-**Do not skip phases to be helpful.** Skipping the investigation is how a
-symptom gets patched and the cause survives. Skipping the questions is how the
-author's positioning gets decided by an agent.
+Do not skip phases to be helpful. Skipping investigation causes symptom-patching; skipping questions causes positioning decisions to be made without the author.
 
 ---
 
@@ -155,15 +151,14 @@ one pass, update every file the change invalidates:
 
 ## Phase 10: record the outcome
 
-Append to the options document, in the repository root, named
-`<area>-options.md`:
+Record the architectural outcomes directly in the page's canonical model document (`home.md`, `career.md`, `DESIGN.md`, etc.):
 
-- A before/after table.
-- **Every correction you made to your own earlier claims**, plainly.
+- A summary of design decisions and changes.
+- **Every correction made to earlier claims**, plainly.
 - What was decided but not built, and why.
 - What is still open and author-led.
 
-The next agent reads this file, not the transcript.
+The next agent reads the canonical model documents, not temporary options files or the transcript.
 
 ---
 
@@ -490,6 +485,71 @@ Append here every pass. This is the part that makes the file worth keeping.
     Lesson 11 says check the repository before quoting a document at the
     author; this is its arithmetic half, and `fontTools` answers it in a
     minute.
+
+49. **A guard can shape the content instead of checking it.** `check_figure`
+    asserts a hand-written `figure.value` appears verbatim in the sentence it
+    cites. On the French Home page the sentence read *"Zero perte de donnees
+    d'avis garantie"*, because the figure value had been left untranslated as
+    `Zero` and the only way to satisfy the guard was to write the English word
+    into French prose. Lesson 22 said to make the figure translatable so the
+    check compares like with like; that half landed and the value was never
+    translated, so the guard quietly went on dictating. **When a check passes on
+    data nobody could have written naturally, read what the data had to become
+    to pass it.**
+50. **A measurement in a document is a measurement in one language.**
+    `DESIGN.md` §9.3 guaranteed that every impact figure fits the 208px spine on
+    one line, and named the widest at 194px. True in English. The French
+    equivalent was 216.6px and wrapped, on the front page, in the second
+    language, under a guarantee written in the first. Lesson 48 says re-derive
+    a number before quoting it; this is its second half, which is to re-derive
+    it **in every locale the site ships**.
+51. **The renderer that reaches past `t()` is rarely the one you are looking
+    at.** `render_impact` routed every string correctly and still printed
+    `Career` four times on the French page, because its `page_labels` argument
+    was built from the English `site["nav"]` eighty lines away, while the nav
+    renderer twenty lines further on was already calling `tr(f"nav.{id}")` on
+    the same data. **Follow an argument back to where it was built before
+    concluding a renderer is clean**: the lookup table is a renderer too.
+52. **Two columns saying one thing is one finding, not two.** The repeated
+    *Production-proven* caption and the invisible ranking looked like separate
+    complaints. They were the same fact: the standing was rendered twice, once
+    as a word and once as the leading chip's colour, and neither rendering
+    varied across seven of ten rows. Counting how many rows share a derived
+    value is the measurement that turns "this feels repetitive" into a finding,
+    and it is one line of Python against the data.
+
+53. **A fix applied to one of two siblings leaves the defect next to its own
+    explanation.** Commit `04a3e7d` rewrote Research's *Technical Articles*
+    intro from a list of its records' topics into a pitch, and left the
+    *Peer-Reviewed Publications* intro directly above it describing its records
+    exactly as before, so the page carried the defect and the comment
+    explaining the fix forty lines apart. **When a pass fixes one instance of a
+    pattern, grep the page for the others before closing it**, which is one
+    command and would have closed both in the same commit.
+54. **An intro can be made entirely of its own neighbours.** All 114 characters
+    of that line were already on the page: the record topics from paper one,
+    *raw data pipelines* from the page lede, *peer-reviewed publication* from
+    the `h2` 40px above it. Nothing in it was wrong, which is why two passes
+    read past it. Test a heading-adjacent sentence by deleting each clause and
+    asking what the reader loses; a clause the neighbours already say is not
+    short prose, it is no prose.
+
+55. **Writing a paragraph to defend an overlap is the tell that the overlap is
+    real.** Having given Research's publications block a pitch about untrusted
+    data, I noticed it sat under a lede saying *what bad data costs downstream*
+    and settled the question with four sentences in `research.md` arguing the
+    two operate at different altitudes. The author's next message was that
+    lede. The argument was sound and irrelevant: a reader meets the two lines
+    40px apart and hears one claim made twice. **If a distinction needs a
+    paragraph to hold, it is not visible at reading speed**, and the paragraph
+    is the finding, not the resolution.
+56. **A document's census of the site goes stale silently, because nothing
+    counts it.** `DESIGN.md` §11.1 said four of eight pages carry a lede and
+    named Projects, Research and Awards among those without one, months after a
+    single commit gave all three a lede. Numbers get re-derived because they
+    look like facts (lesson 48); a sentence enumerating which pages do what
+    reads like prose and never gets checked. `grep -c` across the fragments is
+    the same one command that would have caught it.
 
 ---
 

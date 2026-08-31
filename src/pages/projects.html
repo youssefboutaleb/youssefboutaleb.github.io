@@ -6,16 +6,16 @@ nav: projects
 <header class="page-header">
   <h1 class="page-title">Projects</h1>
   <!-- One line, and it speaks for both blocks below or it does not belong
-       here: DESIGN.md 11.1. Derived from CLAUDE.md 3's account of why this
-       page sits on a data engineering site at all, which is the thing neither
-       block intro explains and an intro is not the rank for. -->
-  <p class="page-lede">The same debugging instinct, applied to someone else's codebase and to whole pipelines of my own.</p>
+       here: DESIGN.md 11.1. It says why the page exists at all, which is the
+       thing neither block intro explains and an intro is not the rank for:
+       the records below were chosen by the author, not assigned. -->
+  <p class="page-lede">The engineering I do when the requirements are mine to write.</p>
 </header>
 
 <section class="block" aria-labelledby="open-source">
   <h2 class="block__title" id="open-source">Open Source Contributions</h2>
   <p class="block__intro">
-    Tooling and workflow integrations built to document systems and streamline engineering workflows.
+    Built for an open source project, and accepted into its official plugin directory.
   </p>
   <ul class="entries">
     <!-- Records live in src/data/projects.json, selected by their `block`
@@ -28,7 +28,7 @@ nav: projects
 <section class="block" aria-labelledby="applied-ml">
   <h2 class="block__title" id="applied-ml">Applied Projects</h2>
   <p class="block__intro">
-    Applied computer vision and model serving pipelines built for automated data ingestion and inference.
+    From raw dataset to live API: custom data pipelines and containerized endpoints.
   </p>
   <ul class="entries">
 {{ build.ml_projects }}

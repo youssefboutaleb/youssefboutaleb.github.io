@@ -12,8 +12,7 @@ nav: career
      first paragraph below then said in 66: two blocks competing to introduce
      one career, which is the surface that produced Home's duplicated opening
      before it was merged. One block, one paragraph, and the lede is gone;
-     Career was the only page of eight carrying one. See
-     career-experience-options.md.
+     Career was the only page of eight carrying one. See career.md.
 
      It names no company, because the four records below carry the company and
      what was owned inside it (career.md section 5). It carries no capability
@@ -29,12 +28,9 @@ nav: career
      Learning & Statistical Engineer, so "Data Engineer" covers 30 of them. -->
 <section class="block" aria-labelledby="summary">
   <h2 class="block__title" id="summary">Summary</h2>
-  <div class="prose">
+  <div class="prose prose--full">
     <p>
-      Data Engineer, three years in: I build enterprise data pipelines and I run them.
-      Industrial sensor data taught me what a pipeline has to survive; a luxury retail
-      platform is where it runs now. Error handling, alerting, recovery plans and written
-      architecture documentation are part of the deliverable, not follow-up.
+      Data Engineer with 2+ years building and operating production data platforms on Microsoft Azure. At JACQUEMUS I own over 20 enterprise pipelines, built on a medallion lakehouse architecture in Microsoft Fabric and orchestrated with Fabric Data Factory, Spark notebooks and live Quarkus web services. I lead FinOps and Azure administration (PowerShell automation, IAM, compute rightsizing, shared Spark pool configuration) and standardized Datadog observability across the platform and its data flows.
     </p>
   </div>
 </section>
@@ -42,36 +38,32 @@ nav: career
 <section class="block" aria-labelledby="experience">
   <h2 class="block__title" id="experience">Experience</h2>
   <ul class="entries">
-{{ build.experience }}
+    {{ build.experience }}
   </ul>
 </section>
 
-<!-- The order path drawn, under the records it describes. It is here rather
-     than in the JACQUEMUS record because a diagram is about a block, not a
-     bullet: the four sources and the two ingestion paths are spread across
-     three groups of that record and the picture is what puts them in one
-     shape. diagrams.md section 1 is the bar it has to clear. -->
-{{ build.diagram.jq_platform }}
 <section class="block" aria-labelledby="education">
   <h2 class="block__title" id="education">Education</h2>
   <ul class="entries">
-{{ build.education }}
+    {{ build.education }}
   </ul>
 </section>
 
 <section class="block" aria-labelledby="certifications">
   <h2 class="block__title" id="certifications">Certifications</h2>
-  <p class="block__intro">Vendor-certified across the data engineering stack: cloud data platforms, data orchestration, data integration, and observability.</p>
+  <p class="block__intro">Vendor-certified across the data engineering stack: cloud data platforms, data orchestration,
+    data integration, and observability.</p>
   <ul class="entries entries--grid">
-{{ build.certifications }}
+    {{ build.certifications }}
   </ul>
 </section>
 
 <section class="block" aria-labelledby="courses">
   <h2 class="block__title" id="courses">Online Courses</h2>
-  <p class="block__intro">Continuous learning to master computing fundamentals and emerging technologies, understanding how new tools interface into modern data architectures.</p>
+  <p class="block__intro">Continuous learning to master computing fundamentals and emerging technologies, understanding
+    how new tools interface into modern data architectures.</p>
   <ul class="entries entries--grid">
-{{ build.online_courses }}
+    {{ build.online_courses }}
   </ul>
 </section>
 
@@ -83,6 +75,6 @@ nav: career
   <h2 class="block__title" id="volunteering">Volunteering</h2>
   <p class="block__intro">Crisis response, before any of the rest of this.</p>
   <ul class="entries">
-{{ build.volunteering }}
+    {{ build.volunteering }}
   </ul>
 </section>

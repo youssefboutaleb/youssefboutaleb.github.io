@@ -10,6 +10,8 @@ footer. Those are written **once** and rendered into the pages by a build step,
 so the site cannot drift out of sync with itself again.
 
 ```
+.agents/               workspace operating rules (AGENTS.md) and skills
+.claude/               legacy skill definitions (rework/SKILL.md)
 src/
   site.json          identity, availability, contact details, socials, navigation
   layout.html        the page shell: head, brand bar, nav, footer
@@ -21,7 +23,7 @@ assets/
   fonts/             self-hosted Noto Sans (woff2 / woff / ttf)
 images/, data/       portrait, brand icons, CV, workshop slides
 tools/
-  build.py           renders src/ → the *.html files in the repository root
+  build.py           renders src/ -> the *.html files in the repository root
   check.py           verifies the built site
 *.html               BUILD OUTPUT: generated, do not edit by hand
 ```
@@ -478,13 +480,13 @@ here and rendered once on Research.
   "engagement": "Permanent",
   "mode": "Remote",
   "scale": { "count": 150, "unit": "pipelines", "minimum": true },
-  "stack": ["Azure Data Factory", "Azure Fabric", "Apache Spark", "Datadog"],
+  "stack": ["Azure Data Factory", "Microsoft Fabric", "Apache Spark", "Datadog"],
   "summary": "JACQUEMUS is a French luxury fashion house selling …",
   "home_summary": "Order, customer, product and pricing data into a medallion lakehouse …",
   "groups": [
     { "title": "Monitoring &amp; Observability", "points": [
       { "point": "Instrumented ingestion workloads with Datadog APM …",
-        "impact": "Alert coverage across the 150+ job estate, so a silent failure …" }
+        "impact": "Alert coverage across 150+ production jobs, so a silent failure …" }
     ] }
   ]
 }
@@ -690,11 +692,13 @@ anchor. The five colours are named once by the key above the block, rendered
 from `PROOF_KEY` in `tools/build.py`; adding a kind means adding a row there
 too, or the key stops describing the block.
 
-The record renders in two columns: capability and standing on the left, tools
-then evidence on the right. `tools` take the outlined `stack` treatment Career
-and Projects use, on their own line **above** the evidence: putting them in the
-same run would leave every row starting on an outlined chip and destroy the
-colour-run reading. [DESIGN.md §9.1](DESIGN.md) has the layout.
+The record renders in two columns: the capability on the left, evidence then
+tools on the right. `tools` take the outlined `stack` treatment Career and
+Projects use, on their own line **below** the evidence: putting them in the
+same run, or above it, leaves the row starting on an outlined chip and destroys
+the colour-run reading. The standing is not on the record at all any more: it
+is printed once above the run of rows sharing it. [DESIGN.md §9.1](DESIGN.md)
+has the layout.
 
 `thread` is the one field set by hand, and it is a **positioning** call rather
 than a rating: `"trunk"` if the capability supports the Data Engineering claim
@@ -738,14 +742,17 @@ longer writes the sentence; it quotes it.** The model and the rules are in
 
 Three things are derived from that one id and **must not be typed**: the
 sentence (the bullet's `impact` line, or its `point` text if it has none), the
-period line (company and dates from the record the bullet lives on), and the
+provenance (the company, and the years of the record the bullet lives on), and the
 citation link (`career.html#jq-finops`, landing on the bullet rather than the
 top of the page). Add an `id` to a bullet **only** when Home cites it: an anchor
 nothing points at is a URL promise nobody meant to make.
 
-**Home is the only page that renders this file**, as `.result` rows: the figure
-leads, the quoted sentence follows, and a provenance line closes it.
-`"home": true` is therefore required: a record without it renders nowhere.
+**Home is the only page that renders this file**, as a card grid
+(`.entries--impact`): the figure leads each card, the quoted sentence follows,
+and a provenance line closes it. **The first record in the file spans the full
+column**, so file order is not only the reading order, it is which record gets
+the lead card. `"home": true` is therefore required: a record without it
+renders nowhere.
 
 `title` is required and **does not render**. It is the record's handle: what a
 build error names, and what tells you which row you are editing.

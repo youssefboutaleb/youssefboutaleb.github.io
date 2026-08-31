@@ -10,29 +10,37 @@
     "mode": "Remote",
     "scale": {
       "count": 20,
-      "of": 150,
       "unit": "pipelines",
       "minimum": true
     },
     "stack": [
       "Azure Data Factory",
-      "Azure Fabric",
+      "Microsoft Fabric",
       "Apache Spark",
       "Datadog"
     ],
-    "context": "JACQUEMUS is a French luxury fashion house selling ready-to-wear, leather goods, and accessories through its own e-commerce, its boutiques, and wholesale partners, on order flows that peak at around 5,000 orders per hour at sale events and a data platform ingesting roughly 800,000 events and records a day across hundreds of gigabytes.",
-    "summary": "I work in the Data Platform team, handling the internal order, customer, product, and pricing data through ETL and data modeling, integrating the external systems around it (exchange rates, transactional emailing, shipping, and refunds), and landing all of it in a medallion lakehouse architecture.",
-    "home_summary": "Order, customer, product and pricing data into a medallion lakehouse, on flows carrying roughly 800,000 events and records a day and order peaks near 5,000 an hour at sale events.",
+    "context": "JACQUEMUS is a French luxury fashion house selling ready-to-wear, leather goods, and accessories through its own e-commerce, its boutiques, and wholesale partners.",
+    "summary": "Part of the Data Platform team, owning the retail order path end to end across OMS (order management system) and OCI (omnichannel inventory) for e-commerce, boutique, and wholesale channels. I design and operate the surrounding financial, product, pricing, warehousing, and invoicing pipelines on a Microsoft Fabric medallion lakehouse, while leading platform FinOps and cloud cost governance.",
+    "home_summary": "Order, customer, product and pricing data into a medallion lakehouse architecture.",
     "groups": [
       {
         "title": "Data Engineering",
         "points": [
           {
-            "point": "Built and maintained <b>20+ of a 150+ pipeline estate</b> across Salesforce, ORLI/WMS, PostgreSQL, APIs, file shares, Azure Data Lake, and Azure SQL.",
+            "id": "jq-pipelines",
+            "point": "Built and maintained <b>over 20 enterprise pipelines</b> across Salesforce, ORLI/WMS, REST APIs, SFTP file shares, Azure Data Lake, and Azure SQL (SQL Server).",
             "impact": "The analytics, logistics, e-commerce reporting, and inventory-management teams work from these flows, so a stalled pipeline delays morning commercial reporting and inventory synchronization."
           },
-          "Ran the retail order path on refresh schedules from <b>10 minutes</b> to daily and weekly, with ingestion payloads reaching <b>150 MB</b> per run.",
-          "Integrated live <b>Quarkus web services</b> alongside the scheduled jobs, so data that cannot wait for a refresh window moves over an API rather than a batch table."
+          {
+            "id": "jq-lakehouse",
+            "point": "Engineered the platform on the <b>modern Azure data stack</b>: a <b>medallion lakehouse on Microsoft Fabric</b>, orchestrated with <b>Fabric Data Factory</b> and transformed with <b>PySpark notebooks</b>, landing order, financial, product, and pricing data across bronze, silver, and gold Delta layers.",
+            "impact": "Establishes an enterprise single source of truth with structured data layers, accelerating downstream Power BI analytics and cross-departmental reporting."
+          },
+          {
+            "id": "jq-api-services",
+            "point": "Integrated live <b>Quarkus REST API services behind Azure Application Gateway</b> alongside scheduled batch jobs for real-time order and inventory events.",
+            "impact": "Bypasses batch refresh windows for high-priority telemetry, moving time-sensitive retail updates directly over low-latency API endpoints."
+          }
         ]
       },
       {
@@ -40,8 +48,8 @@
         "points": [
           {
             "id": "jq-finops",
-            "point": "Reduced <b>Azure infrastructure spend by &euro;1,400 per month</b> by automating development-environment shutdowns with <b>PowerShell</b> runbooks in Azure Automation Accounts, matching compute size to each environment, and redesigning shared Spark pools.",
-            "impact": "A recurring monthly saving on the platform budget, taken with no SLA impact on the morning reporting pipelines."
+            "point": "Reduced <b>Azure infrastructure spend by &euro;1,400 per month</b> by automating development-environment shutdowns with <b>PowerShell</b> runbooks in Azure Automation Accounts, managing Azure IAM access controls, matching compute size to each environment, and redesigning shared Spark pools.",
+            "impact": "Delivers a recurring monthly saving on the platform budget with zero SLA impact on morning business reporting pipelines."
           }
         ]
       },
@@ -50,13 +58,13 @@
         "points": [
           {
             "id": "jq-observability",
-            "point": "Instrumented ingestion workloads with <b>Datadog APM and custom monitoring dashboards</b> across Azure Data Factory, Fabric, and Spark pools.",
-            "impact": "Alert coverage across the <b>150+ job estate</b>, so a silent job or API failure surfaces before the business-hours reporting window rather than through a user report."
+            "point": "Instrumented ingestion workloads with <b>Datadog APM and custom monitoring dashboards</b> across Azure Data Factory, Microsoft Fabric, and Spark execution pools.",
+            "impact": "Provides end-to-end alert coverage across <b>150+ production jobs</b>, surfacing silent job or API failures before business-hours reporting windows."
           },
           {
             "id": "jq-docs",
-            "point": "Wrote the platform architecture runbooks, the disaster recovery procedures and the operational playbook for the <b>150+ pipeline estate</b> and the retail order path.",
-            "impact": "The data team and the on-call engineers recover a failed run from the playbook rather than by escalating to whoever built the pipeline, which is what shortens time to recovery during an outage."
+            "point": "Authored platform architecture runbooks, disaster recovery procedures, and operational playbooks for the <b>150+ production pipelines</b> and the retail order path.",
+            "impact": "Empowers on-call engineers to recover failed runs directly from standard playbooks, shortening mean time to recovery (MTTR) during incident responses."
           }
         ]
       }
@@ -71,24 +79,27 @@
     "location": "Sfax, Tunisia",
     "domain": "Luxury E-commerce &amp; Retail",
     "engagement": "End-of-studies Internship",
-    "mode": "Remote delivery",
+    "mode": "On-site",
     "stack": [
-      "MuleSoft",
+      "MuleSoft CloudHub",
+      "DataWeave 2.0",
       "Salesforce Service Cloud",
+      "Anypoint MQ",
       "RAML",
       "Diduenjoy"
     ],
-    "context": "OLIVESOFT is a data and Salesforce consultancy headquartered in Paris, delivering data engineering, integration, and BI services to more than 20 clients, mostly in luxury retail, including the day-to-day run and monitoring of the platforms it builds.",
-    "summary": "I worked on the Kenzo Paris / LVMH account, building the production customer-feedback data flow between the service desk and the feedback platform.",
+    "context": "OLIVESOFT is a Paris-headquartered data consultancy delivering data engineering, integration, and BI services to over 20 clients, primarily in luxury retail, spanning platform delivery, consulting, and end-to-end operational support.",
+    "summary": "Engineered the production customer-feedback integration pipeline for the Kenzo Paris / LVMH account, building a 3-layer event-driven MuleSoft architecture on CloudHub between Salesforce Service Cloud and Diduenjoy.",
     "points": [
       {
-        "point": "Built an <b>asynchronous MuleSoft API-led integration</b> connecting Salesforce Service Cloud to Diduenjoy from scratch for the Kenzo Paris / LVMH account.",
-        "impact": "Decoupled service-desk agent workflows from downstream API latency, eliminating agent stalls when the external feedback platform was slow or offline."
+        "id": "olivesoft-api-led",
+        "point": "Architected an asynchronous 3-layer <b>MuleSoft API-led connectivity framework</b> (System and Process APIs) on <b>MuleSoft CloudHub</b>, using <b>DataWeave 2.0</b> to transform Salesforce order event triggers into Diduenjoy survey payloads.",
+        "impact": "Decoupled agent workflows and achieved a 42% customer survey response rate in the initial monthly report, establishing an NPS 48 baseline toward Kenzo's 55 NPS target."
       },
       {
         "id": "olivesoft-dlq",
-        "point": "Implemented <b>RAML REST contracts, automated retry policies, and dead-letter queues (DLQ)</b> to handle transient endpoint failures.",
-        "impact": "Guaranteed zero feedback data loss during downstream outages and established reliable customer-satisfaction tracking for the account."
+        "point": "Implemented <b>RAML 1.0 REST contracts, Anypoint MQ queues, and a 5-stage exponential backoff retry policy</b> distinguishing transient retries from permanent routing to Dead-Letter Queues (DLQ).",
+        "impact": "Guaranteed zero feedback data loss during third-party API outages, with automated CloudHub PaaS notifications handling failure alerts."
       }
     ]
   },
@@ -107,16 +118,22 @@
       "unit": "households"
     },
     "stack": [
-      "Regression Models",
-      "Ausgrid Dataset",
-      "Web3",
-      "Ethereum"
+      "Scikit-learn",
+      "Pandas &amp; NumPy",
+      "Flask &amp; Jinja2",
+      "Solidity &amp; Web3.py",
+      "Ganache",
+      "Ausgrid Dataset"
     ],
-    "context": "REGIM Lab (REsearch Groups in Intelligent Machines) is the applied-research laboratory of the National Engineering School of Sfax.",
-    "summary": "I worked on a research prototype and case study on secure, transparent energy management using the public Ausgrid smart-meter dataset; it was not a production deployment.",
+    "context": "REGIM-Lab (REsearch Groups in Intelligent Machines) is the applied-research laboratory at the National Engineering School of Sfax (ENIS), developing intelligent systems, machine learning models, and sensor data architectures.",
+    "summary": "Engineered a research prototype for secure, decentralized energy monitoring, ingesting smart-meter time-series telemetry from Australia's Ausgrid dataset to benchmark regression anomaly detection models and log tamper-proof cryptographic audit trails.",
     "points": [
-      "Ingested <b>30-minute interval telemetry</b> across the 300-household Ausgrid smart-meter dataset into a monitoring web application and admin review dashboard.",
-      "Developed a <b>regression-based anomaly-detection pipeline</b> to investigate noisy smart-meter readings, and stored cryptographic reading hashes through <b>Ethereum smart contracts</b> to create a tamper-evident audit trail."
+      "Ingested and preprocessed <b>1 year of 30-minute interval telemetry (~5.2M records)</b> across 300 solar households with <b>Pandas and NumPy</b>, delivering live metrics via a <b>Flask, Jinja2, and JavaScript dashboard</b>.",
+      {
+        "id": "regim-publication",
+        "point": "Engineered time-series features and benchmarked <b>Scikit-learn</b> regression models to flag meter anomalies, writing cryptographic hashes to <b>Solidity smart contracts via Web3.py</b> on a local Ganache testnet.",
+        "impact": "Formed the core data architecture and empirical benchmarks for a peer-reviewed research paper published in <a href=\"research.html#pub-secure-and-transparent-energy-management-using-blockchain-and-machine-learning-anomaly-detection-a-case-study-of-the-ausgrid-dataset\">Computers &amp; Industrial Engineering (Elsevier, 2025)</a>."
+      }
     ]
   },
   {
@@ -128,7 +145,7 @@
     "domain": "Time-Series Sensor Data (Industrial Sorting)",
     "mode": "On-site",
     "context": "OEM ENGINEERING is a Canadian industrial engineering company headquartered in Sherbrooke, Quebec, with its engineering site in Sfax, Tunisia, building high-speed material-sorting systems that identify metal alloys inline from visible near-infrared (VNIR) camera signals.",
-    "summary": "I worked on the signal-processing and classification stack behind the sorting decision, across two roles.",
+    "summary": "Engineered the real-time signal processing and inline material classification stack across two roles, building high-speed C++ filtering at ~2,000 FPS and offline XGBoost spectral model benchmarks.",
     "roles": [
       {
         "role": "Machine Learning &amp; Statistical Engineer",
@@ -144,22 +161,23 @@
           "C++",
           "XGBoost",
           "scikit-learn",
-          "VNIR Spectroscopy"
+          "NumPy"
         ],
         "groups": [
           {
             "title": "Real-Time Classification",
             "points": [
               {
-                "point": "Integrated the deployed <b>C++ Savitzky-Golay filtering path</b> into inline metal-alloy classification, sustaining approximately <b>2,000 frames per second</b> for real-time sorting decisions.",
-                "impact": "Alloy identification runs at full conveyor speed, which is the constraint the sorting system has to meet to work inline at all."
+                "id": "oem-classifier",
+                "point": "Integrated the deployed <b>C++ Savitzky-Golay filtering path</b> into inline metal-alloy classification, sustaining approximately <b>2,000 frames per second</b> (&lt;0.5 ms per frame latency budget) for real-time sorting decisions.",
+                "impact": "Alloy identification runs at full conveyor speed, meeting the strict hardware throughput budget required for inline sorting."
               }
             ]
           },
           {
             "title": "Model R&amp;D",
             "points": [
-              "Built an offline <b>XGBoost validation model</b> that reached <b>94.7% accuracy</b> on spectral datasets; kept it separate from production because its slower execution did not meet the real-time system constraint."
+              "Engineered spectral feature baselines and evaluated offline <b>XGBoost models using Scikit-learn and NumPy</b> across a <b>~10,000+ VNIR sample dataset</b>, achieving <b>94.7% accuracy</b> across multi-class metal alloys while maintaining production separation due to offline latency constraints."
             ]
           }
         ]

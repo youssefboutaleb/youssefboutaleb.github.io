@@ -5,17 +5,26 @@ nav: research
 -->
 <header class="page-header">
   <h1 class="page-title">Research</h1>
-  <!-- One line, and it speaks for both blocks below or it does not belong
-       here: DESIGN.md 11.1. Derived from CLAUDE.md 3's account of why this
-       page sits on a data engineering site at all, which is the thing neither
-       block intro explains and an intro is not the rank for. -->
-  <p class="page-lede">What pipelines have to feed, and what bad data costs downstream.</p>
 </header>
+
+<!-- No `page-lede`, and there was one: *What pipelines have to feed, and what
+     bad data costs downstream.* DESIGN.md 11.1 gives a page a lede only when
+     it has something to say the blocks cannot, and never both. Once the
+     publications intro below started saying `data that cannot be trusted at
+     the source`, the lede's second clause was the same claim one rank up and
+     40px away, which is the surface Career's lede was deleted for. Both blocks
+     open on their own pitch now. See research.md. -->
 
 <section class="block" aria-labelledby="journal-articles">
   <h2 class="block__title" id="journal-articles">Peer-Reviewed Publications</h2>
+  <!-- A pitch, not a route: DESIGN.md 11.1. The line it replaced was made
+       of its own neighbours, which is how it survived the pass that fixed the
+       intro below it (commit 04a3e7d): the record topics came from paper one,
+       `raw data pipelines` from the page lede, and `peer-reviewed publication`
+       from the h2 40px above it, which awards.md rule 1 forbids. This one says
+       what both papers are for, and neither the lede nor the heading says it. -->
   <p class="block__intro">
-    Applied machine learning and anomaly detection systems taken from raw data pipelines to peer-reviewed publication.
+    Detection systems for data that cannot be trusted at the source.
   </p>
   <!-- `entries--offprint` is the rank, not a component: a paper keeps every
        part `.entry` gives every other record and takes the next step up the

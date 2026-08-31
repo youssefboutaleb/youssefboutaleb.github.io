@@ -8,7 +8,7 @@ treatments in [`DESIGN.md`](DESIGN.md) §7.1. Neither of those is restated here.
 
 ---
 
-## The page: two blocks, and the descent between them
+## The page: two blocks, and the climb between them
 
 The page carried one section, headed *Workshops Delivered*, which restated the
 `h1` three lines above it and told the reader nothing. It is two now:
@@ -19,12 +19,21 @@ The page carried one section, headed *Workshops Delivered*, which restated the
 | **Algorithms & Language** | Competitive Programming (2023), Python (2022) | What the code should say in the first place |
 
 **The order was already right and was invisible.** The page lede claims a
-descent, *from memory hierarchies and CPU instruction pipelines down to
-cache-efficient data structures and algorithms*, and reverse chronology happens
-to render exactly that: hardware, assembly, algorithms, language. Nothing told
-the reader the order meant anything, so four sessions read as four unrelated
-events. The blocks name the two halves of the descent, and newest-first
-survives inside each of them.
+traversal of the stack, *from cache lines and instruction pipelines up to the
+algorithms that keep them fed*, and reverse chronology happens to render
+exactly that: hardware, assembly, algorithms, language. Nothing told the reader
+the order meant anything, so four sessions read as four unrelated events. The
+blocks name the two halves of the climb, and newest-first survives inside each
+of them.
+
+**It used to say *down to*, and the page it describes goes up.** This paragraph
+called the order a descent for as long as the lede did, which is how a wrong
+direction word survives: the model document quotes the page rather than
+checking it. Hardware is the bottom of the stack and the algorithms sit on top
+of it, so the reading order climbs, and the two `block__intro` lines were
+already saying so (*from the first line of Python up*). Idiomatic *down to*, as
+in *down to the last detail*, is defensible anywhere except on a page whose
+whole subject is a stack with a real up and a real down.
 
 **The split is a filter on `block`, and `block` never renders.** That is the
 Projects convention rather than the Awards one, and the reason is recorded in
@@ -36,7 +45,7 @@ subject that fits neither block is a question about the page, not a field.
 
 **Each block gets one `block__intro`**, which is the pitch rank
 [`DESIGN.md`](DESIGN.md) §11.1 owns, and the page keeps its `.page-lede` above
-both. The two ranks now say different things: the lede states the descent, and
+both. The two ranks now say different things: the lede states the climb, and
 each intro pitches one half of it.
 
 ---
@@ -188,8 +197,8 @@ next record does not invent a synonym under time pressure.
 
 - **Role.** Every record on this page was designed and delivered by the site's
   author, so an `Instructor` tag on all four discriminates nothing. The opening
-  sentence carries it (*Teaching how data moves through hardware...*), which is
-  as much as a fact true of every record on a personal portfolio needs.
+  sentence carries it (*Teaching how data moves through a machine...*), which
+  is as much as a fact true of every record on a personal portfolio needs.
 
   **That sentence is a `.page-lede`, not a `block__intro`**, and this
   paragraph quoted a wording it had already stopped using. It moved up because
@@ -199,7 +208,7 @@ next record does not invent a synonym under time pressure.
   The reasoning recorded here was *Workshops has one block, so its pitch was
   always the page's pitch sitting one heading too low*. The promotion was right
   and that argument for it is now spent: the page has two blocks, each with a
-  pitch of its own, and the lede outranks both because the descent it states is
+  pitch of its own, and the lede outranks both because the climb it states is
   true of all four records and of neither block alone.
 - **Subject.** *Assembly*, *Python*, *Competitive Programming* are already in
   the entry titles. A tag repeating the title is noise; per

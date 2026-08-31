@@ -22,7 +22,7 @@
   <link rel="alternate" hreflang="x-default" href="https://youssefboutaleb.github.io/career.html">
   <link rel="icon" type="image/svg+xml" href="images/icons/icon.svg">
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Noto-Sans-regular/Noto-Sans-regular.woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=7f7f664a6db5">
+  <link rel="stylesheet" href="assets/css/main.css?v=49123d246215">
 
   <script>
     // Before first paint, or the pinned theme flashes the other one on every
@@ -168,12 +168,9 @@
 
         <section class="block" aria-labelledby="summary">
           <h2 class="block__title" id="summary">Summary</h2>
-          <div class="prose">
+          <div class="prose prose--full">
             <p>
-              Data Engineer, three years in: I build enterprise data pipelines and I run them.
-              Industrial sensor data taught me what a pipeline has to survive; a luxury retail
-              platform is where it runs now. Error handling, alerting, recovery plans and written
-              architecture documentation are part of the deliverable, not follow-up.
+              Data Engineer with 2+ years building and operating production data platforms on Microsoft Azure. At JACQUEMUS I own over 20 enterprise pipelines, built on a medallion lakehouse architecture in Microsoft Fabric and orchestrated with Fabric Data Factory, Spark notebooks and live Quarkus web services. I lead FinOps and Azure administration (PowerShell automation, IAM, compute rightsizing, shared Spark pool configuration) and standardized Datadog observability across the platform and its data flows.
             </p>
           </div>
         </section>
@@ -181,7 +178,7 @@
         <section class="block" aria-labelledby="experience">
           <h2 class="block__title" id="experience">Experience</h2>
           <ul class="entries">
-            <li class="entry" id="exp-jacquemus">
+                <li class="entry" id="exp-jacquemus">
               <h3 class="entry__title">
                 <span class="entry__role">Data Engineer</span> &middot; <span class="entry__company"><a href="https://www.linkedin.com/company/jacquemus/posts/?feedView=all" target="_blank" rel="noopener">JACQUEMUS</a></span>
               </h3>
@@ -190,37 +187,39 @@
                 <li class="tag tag--domain">Luxury E-commerce &amp; Retail</li>
                 <li class="tag tag--engagement">Permanent</li>
                 <li class="tag tag--mode">Remote</li>
-                <li class="tag tag--scale"><b>20+</b> of <b>150+</b> pipelines</li>
+                <li class="tag tag--scale"><b>20+</b> pipelines</li>
                 <li class="tag tag--stack">Azure Data Factory</li>
-                <li class="tag tag--stack">Azure Fabric</li>
+                <li class="tag tag--stack">Microsoft Fabric</li>
                 <li class="tag tag--stack">Apache Spark</li>
                 <li class="tag tag--stack">Datadog</li>
               </ul>
-              <p class="entry__context">JACQUEMUS is a French luxury fashion house selling ready-to-wear, leather goods, and accessories through its own e-commerce, its boutiques, and wholesale partners, on order flows that peak at around 5,000 orders per hour at sale events and a data platform ingesting roughly 800,000 events and records a day across hundreds of gigabytes.</p>
-              <p class="entry__summary">I work in the Data Platform team, handling the internal order, customer, product, and pricing data through ETL and data modeling, integrating the external systems around it (exchange rates, transactional emailing, shipping, and refunds), and landing all of it in a medallion lakehouse architecture.</p>
+              <p class="entry__context">JACQUEMUS is a French luxury fashion house selling ready-to-wear, leather goods, and accessories through its own e-commerce, its boutiques, and wholesale partners.</p>
+              <p class="entry__summary">Part of the Data Platform team, owning the retail order path end to end across OMS (order management system) and OCI (omnichannel inventory) for e-commerce, boutique, and wholesale channels. I design and operate the surrounding financial, product, pricing, warehousing, and invoicing pipelines on a Microsoft Fabric medallion lakehouse, while leading platform FinOps and cloud cost governance.</p>
               <div class="entry__group">
                 <h4 class="entry__group-title">Data Engineering</h4>
                 <ul class="points">
-                  <li>Built and maintained <b>20+ of a 150+ pipeline estate</b> across Salesforce, ORLI/WMS, PostgreSQL, APIs, file shares, Azure Data Lake, and Azure SQL.
+                  <li id="jq-pipelines">Built and maintained <b>over 20 enterprise pipelines</b> across Salesforce, ORLI/WMS, REST APIs, SFTP file shares, Azure Data Lake, and Azure SQL (SQL Server).
                     <span class="point__impact"><b>Impact:</b> The analytics, logistics, e-commerce reporting, and inventory-management teams work from these flows, so a stalled pipeline delays morning commercial reporting and inventory synchronization.</span></li>
-                  <li>Ran the retail order path on refresh schedules from <b>10 minutes</b> to daily and weekly, with ingestion payloads reaching <b>150 MB</b> per run.</li>
-                  <li>Integrated live <b>Quarkus web services</b> alongside the scheduled jobs, so data that cannot wait for a refresh window moves over an API rather than a batch table.</li>
+                  <li id="jq-lakehouse">Engineered the platform on the <b>modern Azure data stack</b>: a <b>medallion lakehouse on Microsoft Fabric</b>, orchestrated with <b>Fabric Data Factory</b> and transformed with <b>PySpark notebooks</b>, landing order, financial, product, and pricing data across bronze, silver, and gold Delta layers.
+                    <span class="point__impact"><b>Impact:</b> Establishes an enterprise single source of truth with structured data layers, accelerating downstream Power BI analytics and cross-departmental reporting.</span></li>
+                  <li id="jq-api-services">Integrated live <b>Quarkus REST API services behind Azure Application Gateway</b> alongside scheduled batch jobs for real-time order and inventory events.
+                    <span class="point__impact"><b>Impact:</b> Bypasses batch refresh windows for high-priority telemetry, moving time-sensitive retail updates directly over low-latency API endpoints.</span></li>
                 </ul>
               </div>
               <div class="entry__group">
                 <h4 class="entry__group-title">Cloud &amp; FinOps</h4>
                 <ul class="points">
-                  <li id="jq-finops">Reduced <b>Azure infrastructure spend by &euro;1,400 per month</b> by automating development-environment shutdowns with <b>PowerShell</b> runbooks in Azure Automation Accounts, matching compute size to each environment, and redesigning shared Spark pools.
-                    <span class="point__impact"><b>Impact:</b> A recurring monthly saving on the platform budget, taken with no SLA impact on the morning reporting pipelines.</span></li>
+                  <li id="jq-finops">Reduced <b>Azure infrastructure spend by &euro;1,400 per month</b> by automating development-environment shutdowns with <b>PowerShell</b> runbooks in Azure Automation Accounts, managing Azure IAM access controls, matching compute size to each environment, and redesigning shared Spark pools.
+                    <span class="point__impact"><b>Impact:</b> Delivers a recurring monthly saving on the platform budget with zero SLA impact on morning business reporting pipelines.</span></li>
                 </ul>
               </div>
               <div class="entry__group">
                 <h4 class="entry__group-title">Monitoring &amp; Observability</h4>
                 <ul class="points">
-                  <li id="jq-observability">Instrumented ingestion workloads with <b>Datadog APM and custom monitoring dashboards</b> across Azure Data Factory, Fabric, and Spark pools.
-                    <span class="point__impact"><b>Impact:</b> Alert coverage across the <b>150+ job estate</b>, so a silent job or API failure surfaces before the business-hours reporting window rather than through a user report.</span></li>
-                  <li id="jq-docs">Wrote the platform architecture runbooks, the disaster recovery procedures and the operational playbook for the <b>150+ pipeline estate</b> and the retail order path.
-                    <span class="point__impact"><b>Impact:</b> The data team and the on-call engineers recover a failed run from the playbook rather than by escalating to whoever built the pipeline, which is what shortens time to recovery during an outage.</span></li>
+                  <li id="jq-observability">Instrumented ingestion workloads with <b>Datadog APM and custom monitoring dashboards</b> across Azure Data Factory, Microsoft Fabric, and Spark execution pools.
+                    <span class="point__impact"><b>Impact:</b> Provides end-to-end alert coverage across <b>150+ production jobs</b>, surfacing silent job or API failures before business-hours reporting windows.</span></li>
+                  <li id="jq-docs">Authored platform architecture runbooks, disaster recovery procedures, and operational playbooks for the <b>150+ production pipelines</b> and the retail order path.
+                    <span class="point__impact"><b>Impact:</b> Empowers on-call engineers to recover failed runs directly from standard playbooks, shortening mean time to recovery (MTTR) during incident responses.</span></li>
                 </ul>
               </div>
             </li>
@@ -232,19 +231,21 @@
               <ul class="tag-list" aria-label="Role details">
                 <li class="tag tag--domain">Luxury E-commerce &amp; Retail</li>
                 <li class="tag tag--engagement">End-of-studies Internship</li>
-                <li class="tag tag--mode">Remote delivery</li>
-                <li class="tag tag--stack">MuleSoft</li>
+                <li class="tag tag--mode">On-site</li>
+                <li class="tag tag--stack">MuleSoft CloudHub</li>
+                <li class="tag tag--stack">DataWeave 2.0</li>
                 <li class="tag tag--stack">Salesforce Service Cloud</li>
+                <li class="tag tag--stack">Anypoint MQ</li>
                 <li class="tag tag--stack">RAML</li>
                 <li class="tag tag--stack">Diduenjoy</li>
               </ul>
-              <p class="entry__context">OLIVESOFT is a data and Salesforce consultancy headquartered in Paris, delivering data engineering, integration, and BI services to more than 20 clients, mostly in luxury retail, including the day-to-day run and monitoring of the platforms it builds.</p>
-              <p class="entry__summary">I worked on the Kenzo Paris / LVMH account, building the production customer-feedback data flow between the service desk and the feedback platform.</p>
+              <p class="entry__context">OLIVESOFT is a Paris-headquartered data consultancy delivering data engineering, integration, and BI services to over 20 clients, primarily in luxury retail, spanning platform delivery, consulting, and end-to-end operational support.</p>
+              <p class="entry__summary">Engineered the production customer-feedback integration pipeline for the Kenzo Paris / LVMH account, building a 3-layer event-driven MuleSoft architecture on CloudHub between Salesforce Service Cloud and Diduenjoy.</p>
               <ul class="points">
-                <li>Built an <b>asynchronous MuleSoft API-led integration</b> connecting Salesforce Service Cloud to Diduenjoy from scratch for the Kenzo Paris / LVMH account.
-                  <span class="point__impact"><b>Impact:</b> Decoupled service-desk agent workflows from downstream API latency, eliminating agent stalls when the external feedback platform was slow or offline.</span></li>
-                <li id="olivesoft-dlq">Implemented <b>RAML REST contracts, automated retry policies, and dead-letter queues (DLQ)</b> to handle transient endpoint failures.
-                  <span class="point__impact"><b>Impact:</b> Guaranteed zero feedback data loss during downstream outages and established reliable customer-satisfaction tracking for the account.</span></li>
+                <li id="olivesoft-api-led">Architected an asynchronous 3-layer <b>MuleSoft API-led connectivity framework</b> (System and Process APIs) on <b>MuleSoft CloudHub</b>, using <b>DataWeave 2.0</b> to transform Salesforce order event triggers into Diduenjoy survey payloads.
+                  <span class="point__impact"><b>Impact:</b> Decoupled agent workflows and achieved a 42% customer survey response rate in the initial monthly report, establishing an NPS 48 baseline toward Kenzo's 55 NPS target.</span></li>
+                <li id="olivesoft-dlq">Implemented <b>RAML 1.0 REST contracts, Anypoint MQ queues, and a 5-stage exponential backoff retry policy</b> distinguishing transient retries from permanent routing to Dead-Letter Queues (DLQ).
+                  <span class="point__impact"><b>Impact:</b> Guaranteed zero feedback data loss during third-party API outages, with automated CloudHub PaaS notifications handling failure alerts.</span></li>
               </ul>
             </li>
             <li class="entry" id="exp-regim-lab">
@@ -257,16 +258,19 @@
                 <li class="tag tag--engagement">Summer Internship</li>
                 <li class="tag tag--mode">On-site</li>
                 <li class="tag tag--scale"><b>300</b> households</li>
-                <li class="tag tag--stack">Regression Models</li>
+                <li class="tag tag--stack">Scikit-learn</li>
+                <li class="tag tag--stack">Pandas &amp; NumPy</li>
+                <li class="tag tag--stack">Flask &amp; Jinja2</li>
+                <li class="tag tag--stack">Solidity &amp; Web3.py</li>
+                <li class="tag tag--stack">Ganache</li>
                 <li class="tag tag--stack">Ausgrid Dataset</li>
-                <li class="tag tag--stack">Web3</li>
-                <li class="tag tag--stack">Ethereum</li>
               </ul>
-              <p class="entry__context">REGIM Lab (REsearch Groups in Intelligent Machines) is the applied-research laboratory of the National Engineering School of Sfax.</p>
-              <p class="entry__summary">I worked on a research prototype and case study on secure, transparent energy management using the public Ausgrid smart-meter dataset; it was not a production deployment.</p>
+              <p class="entry__context">REGIM-Lab (REsearch Groups in Intelligent Machines) is the applied-research laboratory at the National Engineering School of Sfax (ENIS), developing intelligent systems, machine learning models, and sensor data architectures.</p>
+              <p class="entry__summary">Engineered a research prototype for secure, decentralized energy monitoring, ingesting smart-meter time-series telemetry from Australia's Ausgrid dataset to benchmark regression anomaly detection models and log tamper-proof cryptographic audit trails.</p>
               <ul class="points">
-                <li>Ingested <b>30-minute interval telemetry</b> across the 300-household Ausgrid smart-meter dataset into a monitoring web application and admin review dashboard.</li>
-                <li>Developed a <b>regression-based anomaly-detection pipeline</b> to investigate noisy smart-meter readings, and stored cryptographic reading hashes through <b>Ethereum smart contracts</b> to create a tamper-evident audit trail.</li>
+                <li>Ingested and preprocessed <b>1 year of 30-minute interval telemetry (~5.2M records)</b> across 300 solar households with <b>Pandas and NumPy</b>, delivering live metrics via a <b>Flask, Jinja2, and JavaScript dashboard</b>.</li>
+                <li id="regim-publication">Engineered time-series features and benchmarked <b>Scikit-learn</b> regression models to flag meter anomalies, writing cryptographic hashes to <b>Solidity smart contracts via Web3.py</b> on a local Ganache testnet.
+                  <span class="point__impact"><b>Impact:</b> Formed the core data architecture and empirical benchmarks for a peer-reviewed research paper published in <a href="research.html#pub-secure-and-transparent-energy-management-using-blockchain-and-machine-learning-anomaly-detection-a-case-study-of-the-ausgrid-dataset">Computers &amp; Industrial Engineering (Elsevier, 2025)</a>.</span></li>
               </ul>
             </li>
             <li class="entry" id="exp-oem-engineering-sarl">
@@ -279,7 +283,7 @@
                 <li class="tag tag--mode">On-site</li>
               </ul>
               <p class="entry__context">OEM ENGINEERING is a Canadian industrial engineering company headquartered in Sherbrooke, Quebec, with its engineering site in Sfax, Tunisia, building high-speed material-sorting systems that identify metal alloys inline from visible near-infrared (VNIR) camera signals.</p>
-              <p class="entry__summary">I worked on the signal-processing and classification stack behind the sorting decision, across two roles.</p>
+              <p class="entry__summary">Engineered the real-time signal processing and inline material classification stack across two roles, building high-speed C++ filtering at ~2,000 FPS and offline XGBoost spectral model benchmarks.</p>
               <div class="entry__roles">
                 <div class="entry__group entry__group--role">
                   <h4 class="entry__group-title">
@@ -292,19 +296,19 @@
                     <li class="tag tag--stack">C++</li>
                     <li class="tag tag--stack">XGBoost</li>
                     <li class="tag tag--stack">scikit-learn</li>
-                    <li class="tag tag--stack">VNIR Spectroscopy</li>
+                    <li class="tag tag--stack">NumPy</li>
                   </ul>
                   <div class="entry__group">
                     <h4 class="entry__group-title">Real-Time Classification</h4>
                     <ul class="points">
-                      <li>Integrated the deployed <b>C++ Savitzky-Golay filtering path</b> into inline metal-alloy classification, sustaining approximately <b>2,000 frames per second</b> for real-time sorting decisions.
-                        <span class="point__impact"><b>Impact:</b> Alloy identification runs at full conveyor speed, which is the constraint the sorting system has to meet to work inline at all.</span></li>
+                      <li id="oem-classifier">Integrated the deployed <b>C++ Savitzky-Golay filtering path</b> into inline metal-alloy classification, sustaining approximately <b>2,000 frames per second</b> (&lt;0.5 ms per frame latency budget) for real-time sorting decisions.
+                        <span class="point__impact"><b>Impact:</b> Alloy identification runs at full conveyor speed, meeting the strict hardware throughput budget required for inline sorting.</span></li>
                     </ul>
                   </div>
                   <div class="entry__group">
                     <h4 class="entry__group-title">Model R&amp;D</h4>
                     <ul class="points">
-                      <li>Built an offline <b>XGBoost validation model</b> that reached <b>94.7% accuracy</b> on spectral datasets; kept it separate from production because its slower execution did not meet the real-time system constraint.</li>
+                      <li>Engineered spectral feature baselines and evaluated offline <b>XGBoost models using Scikit-learn and NumPy</b> across a <b>~10,000+ VNIR sample dataset</b>, achieving <b>94.7% accuracy</b> across multi-class metal alloys while maintaining production separation due to offline latency constraints.</li>
                     </ul>
                   </div>
                 </div>
@@ -329,41 +333,10 @@
           </ul>
         </section>
 
-          <figure class="diagram" id="jq_platform">
-            <svg class="diagram__svg" viewBox="0 0 808 320" role="img" aria-labelledby="jq_platform-title jq_platform-desc">
-              <title id="jq_platform-title">JACQUEMUS order, customer, product and pricing data platform</title>
-              <desc id="jq_platform-desc">Salesforce, ORLI/WMS, PostgreSQL and Azure SQL feed two ingestion paths: Azure Data Factory for the scheduled jobs, and Quarkus web services for data that cannot wait for a refresh window. Both land a medallion lakehouse on Azure Fabric, transformed with Apache Spark, which serves the analytics, logistics, e-commerce reporting and inventory teams. Datadog APM instruments the ingestion side and the lakehouse alike.</desc>
-              <text class="diagram__lane" x="86" y="22" text-anchor="middle">Sources</text>
-              <text class="diagram__lane" x="298" y="22" text-anchor="middle">Ingestion</text>
-              <text class="diagram__lane" x="510" y="22" text-anchor="middle">Lakehouse</text>
-              <text class="diagram__lane" x="722" y="22" text-anchor="middle">Serving</text>
-              <path class="diagram__edge" d="M160 60 C192 60 192 134 224 134"/>
-              <path class="diagram__edge" d="M160 134 C192 134 192 134 224 134"/>
-              <path class="diagram__edge" d="M160 208 C192 208 192 134 224 134"/>
-              <path class="diagram__edge" d="M160 282 C192 282 192 134 224 134"/>
-              <path class="diagram__edge" d="M160 60 C192 60 192 208 224 208"/>
-              <path class="diagram__edge" d="M160 282 C192 282 192 208 224 208"/>
-              <path class="diagram__edge" d="M372 134 C404 134 404 171 436 171"/>
-              <path class="diagram__edge" d="M372 208 C404 208 404 171 436 171"/>
-              <path class="diagram__edge" d="M372 134 C510 134 510 134 648 134"/>
-              <path class="diagram__edge" d="M584 171 C616 171 616 134 648 134"/>
-              <path class="diagram__edge" d="M584 171 C616 171 616 208 648 208"/>
-              <g class="diagram__node"><rect x="12" y="34" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="86" y="64">Salesforce</tspan></text></g>
-              <g class="diagram__node"><rect x="12" y="108" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="86" y="138">ORLI/WMS</tspan></text></g>
-              <g class="diagram__node"><rect x="12" y="182" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="86" y="212">PostgreSQL</tspan></text></g>
-              <g class="diagram__node"><rect x="12" y="256" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="86" y="286">Azure SQL</tspan></text></g>
-              <g class="diagram__node"><rect x="224" y="108" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="298" y="138">Azure Data Factory</tspan></text></g>
-              <g class="diagram__node"><rect x="224" y="182" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="298" y="212">Quarkus web services</tspan></text></g>
-              <g class="diagram__node"><rect x="436" y="145" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="510" y="168">Medallion lakehouse</tspan><tspan x="510" y="182">(Fabric, Spark)</tspan></text></g>
-              <g class="diagram__node"><rect x="648" y="108" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="722" y="138">Datadog APM</tspan></text></g>
-              <g class="diagram__node"><rect x="648" y="182" width="148" height="52" rx="4"/><text text-anchor="middle"><tspan x="722" y="206">Analytics &amp;</tspan><tspan x="722" y="218">reporting</tspan></text></g>
-            </svg>
-            <figcaption class="diagram__caption">Refresh runs from 10 minutes to daily, on ingestion payloads reaching 150 MB.</figcaption>
-          </figure>
         <section class="block" aria-labelledby="education">
           <h2 class="block__title" id="education">Education</h2>
           <ul class="entries">
-            <li class="entry" id="edu-national-engineering-school-of-sfax">
+                <li class="entry" id="edu-national-engineering-school-of-sfax">
               <h3 class="entry__title">
                 Computer Science Engineer&rsquo;s Degree
                 <span class="entry__role">&middot; <a href="https://enis.rnu.tn/" target="_blank" rel="noopener">National Engineering School of Sfax</a></span>
@@ -419,9 +392,10 @@
 
         <section class="block" aria-labelledby="certifications">
           <h2 class="block__title" id="certifications">Certifications</h2>
-          <p class="block__intro">Vendor-certified across the data engineering stack: cloud data platforms, data orchestration, data integration, and observability.</p>
+          <p class="block__intro">Vendor-certified across the data engineering stack: cloud data platforms, data orchestration,
+            data integration, and observability.</p>
           <ul class="entries entries--grid">
-            <li class="entry" id="cert-microsoft" data-toc-skip>
+                <li class="entry" id="cert-microsoft" data-toc-skip>
               <h3 class="issuer">
                 <img class="icon icon--md" src="images/icons/microsoft-fabric.svg" alt="" width="18" height="18">
                 Microsoft
@@ -476,9 +450,10 @@
 
         <section class="block" aria-labelledby="courses">
           <h2 class="block__title" id="courses">Online Courses</h2>
-          <p class="block__intro">Continuous learning to master computing fundamentals and emerging technologies, understanding how new tools interface into modern data architectures.</p>
+          <p class="block__intro">Continuous learning to master computing fundamentals and emerging technologies, understanding
+            how new tools interface into modern data architectures.</p>
           <ul class="entries entries--grid">
-            <li class="entry" id="learn-anthropic" data-toc-skip>
+                <li class="entry" id="learn-anthropic" data-toc-skip>
               <h3 class="issuer">
                 <img class="icon icon--md icon--mono" src="images/icons/anthropic-light.svg" alt="" width="18" height="18">
                 Anthropic
@@ -543,7 +518,7 @@
           <h2 class="block__title" id="volunteering">Volunteering</h2>
           <p class="block__intro">Crisis response, before any of the rest of this.</p>
           <ul class="entries">
-            <li class="entry" id="vol-jeunes-ingenieurs-de-djerba-jid-2023">
+                <li class="entry" id="vol-jeunes-ingenieurs-de-djerba-jid-2023">
               <h3 class="entry__title">Jeunes Ingénieurs de Djerba (JID)</h3>
               <p class="entry__period"><span class="entry__location">Djerba, Tunisia</span> &middot; Orientini &middot; Jul 2023 (1 month)</p>
               <ul class="points">

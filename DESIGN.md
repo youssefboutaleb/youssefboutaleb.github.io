@@ -246,6 +246,7 @@ it is now a pair rather than two steps (§1):
 | Section | `h2` `.block__title` | 32px | **400** | `#222222` | One treatment with the title, at half the size |
 | Lede | `.page-lede` | 20px | 400 | `#494949` | Home, Contact, Teaching, Workshops (§11.1) |
 | Paper | `h3` `.entry__title` inside `.entries--offprint` | 20px | 700 | `#222222` | Research's Publications block, and only it (§9.5) |
+| Figure | `.result__figure` in `.entries--impact` | 32px | 700 | `#222222` | Home's Impact in Numbers, and only it (§9.4) |
 | Record | `h3` `.entry__title`, `.issuer`, `.skill__name` | 17px | 700 | `#222222` | One per record |
 | Group | `h4` `.entry__group-title` | 16px | 700 | `#494949` | A part of a record |
 | Body / `strong` | | 16px | 400 / 700 | `#373737` / `#222222` | |
@@ -254,6 +255,14 @@ Note that body text and a record title are *darker* than the section heading
 above them. That is not a mistake; it is the original ramp and it is why the
 page reads calm rather than shouty. It is also why the ramp is stated by role
 here rather than assumed to descend with the tag number.
+
+**The Figure row is the section heading's size at the other weight.** It is the
+second rank in this table set by what a record is rather than by its element,
+and it is admissible for the reason the row above it is: a block whose whole
+subject is numbers has one element that is the number. It does not read as an
+`h2`, because `h2` is weight 400 in a column of its own with 32px of air under
+it, and this is bold inside a bordered card. The row exists here because this
+table is where a component that wants a rank of its own has to declare it.
 
 **The Paper row is the one rank set by what a record is, not by its element.**
 Every other row in this table is an element or a component; that one is an
@@ -944,7 +953,6 @@ item**, exactly as the original CV pages were written by hand:
   One or two framing sentences.   .entry__summary  (optional)
   - point                         .points
   - point
-  [artefact links]                .entry__proof    (Projects dossiers only)
 ```
 
 **That order is fixed for every record on the site**, and it is the order the
@@ -1012,14 +1020,10 @@ Security / Observability) and is emitted by one helper, `render_group`, shared
 by a job's disciplines, a course's syllabus modules and a workshop's parts.
 `.issuer` heads a credential group with its brand mark.
 
-**Projects use that group as a dossier detail.** Their unchanged technical
-bullets sit below a `What was built` label on the same left rule that says the
-details belong to the record above. A final `.entry__proof` hairline closes the
-dossier and holds only artefacts a reader can open. It is not a card footer:
-the record has no surface or border around it, the rule separates two kinds of
-information rather than drawing a box, and the footer carries no heading of its
-own, because the only thing a label there could say is what the hairline has
-already said.
+**Projects use that group as a dossier detail.** Their technical bullets sit below a
+`What was built` label directly under the summary. All artefact links (repository, live demo,
+slides, article) render alongside `kind`, `upstream` and `stack` in the top metadata scan
+line tag list directly under the title.
 
 **The workshop case is the one that arrived by conversion**, and it is the
 clearest statement of what the component is for. A two-part series carried its
@@ -1044,15 +1048,49 @@ the component is built so the claim cannot appear without its proof:
 holds what the capability *is*; the right column flows and holds the proof:
 
 ```
-.skill__head (--spine)      .skill__proof (flows)
+In production, and verified outside it                     .skills__band
 ──────────────────────────────────────────────────────────────────────
-Data pipeline engineering   (Talend) (MuleSoft) (Apache Airflow)
-Production-proven           [Azure Data Factory & Fabric at JACQUEMUS]
-   .skill__name             [API-led integration at OLIVESOFT]
-   .skill__standing         [Talend Data Integration] [MuleSoft L1]
+.skill__name (--spine)      .skill__proof (flows)
+Data pipeline engineering   [Azure Data Factory & Fabric at JACQUEMUS]
+                            [API-led integration at OLIVESOFT]
+                            [Talend Data Integration] [MuleSoft L1]
                             [Astronomer ×2] [Data Engineering 1 & 2]
-                               .skill__tools then .tag-list (§7, fixed order)
+                            (Talend) (MuleSoft) (Apache Airflow)
+                               .tag-list (§7, fixed order) then .skill__tools
 ```
+
+**A five-slot presence gutter was built between the two and deleted on the
+author's verdict**, which is the same standard the third diagram was held to
+([`CLAUDE.md`](CLAUDE.md) §8, M1). It rendered which kinds of proof each row
+had as five discs, filled or empty. It was accurate, it cost 82px and three
+French chip lines, and it summarised in marks what the row already says in
+words one column to the right. Accuracy is not the test; earning the space is.
+
+**The standing left the row and became `.skills__band`**, printed once above
+the run of rows that share it, with each run its own `<ul>` labelled by its
+band. Seven of the ten rows derive the strongest standing, so as a caption it
+printed one string seven times down the column that exists to be run down, and
+it was the second rendering of a fact the leading chip's colour already gave.
+
+**The three bands are named compositionally**, and they were not: they read
+*Production-proven*, *Run in production* and *Verified: not yet in production*,
+so the top two were near-synonyms in an order no reader could derive from the
+words, and the second was **verbatim** the first chip of the key above it. They
+are *In production, and verified outside it*, *In production* and *Verified,
+not yet in production*: the same two booleans `standing()` reads, ranked by
+inclusion, so the second band is visibly the first one minus a clause.
+The band is a `<p>`, not a heading, so the block still runs `h2` then `h3` and
+the page context rail does not index it. [`skills.md`](skills.md) carries the
+argument, including the one it overrules.
+
+**`.skill__head` is gone with it.** With the standing out of the row the
+wrapper held one `h3`, so the `h3` is the grid's first child.
+
+**The tools list moved below the evidence.** It led every proof column with
+outlined grey chips, which made [`skills.md`](skills.md)'s colour-run claim
+(*a row that starts green ran in production*) false of the markup: every row
+started grey. That document argues against **merging** the two lists and never
+argued for their order.
 
 The split exists because the block could not be read without it. Capability,
 tools and forty citations all ran from one left edge, so the ranking the block
@@ -1075,6 +1113,14 @@ characters to fit the column, which is exactly the specificity that makes a chip
 worth clicking, and would leave 23 of 50 cells empty. The hairline between rows
 does what a card border would, at none of the cost.
 
+**Boxing it was re-measured when Impact in Numbers took a card grid, and it
+fails worse than that paragraph says.** `.tag` is `white-space: nowrap`, so a
+chip is an atom: at three 255px tracks the chip run packs into 60 lines instead
+of 28, and two English chips and **seven French ones** are wider than the box
+they would sit in. The gutter is the only form of the matrix this column can
+hold, because it states which kinds exist without trying to lay the citations
+out in columns.
+
 Five things make it work, all argued in [`skills.md`](skills.md):
 
 1. **Every chip is a link to a record elsewhere on this site**, so `check.py`
@@ -1083,16 +1129,14 @@ Five things make it work, all argued in [`skills.md`](skills.md):
    typed, never chosen, and the block sorts itself by it.
 3. **The standing carries no colour.** It is a *value*, and §7.1 forbids
    styling a value. The gradient is carried by the chips, whose fixed category
-   order makes the leading colour of a row meaningful on its own. It stays a
-   caption rather than becoming a sub-heading that groups the rows: the block
-   already sorts on standing first, so the grouping is visible without a second
-   heading level inside a block.
+   order makes the leading colour of a row meaningful on its own.
 4. **Tools take the site-wide `stack` treatment**: outlined, one chip per tool,
    regular weight, exactly as Career and Projects render them, so "a thing this
    was built with" looks the same everywhere. They render on their **own list
-   above** the evidence and are never merged into it. The colour-run reading in
+   below** the evidence and are never merged into it. The colour-run reading in
    point 3 is a claim about the colour of a row's *first* chip, and an outlined
-   tool chip in front of the run would destroy it.
+   tool chip in front of the run would destroy it, which is what it was doing
+   while this line said *above*.
 5. **A key (`.tag-list--key`) names the five colours once, above the block.**
    Five specimen chips rather than a worded legend, because the thing being
    explained is a chip. It is the only tag list on the site whose chips cite
@@ -1140,28 +1184,68 @@ Three decisions:
 The label text lives in `IMPACT_LABEL` in `tools/build.py`, never in the data:
 [`awards.md`](awards.md) rule 7.
 
-### 9.3 `.result`: the figure-led record
+### 9.3 `.result__*`: the parts of a figure-led record
 
-Home's Impact in Numbers. Three parts, in this order and this rank:
+Four parts, in this order and this rank, used by Awards' scope summary,
+Workshops' host cards and Home's Impact in Numbers:
 
 ```
-€1,400 per month   A recurring monthly saving on the platform budget,   result__consequence
-                   taken with no SLA impact on the morning reporting
-result__figure     pipelines.
-                   JACQUEMUS · Career                                   result__source
+€1,400                                                        result__figure
+per month                                                     result__unit
+A recurring monthly saving on the platform budget, taken      result__consequence
+with no SLA impact on the morning reporting pipelines.
+JACQUEMUS · Since 2024 · Career                               result__source
 ```
 
-The figure sits in the `--spine` column (§4) at `--text-lg` in heading ink,
-which is **the slot and the size `.entry__title` had**. Every figure the block
-carries fits it on one line; the widest, *150+ jobs under alerting*, is 194px
-against 208px, and that measurement is one of the two that set the spine's
-width. The consequence flows beside it
-at body size, capped to the measure. The provenance line closes it at
-`--text-sm` in muted ink.
+The figure leads at `--text-xl` in heading ink (`--text-2xl` in Impact in
+Numbers, §9.4), with the unit on the line beneath it at `--text-md` in muted
+ink. The consequence follows at body size, capped to the measure. The
+provenance line closes it at `--text-sm` in muted ink.
+
+**There is no `.result` row component any more, and there was.** It was a
+two-column record hanging the figure on `--spine` with the consequence beside
+it, and it was retired on its own measurements: the widest figure cell is 125px
+in English and 143px in French against a 208px track, so a third of the column
+was idle on every row, and the five records rendered as five 112px rows with
+nothing saying which one the author put first. Impact in Numbers is
+`.entries--grid` now (§9.4). The parts above are unchanged, which is the point:
+they were never the thing that was wrong.
+
+**The provenance line carries a year, and for two months it carried none.**
+[`home.md`](home.md) documented the period as one of three things derived from
+the `cite` id, and argued that it is what stops *100x faster* (2022) from
+reading as current beside two *Aug 2024 - Present* results. The renderer
+printed the company and the page and nothing else the whole time. It is years
+rather than the `month_year` range the dateline uses, because *Aug 2024 -
+Present* already renders in Currently one block above and a saving accrues
+across a job rather than in a month.
+
+**It was one line at `--text-lg`, the slot and the size `.entry__title` had,
+with the unit set beside the value and separated from it by weight alone.**
+That is the rank `.skill__name` also holds, so the number the block exists to
+show was the fourth of the page's seven type steps, 1.06 times body. And the
+five values never formed a column, because what filled the track was the
+value-plus-unit pair, at 88, 141, 155, 188 and 194px.
+
+**The one-line guarantee that used to stand here was measured in one
+language.** It read *"every figure the block carries fits it on one line; the
+widest, 150+ jobs under alerting, is 194px against 208px, and that measurement
+is one of the two that set the spine's width."* True in English. The French
+*Zero donnée d'avis perdue* is **216.6px in a 208px track** and wrapped.
+Split into two ranks, the widest cell in either language is the French
+*donnée d'avis perdue* at 143px, so the guarantee holds now for a reason
+rather than by luck. The spine's width is still set by the other of its two
+measurements (§4).
+
+**`result__unit` is not `result__scale`.** The two look alike and sit in the
+same place under a figure, and they answer different questions: `scale` is how
+large the field was (*of 7,094 teams*), a unit is what the figure counts (*per
+month*). §7.1 lets two models share a name only where they mean the same thing
+by it, which is the rule that keeps `publisher` and `platform` apart.
 
 **Why this is not an `.entry`.** It was one. `.entry` is the component for a
 dated record living on its own page: a job, a project, an award, each with a
-title, a period and a body of its own. A Impact in Numbers record has none of
+title, a period and a body of its own. An Impact in Numbers record has none of
 those. It is a pointer to a result, and forcing it into `.entry` required
 inventing all three:
 
@@ -1338,6 +1422,25 @@ visible: Research's column breaks exactly once, on the line the voice map
 already draws. That is a second reason and not the first. A block does not earn
 a box by being a different register; it earns it on the test above, and this
 one passes before the register is mentioned.
+
+**Home's Impact in Numbers is the fourth cell, and the one that takes a track
+of its own.** `.entries--impact` sets `minmax(20rem, 1fr)` and spans the first
+record across both columns. Two numbers force both decisions. The base `18rem`
+track lets `auto-fit` place **three** columns in the 908px content column,
+which leaves 255px of measure and sets a 185-character quoted sentence as seven
+lines; `20rem` needs 1000px for a third track, so it holds at two, which is the
+444px card (410px of measure) the block was measured against. And the lead card
+spans because [`home.md`](home.md) says the order of that block is the
+argument and the block had no way of showing it: five equal rows said nothing
+about which record was chosen to open. It is `:first-child` and not a modifier
+class, because the lead is not a property a record can carry, it is whichever
+record is first.
+
+Its figure steps to `--text-2xl` (§1), which is the one rank change: at
+`--text-xl` the unit was the wider mark on four of five English rows and three
+of five French ones, so on the block whose title promises numbers the eye
+landed on 14px muted text first. `2` measured 11px of ink above *Kanboard
+plugins* at 117px.
 
 **It takes the base `18rem`, not `--compact`.** The compact track was cut for a
 card of four short lines; an article card holds a wrapping title of eighty-odd
@@ -1796,13 +1899,22 @@ not, because Awards' second block is Hackathons and that line is Competitions'.
 **A page gets a lede only when it has something to say that the blocks cannot,
 and never both.** A lede above a first block whose intro says the same thing is
 two openings competing to introduce one page, which is the surface Career's
-lede was deleted for (`src/pages/career.html`, and
-[`career-experience-options.md`](career-experience-options.md)) and the same
-surface Home's rebuild removed. That is why four of the eight pages have a lede
-and four do not: Home and Contact carry a page-level statement, Teaching and
-Workshops each have one block whose pitch *is* the page's, and Career,
-Projects, Research and Awards open on block-specific pitches that no single
-line above them could replace without repeating one of them.
+lede was deleted for (`src/pages/career.html`, see [`career.md`](career.md)) and the same
+surface Home's rebuild removed. Five of the eight pages carry a lede and three do
+not, and this paragraph gave the count as four and four while naming Projects,
+Research and Awards among the pages without one, months after all three were
+given a lede in the same commit. The census, re-derived from the fragments:
+
+| Lede | Why |
+|---|---|
+| Home, Projects, Teaching, Workshops, Awards | A statement no single block on the page could make |
+| Career | Deleted: its first block's paragraph already introduced the career (`career.md`) |
+| Research | Deleted: its publications intro started making the lede's second claim (`research.md`) |
+| Contact | Never had one: its page-level statement is the facts grid in the header (§9), the other thing a `page-header` may carry |
+
+**Re-derive the census before quoting it.** Three of the four pages this
+sentence named had changed underneath it, and the paragraph went on being read
+as the site's rule for who gets a lede.
 
 **Writing a new lede is the author's, not an agent's.** A lede asserts
 something about the person, which [`CLAUDE.md`](CLAUDE.md) §10 reserves. What
@@ -1944,7 +2056,7 @@ keep the navigation usable once eight items stop fitting.
 | ≤960px | The cap is released and the column takes the viewport; footer centres |
 | ≤720px | Padding tightens; nav items shrink-wrap; `--text-3xl` steps to 48px and `--text-2xl` to 28px; `.skill` collapses to one track |
 | ≤600px | Home's hero stacks: portrait above the bio, centred; the brand bar stacks; every label column collapses to one track, its label going bold (`.hero-facts`, `.contact-list`, `.perf`) |
-| ≤480px | Navigation scrolls horizontally, bleeding to the viewport edges so the affordance is visible; the portrait steps to 144 x 180; `.result` collapses to one track; `--text-3xl` steps to 40px and `--text-2xl` to 24px |
+| ≤480px | Navigation scrolls horizontally, bleeding to the viewport edges so the affordance is visible; the portrait steps to 144 x 180; `--text-3xl` steps to 40px and `--text-2xl` to 24px |
 
 **Four of those numbers were wrong before this table was last read.** It gave
 the ≤720px steps as 32px and 22px and the ≤480px steps as 28px and 20px, which

@@ -10,8 +10,8 @@ nav: workshops
        written here and nothing is left behind: a lede and an intro saying the
        same thing is the surface Career's deleted lede was deleted for. -->
   <p class="page-lede">
-    Enseigner comment les données circulent à travers la stack : des hiérarchies mémoire et pipelines d'instructions CPU
-    jusqu'aux structures de données et algorithmes optimisés pour le cache.
+    Enseigner comment les données circulent dans une machine : des lignes de cache et des pipelines d'instructions
+    jusqu'aux algorithmes qui les alimentent.
   </p>
   <!-- One card per host, derived from src/data/workshops.json by
        render_workshops_hosts and citing the records below by anchor. The card
@@ -25,13 +25,13 @@ nav: workshops
 
 <!-- Two blocks, not one, and the order inside them is still newest first. The
      page had a single section headed "Workshops Delivered", which restated the
-     h1 three lines above it and left the descent the lede claims invisible:
+     h1 three lines above it and left the climb the lede claims invisible:
      four sessions read as four unrelated events. The split is a filter on
      `block` in src/data/workshops.json, never a chip: workshops.md. -->
 <section class="block" aria-labelledby="hardware-execution">
   <h2 class="block__title" id="hardware-execution">Matériel et exécution</h2>
   <p class="block__intro">
-    Ce qu'un appel NumPy devient une fois arrivé au matériel.
+    Toute abstraction a un prix, et il se paie en cycles et en défauts de cache.
   </p>
   <ul class="entries">
     <!-- Records live in src/data/workshops.json; tag order and colour come

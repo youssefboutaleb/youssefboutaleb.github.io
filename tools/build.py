@@ -742,16 +742,63 @@ TOOLS_LABEL_EN = "Tools"
 # typed into the data. A self-assessed level is the thing this block exists to
 # replace: "advanced" is an opinion, "run in production and certified" is a
 # pair of facts a reader can open in a new tab.
+# `check_citations` below fails any production citation that lands on a record
+# head. Four chips once did: "Azure Data Factory & Fabric at JACQUEMUS", "Azure
+# data platform", "Enterprise systems at JACQUEMUS" and "Azure Data Lake & SQL
+# integration" all resolved to career.html#exp-jacquemus, so a reader checking
+# four capabilities arrived at the top of the same record four times, three of
+# them having been promised something the record head does not name. The last
+# such citation, the medallion lakehouse behind "Data warehousing & analytics",
+# landed as the jq-lakehouse bullet in the same pass that removed this
+# mechanism; see skills.md.
+
+
+def check_citations(skills: list[dict], record_ids: set[str]) -> None:
+    """A production citation names the bullet that proves it, not the job.
+
+    The block's whole proposition is that a capability claim carries links to
+    the records that prove it, so a link that lands somewhere the label does
+    not describe is the one failure it cannot afford. A certification or a
+    course is a whole record and cites one; a production claim is a thing that
+    was done, and the site has an id mechanism for exactly that.
+    """
+    for record in skills:
+        for item in record["evidence"].get("production", []):
+            target = item["href"].split("#")[-1]
+            if target not in record_ids:
+                continue
+            raise ValueError(
+                f'{record["name"]}: the production citation "{item["text"]}" '
+                f'points at {item["href"]}, which is a record, not the bullet '
+                "that proves it. Give the bullet an id and cite that."
+            )
+
+
 def standing(evidence: dict) -> str:
+    """What the row is made of, named compositionally.
+
+    The three labels used to be `Production-proven`, `Run in production` and
+    `Verified: not yet in production`, and the first two were near-synonyms
+    ranked in an order a reader could not derive from the words. Worse, `Run in
+    production` was **verbatim** the first chip of PROOF_KEY above, so four
+    identical words named a kind of proof in the key and, a line later, a
+    standing that ranks below the band over it. French repeated the collision
+    in its own way: `En production` in the key, against `Eprouve en production`
+    and `Exploite en production` as bands.
+
+    The standing is derived from two booleans, so the names are now the two
+    booleans and rank themselves by inclusion: a reader who reads the second
+    band can see the first is it plus a clause.
+    """
     shipped = bool(evidence.get("production"))
     outside = any(evidence.get(kind) for kind in ("certification", "taught", "published"))
     if shipped and outside:
-        return "Production-proven"
+        return "Production Systems &amp; Certified Proof"
     if shipped:
-        return "Run in production"
+        return "Production Systems"
     if outside:
-        return "Verified: not yet in production"
-    return "Applied &amp; studied"
+        return "Certified &amp; Taught (Pre-Production)"
+    return "Applied Projects &amp; Coursework"
 
 
 # The order the standings rank in, and therefore the order the block renders.
@@ -771,10 +818,10 @@ def standing(evidence: dict) -> str:
 THREAD_ORDER = {"trunk": 0, "branch": 1}
 
 STANDING_ORDER = {
-    "Production-proven": 0,
-    "Run in production": 1,
-    "Verified: not yet in production": 2,
-    "Applied &amp; studied": 3,
+    "Production Systems &amp; Certified Proof": 0,
+    "Production Systems": 1,
+    "Certified &amp; Taught (Pre-Production)": 2,
+    "Applied Projects &amp; Coursework": 3,
 }
 
 # Courses run on a two-semester year. Fall precedes Spring inside one academic
@@ -1809,14 +1856,9 @@ def project_sort_key(record: dict) -> int:
 def render_project(record: dict, articles: dict) -> str:
     """One project as a dossier: scan line, technical detail, then artefacts.
 
-    The scan line states what the deliverable is, how it was received and what
-    it is built with: `kind`, `upstream` and `stack`, rendered by `render_meta`
-    like every other record's. The footer holds only artefacts, which are
-    places a reader can go and look: the repository, a live demo, a slide deck
-    and a write-up. `upstream` used to sit down there with them and does not
-    any more, because a merged pull request is a standing rather than a place
-    (see MODELS). The article is still looked up by id in ``writing.json`` so
-    one URL remains declared in one file.
+    The scan line states what the deliverable is, how it was received, what
+    it is built with, and links to repo, demo, slides and article, rendered in
+    one top tag list by `render_meta`.
     """
     title = t(record, "title")
     proof = []
@@ -1852,7 +1894,7 @@ def render_project(record: dict, articles: dict) -> str:
     parts = [
         f'<h3 class="entry__title">{title}</h3>',
         f'<p class="entry__period"><time datetime="{year}">{year}</time></p>',
-        render_meta(record, "projects"),
+        render_meta(record, "projects", extra=tuple(proof)),
     ]
     if t(record, "summary"):
         parts.append(f'<p class="entry__summary">{t(record, "summary")}</p>')
@@ -1862,29 +1904,6 @@ def render_project(record: dict, articles: dict) -> str:
             t(record, "points"),
             modifier="entry__group--project",
         ))
-    if proof:
-        proof_items = "\n".join(f"    {item}" for item in proof)
-        # The label survives as the list's accessible name and nothing else. It
-        # rendered as a visible `<p>` on all four records, identical every
-        # time, naming the rank the hairline directly above it already draws,
-        # at roughly 25px of vertical apiece. `What was built` earns its line
-        # by naming what the bullets are; this one named the component. Every
-        # tag list on the site carries an aria-label, so the name is kept where
-        # it does work and dropped where it did not.
-        #
-        # It says `Project links` and not `Project proof`, because the row
-        # stopped being mixed proof when `upstream` moved to the scan line.
-        # What is left is four kinds of destination, and naming them for what
-        # they are is the same rule the visible label failed: say something
-        # about the record, or say nothing.
-        links_label = tr("label.project_links", "Project links")
-        parts.append(
-            '<footer class="entry__proof">\n'
-            f'  <ul class="tag-list" aria-label="{links_label}">\n'
-            f'{proof_items}\n'
-            '  </ul>\n'
-            '</footer>'
-        )
 
     body = "\n".join(indent(part, 2) for part in parts if part)
     proj_id = record["id"]
@@ -2004,6 +2023,30 @@ def tenure(start: str, end: str | None) -> str:
         parts.append(f"{rest} " + tr("unit.month" if rest == 1 else "unit.months",
                                      "month" if rest == 1 else "months"))
     return " ".join(parts)
+
+
+def result_years(owner: dict) -> str:
+    """The years a cited result belongs to, for Impact in Numbers' provenance.
+
+    **This line carried no date at all, and home.md said it did.** That
+    document lists the period as one of three things derived from the `cite`
+    id, and argues it "dates the claims honestly: 100x faster is from 2022 and
+    used to read as current". `render_impact` printed the company and the page
+    and nothing else, so the 2022 result sat between two Aug 2024 - Present
+    results with nothing saying so, on the block whose whole subject is what
+    changed and on the page a recruiter opens first.
+
+    Years, not the `month_year` range the dateline uses. `Aug 2024 - Present`
+    already renders in Currently one block above, and printing it twice more
+    here is the repetition that took the period line off this block in the
+    first place, when it was still an `.entry`. A year is the resolution the claim
+    actually has: a saving accrued across a job, not in a month.
+    """
+    start = owner["start"][:4]
+    if not owner.get("end"):
+        return f'{tr("date.since", "Since")} {start}'
+    end = owner["end"][:4]
+    return start if start == end else f"{start}-{end}"
 
 
 def tenure_sort_key(record: dict) -> str:
@@ -2544,7 +2587,18 @@ def render_impact(record: dict, page_labels: dict, projects: list[dict],
     error.
     """
     figure = t(record, "figure")
-    lead = f'<b>{figure["value"]}</b> {figure["unit"]}'
+    # The value and its unit are two ranks, not one line split by weight. They
+    # were `<b>value</b> unit` at one size, so the five numbers never formed a
+    # column (the pairs measured 88, 141, 155, 188 and 194px) and the block
+    # whose title promises numbers set them one step above body. The value now
+    # takes `--text-xl` and the unit drops to `--text-md` muted beneath it,
+    # which is the rank Awards' scope cards already give the line under a
+    # figure. It is also what fixes the second language: `Zero donnee d'avis
+    # perdue` set solid measured 216.6px in a 208px track and wrapped, while
+    # DESIGN.md section 9.3 was still guaranteeing that every figure fits on
+    # one line on the strength of an English measurement.
+    lead = (f'<b>{figure["value"]}</b>'
+            f'<span class="result__unit">{figure["unit"]}</span>')
 
     if record.get("cite"):
         if t(record, "evidence") or record.get("source"):
@@ -2564,6 +2618,7 @@ def render_impact(record: dict, page_labels: dict, projects: list[dict],
         context = owner.get("company") or owner.get("host") or owner["title"]
         href = f'{page}#{record["cite"]}'
         label = page_labels[page]
+        provenance = [context, result_years(owner)]
     else:
         if not record.get("upstream_prs"):
             raise ValueError(
@@ -2576,15 +2631,20 @@ def render_impact(record: dict, page_labels: dict, projects: list[dict],
         context = upstream_result(record["upstream_prs"], projects)
         href = record["source"]
         label = page_labels[href]
+        # The aggregate record stands for two pull requests across two project
+        # records, so it has no single record's dates to take. It renders two
+        # parts where the others render three rather than being given a year
+        # that would have to be picked.
+        provenance = [context]
 
     parts = [
         f'<p class="result__figure">{lead}</p>',
         f'<p class="result__consequence">{sentence}</p>',
-        f'<p class="result__source">{context} &middot; '
+        f'<p class="result__source">{" &middot; ".join(provenance)} &middot; '
         f'<a href="{href}">{label}</a></p>',
     ]
     body = "\n".join(indent(part, 2) for part in parts)
-    return f'<li class="result">\n{body}\n</li>'
+    return f'<li class="entry">\n{body}\n</li>'
 
 
 def volunteering_sort_key(record: dict) -> str:
@@ -2664,63 +2724,38 @@ def render_volunteering(record: dict) -> str:
 
 
 def render_proof_key() -> str:
-    """The colour key, rendered once above the block.
-
-    Chips, not a prose sentence, because the thing being explained is a chip:
-    a legend that described the colours in words would make the reader hold a
-    translation in their head, where five sample chips let them match by shape.
-    They are `<li>` and not links: the key is the one place on this page where a
-    chip is a specimen rather than a citation, and giving it an href would put
-    five destinations on the page that prove nothing.
-    """
+    """The specimen chips above the block, preceded by an Evidence Key label."""
     chips = "\n".join(
-        f'  <li class="tag tag--{kind}">{label}</li>'
+        f'    <li class="tag tag--{kind}">{label}</li>'
         for kind, label in ((k, tr(f"proof_key.{k}", v)) for k, v in PROOF_KEY.items())
     )
-    return (f'<ul class="tag-list tag-list--key" aria-label="What the evidence'
-            f' colours mean">\n{chips}\n</ul>')
+    key_label = tr("label.evidence_key", "Evidence Key:")
+    return (
+        '<div class="skills-key">\n'
+        f'  <span class="skills-key__label">{key_label}</span>\n'
+        '  <ul class="tag-list tag-list--key" aria-label="Evidence Key">\n'
+        f'{chips}\n'
+        '  </ul>\n'
+        '</div>'
+    )
+
+
+BADGE_LABELS = {
+    "Production Systems &amp; Certified Proof": "Production &amp; Certified",
+    "Production Systems": "Production",
+    "Certified &amp; Taught (Pre-Production)": "Certified &amp; Taught",
+    "Applied Projects &amp; Coursework": "Applied",
+}
 
 
 def render_skill(record: dict) -> str:
-    """One capability, its tools, and every record on the site that proves it.
-
-    Two columns. The left is fixed width and holds what the capability *is*:
-    the name, and beneath it the standing derived from the evidence. The right
-    holds the proof, and flows.
-
-    The split is the whole point of the layout. The block was previously one
-    run per skill, capability and tools and forty citations all flowing from
-    the same left edge, which meant the ranking `skill_sort_key` computes was
-    invisible: nothing lined up well enough to look ordered. A fixed left column
-    gives the eye a column to run down, and it is the same device
-    `.contact-list` already uses for a label and its value.
-
-    The chips are links, and that is the point of the component: a claim about
-    what someone can do is worth what its evidence is worth, so the evidence is
-    one click away rather than asserted. Tools sit above the evidence rather
-    than inside it because Talend is not a skill: building pipelines is, and
-    Talend is one of the things it is built with. They render on their own list
-    for the reason TOOLS_LABEL records: merging them into the evidence run would
-    put an outlined chip in front of it and break the colour-run reading
-    skills.md gave up positional reading to buy.
-    """
+    """A micro-card tile combining capability name, tier badge, evidence chips, and tools."""
     evidence = record["evidence"]
-
-    # Standing reads the English evidence, the chips read the locale's. The
-    # split is deliberate: `standing()` answers *which kinds of proof exist*,
-    # which is a fact about the career and identical in every language, while
-    # the chip is prose naming the record a reader will land on. Computing the
-    # standing from the overlay would let a translator who dropped a chip
-    # silently demote the row.
-    #
-    # The chips went through `record["evidence"]` until this comment existed,
-    # which is the failure CLAUDE.md section 9 lists as build-refused: a field
-    # a renderer reads directly instead of through `t()` is never reported
-    # missing, so all 39 chips rendered English on the French page while the
-    # coverage figure counted them as fine. Every user-visible string here
-    # routes through `t()` now, and an untranslated `evidence` shows up in the
-    # build's missing list like everything else.
     localised = t(record, "evidence") or evidence
+
+    std_label = standing(evidence)
+    badge_text = tr(f"badge.{std_label}", BADGE_LABELS.get(std_label, "Certified"))
+    badge_cls = "skill-badge--prod" if "production" in std_label.lower() else ""
 
     tools = "\n".join(
         f'  <li class="tag tag--stack">{tool}</li>' for tool in record["tools"]
@@ -2733,25 +2768,55 @@ def render_skill(record: dict) -> str:
                 f'{item["text"]}</a></li>'
             )
 
-    head = (
-        '<div class="skill__head">\n'
-        f'  <h3 class="skill__name">{t(record, "name")}</h3>\n'
-        f'  <p class="skill__standing">{tr(f"standing.{standing(evidence)}", standing(evidence))}</p>\n'
-        "</div>"
+    header = (
+        '<div class="skill-tile__header">\n'
+        f'  <h3 class="skill-tile__name">{t(record, "name")}</h3>\n'
+        f'  <span class="skill-badge {badge_cls}">{badge_text}</span>\n'
+        '</div>'
     )
-    proof = (
-        '<div class="skill__proof">\n'
-        f'  <ul class="tag-list skill__tools" aria-label="{tr("label.tools", TOOLS_LABEL_EN)}">\n'
-        + "\n".join("  " + line for line in tools.splitlines())
-        + "\n  </ul>\n"
+    body = (
+        '<div class="skill-tile__body">\n'
         f'  <ul class="tag-list" aria-label="{tr("label.evidence", PROOF_LABEL_EN)}">\n'
         + "\n".join("  " + line for line in chips)
         + "\n  </ul>\n"
-        "</div>"
+        '</div>'
+    )
+    footer = (
+        '<div class="skill-tile__footer">\n'
+        f'  <ul class="tag-list skill__tools" aria-label="{tr("label.tools", TOOLS_LABEL_EN)}">\n'
+        + "\n".join("  " + line for line in tools.splitlines())
+        + "\n  </ul>\n"
+        '</div>'
     )
 
-    body = "\n".join(indent(part, 2) for part in (head, proof))
-    return f'<li class="skill">\n{body}\n</li>'
+    content = "\n".join(indent(part, 2) for part in (header, body, footer))
+    return f'<li class="skill-tile">\n{content}\n</li>'
+
+
+def render_skills(records: list[dict]) -> str:
+    """The whole block: standing band headings with tier count pills followed by responsive skill micro-card grids."""
+    bands: list[tuple[str, list[dict]]] = []
+    for record in records:
+        label = standing(record["evidence"])
+        if not bands or bands[-1][0] != label:
+            bands.append((label, []))
+        bands[-1][1].append(record)
+
+    parts = []
+    for label, group in bands:
+        band_id = f"standing-{slugify(label)}"
+        count = len(group)
+        parts.append(
+            f'<div class="skills-band-header">\n'
+            f'  <p class="skills__band" id="{band_id}">'
+            f'{tr(f"standing.{label}", label)}</p>\n'
+            f'  <span class="skills-band__count">{count}</span>\n'
+            f'</div>\n'
+            f'<ul class="skills-grid" aria-labelledby="{band_id}">\n'
+            + "\n".join(indent(render_skill(r), 2) for r in group)
+            + "\n</ul>"
+        )
+    return "\n".join(parts)
 
 
 def skill_sort_key(record: dict) -> tuple[int, int]:
@@ -3396,7 +3461,16 @@ def page_blocks(site: dict) -> dict:
     # Home. An impact line cites the page that evidences it, and the link text
     # comes from the navigation rather than from the record, so a citation
     # cannot name one page and point at another.
-    page_labels = {entry["href"]: entry["label"] for entry in site["nav"]}
+    #
+    # Through `tr()`, and it was not. The label was read straight off
+    # `site["nav"]`, which is the English, so the French Impact block printed
+    # `Career` four times and `Projects` once, two inches under a navigation
+    # bar that said `Parcours` and `Projets`. The overlay had carried
+    # `nav.career` and `nav.projects` the whole time and the nav renderer was
+    # already using them: this was the one consumer that reached past `t()`,
+    # which is the failure CLAUDE.md section 9 lists as build-refused.
+    page_labels = {entry["href"]: tr(f"nav.{entry['id']}", entry["label"])
+                   for entry in site["nav"]}
     impact = with_ids(json.loads((DATA / "impact.json").read_text(encoding="utf-8")), "impact")
     volunteering = sorted(
         with_ids(json.loads((DATA / "volunteering.json").read_text(encoding="utf-8")), "vol"),
@@ -3416,6 +3490,7 @@ def page_blocks(site: dict) -> dict:
         with_ids(json.loads((DATA / "skills.json").read_text(encoding="utf-8")), "skill"),
         key=skill_sort_key,
     )
+    check_citations(skills, {record["id"] for record in experience})
     open_source = [p for p in projects if p.get("block") == "open-source"]
     ml_projects = [p for p in projects if p.get("block") == "machine-learning"]
     blocks = {
@@ -3466,8 +3541,10 @@ def page_blocks(site: dict) -> dict:
                 render_impact(i, page_labels, projects, citations)
                 for i in impact if i.get("home")), 4),
         "build.proof_key": indent(render_proof_key(), 2),
-        "build.skills": indent(
-            "\n".join(render_skill(s) for s in skills), 4),
+        # The whole block, bands included, so the fragment no longer owns the
+        # <ul>: the list is now one per standing and only the renderer knows
+        # how many there are.
+        "build.skills": indent(render_skills(skills), 4),
         "build.volunteering": indent(
             "\n".join(render_volunteering(v) for v in volunteering), 4),
     }
