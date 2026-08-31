@@ -22,6 +22,11 @@ Order:  level → scale
 
 The order is defined once, in `MODELS["teaching"]` in `tools/build.py`.
 
+### Course Card Container
+
+Each taught course entry renders inside `.entries--courses > .entry`: an elegant, self-contained surface card with structured padding, subtle borders (`var(--color-border-soft)`), and clear module visual hierarchy.
+
+
 ### One category is borrowed, not invented
 
 `scale` already exists on Awards, where it means the size of the field a result

@@ -1460,6 +1460,47 @@ th {
   text-indent: -1.4em;
 }
 
+/* Teaching's Graduate Courses: card-enclosed course entries. Frame each taught
+   course in a clean, bordered surface card with structured padding, subtle box
+   shadow, and distinct section styling for course modules, labs, and capstones. */
+.entries--courses {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.entries--courses > .entry {
+  margin-bottom: 0;
+  padding: var(--space-5) var(--space-6);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
+}
+
+.entries--courses .entry__title {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-heading);
+}
+
+.entries--courses .entry__period {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.entries--courses .entry__summary {
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-4);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-text);
+}
+
 .entry {
   margin-bottom: var(--space-5);
 }
