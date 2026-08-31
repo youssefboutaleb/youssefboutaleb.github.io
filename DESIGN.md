@@ -1728,9 +1728,10 @@ Labs            8 h                          Attendance        15%
 ```
 
 `.specs` is a `repeat(auto-fit, minmax(13rem, 1fr))` grid of `.spec` columns.
+When modified with `.specs--cards`, each column is rendered as an elevated spec card (`.spec--card`) with a subtle surface background (`var(--color-surface)`), border (`var(--color-border-soft)`), header badge (`.spec__badge`), and optional visual progress indicators (`.spec__progress-bar`).
 Each column is a `.spec__title` (a `<p>`, like `.entry__group-title`: block
 subdivisions stay out of the document outline, §11), an optional
-`.spec__lead` for a headline figure, and a `.spec__rows` definition list of
+`.spec__lead` or `.spec__badge` for a headline figure, and a `.spec__rows` definition list of
 `.spec__row` pairs. A row may carry a `.spec__detail` that drops full-width
 beneath it.
 

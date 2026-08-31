@@ -22,7 +22,7 @@
   <link rel="alternate" hreflang="x-default" href="https://youssefboutaleb.github.io/teaching.html">
   <link rel="icon" type="image/svg+xml" href="images/icons/icon.svg">
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Noto-Sans-regular/Noto-Sans-regular.woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=55e162cc92be">
+  <link rel="stylesheet" href="assets/css/main.css?v=a28614991170">
 
   <script>
     // Before first paint, or the pinned theme flashes the other one on every
@@ -137,33 +137,38 @@
 
         <section class="block" aria-labelledby="courses-taught">
           <h2 class="block__title" id="courses-taught">Graduate Courses</h2>
-          <div class="specs">
-            <div class="spec">
-              <p class="spec__title">Workload</p>
-              <p class="spec__lead">32 h per course</p>
+          <div class="specs specs--cards">
+            <div class="spec spec--card">
+              <div class="spec__header">
+                <p class="spec__title">Workload</p>
+                <span class="spec__badge spec__lead">32 h per course</span>
+              </div>
               <dl class="spec__rows">
                 <div class="spec__row">
                   <dt>Lectures</dt>
                   <dd>20 h</dd>
-                  <dd class="spec__detail">5 modules &times; 4 h: theoretical foundations, architecture principles and
-                    guided exercises.</dd>
+                  <dd class="spec__detail"><b>5 modules &times; 4 h:</b> theoretical foundations, system architecture principles
+                    and guided exercises.</dd>
                 </div>
                 <div class="spec__row">
                   <dt>Labs</dt>
                   <dd>8 h</dd>
-                  <dd class="spec__detail">1 hands-on lab per module, 1.5-2 h: practical assignments and
-                    collaborative solution reviews.</dd>
+                  <dd class="spec__detail"><b>1 hands-on lab per module (1.5-2 h):</b> practical assignments and collaborative
+                    solution reviews.</dd>
                 </div>
                 <div class="spec__row">
                   <dt>Final Project</dt>
                   <dd>4 h</dd>
-                  <dd class="spec__detail">Dedicated workshop session: end-to-end pipeline implementation and project
-                    guidance.</dd>
+                  <dd class="spec__detail"><b>1 capstone workshop session:</b> end-to-end data pipeline implementation and
+                    project guidance.</dd>
                 </div>
               </dl>
             </div>
-            <div class="spec">
-              <p class="spec__title">Language &amp; Tooling</p>
+            <div class="spec spec--card">
+              <div class="spec__header">
+                <p class="spec__title">Language &amp; Tooling</p>
+                <span class="spec__badge">Bilingual</span>
+              </div>
               <dl class="spec__rows">
                 <div class="spec__row">
                   <dt>Instruction</dt>
@@ -176,29 +181,41 @@
                 </div>
               </dl>
             </div>
-            <div class="spec">
-              <p class="spec__title">Assessment</p>
+            <div class="spec spec--card">
+              <div class="spec__header">
+                <p class="spec__title">Assessment</p>
+                <span class="spec__badge">4 Components</span>
+              </div>
+              <div class="spec__progress-bar" aria-hidden="true">
+                <span class="spec__progress-seg spec__progress-seg--exam spec__progress-seg--50" title="Final Exam: 50%"></span>
+                <span class="spec__progress-seg spec__progress-seg--homework spec__progress-seg--20"
+                  title="Module Homework: 20%"></span>
+                <span class="spec__progress-seg spec__progress-seg--project spec__progress-seg--15"
+                  title="Final Project: 15%"></span>
+                <span class="spec__progress-seg spec__progress-seg--attendance spec__progress-seg--15"
+                  title="Attendance &amp; Participation: 15%"></span>
+              </div>
               <dl class="spec__rows">
-                <div class="spec__row">
+                <div class="spec__row spec__row--exam">
                   <dt>Final Exam</dt>
                   <dd>50%</dd>
                 </div>
-                <div class="spec__row">
+                <div class="spec__row spec__row--homework">
                   <dt>Module Homework</dt>
                   <dd>20%</dd>
                 </div>
-                <div class="spec__row">
+                <div class="spec__row spec__row--project">
                   <dt>Final Project</dt>
                   <dd>15%</dd>
                 </div>
-                <div class="spec__row">
+                <div class="spec__row spec__row--attendance">
                   <dt>Attendance &amp; Participation</dt>
                   <dd>15%</dd>
                 </div>
               </dl>
             </div>
           </div>
-          <ul class="entries entries--courses">
+          <ul class="entries">
                 <li class="entry" id="course-data-engineering-2">
               <h3 class="entry__title">Data Engineering 2</h3>
               <p class="entry__period">Fall 2025-2026</p>

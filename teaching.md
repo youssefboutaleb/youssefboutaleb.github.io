@@ -22,11 +22,6 @@ Order:  level → scale
 
 The order is defined once, in `MODELS["teaching"]` in `tools/build.py`.
 
-### Course Card Container
-
-Each taught course entry renders inside `.entries--courses > .entry`: an elegant, self-contained surface card with structured padding, subtle borders (`var(--color-border-soft)`), and clear module visual hierarchy.
-
-
 ### One category is borrowed, not invented
 
 `scale` already exists on Awards, where it means the size of the field a result
@@ -347,13 +342,13 @@ They are split by **kind of fact**, across two components:
 
 ```
 page-lede      the appointment, who, where, on what programme, in what mode
-specs          the specification, three columns (DESIGN.md §10.1):
+specs          the specification, three card columns (.specs--cards, DESIGN.md §10.1):
 
-  Workload             Language & Tooling      Assessment
-  32 h per course      Instruction  FR & EN    Final Exam        50%
-  Lectures      20 h   Materials         EN    Module Homework   20%
-  Labs           8 h                           Final Project     15%
-  Final Project  4 h                           Attendance        15%
+  Workload [32 h]      Language & Tooling [Bilingual]   Assessment [4 Components]
+  Lectures      20 h   Instruction   French & English   Final Exam        50%
+  Labs           8 h   Materials              English   Module Homework   20%
+  Final Project  4 h   Slides, code repositories...     Final Project     15%
+                                                        Attendance        15%
 ```
 
 The split is the point. The appointment is a sentence and reads as one; the
