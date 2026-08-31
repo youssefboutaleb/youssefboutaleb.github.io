@@ -22,7 +22,7 @@
   <link rel="alternate" hreflang="x-default" href="https://youssefboutaleb.github.io/teaching.html">
   <link rel="icon" type="image/svg+xml" href="../images/icons/icon.svg">
   <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/Noto-Sans-regular/Noto-Sans-regular.woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/css/main.css?v=a28614991170">
+  <link rel="stylesheet" href="../assets/css/main.css?v=ccddabf47e8e">
 
   <script>
     // Before first paint, or the pinned theme flashes the other one on every
@@ -141,26 +141,47 @@
             <div class="spec spec--card">
               <div class="spec__header">
                 <p class="spec__title">Charge</p>
-                <span class="spec__badge spec__lead">32 h par cours</span>
+                <span class="spec__badge">32 h par cours</span>
+              </div>
+              <div class="spec__progress-bar" aria-hidden="true">
+                <span class="spec__progress-seg spec__progress-seg--lectures" title="Cours magistraux : 20 h (62,5%)"></span>
+                <span class="spec__progress-seg spec__progress-seg--labs" title="Travaux pratiques : 8 h (25%)"></span>
+                <span class="spec__progress-seg spec__progress-seg--workload-project" title="Projet final : 4 h (12,5%)"></span>
               </div>
               <dl class="spec__rows">
-                <div class="spec__row">
+                <div class="spec__row spec__row--lectures">
                   <dt>Cours magistraux</dt>
                   <dd>20 h</dd>
-                  <dd class="spec__detail"><b>5 modules &times; 4 h :</b> fondements théoriques, principes d'architecture et
-                    exercices guidés.</dd>
+                  <dd class="spec__detail">
+                    <p class="spec__schedule">5 modules &times; 4 h</p>
+                    <ul class="spec__bullets">
+                      <li>Fondements théoriques et concepts clés</li>
+                      <li>Principes d'architecture distribuée</li>
+                      <li>Exercices techniques guidés</li>
+                    </ul>
+                  </dd>
                 </div>
-                <div class="spec__row">
+                <div class="spec__row spec__row--labs">
                   <dt>Travaux pratiques</dt>
                   <dd>8 h</dd>
-                  <dd class="spec__detail"><b>1 TP pratique par module (1,5-2 h) :</b> exercices d'application et revues
-                    collaboratives de code.</dd>
+                  <dd class="spec__detail">
+                    <p class="spec__schedule">1 TP pratique par module (1,5-2 h)</p>
+                    <ul class="spec__bullets">
+                      <li>Devoirs d'ingénierie pratiques</li>
+                      <li>Revues collaboratives de code et d'architecture</li>
+                    </ul>
+                  </dd>
                 </div>
-                <div class="spec__row">
+                <div class="spec__row spec__row--workload-project">
                   <dt>Projet final</dt>
                   <dd>4 h</dd>
-                  <dd class="spec__detail"><b>1 atelier capstone dédié :</b> implémentation d'un pipeline de données de bout en
-                    bout et accompagnement.</dd>
+                  <dd class="spec__detail">
+                    <p class="spec__schedule">1 atelier capstone dédié</p>
+                    <ul class="spec__bullets">
+                      <li>Déploiement d'un pipeline de données de production de bout en bout</li>
+                      <li>Accompagnement et revue technique de projet</li>
+                    </ul>
+                  </dd>
                 </div>
               </dl>
             </div>
@@ -169,15 +190,35 @@
                 <p class="spec__title">Langue et outils</p>
                 <span class="spec__badge">Bilingue</span>
               </div>
+              <div class="spec__progress-bar" aria-hidden="true">
+                <span class="spec__progress-seg spec__progress-seg--instruction" title="Enseignement : Français et anglais (50%)"></span>
+                <span class="spec__progress-seg spec__progress-seg--materials" title="Supports : Anglais (50%)"></span>
+              </div>
               <dl class="spec__rows">
-                <div class="spec__row">
+                <div class="spec__row spec__row--instruction">
                   <dt>Enseignement</dt>
                   <dd>Français et anglais</dd>
+                  <dd class="spec__detail">
+                    <p class="spec__schedule">Modalités d'enseignement</p>
+                    <div class="spec__chips">
+                      <span class="spec__chip">Cours en français</span>
+                      <span class="spec__chip">Terminologie en anglais</span>
+                      <span class="spec__chip">Q&amp;R bilingue</span>
+                    </div>
+                  </dd>
                 </div>
-                <div class="spec__row">
+                <div class="spec__row spec__row--materials">
                   <dt>Supports</dt>
                   <dd>Anglais</dd>
-                  <dd class="spec__detail">Diapositives, dépôts de code, devoirs et examens.</dd>
+                  <dd class="spec__detail">
+                    <p class="spec__schedule">Livrables du cours</p>
+                    <div class="spec__chips">
+                      <span class="spec__chip">Diapositives</span>
+                      <span class="spec__chip">Dépôts de code</span>
+                      <span class="spec__chip">Devoirs</span>
+                      <span class="spec__chip">Examens</span>
+                    </div>
+                  </dd>
                 </div>
               </dl>
             </div>
@@ -186,16 +227,19 @@
                 <p class="spec__title">Évaluation</p>
                 <span class="spec__badge">4 composantes</span>
               </div>
-              <div class="spec__progress-bar" aria-hidden="true">
-                <span class="spec__progress-seg spec__progress-seg--exam spec__progress-seg--50"
-                  title="Examen final : 50%"></span>
-                <span class="spec__progress-seg spec__progress-seg--homework spec__progress-seg--20"
-                  title="Devoirs de module : 20%"></span>
-                <span class="spec__progress-seg spec__progress-seg--project spec__progress-seg--15"
-                  title="Projet final : 15%"></span>
-                <span class="spec__progress-seg spec__progress-seg--attendance spec__progress-seg--15"
-                  title="Assiduité et participation : 15%"></span>
-              </div>
+              <svg class="assessment-pie" viewBox="0 0 84 84" aria-label="Graphique circulaire d'évaluation (50% examen, 20% devoirs, 15% projet, 15% présence)">
+                <g transform="rotate(-90 42 42)">
+                  <circle cx="42" cy="42" r="19" fill="none" stroke="var(--status-success-br)" stroke-width="38" stroke-dasharray="23.88 95.50" stroke-dashoffset="0" />
+                  <circle cx="42" cy="42" r="19" fill="none" stroke="var(--status-scope-br)" stroke-width="38" stroke-dasharray="17.91 101.47" stroke-dashoffset="-23.88" />
+                  <circle cx="42" cy="42" r="19" fill="none" stroke="var(--status-honor-br)" stroke-width="38" stroke-dasharray="17.91 101.47" stroke-dashoffset="-41.78" />
+                  <circle cx="42" cy="42" r="19" fill="none" stroke="var(--status-accent-br)" stroke-width="38" stroke-dasharray="59.69 59.69" stroke-dashoffset="-59.69" />
+                </g>
+                <circle cx="42" cy="42" r="38" fill="none" stroke="#000000" stroke-width="1" />
+                <line x1="42" y1="42" x2="42" y2="4" stroke="#000000" stroke-width="1" />
+                <line x1="42" y1="42" x2="42" y2="4" stroke="#000000" stroke-width="1" transform="rotate(72 42 42)" />
+                <line x1="42" y1="42" x2="42" y2="4" stroke="#000000" stroke-width="1" transform="rotate(126 42 42)" />
+                <line x1="42" y1="42" x2="42" y2="80" stroke="#000000" stroke-width="1" />
+              </svg>
               <dl class="spec__rows">
                 <div class="spec__row spec__row--exam">
                   <dt>Examen final</dt>
