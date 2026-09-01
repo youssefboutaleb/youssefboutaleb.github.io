@@ -1780,7 +1780,7 @@ anything else: **mobility, credentials, languages.** They sit under the pitch
 as a label column.
 
 ```
-Availability   EU residence permit holder. Open to relocation within the EU
+Availability   EU Visa Holder. Open to relocation within the EU
                and to fully remote roles.
 Certified      Microsoft ×3 · Astronomer ×2 · MuleSoft · Talend · Datadog ×3
 Languages      Arabic     Native

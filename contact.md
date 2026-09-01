@@ -99,7 +99,7 @@ appears in both renderings and in the structured data at once.
 It was two, in this order:
 
 > **Location** Sfax, Tunisia
-> **Availability** EU residence permit holder. Open to relocation within the
+> **Availability** EU Visa Holder. Open to relocation within the
 > EU and to fully remote roles.
 
 Which handed a recruiter the disqualifying half first and left them to
@@ -146,7 +146,7 @@ is being accepted, which is a different question from what the role is.
 
 ```
 Contact
-  Availability   EU residence permit holder. Open to relocation
+  Availability   EU Visa Holder. Open to relocation
                  within the EU and to fully remote roles.
   Based in       Sfax, Tunisia
 ```
