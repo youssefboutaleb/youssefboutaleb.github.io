@@ -26,7 +26,7 @@ import struct
 import sys
 import unicodedata
 from datetime import date
-from html import escape
+from html import escape, unescape
 from html.parser import HTMLParser
 from pathlib import Path
 
@@ -3100,8 +3100,115 @@ def render_diagram(spec: dict) -> str:
         "</figure>")
 
 
+def person_facts(site: dict, records: dict) -> dict:
+    """The credential half of the Person node, projected from the records.
+
+    Nothing here is written for the crawler. Every field restates something a
+    reader can already see on a page, in the vocabulary Schema.org has for it,
+    which is the same rule Home follows and for the same reason: a hand-typed
+    `hasCredential` list would be one more copy of `certifications.json`, free
+    to disagree with every rendering that reads the file.
+
+    Entities are unescaped, because this lands inside a JSON string and not in
+    markup: `Observability &amp; incident response` is correct in an <li> and
+    wrong in a JSON-LD value, where the parser has no HTML step to undo it.
+    """
+    def plain(value: str) -> str:
+        return unescape(value)
+
+    def absolute(url: str) -> str:
+        return url if url.startswith("http") else f"{site['base_url']}/{url}"
+
+    facts: dict = {}
+
+    # Ten vendor certifications under five issuers, grouped that way in the
+    # file and flattened here: Schema.org names the awarding body on each
+    # credential, so the grouping that saves the page five repeated logos has
+    # nothing left to express.
+    credentials = [
+        {
+            "@type": "EducationalOccupationalCredential",
+            # Direct, not through t(). render_credentials reads the same
+            # field the same way: a vendor certification is a proper noun and
+            # the site does not translate it. Routing it through t() here
+            # would invent a missing-translation key for a string no page
+            # asks a translator for, and report the French as less complete
+            # than it is.
+            "name": plain(credential["name"]),
+            "credentialCategory": "certificate",
+            "url": absolute(credential["url"]),
+            "recognizedBy": {"@type": "Organization", "name": issuer["issuer"]},
+        }
+        for issuer in records["certifications"]
+        for credential in issuer["credentials"]
+    ]
+    if credentials:
+        facts["hasCredential"] = credentials
+
+    schools = [
+        {
+            "@type": "CollegeOrUniversity",
+            "name": plain(record["institution"]),
+            **({"url": record["url"]} if record.get("url") else {}),
+        }
+        for record in records["education"]
+    ]
+    if schools:
+        facts["alumniOf"] = schools
+
+    # Levels are deliberately dropped. Schema.org has no field for CEFR or for
+    # "Full professional proficiency", and inventing one would put a claim in
+    # the structured data that no page makes in those words. The page keeps
+    # the level and its evidence chips; this keeps the fact that the language
+    # is spoken.
+    languages = [{"@type": "Language", "name": plain(t(record, "name"))}
+                 for record in records["languages"]]
+    if languages:
+        facts["knowsLanguage"] = languages
+
+    # Contest results, and only those that state a rank in a field. `scale`
+    # carries the denominator, so the string cannot say "1st Place" without
+    # saying 1st of what, which is the rule awards.md sets for the page.
+    awards = []
+    for record in records["awards"]:
+        if not record.get("placement"):
+            continue
+        # `placement` is a rank or a named round: 1 renders as "1st Place",
+        # "Quarter-finalist" renders as itself. awards.md allows both and the
+        # page prints both, so the structured data cannot assume a number.
+        placement = record["placement"]
+        rank = (tr("placement.pattern", "{ordinal} Place")
+                .replace("{ordinal}", ACTIVE.ordinal(placement))
+                if isinstance(placement, int)
+                else plain(tr(f"tag.placement.{placement}", str(placement))))
+        # The denominator is joined and formatted the way the page's own
+        # scale tag does it: `scale.of` for the joiner, `unit.<name>` for the
+        # unit, and the locale's thousands separator. Written here by hand,
+        # the French read "1re place of 86 teams" with an English comma in
+        # 7,094, which is the fluent-and-wrong failure CLAUDE.md section 10
+        # says is worse than no translation at all.
+        scale = record.get("scale") or {}
+        if scale.get("count"):
+            unit = scale.get("unit", "")
+            rank += (f" {tr('scale.of', 'of')} {ACTIVE.number(scale['count'])}"
+                     f" {tr(f'unit.{unit}', unit)}").rstrip()
+        awards.append(f"{rank}, {plain(t(record, 'title'))} ({record['year']})")
+    if awards:
+        facts["award"] = awards
+
+    # The capability column of Skills & Evidence, which is the site's own list
+    # of what this person does, already curated and already carrying a link to
+    # the record that proves each one.
+    subjects = [plain(t(record, "name")) for record in records["skills"]]
+    if subjects:
+        facts["knowsAbout"] = subjects
+
+    return facts
+
+
 def json_ld(site: dict, meta: dict, canonical: str,
-            title: str, description: str, employer: dict | None = None) -> str:
+            title: str, description: str, employer: dict | None = None,
+            records: dict | None = None) -> str:
     """The structured data for one page, in one locale.
 
     `title` and `description` are passed in, never re-read from `meta`. The
@@ -3143,6 +3250,10 @@ def json_ld(site: dict, meta: dict, canonical: str,
         "isPartOf": {"@type": "WebSite", "name": site["name"], "url": site["base_url"] + "/"},
         "author": {"@type": "Person", "name": site["name"], "url": site["base_url"] + "/"},
     }
+    # The credential half is home's only, because the Person node is home's
+    # only. Every other page emits a WebPage and points `author` back here.
+    if records:
+        person.update(person_facts(site, records))
     payload = person if meta.get("nav") == "home" else page
     return json.dumps(payload, separators=(",", ":"), ensure_ascii=False)
 
@@ -3255,6 +3366,66 @@ def render_alternates(site: dict, locales: list[Locale], output_name: str) -> st
         lines.append(f'<link rel="alternate" hreflang="{other.lang}" href="{href}">')
     lines.append(f'<link rel="alternate" hreflang="x-default" href="{site["base_url"]}/{leaf}">')
     return "\n".join(lines)
+
+
+def render_sitemap(site: dict, nav: list[dict],
+                   publishes: dict[str, list[Locale]]) -> str:
+    """Every published URL, with the same alternates its head declares.
+
+    The site already tells a crawler which renderings of a page exist, once it
+    has the page: `render_alternates` writes the hreflang cluster into every
+    head. What nothing told a crawler is that the pages exist at all. Sixteen
+    URLs across two languages were discoverable only by following links from
+    whichever one a search engine happened to find first, on a site whose
+    stated success condition (CLAUDE.md section 2) is a recruiter reaching it.
+
+    `publishes` is the authority on what to list, not the nav. A page below
+    MIN_TRANSLATED is deleted from disk and unlinked from the switch; listing
+    its URL here would invite a crawler to the one door the build just shut.
+
+    No `lastmod`. It would have to be either the build date, which a scheduled
+    rebuild makes a monthly lie about content that did not change, or a
+    per-page git timestamp, which is a second dating mechanism next to
+    `last_updated` and free to disagree with it. An absent date claims
+    nothing; a wrong one is worse than none.
+    """
+    urls = []
+    for entry in nav:
+        output_name = entry["href"]
+        leaf = "" if output_name == "index.html" else output_name
+        allowed = publishes[output_name]
+        for locale in allowed:
+            alternates = []
+            if len(allowed) > 1:
+                for other in allowed:
+                    alternates.append(
+                        f'    <xhtml:link rel="alternate" hreflang="{other.lang}"'
+                        f' href="{site["base_url"]}/{other.dir}{leaf}"/>')
+                alternates.append(
+                    f'    <xhtml:link rel="alternate" hreflang="x-default"'
+                    f' href="{site["base_url"]}/{leaf}"/>')
+            body = "\n".join(
+                [f'    <loc>{site["base_url"]}/{locale.dir}{leaf}</loc>'] + alternates)
+            urls.append(f"  <url>\n{body}\n  </url>")
+    return ('<?xml version="1.0" encoding="UTF-8"?>\n'
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n'
+            '        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
+            + "\n".join(urls)
+            + "\n</urlset>\n")
+
+
+def render_robots(site: dict) -> str:
+    """Open to everything, and pointing at the sitemap.
+
+    There is nothing here to hide: every page is a rendering of a CV its author
+    wants read. The file exists for its last line, which is the one way to hand
+    a crawler the sitemap without registering the site with each one by hand.
+    """
+    return ("# Everything here is meant to be read.\n"
+            "User-agent: *\n"
+            "Allow: /\n"
+            "\n"
+            f"Sitemap: {site['base_url']}/sitemap.xml\n")
 
 
 def render_lang_switch(locales: list[Locale], active: Locale, output_name: str) -> str:
@@ -3548,7 +3719,18 @@ def page_blocks(site: dict) -> dict:
         "build.volunteering": indent(
             "\n".join(render_volunteering(v) for v in volunteering), 4),
     }
-    return blocks
+    # The five files the Person node projects, handed back with their ids
+    # already stamped rather than re-read in build(). A second read would give
+    # `t()` records with no id, which returns English without reporting it: the
+    # Schema.org block would have gone French-blind exactly the way the page
+    # renderers did before M4, and for the same reason.
+    return blocks, {
+        "certifications": certifications,
+        "education": education,
+        "languages": languages,
+        "awards": awards,
+        "skills": skills,
+    }
 
 
 def build(check_only: bool = False, sync: bool = False) -> int:
@@ -3589,6 +3771,11 @@ def build(check_only: bool = False, sync: bool = False) -> int:
     # name the other renderings, and naming one that is being withheld is the
     # same broken promise in a different element.
     bodies: dict[tuple[str, str], dict] = {}
+    # The Person node's source records, per locale. Keyed rather than
+    # left to leak out of the pass 1 loop, because pass 2 runs its own
+    # loop over the same locales and would otherwise read whichever one
+    # happened to be rendered last.
+    records_by_locale: dict[str, dict] = {}
 
     for locale in locales:
         ACTIVE = locale
@@ -3602,7 +3789,7 @@ def build(check_only: bool = False, sync: bool = False) -> int:
         # French page: `availability` and `location` are overlaid on `site`, not
         # on a record, so `t()` never saw them.
         locale_site = {**site, **locale.overrides}
-        blocks = page_blocks(locale_site)
+        blocks, records_by_locale[locale.code] = page_blocks(locale_site)
         locale_context = {f"site.{k}": v for k, v in locale_site.items()
                           if isinstance(v, (str, int))}
         # <html lang> and og:locale are the locale's own, not the site's.
@@ -3751,7 +3938,8 @@ def build(check_only: bool = False, sync: bool = False) -> int:
                 "build.asset_version": asset_version,
                 "build.json_ld": json_ld(locale_site, meta, canonical,
                                          page_title, page_description,
-                                         current_post),
+                                         current_post,
+                                         records_by_locale[locale.code]),
                 "build.nav": render_items("nav-item.html", nav_items),
                 "build.alternates": indent(render_alternates(site, allowed, output_name), 2),
                 "build.lang_switch": indent(render_lang_switch(allowed, locale, output_name), 10),
@@ -3771,7 +3959,24 @@ def build(check_only: bool = False, sync: bool = False) -> int:
                 target.write_text(page_html, encoding="utf-8")
                 written.append(str(target.relative_to(ROOT)))
 
+    # --- the two files that are about the site rather than in it ------------
+    #
+    # Written from `publishes`, so a withheld page is absent from both the
+    # switch and the sitemap for the same reason and by the same decision.
     ACTIVE = source_locale
+    generated = {
+        "sitemap.xml": render_sitemap(site, site["nav"], publishes),
+        "robots.txt": render_robots(site),
+    }
+    for name, text in generated.items():
+        target = ROOT / name
+        if check_only:
+            current = target.read_text(encoding="utf-8") if target.exists() else ""
+            if current != text:
+                stale.append(name)
+        else:
+            target.write_text(text, encoding="utf-8")
+
     report_missing(locales)
     report_withheld(withheld)
 
@@ -3788,6 +3993,9 @@ def build(check_only: bool = False, sync: bool = False) -> int:
     if sync:
         print("translation locks re-stamped")
     print(f"built {len(written)} pages @ assets {asset_version}: " + ", ".join(written))
+    # Named separately: they are not pages, and folding them into the count
+    # would report eighteen pages on a site that has sixteen.
+    print("wrote " + ", ".join(generated))
     return 0
 
 

@@ -1,0 +1,67 @@
+# Rebuild the committed pages so a date the build computes cannot go stale.
+#
+# Every duration on the site is derived at build time from a start date in
+# src/data/: "Aug 2024 - Present (2 years 1 month)" is computed, not typed.
+# GitHub Pages serves the last commit, so on the first of every month the
+# published pages state a tenure one month short of the truth, and stay that
+# way until somebody happens to run the build for an unrelated reason. That is
+# exactly the drift CLAUDE.md section 9 asks to be fixed by a guard rather
+# than by remembering.
+#
+# What this does NOT touch: src/site.json's `last_updated`. That says when the
+# CONTENT was last updated and is the author's to set. A monthly rebuild
+# stamping it would advertise a freshness nothing earned, which is the kind of
+# claim the rest of this repository exists to refuse.
+name: Rebuild committed pages
+
+on:
+  schedule:
+    # 05:10 UTC on the 1st of each month, after the month has rolled over in
+    # every timezone the durations could be computed in.
+    - cron: '10 5 1 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rebuild-pages
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # build.py fails on a stale translation, a citation naming an id nothing
+      # carries, and the contradictory record shapes in CLAUDE.md section 9.
+      # If it fails here, the tree is untouched: nothing is written before the
+      # checks pass.
+      - name: Build
+        run: python3 tools/build.py
+
+      # Dead links, a class with no rule, an inline style, a missing alt, a
+      # duplicate id, a page drifted from its source. A rebuild that breaks one
+      # of these must not be committed.
+      - name: Check
+        run: python3 tools/check.py
+
+      - name: Commit if the output moved
+        run: |
+          if git diff --quiet; then
+            echo "No drift: the committed pages already state today's durations."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "chore(build): refresh computed durations
+
+          Scheduled rebuild. Every changed line is a date the build derives
+          from src/data/, not an edit to any source."
+          git push

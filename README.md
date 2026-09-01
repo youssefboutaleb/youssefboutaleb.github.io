@@ -25,11 +25,33 @@ images/, data/       portrait, brand icons, CV, workshop slides
 tools/
   build.py           renders src/ -> the *.html files in the repository root
   check.py           verifies the built site
+.github/workflows/   the scheduled rebuild (see below)
 *.html               BUILD OUTPUT: generated, do not edit by hand
+sitemap.xml          BUILD OUTPUT: generated, do not edit by hand
+robots.txt           BUILD OUTPUT: generated, do not edit by hand
 ```
 
 Deployment stays build-free: the generated `*.html` files are committed and
 GitHub Pages serves them as-is. `.nojekyll` disables Jekyll processing.
+
+`sitemap.xml` and `robots.txt` are written by the same run and checked by
+`--check` the same way a page is. The sitemap lists only what `publishes`
+allows, so a page the translation gate withholds is absent from the sitemap,
+the language switch and the disk together, by one decision rather than three.
+It carries no `lastmod`: the only two dates available are the build's, which a
+scheduled rebuild turns into a monthly claim of freshness that nothing earned,
+and a per-page git timestamp, which is a second dating mechanism beside
+`last_updated` and free to contradict it.
+
+**The build reads a clock, so a committed page can go stale without anyone
+editing it.** Every duration is derived from a start date in `src/data/`:
+`Aug 2024 - Present (2 years 1 month)` is computed. On the first of each month
+the committed pages understate a tenure until somebody rebuilds for an
+unrelated reason, and GitHub Pages serves whatever was last committed.
+`.github/workflows/rebuild.yml` runs the build and `check.py` monthly and
+commits only if the output moved. It deliberately does not touch
+`src/site.json`'s `last_updated`, which says when the *content* changed and is
+the author's to set.
 
 **Comment `src/` freely; none of it ships.** `strip_comments` drops every HTML
 comment on the way out, so a fragment can carry the argument for why a block is

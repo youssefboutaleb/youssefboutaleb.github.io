@@ -319,19 +319,28 @@ Mermaid was the alternative and was rejected for the reasons
 carrying one, nothing where scripts are blocked, an empty box in print. An
 element that disappears on paper fails Principle 1 on its own terms.
 
-**Two diagrams exist**, and the paragraph that stood here said the file was
-empty and the classes were staged. Career carries the JACQUEMUS order path and
-Research the Ausgrid pipeline, both laid out left to right because a pipeline
-is a sequence. [`CLAUDE.md`](CLAUDE.md) M1 still reserves what a diagram may
-claim: the container is the system's, the content is the author's.
+**No diagram is currently drawn**, and this paragraph has now said the opposite
+twice, which is the finding worth keeping. `src/data/diagrams.json` is `[]`,
+the six `diagram*` classes are back in `STAGED_CSS`, and the renderer is
+untouched and tested. Career carried the JACQUEMUS order path and Research the
+Ausgrid pipeline; the author withdrew both, the Ausgrid one first and the
+JACQUEMUS one two days later. [`CLAUDE.md`](CLAUDE.md) M1 still reserves what a
+diagram may claim: the container is the system's, the content is the author's.
 
-**A third was built for Workshops and removed.** It drew the teaching stack as
-five layers read downward, which cost the renderer a second orientation and the
-page 380px of its header, and the author's verdict on it is the one that
-matters here: it did not earn the space. Recorded because the shape will look
-tempting again, and because the test in [`diagrams.md`](diagrams.md) §1 is
-harder to pass than it reads: a picture of what a page already says in words
-is decoration, however accurate it is.
+**Three have now been built and three removed**, counting the Workshops one.
+That drew the teaching stack as five layers read downward, which cost the
+renderer a second orientation and the page 380px of its header, and the
+author's verdict on it is the one that matters here: it did not earn the space.
+Recorded because the shape will look tempting again, and because the test in
+[`diagrams.md`](diagrams.md) §1 is harder to pass than it reads: a picture of
+what a page already says in words is decoration, however accurate it is. Three
+withdrawals is the test working, not the mechanism failing, and the next
+proposal should expect to meet the same standard.
+
+**Whoever draws the fourth updates this paragraph and CLAUDE.md M1 in the same
+commit.** Both documents spent three days asserting two diagrams that no page
+rendered, because emptying the data file is a one-line change and the prose
+describing it is not generated from anything.
 
 ## 2. Colour
 
